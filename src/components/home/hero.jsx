@@ -6,6 +6,7 @@ import { heroSliderData } from "@/data/hero-slider-data";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Hero() {
@@ -31,9 +32,11 @@ export default function Hero() {
               key={i}
               className="embla__slide flex-[0_0_100%] relative h-full"
             >
-              <img
+              <Image
                 src={slide.img}
                 alt={slide.headline}
+                fill
+                priority
                 className="absolute inset-0 w-full h-full object-cover object-center opacity-55"
               />
               <div className="absolute inset-0 bg-linear-to-r from-foreground/50 via-foreground/20 to-transparent" />
