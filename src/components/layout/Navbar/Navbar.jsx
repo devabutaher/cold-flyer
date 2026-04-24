@@ -1,23 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import DesktopNav from "./DesktopNav";
-import MobileNav from "./MobileNav";
+import { DesktopNav } from "@/components/layout/navbar/desktop-nav";
+import { MobileNav } from "@/components/layout/navbar/mobile-nav";
+import { Button } from "@/components/ui/button";
+import { useScroll } from "@/hooks/use-scroll";
+import { cn } from "@/lib/utils";
+import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { NavButtons, NavSearch } from "./shared";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const scrolled = useScroll(10);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-surface-low bg-surface/90 backdrop-blur-xl">
-      <DesktopNav />
+    <header
+      className={cn("sticky top-0 z-50 w-full border-transparent border-b", {
+        "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
+          scrolled,
+      })}
+    >
+      <nav className="mx-auto flex h-14 w-full container items-center justify-between px-4">
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2">
+            <div className="bg-primary p-2 rounded-md">
+              <Image src={"./vercel.svg"} width={20} height={20} alt="logo" />
+            </div>
 
-      <MobileNav
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        openDropdown={openDropdown}
-        setOpenDropdown={setOpenDropdown}
-      />
+            <h1 className="font-bold text-xl font-sans">
+              Cold<span className="text-primary">Flyer</span>
+            </h1>
+          </div>
+          <DesktopNav />
+        </div>
+        <div className="hidden items-center gap-2 md:flex">
+          <NavSearch />
+          <Button>
+            <ShoppingCart />
+          </Button>
+          <NavButtons />
+        </div>
+        <MobileNav />
+      </nav>
     </header>
   );
 }
