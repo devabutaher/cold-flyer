@@ -37,7 +37,7 @@ export function LinkItem({
 export function NavButtons() {
   return (
     <div className="mt-5 md:mt-0 flex flex-col md:flex-row gap-2">
-      <Button className="w-full md:w-min" variant="outline">
+      <Button className="w-full md:w-min" variant="destructive">
         Sign In
       </Button>
       <Button className="w-full md:w-min">Select Service</Button>

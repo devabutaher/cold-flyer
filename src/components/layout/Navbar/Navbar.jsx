@@ -23,7 +23,13 @@ export default function Navbar() {
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-2">
             <div className="bg-primary p-2 rounded-md">
-              <Image src={"./vercel.svg"} width={20} height={20} alt="logo" />
+              <Image
+                src="/vercel.svg"
+                width={200}
+                height={200}
+                alt="logo"
+                className="w-4 h-4"
+              />
             </div>
 
             <h1 className="font-bold text-xl font-sans">
