@@ -8,7 +8,7 @@ export default function PromoCards() {
         {promoCardData.map((card) => (
           <div
             key={card.title}
-            className={`rounded-xl p-6 sm:p-7 shadow-xl border ${
+            className={`rounded-md p-6 sm:p-7 shadow-xl border ${
               card.accent
                 ? "bg-primary text-primary-foreground border-primary"
                 : "bg-card text-foreground border-border"
