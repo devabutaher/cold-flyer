@@ -1,61 +1,103 @@
 @import "tailwindcss";
+@import "shadcn/tailwind.css";
 
-@theme {
-    /* Brand */
-    --color-primary: #FF4F00;
-    --color-primary-dark: #cc3d00;
-    --color-primary-light: #ffe8e0;
-
-    /* Surfaces */
-    --color-bg: #f8fafb;
-    --color-surface: #ffffff;
-    --color-surface-low: #f2f4f5;
-    --color-surface-high: #e6e8e9;
-
-    /* Dark */
-    --color-dark-bg: #191c1d;
-    --color-dark-surface: #252829;
-
-    /* Text */
-    --color-text: #191c1d;
-    --color-text-muted: #5a5c5e;
-    --color-text-faint: #acadaf;
-
-    /* Fonts */
-    --default-font-family: 'Inter', sans-serif;
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+    --font-sans: 'Inter', sans-serif;
     --font-headline: 'Manrope', sans-serif;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+:root {
+    --radius: 0.625rem;
+
+    --background: oklch(0.968 0.01 48);
+    --foreground: oklch(0.13 0.03 40);
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.13 0.03 40);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.13 0.03 40);
+
+    --primary: oklch(0.619 0.213 33.5);
+    --primary-foreground: oklch(1 0 0);
+
+    --secondary: oklch(0.965 0.03 42);
+    --secondary-foreground: oklch(0.42 0.12 36);
+
+    --muted: oklch(0.965 0.015 45);
+    --muted-foreground: oklch(0.48 0.03 40);
+
+    --accent: oklch(0.94 0.025 44);
+    --accent-foreground: oklch(0.42 0.12 36);
+
+    --destructive: oklch(0.577 0.245 27.325);
+
+    --border: oklch(0.89 0.022 45);
+    --input: oklch(0.89 0.022 45);
+    --ring: oklch(0.619 0.213 33.5);
+
+    --chart-1: oklch(0.619 0.213 33.5);
+    --chart-2: oklch(0.42 0.12 36);
+    --chart-3: oklch(0.75 0.12 55);
+    --chart-4: oklch(0.48 0.03 40);
+    --chart-5: oklch(0.6 0.09 195);
+
+    --sidebar: oklch(0.975 0.012 46);
+    --sidebar-foreground: oklch(0.13 0.03 40);
+    --sidebar-primary: oklch(0.619 0.213 33.5);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.94 0.025 44);
+    --sidebar-accent-foreground: oklch(0.42 0.12 36);
+    --sidebar-border: oklch(0.89 0.022 45);
+    --sidebar-ring: oklch(0.619 0.213 33.5);
 }
 
-html {
-    scroll-behavior: smooth;
-}
+@custom-variant dark (&:is(.disable-dark *));
 
-body {
-    background-color: theme(--color-bg);
-    color: theme(--color-text);
-    font-family: theme(--default-font-family);
-}
-
-.wrapper {
-    max-width: 1280px;
-    margin-inline: auto;
-    padding-inline: 1rem;
-}
-
-@media (min-width: 640px) {
-    .wrapper {
-        padding-inline: 1.5rem;
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
     }
-}
 
-@media (min-width: 1024px) {
-    .wrapper {
-        padding-inline: 2rem;
+    body {
+        @apply bg-background text-foreground;
+        font-family: var(--font-sans);
     }
 }
