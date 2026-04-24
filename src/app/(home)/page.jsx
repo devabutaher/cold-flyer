@@ -1,5 +1,7 @@
+import About from "@/components/home/about";
 import Hero from "@/components/home/hero";
 import PromoCards from "@/components/home/promo-cards";
+import Services from "@/components/home/services";
 import Shop from "@/components/home/shop/shop";
 
 export default function Home() {
@@ -8,6 +10,8 @@ export default function Home() {
       <Hero />
       <PromoCards />
       <Shop />
+      <Services />
+      <About />
     </div>
   );
 }
