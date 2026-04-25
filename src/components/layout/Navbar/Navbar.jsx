@@ -7,6 +7,7 @@ import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { NavButtons, NavSearch } from "./shared";
 
 export default function Navbar() {
@@ -21,7 +22,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex h-14 w-full container items-center justify-between px-4">
         <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2">
+          <Link href={"/"} className="flex items-center gap-2">
             <div className="bg-primary p-2 rounded-md">
               <Image
                 src="/vercel.svg"
@@ -35,7 +36,7 @@ export default function Navbar() {
             <h1 className="font-bold text-xl font-sans">
               Cold<span className="text-primary">Flyer</span>
             </h1>
-          </div>
+          </Link>
           <DesktopNav />
         </div>
         <div className="hidden items-center gap-2 md:flex">

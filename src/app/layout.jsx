@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
 import { Geist_Mono, Inter, Lora } from "next/font/google";
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

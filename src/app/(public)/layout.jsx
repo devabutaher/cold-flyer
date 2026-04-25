@@ -7,7 +7,7 @@ export default function layout({ children }) {
     <>
       <TextSlider />
       <Navbar />
-      {children}
+      <main>{children}</main>
       <Footer />
     </>
   );

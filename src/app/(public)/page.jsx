@@ -11,7 +11,7 @@ import Testimonials from "@/components/home/testimonials";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Hero />
       <PromoCards />
       <Shop />
@@ -22,6 +22,6 @@ export default function Home() {
       <Portfolio />
       <Testimonials />
       <Blogs />
-    </div>
+    </>
   );
 }

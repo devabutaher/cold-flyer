@@ -1,4 +1,4 @@
-import { Snowflake } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
@@ -22,13 +22,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
-                <Snowflake size={16} color="white" strokeWidth={2.5} />
+            <Link href={"/"} className="flex items-center gap-2 mb-4">
+              <div className="bg-primary p-2 rounded-md">
+                <Image
+                  src="/vercel.svg"
+                  width={200}
+                  height={200}
+                  alt="logo"
+                  className="w-4 h-4"
+                />
               </div>
-              <span className="font-sans font-black text-lg tracking-tight">
+
+              <h1 className="font-bold text-xl font-sans">
                 Cold<span className="text-primary">Flyer</span>
-              </span>
+              </h1>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-5">
               Leading the industry in precision climate engineering and
