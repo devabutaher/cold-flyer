@@ -1,4 +1,5 @@
 import About from "@/components/home/about";
+import BrandsStrip from "@/components/home/brand-strip";
 import Hero from "@/components/home/hero";
 import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
@@ -14,6 +15,7 @@ export default function Home() {
       <Services />
       <About />
       <StatsStrip />
+      <BrandsStrip />
     </div>
   );
 }
