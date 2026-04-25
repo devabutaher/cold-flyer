@@ -1,6 +1,7 @@
 import About from "@/components/home/about";
 import BrandsStrip from "@/components/home/brand-strip";
 import Hero from "@/components/home/hero";
+import Portfolio from "@/components/home/portfolio";
 import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
 import Shop from "@/components/home/shop/shop";
@@ -16,6 +17,7 @@ export default function Home() {
       <About />
       <StatsStrip />
       <BrandsStrip />
+      <Portfolio />
     </div>
   );
 }
