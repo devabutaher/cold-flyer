@@ -6,6 +6,7 @@ import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
 import Shop from "@/components/home/shop/shop";
 import StatsStrip from "@/components/home/stats-strip";
+import Testimonials from "@/components/home/testimonials";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <StatsStrip />
       <BrandsStrip />
       <Portfolio />
+      <Testimonials />
     </div>
   );
 }
