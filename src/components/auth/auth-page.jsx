@@ -58,7 +58,7 @@ export default function AuthPage() {
         );
         await updateProfile(user, { displayName: data.name });
       }
-      router.push("/home");
+      router.push("/");
     } catch (err) {
       setFirebaseError(getFirebaseError(err.code));
     } finally {
@@ -71,7 +71,7 @@ export default function AuthPage() {
     setFirebaseError("");
     try {
       await signInWithPopup(auth, googleProvider);
-      router.push("/home");
+      router.push("/");
     } catch (err) {
       setFirebaseError(getFirebaseError(err.code));
     } finally {

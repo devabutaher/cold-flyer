@@ -1,7 +1,9 @@
+import { UserDropdown } from "@/components/auth/user-dropdown";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 
@@ -35,13 +37,25 @@ export function LinkItem({
 }
 
 export function NavButtons() {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
   return (
-    <div className="mt-5 md:mt-0 flex flex-col md:flex-row gap-2">
-      <Button className="w-full md:w-min" variant="destructive">
-        Sign In
-      </Button>
-      <Button className="w-full md:w-min">Select Service</Button>
-    </div>
+    <>
+      {user ? (
+        <>
+          <Button className="w-full md:w-min">Booking Now</Button>
+          <UserDropdown user={user} />
+        </>
+      ) : (
+        <div className="mt-5 md:mt-0 flex flex-col md:flex-row gap-2">
+          <Button className="w-full md:w-min" variant="destructive">
+            Sign In
+          </Button>
+          <Button className="w-full md:w-min">Select Service</Button>
+        </div>
+      )}
+    </>
   );
 }
 
