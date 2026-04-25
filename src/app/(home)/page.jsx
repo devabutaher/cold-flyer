@@ -3,6 +3,7 @@ import Hero from "@/components/home/hero";
 import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
 import Shop from "@/components/home/shop/shop";
+import StatsStrip from "@/components/home/stats-strip";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Shop />
       <Services />
       <About />
+      <StatsStrip />
     </div>
   );
 }
