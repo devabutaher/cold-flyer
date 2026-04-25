@@ -1,4 +1,5 @@
 import About from "@/components/home/about";
+import Blogs from "@/components/home/blogs";
 import BrandsStrip from "@/components/home/brand-strip";
 import Hero from "@/components/home/hero";
 import Portfolio from "@/components/home/portfolio";
@@ -20,6 +21,7 @@ export default function Home() {
       <BrandsStrip />
       <Portfolio />
       <Testimonials />
+      <Blogs />
     </div>
   );
 }
