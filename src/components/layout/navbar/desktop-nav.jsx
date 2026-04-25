@@ -8,6 +8,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { productLinks, servicesLinks } from "@/data/nav-links";
+import Link from "next/link";
 
 export function DesktopNav() {
   return (
@@ -42,9 +43,12 @@ export function DesktopNav() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuLink asChild className="px-4">
-          <a className="rounded-md p-2 hover:bg-accent font-medium" href="#">
+          <Link
+            className="rounded-md p-2 hover:bg-accent font-medium"
+            href="/about"
+          >
             About
-          </a>
+          </Link>
         </NavigationMenuLink>
       </NavigationMenuList>
     </NavigationMenu>
