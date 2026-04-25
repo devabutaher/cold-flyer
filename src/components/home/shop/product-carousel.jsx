@@ -17,7 +17,7 @@ export default function ProductCarousel({ title, tag, items, catalogLabel }) {
   );
 
   return (
-    <div className="mb-14">
+    <div>
       <div className="mb-5 flex items-end justify-between gap-3">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">

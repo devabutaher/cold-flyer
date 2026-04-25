@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
+import PriceFormatSale from "@/components/ui/price-format-sale";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
 export default function ProductCard({ product }) {
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-lg">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
       <div className="relative h-52 overflow-hidden bg-muted">
         <Image
           src={product.img}
@@ -22,20 +23,25 @@ export default function ProductCard({ product }) {
       </div>
 
       <div className="flex flex-1 items-end justify-between gap-3 p-4">
-        <div className="min-w-0">
-          <h4 className="truncate text-sm font-bold text-foreground">
-            {product.name}
-          </h4>
+        <div className="min-w-0 space-y-2">
+          <div>
+            <h4 className="truncate font-bold text-foreground">
+              {product.name}
+            </h4>
 
-          {product.sub && (
-            <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
-              {product.sub}
-            </p>
-          )}
+            {product.sub && (
+              <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+                {product.sub}
+              </p>
+            )}
+          </div>
 
-          <p className="mt-2 text-base font-bold text-primary">
-            ${product.price.toLocaleString()}
-          </p>
+          <PriceFormatSale
+            originalPrice={product.originalPrice}
+            salePrice={product.price}
+            prefix="$"
+            classNameSalePrice="text-lg text-primary"
+          />
         </div>
 
         <Button size="icon" className="shrink-0">

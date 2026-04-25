@@ -3,8 +3,8 @@ import CarouselSection from "./product-carousel";
 
 export default function Shop() {
   return (
-    <section className="bg-background py-16">
-      <div className="container">
+    <section className="container py-10">
+      <div className="space-y-10">
         <CarouselSection
           title="Premium AC Units"
           tag="Our Store"
