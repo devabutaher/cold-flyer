@@ -10,6 +10,7 @@ export default function ProductCard({ product }) {
           src={product.img}
           alt={product.name}
           fill
+          sizes="100%"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 

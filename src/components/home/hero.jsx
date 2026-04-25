@@ -27,6 +27,7 @@ export default function Hero() {
                 src={slide.img}
                 alt={slide.headline}
                 fill
+                sizes="100vw"
                 priority={i === 0}
                 className="absolute inset-0 object-cover object-center opacity-55"
               />
