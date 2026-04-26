@@ -1,4 +1,4 @@
-import { acParts, acUnits } from "@/data/shop-data";
+import { acParts, acUnits } from "@/data/products-data";
 import CarouselSection from "./product-carousel";
 
 export default function Shop() {

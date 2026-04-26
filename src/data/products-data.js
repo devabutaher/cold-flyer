@@ -7,7 +7,7 @@ export const acUnits = [
     price: 2499,
     originalPrice: 2999,
     img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80",
-    stock: 12,
+    stock: 13,
     sku: "CF-ARC-V2-2024",
     brand: "ColdFlyer",
     category: "Split AC",
