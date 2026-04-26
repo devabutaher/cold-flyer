@@ -1,4 +1,4 @@
-import ProductCard from "@/components/home/shop/product-card";
+import ProductCard from "@/components/products/product-card";
 import ProductFilters from "@/components/products/product-filters";
 import { acUnits } from "@/data/products-data";
 

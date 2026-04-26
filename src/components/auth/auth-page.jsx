@@ -1,36 +1,35 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
 import { createAccountSchema, signInSchema } from "@/lib/auth-schemas";
-import { auth, googleProvider } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
-import { Badge } from "../ui/badge";
+import { toast } from "sonner";
 
 export default function AuthPage() {
   const [tab, setTab] = useState("signin");
   const [showPassword, setShowPassword] = useState(false);
   const [firebaseError, setFirebaseError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
   const router = useRouter();
+  const { signIn, signUp, signInWithGoogle, resetPassword } = useAuth();
 
   const isSignIn = tab === "signin";
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
     reset,
   } = useForm({
@@ -41,6 +40,7 @@ export default function AuthPage() {
     setTab(t);
     setFirebaseError("");
     setShowPassword(false);
+    setResetSent(false);
     reset();
   };
 
@@ -49,14 +49,11 @@ export default function AuthPage() {
     setFirebaseError("");
     try {
       if (isSignIn) {
-        await signInWithEmailAndPassword(auth, data.email, data.password);
+        await signIn(data.email, data.password);
+        toast.success("Welcome back! Redirecting...");
       } else {
-        const { user } = await createUserWithEmailAndPassword(
-          auth,
-          data.email,
-          data.password,
-        );
-        await updateProfile(user, { displayName: data.name });
+        await signUp(data.name, data.phone ?? "", data.email, data.password);
+        toast.success("Account created! Welcome to ColdFlyer 🎉");
       }
       router.push("/");
     } catch (err) {
@@ -70,8 +67,27 @@ export default function AuthPage() {
     setLoading(true);
     setFirebaseError("");
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithGoogle();
+      toast.success("Signed in with Google!");
       router.push("/");
+    } catch (err) {
+      setFirebaseError(getFirebaseError(err.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const email = getValues("email");
+    if (!email) {
+      setFirebaseError("Enter your email above first.");
+      return;
+    }
+    setLoading(true);
+    setFirebaseError("");
+    try {
+      await resetPassword(email);
+      setResetSent(true);
     } catch (err) {
       setFirebaseError(getFirebaseError(err.code));
     } finally {
@@ -104,7 +120,6 @@ export default function AuthPage() {
       {/* Right — form panel */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 bg-background">
         <div className="w-full max-w-sm">
-          {/* Title */}
           <h2 className="font-sans font-bold text-2xl text-foreground mb-1">
             Welcome Back.
           </h2>
@@ -134,9 +149,16 @@ export default function AuthPage() {
             ))}
           </div>
 
+          {/* Reset sent confirmation */}
+          {resetSent && (
+            <div className="mb-4 p-3 rounded-md bg-accent text-accent-foreground text-sm font-medium">
+              Password reset email sent! Check your inbox.
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name */}
+            {/* Name — create only */}
             {!isSignIn && (
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
@@ -153,6 +175,29 @@ export default function AuthPage() {
                 {errors.name && (
                   <p className="text-destructive text-xs mt-1">
                     {errors.name.message}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Phone — create only */}
+            {!isSignIn && (
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
+                  Phone Number (<span className="font-medium">optional</span>)
+                </label>
+                <Input
+                  {...register("phone")}
+                  type="tel"
+                  placeholder="01700000000"
+                  className={cn(
+                    errors.phone &&
+                      "border-destructive focus-visible:ring-destructive",
+                  )}
+                />
+                {errors.phone && (
+                  <p className="text-destructive text-xs mt-1">
+                    {errors.phone.message}
                   </p>
                 )}
               </div>
@@ -188,6 +233,7 @@ export default function AuthPage() {
                 {isSignIn && (
                   <button
                     type="button"
+                    onClick={handleForgotPassword}
                     className="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline"
                   >
                     Forgot?
@@ -198,6 +244,7 @@ export default function AuthPage() {
                 <Input
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
+                  autoComplete="off"
                   placeholder="••••••••"
                   className={cn(
                     "pr-10",
@@ -289,6 +336,7 @@ function getFirebaseError(code) {
     "auth/invalid-email": "Invalid email address.",
     "auth/popup-closed-by-user": "Google sign-in was cancelled.",
     "auth/too-many-requests": "Too many attempts. Try again later.",
+    "auth/invalid-credential": "Invalid email or password.",
   };
   return errors[code] ?? "Something went wrong. Please try again.";
 }

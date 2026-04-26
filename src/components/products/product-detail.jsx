@@ -1,7 +1,6 @@
 "use client";
 
-import ImageCarousel_Basic from "@/components/products/image-carousel-basic";
-import QuantityInputBasic from "@/components/products/quantity-input-basic";
+import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormatSale from "@/components/ui/price-format-sale";
@@ -11,6 +10,7 @@ import { ChevronLeft, ShieldCheck, Tag, Truck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import InfoTabs from "./info-tabs";
+import QuantityInput from "./quantity-input";
 
 // ProductDetail
 export default function ProductDetail({ productId }) {
@@ -40,9 +40,9 @@ export default function ProductDetail({ productId }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
         {/* Left: Image Carousel */}
-        <div>
+        <div className="relative">
           {product.tag && (
-            <div className="mb-3">
+            <div className="absolute top-2 left-2 z-20">
               <Badge
                 variant={product.tag === "Sale" ? "destructive" : "default"}
               >
@@ -50,7 +50,7 @@ export default function ProductDetail({ productId }) {
               </Badge>
             </div>
           )}
-          <ImageCarousel_Basic
+          <ImageCarousel
             images={images}
             aspectRatio="square"
             imageFit="contain"
@@ -131,7 +131,7 @@ export default function ProductDetail({ productId }) {
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
                 Quantity
               </p>
-              <QuantityInputBasic
+              <QuantityInput
                 quantity={quantity}
                 onChange={setQuantity}
                 min={1}

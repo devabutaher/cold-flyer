@@ -90,14 +90,14 @@ export default function AboutPage() {
           alt="HVAC facility"
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/50 via-foreground/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/60 via-foreground/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
               Precision Engineering
             </Badge>
-            <h1 className="font-sans font-bold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Engineering <br />
               <span className="text-primary">the Future</span> <br />
               of Comfort
@@ -123,10 +123,10 @@ export default function AboutPage() {
               </div>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
-                <div className="font-sans font-bold text-6xl text-primary leading-none">
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">
                   26
                 </div>
-                <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground leading-tight">
+                <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   Years of <br /> Excellence
                 </div>
               </div>
@@ -152,20 +152,20 @@ export default function AboutPage() {
 
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
                 <div>
-                  <div className="font-sans font-bold text-3xl text-primary mb-1 relative inline-block">
+                  <div className="font-sans font-extrabold text-3xl text-primary mb-1 relative inline-block">
                     800+
                     <KineticPulse />
                   </div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">
+                  <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
                     Engineers
                   </div>
                 </div>
                 <div>
-                  <div className="font-sans font-bold text-3xl text-primary mb-1 relative inline-block">
+                  <div className="font-sans font-extrabold text-3xl text-primary mb-1 relative inline-block">
                     100%
                     <KineticPulse />
                   </div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">
+                  <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
                     Carbon Neutral Goal
                   </div>
                 </div>
@@ -180,11 +180,11 @@ export default function AboutPage() {
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
-              <span className="mb-3 block text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
                 Our DNA
               </span>
 
-              <h2 className="font-sans text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
                 The Kinetic Core
               </h2>
             </div>
@@ -222,7 +222,7 @@ export default function AboutPage() {
                       <div className="flex-1">
                         <Icon size={44} className="mb-7 text-primary" />
 
-                        <h3 className="mb-3 font-sans text-2xl font-bold text-foreground">
+                        <h3 className="mb-3 font-sans text-2xl font-extrabold text-foreground">
                           {value.title}
                         </h3>
 
@@ -257,7 +257,7 @@ export default function AboutPage() {
 
                       <h3
                         className={`
-                    mb-3 font-sans text-2xl font-bold transition-colors
+                    mb-3 font-sans text-2xl font-extrabold transition-colors
                     ${
                       isPrimaryHover
                         ? "text-foreground group-hover:text-primary-foreground"
@@ -297,7 +297,7 @@ export default function AboutPage() {
       <section className="py-28 bg-background">
         <div className="container">
           <div className="text-center mb-20">
-            <h2 className="font-sans font-bold text-4xl md:text-5xl tracking-tight text-foreground mb-5">
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground mb-5">
               Visionary Leadership
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
@@ -314,10 +314,10 @@ export default function AboutPage() {
                   />
                   <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <h4 className="font-sans font-bold text-xl text-foreground">
+                <h4 className="font-sans font-extrabold text-xl text-foreground">
                   {member.name}
                 </h4>
-                <p className="text-primary font-bold uppercase tracking-widest text-[10px] mt-0.5">
+                <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">
                   {member.role}
                 </p>
               </div>
@@ -331,10 +331,10 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 Global Reach
               </span>
-              <h2 className="font-sans font-bold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
+              <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
                 Impact Without <br /> Borders
               </h2>
 
@@ -344,10 +344,10 @@ export default function AboutPage() {
                     key={s.label}
                     className="p-7 border-l-2 border-primary bg-background/5"
                   >
-                    <div className="font-sans font-bold text-4xl mb-1.5">
+                    <div className="font-sans font-extrabold text-4xl mb-1.5">
                       {s.value}
                     </div>
-                    <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">
                       {s.label}
                     </div>
                   </div>
@@ -373,7 +373,7 @@ export default function AboutPage() {
       <section className="py-20 bg-primary">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <h3 className="font-sans font-bold text-3xl text-primary-foreground tracking-tight mb-1">
+            <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Ready to engineer your comfort?
             </h3>
             <p className="text-primary-foreground/70 text-sm">

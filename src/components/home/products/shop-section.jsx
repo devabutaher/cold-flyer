@@ -1,7 +1,7 @@
 import { acParts, acUnits } from "@/data/products-data";
 import CarouselSection from "./product-carousel";
 
-export default function Shop() {
+export default function ShopSection() {
   return (
     <section className="container py-10">
       <div className="space-y-10">

@@ -1,16 +1,16 @@
-"use client";;
+"use client";
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const QuantityInputBasic = ({
+const QuantityInput = ({
   className,
   disabled = false,
   max = null,
   min = 1,
   onChange,
   quantity,
-  step = 1
+  step = 1,
 }) => {
   // Internal state to handle input field text during editing
   const [inputValue, setInputValue] = useState(quantity.toString());
@@ -65,16 +65,18 @@ const QuantityInputBasic = ({
     <div
       className={cn(
         "inline-flex cursor-pointer rounded-lg shadow-xs shadow-black/5",
-        className
-      )}>
+        className,
+      )}
+    >
       <button
         className={cn(
           "hover:bg-muted-foreground/10 flex cursor-pointer items-center justify-center rounded-s-lg border px-3 py-1 focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-50",
-          disabled && "pointer-events-none"
+          disabled && "pointer-events-none",
         )}
         onClick={handleDecrease}
         disabled={disabled || quantity <= min}
-        aria-label="Decrease quantity">
+        aria-label="Decrease quantity"
+      >
         <Minus size={16} strokeWidth={2} aria-hidden="true" />
       </button>
       <input
@@ -86,19 +88,21 @@ const QuantityInputBasic = ({
         min={min}
         max={max !== null ? max : undefined}
         disabled={disabled}
-        aria-label="Quantity" />
+        aria-label="Quantity"
+      />
       <button
         className={cn(
           "hover:bg-muted-foreground/10 flex cursor-pointer items-center justify-center rounded-e-lg border px-3 py-1 focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-50",
-          disabled && "pointer-events-none"
+          disabled && "pointer-events-none",
         )}
         onClick={handleIncrease}
         disabled={disabled || (max !== null && quantity >= max)}
-        aria-label="Increase quantity">
+        aria-label="Increase quantity"
+      >
         <Plus size={16} strokeWidth={2} aria-hidden="true" />
       </button>
     </div>
   );
 };
 
-export default QuantityInputBasic;
+export default QuantityInput;

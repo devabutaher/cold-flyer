@@ -2,11 +2,15 @@ import { Button } from "@/components/ui/button";
 import PriceFormatSale from "@/components/ui/price-format-sale";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProductCard({ product }) {
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
-      <div className="relative h-52 overflow-hidden bg-muted">
+      <Link
+        href={`/items/${product.id}`}
+        className="relative block h-52 overflow-hidden bg-muted"
+      >
         <Image
           src={product.img}
           alt={product.name}
@@ -20,14 +24,16 @@ export default function ProductCard({ product }) {
             {product.tag}
           </span>
         )}
-      </div>
+      </Link>
 
       <div className="flex flex-1 items-end justify-between gap-3 p-4">
         <div className="min-w-0 space-y-2">
           <div>
-            <h4 className="truncate font-bold text-foreground">
-              {product.name}
-            </h4>
+            <Link href={`/items/${product.id}`}>
+              <h4 className="truncate font-bold text-foreground hover:text-primary">
+                {product.name}
+              </h4>
+            </Link>
 
             {product.sub && (
               <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
@@ -39,7 +45,6 @@ export default function ProductCard({ product }) {
           <PriceFormatSale
             originalPrice={product.originalPrice}
             salePrice={product.price}
-            prefix="$"
             classNameSalePrice="text-lg text-primary"
           />
         </div>

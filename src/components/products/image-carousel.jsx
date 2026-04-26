@@ -180,7 +180,7 @@ const Thumb = (props) => {
   );
 };
 
-const ImageCarousel_Basic = ({
+const ImageCarousel = ({
   aspectRatio = "wide",
   className,
   classNameImage,
@@ -456,4 +456,4 @@ const ImageCarousel_Basic = ({
   );
 };
 
-export default ImageCarousel_Basic;
+export default ImageCarousel;

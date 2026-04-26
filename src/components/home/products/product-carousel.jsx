@@ -6,7 +6,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import Link from "next/link";
-import ProductCard from "./product-card";
+import ProductCard from "../../products/product-card";
 
 export default function ProductCarousel({
   title,

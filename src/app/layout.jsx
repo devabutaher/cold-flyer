@@ -1,6 +1,7 @@
 import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import { Geist_Mono, Inter, Lora } from "next/font/google";
 
 const fontSans = Inter({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
       >
         <AuthProvider>{children}</AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

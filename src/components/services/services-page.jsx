@@ -9,7 +9,7 @@ import {
   Zap,
 } from "lucide-react";
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Data
 
 const services = [
   {
@@ -75,25 +75,25 @@ const steps = [
   },
 ];
 
-// ─── Page ──────────────────────────────────────────────────────────────────────
+// ─── Page
 export default function ServicesPage() {
   return (
     <main className="bg-background text-foreground">
       {/* ── 1. Hero ── */}
-      <section className="relative h-175 flex items-center overflow-hidden">
+      <section className="relative h-screen flex items-center overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=80"
           alt="Industrial HVAC facility"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/60 via-foreground/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary mb-4 block">
+            <Badge className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary mb-4 block">
               Industrial HVAC Excellence
-            </span>
-            <h1 className="font-sans font-black text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-6">
+            </Badge>
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-6">
               Precision <br />
               <span className="text-primary">Climate</span> Services
             </h1>
@@ -113,7 +113,7 @@ export default function ServicesPage() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-xl">
-              <h2 className="font-sans font-black text-4xl md:text-5xl tracking-tight text-foreground leading-none mb-4">
+              <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground leading-none mb-4">
                 Core Capabilities
               </h2>
               <p className="text-muted-foreground text-lg">
@@ -126,7 +126,7 @@ export default function ServicesPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-xs font-black uppercase tracking-widest text-primary">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-primary">
                 Live Monitoring Active
               </span>
             </div>
@@ -138,7 +138,7 @@ export default function ServicesPage() {
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <div>
                   <Settings size={36} className="text-primary mb-6" />
-                  <h3 className="font-sans font-black text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
+                  <h3 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
                     Precision Installation
                   </h3>
                   <p className="text-muted-foreground text-base max-w-md leading-relaxed">
@@ -162,7 +162,7 @@ export default function ServicesPage() {
             <div className="bg-primary text-primary-foreground p-10 rounded-xl flex flex-col justify-between">
               <div>
                 <Activity size={36} className="mb-6" />
-                <h3 className="font-sans font-black text-2xl md:text-3xl tracking-tight mb-4">
+                <h3 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight mb-4">
                   Preventative Maintenance
                 </h3>
                 <p className="text-primary-foreground/80 text-sm leading-relaxed">
@@ -171,8 +171,8 @@ export default function ServicesPage() {
                 </p>
               </div>
               <div className="mt-8 pt-8 border-t border-primary-foreground/20">
-                <div className="font-sans font-black text-4xl">40%</div>
-                <div className="text-[10px] uppercase tracking-widest font-bold text-primary-foreground/60 mt-1">
+                <div className="font-sans font-extrabold text-4xl">40%</div>
+                <div className="text-xs uppercase tracking-widest font-bold text-primary-foreground/60 mt-1">
                   Lifespan Increase
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function ServicesPage() {
             <div className="bg-secondary/40 p-10 rounded-xl flex flex-col justify-between">
               <div>
                 <AlertCircle size={36} className="text-foreground mb-6" />
-                <h3 className="font-sans font-black text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
+                <h3 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
                   24/7 Repairs
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
@@ -191,7 +191,7 @@ export default function ServicesPage() {
                 </p>
               </div>
               <div className="mt-8">
-                <Badge className="bg-background text-primary font-black text-[10px] tracking-widest">
+                <Badge className="bg-background text-primary font-extrabold text-xs tracking-widest">
                   EST. RESPONSE: 45 MIN
                 </Badge>
               </div>
@@ -201,7 +201,7 @@ export default function ServicesPage() {
             <div className="md:col-span-2 bg-card p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2">
                 <Zap size={36} className="text-primary mb-6" />
-                <h3 className="font-sans font-black text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
+                <h3 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight mb-4 text-foreground">
                   Efficiency Tuning
                 </h3>
                 <p className="text-muted-foreground text-base leading-relaxed">
@@ -225,10 +225,10 @@ export default function ServicesPage() {
       <section className="py-24 bg-secondary/30 overflow-hidden">
         <div className="container">
           <div className="mb-20 text-center">
-            <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 block">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-primary mb-3 block">
               Our Workflow
             </span>
-            <h2 className="font-sans font-black text-4xl md:text-5xl tracking-tight text-foreground">
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground">
               Engineering Excellence
             </h2>
           </div>
@@ -254,12 +254,12 @@ export default function ServicesPage() {
                         className="text-primary-foreground"
                       />
                     ) : (
-                      <span className="font-sans font-black text-2xl text-primary">
+                      <span className="font-sans font-extrabold text-2xl text-primary">
                         {step.num}
                       </span>
                     )}
                   </div>
-                  <h4 className="font-sans font-black text-lg mb-2 text-foreground">
+                  <h4 className="font-sans font-extrabold text-lg mb-2 text-foreground">
                     {step.title}
                   </h4>
                   <p className="text-muted-foreground text-sm leading-relaxed px-4 lg:px-0">
@@ -288,7 +288,7 @@ export default function ServicesPage() {
 
             {/* Quote */}
             <div className="w-full md:w-1/2">
-              <div className="text-6xl text-primary/20 font-black leading-none mb-4">
+              <div className="text-6xl text-primary/20 font-extrabold leading-none mb-4">
                 "
               </div>
               <blockquote className="text-xl md:text-2xl font-sans font-semibold text-foreground italic leading-snug mb-8">
@@ -297,7 +297,7 @@ export default function ServicesPage() {
                 tools have since cut our energy costs by a third.
               </blockquote>
               <div>
-                <h5 className="font-sans font-black text-base tracking-tight text-foreground">
+                <h5 className="font-sans font-extrabold text-base tracking-tight text-foreground">
                   Marcus Thorne
                 </h5>
                 <p className="text-muted-foreground text-sm">
@@ -313,7 +313,7 @@ export default function ServicesPage() {
       <section className="py-24 bg-foreground text-background relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-primary/20 to-transparent" />
         <div className="container relative z-10 flex flex-col items-center text-center">
-          <h2 className="font-sans font-black text-4xl md:text-6xl tracking-tight mb-8 max-w-3xl leading-tight">
+          <h2 className="font-sans font-extrabold text-4xl md:text-6xl tracking-tight mb-8 max-w-3xl leading-tight">
             Ready to optimize your facility's climate?
           </h2>
           <div className="flex flex-col sm:flex-row gap-4">
