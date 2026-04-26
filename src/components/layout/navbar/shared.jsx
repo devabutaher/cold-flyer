@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
+import Link from "next/link";
 
 export function LinkItem({
   label,
@@ -44,15 +45,19 @@ export function NavButtons() {
     <>
       {user ? (
         <>
-          <Button className="w-full md:w-min">Booking Now</Button>
+          <Link href={"/dashboard"}>
+            <Button>Dashboard</Button>
+          </Link>
           <UserDropdown user={user} />
         </>
       ) : (
         <div className="mt-5 md:mt-0 flex flex-col md:flex-row gap-2">
-          <Button className="w-full md:w-min" variant="destructive">
-            Sign In
-          </Button>
-          <Button className="w-full md:w-min">Select Service</Button>
+          <Link href={"/auth"}>
+            <Button variant="destructive">Sign In</Button>
+          </Link>
+          <Link href={"/auth"}>
+            <Button>Register</Button>
+          </Link>
         </div>
       )}
     </>

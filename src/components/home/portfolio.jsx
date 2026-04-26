@@ -1,5 +1,6 @@
 import { projects } from "@/data/projects-data";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Portfolio() {
   return (
@@ -14,9 +15,12 @@ export default function Portfolio() {
               Recent <span className="text-primary">Works.</span>
             </h2>
           </div>
-          <button className="flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all">
+          <Link
+            href={"/services"}
+            className="flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all"
+          >
             Learn More <ArrowRight size={14} />
-          </button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="relative rounded-xl overflow-hidden h-64 sm:row-span-2 sm:h-auto group">

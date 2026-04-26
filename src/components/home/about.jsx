@@ -1,5 +1,6 @@
 import { aboutData } from "@/data/about-data";
 import { CheckCircle } from "lucide-react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 export default function About() {
@@ -41,7 +42,9 @@ export default function About() {
                 </div>
               ))}
             </div>
-            <Button size="lg">Book a Diagnostic</Button>
+            <Link href={"/about"}>
+              <Button size="lg">More About Us</Button>
+            </Link>
           </div>
         </div>
       </div>

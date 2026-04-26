@@ -6,13 +6,21 @@ const cols = [
   {
     title: "Services",
     links: [
-      "Residential Cooling",
-      "Commercial HVAC",
-      "Duct Cleaning",
-      "Smart Thermostats",
+      { label: "Residential Cooling", href: "/services" },
+      { label: "Commercial HVAC", href: "/services" },
+      { label: "Duct Cleaning", href: "/services" },
+      { label: "Smart Thermostats", href: "/services" },
     ],
   },
-  { title: "Company", links: ["About Us", "Contact", "Careers", "FAQ"] },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", href: "/about" },
+      { label: "Contact", href: "/about" },
+      { label: "Careers", href: "/about" },
+      { label: "FAQ", href: "/about" },
+    ],
+  },
 ];
 
 export default function Footer() {
@@ -43,13 +51,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               {[FaXTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-                <a
+                <Link
                   key={i}
-                  href="#"
+                  href="/"
                   className="w-9 h-9 rounded-md bg-background/10 hover:bg-primary flex items-center justify-center transition-colors"
                 >
                   <Icon size={15} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -62,13 +70,13 @@ export default function Footer() {
               </h4>
               <ul className="space-y-2.5">
                 {col.links.map((l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
+                  <li key={l.label}>
+                    <Link
+                      href={l.href}
                       className="text-muted-foreground text-sm hover:text-background transition-colors"
                     >
-                      {l}
-                    </a>
+                      {l.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -99,12 +107,18 @@ export default function Footer() {
         <div className="border-t border-background/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs">
           <span>© 2025 ColdFlyer Precision Climate. All rights reserved.</span>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-background transition-colors">
+            <Link
+              href="/about"
+              className="hover:text-background transition-colors"
+            >
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-background transition-colors">
+            </Link>
+            <Link
+              href="/about"
+              className="hover:text-background transition-colors"
+            >
               Shipping & Returns
-            </a>
+            </Link>
           </div>
         </div>
       </div>

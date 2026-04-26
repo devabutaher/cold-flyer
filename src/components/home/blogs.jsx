@@ -1,5 +1,6 @@
 import { blogs } from "@/data/blogs-data";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Blogs() {
   return (
@@ -14,9 +15,12 @@ export default function Blogs() {
               Climate <span className="text-primary">Insights.</span>
             </h2>
           </div>
-          <button className="flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all">
+          <Link
+            href={"/about"}
+            className="flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all"
+          >
             View All <ArrowRight size={14} />
-          </button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {blogs.map((p) => (
@@ -42,9 +46,12 @@ export default function Blogs() {
                   <span className="text-muted-foreground text-xs">
                     {p.date}
                   </span>
-                  <button className="flex items-center gap-1 text-xs font-bold text-primary hover:gap-2 transition-all">
+                  <Link
+                    href={"/about"}
+                    className="flex items-center gap-1 text-xs font-bold text-primary hover:gap-2 transition-all"
+                  >
                     Read <ArrowRight size={12} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </article>
