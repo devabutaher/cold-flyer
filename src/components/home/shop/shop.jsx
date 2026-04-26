@@ -10,6 +10,7 @@ export default function Shop() {
           tag="Our Store"
           items={acUnits}
           catalogLabel="View Full Catalog"
+          catalogLink="/items/ac_units"
         />
 
         <CarouselSection
@@ -17,6 +18,7 @@ export default function Shop() {
           tag="Replacements"
           items={acParts}
           catalogLabel="Explore Parts"
+          catalogLink="/items/ac_parts"
         />
       </div>
     </section>

@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { productLinks, servicesLinks } from "@/data/nav-links";
+import { productLinks } from "@/data/nav-links";
 import Link from "next/link";
 
 export function DesktopNav() {
@@ -16,7 +16,7 @@ export function DesktopNav() {
       <NavigationMenuList>
         <NavigationMenuItem className="bg-transparent">
           <NavigationMenuTrigger className="bg-transparent">
-            Product
+            <Link href={"/items"}>Product</Link>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="p-1 pr-1.5">
             <div className="rounded-lg w-xs space-y-2 bg-popover p-2">
@@ -28,20 +28,14 @@ export function DesktopNav() {
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent">
+        <NavigationMenuLink asChild className="px-4">
+          <Link
+            className="rounded-md p-2 hover:bg-accent font-medium"
+            href="/services"
+          >
             Services
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-1 pr-1.5 pb-1.5">
-            <div className="rounded-lg w-xs space-y-2 bg-popover p-2">
-              {servicesLinks.map((item, i) => (
-                <NavigationMenuLink asChild key={`item-${item.label}-${i}`}>
-                  <LinkItem {...item} />
-                </NavigationMenuLink>
-              ))}
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          </Link>
+        </NavigationMenuLink>
         <NavigationMenuLink asChild className="px-4">
           <Link
             className="rounded-md p-2 hover:bg-accent font-medium"

@@ -5,7 +5,7 @@ import {
 } from "@/components/layout/navbar/shared";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
-import { productLinks, servicesLinks } from "@/data/nav-links";
+import { productLinks } from "@/data/nav-links";
 import { cn } from "@/lib/utils";
 import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
@@ -58,14 +58,6 @@ export function MobileNav() {
                 <LinkItem
                   className="rounded-lg p-2 active:bg-muted dark:active:bg-muted/50"
                   key={`product-${link.label}`}
-                  {...link}
-                />
-              ))}
-              <span className="text-sm">Services</span>
-              {servicesLinks.map((link) => (
-                <LinkItem
-                  className="rounded-lg p-2 active:bg-muted dark:active:bg-muted/50"
-                  key={`company-${link.label}`}
                   {...link}
                 />
               ))}

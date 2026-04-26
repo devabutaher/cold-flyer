@@ -1,5 +1,6 @@
 import { promoCardData } from "@/data/promo-card-data";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function PromoCards() {
   return (
@@ -45,14 +46,15 @@ export default function PromoCards() {
               {card.sub}
             </p>
 
-            <button
+            <Link
+              href={"/services"}
               className={`flex items-center gap-1 text-sm font-bold transition-all hover:gap-2 ${
                 card.accent ? "text-white" : "text-primary"
               }`}
             >
               {card.cta}
               <ArrowRight size={14} />
-            </button>
+            </Link>
           </div>
         ))}
       </div>

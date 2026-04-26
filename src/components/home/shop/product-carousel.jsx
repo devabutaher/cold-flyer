@@ -5,9 +5,16 @@ import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
+import Link from "next/link";
 import ProductCard from "./product-card";
 
-export default function ProductCarousel({ title, tag, items, catalogLabel }) {
+export default function ProductCarousel({
+  title,
+  tag,
+  items,
+  catalogLabel,
+  catalogLink,
+}) {
   const { emblaRef, emblaApi } = useEmblaSlider(
     {
       loop: true,
@@ -38,10 +45,12 @@ export default function ProductCarousel({ title, tag, items, catalogLabel }) {
             <ChevronRight size={16} />
           </Button>
 
-          <Button className="ml-2 hidden sm:flex">
-            {catalogLabel}
-            <ArrowRight size={14} />
-          </Button>
+          <Link href={catalogLink}>
+            <Button className="ml-2 hidden sm:flex">
+              {catalogLabel}
+              <ArrowRight size={14} />
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -61,10 +70,12 @@ export default function ProductCarousel({ title, tag, items, catalogLabel }) {
       </div>
 
       <div className="mt-6 flex justify-center sm:hidden">
-        <Button>
-          {catalogLabel}
-          <ArrowRight size={14} />
-        </Button>
+        <Link href={catalogLink}>
+          <Button>
+            {catalogLabel}
+            <ArrowRight size={14} />
+          </Button>
+        </Link>
       </div>
     </div>
   );

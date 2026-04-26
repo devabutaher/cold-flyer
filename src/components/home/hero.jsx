@@ -7,9 +7,9 @@ import { useEmblaSlider } from "@/hooks/use-embla-slider"; // Adjust path as nee
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
-  // Use your custom hook here
   const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
@@ -50,12 +50,17 @@ export default function Hero() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                  <Button size="xl">
-                    Shop Collection <ArrowRight className="ml-2" size={16} />
-                  </Button>
-                  <Button size="xl" variant="secondary">
-                    Our Services
-                  </Button>
+                  <Link href={"/items"}>
+                    <Button size="xl">
+                      Shop Collection <ArrowRight className="ml-2" size={16} />
+                    </Button>
+                  </Link>
+
+                  <Link href={"/services"}>
+                    <Button size="xl" variant="secondary">
+                      Our Services
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

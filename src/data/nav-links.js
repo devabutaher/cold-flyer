@@ -1,27 +1,19 @@
-import { GlobeIcon, HandshakeIcon, StarIcon, UsersIcon } from "lucide-react";
+import { AirVent, Layers, LayoutGrid } from "lucide-react";
 
 export const productLinks = [
   {
-    label: "Website Builder",
-    href: "#",
-    icon: <GlobeIcon />,
-  },
-];
-
-export const servicesLinks = [
-  {
-    label: "About Us",
-    href: "#",
-    icon: <UsersIcon />,
+    label: "All Products",
+    href: "/items",
+    icon: <LayoutGrid />,
   },
   {
-    label: "Customer Stories",
-    href: "#",
-    icon: <StarIcon />,
+    label: "AC Units",
+    href: "/items/ac_units",
+    icon: <AirVent />,
   },
   {
-    label: "Partnerships",
-    href: "#",
-    icon: <HandshakeIcon />,
+    label: "AC Parts",
+    href: "/items/ac_parts",
+    icon: <Layers />,
   },
 ];
