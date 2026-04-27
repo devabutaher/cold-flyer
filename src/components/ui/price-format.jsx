@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { NumericFormat } from "react-number-format";
 
-const PriceFormatSale = ({
+const PriceFormat = ({
   className,
   classNameOriginalPrice,
   classNameSalePercentage,
@@ -77,4 +77,4 @@ const PriceFormatSale = ({
   );
 };
 
-export default PriceFormatSale;
+export default PriceFormat;

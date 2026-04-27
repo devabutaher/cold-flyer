@@ -3,14 +3,14 @@
 import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import PriceFormatSale from "@/components/ui/price-format-sale";
+import PriceFormat from "@/components/ui/price-format";
 import { acParts, acUnits } from "@/data/products-data";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ShieldCheck, Tag, Truck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import QuantityInput from "../ui/quantity-input";
 import InfoTabs from "./info-tabs";
-import QuantityInput from "./quantity-input";
 
 // ProductDetail
 export default function ProductDetail({ productId }) {
@@ -84,7 +84,7 @@ export default function ProductDetail({ productId }) {
 
           {/* Price */}
           <div className="mb-2">
-            <PriceFormatSale
+            <PriceFormat
               originalPrice={product.originalPrice}
               salePrice={product.price}
               showSavePercentage

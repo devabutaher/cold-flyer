@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import PriceFormatSale from "@/components/ui/price-format-sale";
+import PriceFormat from "@/components/ui/price-format";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default function ProductCard({ product }) {
             )}
           </div>
 
-          <PriceFormatSale
+          <PriceFormat
             originalPrice={product.originalPrice}
             salePrice={product.price}
             classNameSalePrice="text-lg text-primary"

@@ -24,6 +24,7 @@
   "registries": {
     "@efferd": "https://efferd.com/r/{style}/{name}.json",
     "@shadcnblocks": "https://shadcnblocks.com/r/{name}.json",
-    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json"
+    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json",
+    "@diceui": "https://diceui.com/r/{name}.json"
   }
 }
