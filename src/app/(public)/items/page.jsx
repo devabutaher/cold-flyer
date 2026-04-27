@@ -1,19 +1,25 @@
-import ProductCard from "@/components/products/product-card";
 import ProductFilters from "@/components/products/product-filters";
-import { acParts, acUnits } from "@/data/products-data";
+import ProductsGrid from "@/components/products/products-grid";
 
-export default function ItemsPage() {
+export default async function ItemsPage({ searchParams }) {
+  const { q, category, brand, sort } = await searchParams;
+
   return (
     <>
+      {q && (
+        <div className="mt-4">
+          <h1 className="font-sans font-bold text-2xl text-foreground">
+            Results for <span className="text-primary">"{q}"</span>
+          </h1>
+        </div>
+      )}
       <ProductFilters />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {acUnits.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-        {acParts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <ProductsGrid
+        q={q ?? ""}
+        category={category ?? ""}
+        brand={brand ?? ""}
+        sort={sort ?? ""}
+      />
     </>
   );
 }

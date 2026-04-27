@@ -1,49 +1,56 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { brands, categories, sortOptions } from "@/data/filtering-options";
 import { Check, ListFilter } from "lucide-react";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { NavSearch } from "../layout/navbar/shared";
 import FilterDropdown from "../ui/filter-dropdown";
 
-const categories = [
-  "All Categories",
-  "Split AC",
-  "Window AC",
-  "Cassette AC",
-  "Duct System",
-  "Air Purifier",
-];
+export default function ProductFilters() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-const brands = [
-  "All Brands",
-  "Daikin",
-  "LG",
-  "Samsung",
-  "Carrier",
-  "Mitsubishi",
-  "Hyundai",
-];
+  const [category, setCategory] = useState(
+    searchParams.get("category") ?? "All Categories",
+  );
+  const [brand, setBrand] = useState(searchParams.get("brand") ?? "All Brands");
+  const [sort, setSort] = useState(searchParams.get("sort") ?? "All Products");
 
-const sortOptions = [
-  "Price: Low to High",
-  "Price: High to Low",
-  "Newest First",
-  "Best Rated",
-  "Most Popular",
-];
-
-export default function ProductFilters({ onApply }) {
-  const [category, setCategory] = useState("All Categories");
-  const [brand, setBrand] = useState("All Brands");
-  const [sort, setSort] = useState("Price: Low to High");
+  useEffect(() => {
+    setCategory(searchParams.get("category") ?? "All Categories");
+    setBrand(searchParams.get("brand") ?? "All Brands");
+    setSort(searchParams.get("sort") ?? "All Products");
+  }, [searchParams]);
 
   const handleApply = () => {
-    onApply?.({ category, brand, sort });
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (category !== "All Categories") {
+      params.set("category", category);
+    } else {
+      params.delete("category");
+    }
+
+    if (brand !== "All Brands") {
+      params.set("brand", brand);
+    } else {
+      params.delete("brand");
+    }
+
+    if (sort !== "All Products") {
+      params.set("sort", sort);
+    } else {
+      params.delete("sort");
+    }
+
+    params.set("sort", sort);
+    router.push(`/items?${params.toString()}`);
   };
 
   return (
-    <div className="py-4 flex items-center gap-2 overflow-x-auto scrollbar-none min-w-0">
-      {/* Label */}
+    <div className="py-4 flex items-center gap-3 overflow-x-auto scrollbar-none min-w-0">
       <div className="flex items-center gap-2 text-muted-foreground mr-1 shrink-0">
         <ListFilter size={15} strokeWidth={2.5} />
         <span className="text-[10px] font-black uppercase tracking-widest">
@@ -51,23 +58,19 @@ export default function ProductFilters({ onApply }) {
         </span>
       </div>
 
-      {/* Category */}
       <FilterDropdown
         value={category}
         options={categories}
         onChange={setCategory}
       />
-
-      {/* Brand */}
       <FilterDropdown value={brand} options={brands} onChange={setBrand} />
-
-      {/* Sort */}
       <FilterDropdown value={sort} options={sortOptions} onChange={setSort} />
+      <div className="hidden md:block">
+        <NavSearch />
+      </div>
 
-      {/* Apply */}
       <div className="ml-auto shrink-0">
         <Button
-          size="sm"
           onClick={handleApply}
           className="gap-1.5 px-5 whitespace-nowrap"
         >
