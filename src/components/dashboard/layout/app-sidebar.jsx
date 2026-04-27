@@ -31,13 +31,15 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground font-bold"
-              tooltip="Add New Product"
-            >
-              <PlusIcon />
-              <span>Add New Product</span>
-            </SidebarMenuButton>
+            <Link href={"/dashboard/items/add"} className="w-full">
+              <SidebarMenuButton
+                className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground font-bold"
+                tooltip="Add New Product"
+              >
+                <PlusIcon />
+                <span>Add New Product</span>
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         </SidebarGroup>
 
