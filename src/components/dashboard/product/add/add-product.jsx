@@ -144,7 +144,7 @@ const AddProductForm = ({ onAddUnit, onAddPart, unitsCount, partsCount }) => {
   const err = (name) => formState.errors[name];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-8">
+    <div className="w-full">
       {/* ── Header + Toggle ── */}
       <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
