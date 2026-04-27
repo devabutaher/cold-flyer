@@ -13,7 +13,7 @@ export default function AddProductPage() {
 
   return (
     <ProtectedRoute>
-      <div className="py-8">
+      <div>
         <AddProductForm
           onAddUnit={(newUnit) => setUnits((prev) => [...prev, newUnit])}
           onAddPart={(newPart) => setParts((prev) => [...prev, newPart])}

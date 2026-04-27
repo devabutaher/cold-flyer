@@ -1,3 +1,4 @@
+import OfferBanner from "@/components/products/offer-banner";
 import ProductFilters from "@/components/products/product-filters";
 import ProductsGrid from "@/components/products/products-grid";
 
@@ -6,6 +7,7 @@ export default async function ItemsPage({ searchParams }) {
 
   return (
     <>
+      <OfferBanner />
       {q && (
         <div className="mt-4">
           <h1 className="font-sans font-bold text-2xl text-foreground">

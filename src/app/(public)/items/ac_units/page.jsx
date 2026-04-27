@@ -1,11 +1,17 @@
+import OfferBanner from "@/components/products/offer-banner";
 import ProductCard from "@/components/products/product-card";
 import ProductFilters from "@/components/products/product-filters";
 import { acUnits } from "@/data/products-data";
+import { Suspense } from "react";
 
 export default function ACUnits() {
   return (
     <>
-      <ProductFilters />
+      <OfferBanner />
+      <Suspense fallback={null}>
+        <ProductFilters />
+      </Suspense>
+
       <div className="space-y-4">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">

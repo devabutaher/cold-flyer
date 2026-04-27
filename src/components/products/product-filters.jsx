@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { brands, categories, sortOptions } from "@/data/filtering-options";
 import { Check, ListFilter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { NavSearch } from "../layout/navbar/shared";
+import { Suspense, useEffect, useState } from "react";
+import { NavSearch } from "../layout/navbar/nav-search";
 import FilterDropdown from "../ui/filter-dropdown";
 
 export default function ProductFilters() {
@@ -66,7 +66,9 @@ export default function ProductFilters() {
       <FilterDropdown value={brand} options={brands} onChange={setBrand} />
       <FilterDropdown value={sort} options={sortOptions} onChange={setSort} />
       <div className="hidden md:block">
-        <NavSearch />
+        <Suspense fallback={null}>
+          <NavSearch />
+        </Suspense>
       </div>
 
       <div className="ml-auto shrink-0">

@@ -7,7 +7,9 @@ import Logo from "@/components/ui/logo";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
-import { NavButtons, NavSearch } from "./shared";
+import { Suspense } from "react";
+import { NavSearch } from "./nav-search";
+import { NavButtons } from "./shared";
 
 export default function Navbar() {
   const scrolled = useScroll(10);
@@ -25,7 +27,9 @@ export default function Navbar() {
           <DesktopNav />
         </div>
         <div className="hidden items-center gap-2 md:flex">
-          <NavSearch />
+          <Suspense fallback={null}>
+            <NavSearch />
+          </Suspense>
           <Button>
             <ShoppingCart />
           </Button>

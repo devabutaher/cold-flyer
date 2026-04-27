@@ -1,3 +1,4 @@
+import OfferBanner from "@/components/products/offer-banner";
 import ProductDetail from "@/components/products/product-detail";
 import { acParts, acUnits } from "@/data/products-data";
 
@@ -17,5 +18,10 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductPage({ params }) {
   const { id } = await params;
-  return <ProductDetail productId={id} />;
+  return (
+    <>
+      <OfferBanner />
+      <ProductDetail productId={id} />
+    </>
+  );
 }

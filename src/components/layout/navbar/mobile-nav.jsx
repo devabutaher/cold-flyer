@@ -1,14 +1,13 @@
-import {
-  LinkItem,
-  NavButtons,
-  NavSearch,
-} from "@/components/layout/navbar/shared";
+"use client";
+
+import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
 import { productLinks } from "@/data/nav-links";
 import { cn } from "@/lib/utils";
 import { MenuIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { NavSearch } from "./nav-search";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -52,7 +51,9 @@ export function MobileNav() {
             data-slot={open ? "open" : "closed"}
           >
             <div className="flex w-full flex-col gap-y-2">
-              <NavSearch />
+              <Suspense fallback={null}>
+                <NavSearch />
+              </Suspense>
               <span className="text-sm">Product</span>
               {productLinks.map((link) => (
                 <LinkItem
