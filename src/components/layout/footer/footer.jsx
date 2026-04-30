@@ -107,19 +107,25 @@ export default function Footer() {
         <div className="border-t border-background/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs">
           <span>© 2025 ColdFlyer Precision Climate. All rights reserved.</span>
           <div className="flex gap-4">
-            <Link
-              href="/about"
-              className="hover:text-background transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/about"
-              className="hover:text-background transition-colors"
-            >
-              Shipping & Returns
-            </Link>
-          </div>
+              <Link
+                href="/terms"
+                className="hover:text-background transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="hover:text-background transition-colors"
+              >
+                Shipping & Returns
+              </Link>
+              <Link
+                href="/terms"
+                className="hover:text-background transition-colors"
+              >
+                Terms & Conditions
+              </Link>
+            </div>
         </div>
       </div>
     </footer>

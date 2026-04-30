@@ -44,6 +44,14 @@ export function DesktopNav() {
             About
           </Link>
         </NavigationMenuLink>
+        <NavigationMenuLink asChild className="px-4">
+          <Link
+            className="rounded-md p-2 hover:bg-accent font-medium"
+            href="/terms"
+          >
+            Terms
+          </Link>
+        </NavigationMenuLink>
       </NavigationMenuList>
     </NavigationMenu>
   );
