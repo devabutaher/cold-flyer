@@ -80,13 +80,13 @@ export default function ServicesPage() {
   return (
     <main className="bg-background text-foreground">
       {/* ── 1. Hero ── */}
-      <section className="relative h-screen flex items-center overflow-hidden">
+      <section className="relative h-[80vh] flex items-center overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=80"
           alt="Industrial HVAC facility"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/60 via-foreground/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">

@@ -1,8 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { FileText, Shield, Scale, AlertTriangle } from "lucide-react";
+import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
 
 const sections = [
   {
@@ -71,13 +70,13 @@ export default function TermsPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[60vh] flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
         <img
-          src="https://images.unsplash.com/photo-1504711925240-86e116af50ad?w=1400&q=80"
+          src="https://images.unsplash.com/photo-1652690527826-dcddbd1eb46e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Legal documents"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/90 via-foreground/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
@@ -119,7 +118,7 @@ export default function TermsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             {/* Table of Contents */}
             <div className="lg:col-span-4">
-              <div className="sticky top-8 space-y-6">
+              <div className="sticky top-12 space-y-6">
                 <div className="p-6 bg-card rounded-xl border border-border/30">
                   <div className="flex items-center gap-2 mb-4">
                     <Shield size={18} className="text-primary" />
@@ -152,8 +151,8 @@ export default function TermsPage() {
                       </h4>
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         By using this website, you acknowledge that you have
-                        read and understood these terms and agree to be bound
-                        by them.
+                        read and understood these terms and agree to be bound by
+                        them.
                       </p>
                     </div>
                   </div>
@@ -180,20 +179,6 @@ export default function TermsPage() {
                   </p>
                 </div>
               ))}
-
-              {/* Agreement Box */}
-              <div className="mt-16 p-8 bg-card rounded-xl border border-border/30">
-                <h3 className="font-sans font-extrabold text-xl mb-4">
-                  Agreement to Terms
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  By accessing this website, you acknowledge that you have read,
-                  understood, and agree to be bound by these Terms and
-                  Conditions. If you do not agree to these terms, please do not
-                  use our services.
-                </p>
-                <Button>Accept Terms</Button>
-              </div>
             </div>
           </div>
         </div>

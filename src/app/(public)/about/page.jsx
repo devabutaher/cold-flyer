@@ -84,13 +84,13 @@ export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-dvh flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
         <img
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=80"
           alt="HVAC facility"
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/60 via-foreground/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
