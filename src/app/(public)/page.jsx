@@ -1,6 +1,8 @@
 import About from "@/components/home/about";
 import Blogs from "@/components/home/blogs";
 import BrandsStrip from "@/components/home/brand-strip";
+import Contact from "@/components/home/contact";
+import Faq from "@/components/home/faq";
 import Hero from "@/components/home/hero";
 import Portfolio from "@/components/home/portfolio";
 import ShopSection from "@/components/home/products/shop-section";
@@ -21,6 +23,8 @@ export default function Home() {
       <BrandsStrip />
       <Portfolio />
       <Testimonials />
+      <Faq />
+      <Contact />
       <Blogs />
     </>
   );
