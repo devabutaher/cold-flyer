@@ -27,10 +27,10 @@ export function NavSearch() {
   };
 
   return (
-    <Field className="mt-8 md:mt-0">
+    <Field>
       <form onSubmit={handleSearch}>
-        <ButtonGroup>
-          <div className="relative">
+        <ButtonGroup className={"w-full"}>
+          <div className="relative flex-1">
             <Input
               ref={inputRef}
               type="text"
@@ -38,7 +38,7 @@ export function NavSearch() {
               onChange={(e) => setQuery(e.target.value)}
               id="input-button-group"
               placeholder="Type to search..."
-              className="pr-7"
+              className="pr-7 w-full"
             />
             {query && (
               <button
@@ -53,7 +53,7 @@ export function NavSearch() {
           <Button
             type="submit"
             variant="outline"
-            className="bg-primary text-muted hover:bg-primary/80 hover:text-muted"
+            className="bg-primary text-muted hover:bg-primary/80 hover:text-muted shrink-0"
           >
             <Search />
           </Button>

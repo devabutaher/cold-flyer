@@ -22,7 +22,7 @@ export function LinkItem({
     >
       <div
         className={cn(
-          "flex aspect-square size-6 items-center justify-center rounded-md border bg-card text-sm shadow-sm",
+          "flex aspect-square size-6 items-center justify-center rounded-lg border bg-card text-sm shadow-sm",
           "[&_svg:not([class*='size-'])]:size-5 [&_svg:not([class*='size-'])]:text-foreground",
         )}
       >
@@ -42,19 +42,21 @@ export function NavButtons() {
   return (
     <>
       {user ? (
-        <>
-          <Link href={"/dashboard"}>
-            <Button>Dashboard</Button>
+        <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+          <Link href={"/dashboard"} className="w-full lg:w-auto">
+            <Button className="w-full lg:w-auto">Dashboard</Button>
           </Link>
           <UserDropdown user={user} />
-        </>
+        </div>
       ) : (
-        <div className="mt-5 md:mt-0 flex flex-col md:flex-row gap-2">
-          <Link href={"/auth"}>
-            <Button variant="destructive">Sign In</Button>
+        <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+          <Link href={"/auth"} className="w-full lg:w-auto">
+            <Button variant="destructive" className="w-full lg:w-auto">
+              Sign In
+            </Button>
           </Link>
-          <Link href={"/auth"}>
-            <Button>Register</Button>
+          <Link href={"/auth"} className="w-full lg:w-auto">
+            <Button className="w-full lg:w-auto">Register</Button>
           </Link>
         </div>
       )}

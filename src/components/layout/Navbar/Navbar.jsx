@@ -7,7 +7,9 @@ import Logo from "@/components/ui/logo";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { Suspense } from "react";
+
 import { NavSearch } from "./nav-search";
 import { NavButtons } from "./shared";
 
@@ -17,7 +19,7 @@ export default function Navbar() {
   return (
     <header
       className={cn("sticky top-0 z-50 w-full border-transparent border-b", {
-        "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/90":
+        "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-md":
           scrolled,
       })}
     >
@@ -26,16 +28,25 @@ export default function Navbar() {
           <Logo />
           <DesktopNav />
         </div>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           <Suspense fallback={null}>
             <NavSearch />
           </Suspense>
-          <Button>
-            <ShoppingCart />
-          </Button>
+          <Link href="/cart">
+            <Button size="icon" variant="outline">
+              <ShoppingCart size={20} />
+            </Button>
+          </Link>
           <NavButtons />
         </div>
-        <MobileNav />
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link href="/cart">
+            <Button size="icon" variant="outline">
+              <ShoppingCart size={20} />
+            </Button>
+          </Link>
+          <MobileNav />
+        </div>
       </nav>
     </header>
   );

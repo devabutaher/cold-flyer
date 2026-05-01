@@ -1,9 +1,7 @@
-"use client";
-
 import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
-import { productLinks } from "@/data/nav-links";
+import { productLinks, serviceLinks } from "@/data/nav-links";
 import { cn } from "@/lib/utils";
 import { MenuIcon, XIcon } from "lucide-react";
 import { Suspense, useState } from "react";
@@ -13,12 +11,12 @@ export function MobileNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <Button
         aria-controls="mobile-menu"
         aria-expanded={open}
         aria-label="Toggle menu"
-        className="md:hidden"
+        className="lg:hidden"
         onClick={() => setOpen(!open)}
         size="icon"
         variant="outline"
@@ -41,29 +39,60 @@ export function MobileNav() {
         </div>
       </Button>
       {open && (
-        <Portal className="top-14 md:hidden">
+        <Portal className="top-12 lg:hidden">
           <PortalBackdrop />
           <div
             className={cn(
-              "size-full overflow-y-auto p-4",
+              "size-full overflow-y-auto p-4 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-md",
               "data-[slot=open]:zoom-in-97 ease-out data-[slot=open]:animate-in",
             )}
             data-slot={open ? "open" : "closed"}
           >
-            <div className="flex w-full flex-col gap-y-2">
+            <div className="flex w-full flex-col gap-y-6">
+              {/* Search */}
               <Suspense fallback={null}>
-                <NavSearch />
+                <div className="w-full lg:w-auto mt-6 lg:mt-0 h-12 grid place-items-center">
+                  <NavSearch />
+                </div>
               </Suspense>
-              <span className="text-sm">Product</span>
-              {productLinks.map((link) => (
-                <LinkItem
-                  className="rounded-lg p-2 active:bg-muted dark:active:bg-muted/50"
-                  key={`product-${link.label}`}
-                  {...link}
-                />
-              ))}
+              <div className="flex flex-col gap-y-5">
+                {/* Product Links */}
+                <div className="space-y-2">
+                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Products
+                  </span>
+                  <div className="grid gap-1">
+                    {productLinks.map((link) => (
+                      <LinkItem
+                        className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
+                        key={`product-${link.label}`}
+                        {...link}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Service Links */}
+                <div className="space-y-2">
+                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Services
+                  </span>
+                  <div className="grid gap-1">
+                    {serviceLinks.map((link) => (
+                      <LinkItem
+                        className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
+                        key={`service-${link.label}`}
+                        {...link}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              {/* Auth Buttons */}
+              <div className="border-t pt-4">
+                <NavButtons />
+              </div>
             </div>
-            <NavButtons />
           </div>
         </Portal>
       )}

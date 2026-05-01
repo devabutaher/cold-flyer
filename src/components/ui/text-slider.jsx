@@ -14,7 +14,7 @@ const announcements = [
 
 export function TextSlider() {
   return (
-    <div className="border-b border-surface-high bg-primary py-2 text-white">
+    <div className="border-b border-surface-high bg-primary py-2 text-white relative z-50">
       <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <InfiniteSlider gap={48} speed={40} speedOnHover={20}>
           {announcements.map((text, index) => (

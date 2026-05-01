@@ -1,4 +1,11 @@
-import { AirVent, Layers, LayoutGrid } from "lucide-react";
+import {
+  AirVent,
+  HelpCircle,
+  Layers,
+  LayoutGrid,
+  Settings,
+  ShieldCheck,
+} from "lucide-react";
 
 export const productLinks = [
   {
@@ -15,5 +22,23 @@ export const productLinks = [
     label: "AC Parts",
     href: "/items/ac_parts",
     icon: <Layers />,
+  },
+];
+
+export const serviceLinks = [
+  {
+    label: "Installation",
+    href: "/services/installation",
+    icon: <Settings />,
+  },
+  {
+    label: "Maintenance",
+    href: "/services/maintenance",
+    icon: <ShieldCheck />,
+  },
+  {
+    label: "Support",
+    href: "/services/support",
+    icon: <HelpCircle />,
   },
 ];

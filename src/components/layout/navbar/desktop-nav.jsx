@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export function DesktopNav() {
   return (
-    <NavigationMenu className="hidden md:flex">
+    <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList>
         <NavigationMenuItem className="bg-transparent">
           <NavigationMenuTrigger className="bg-transparent">
