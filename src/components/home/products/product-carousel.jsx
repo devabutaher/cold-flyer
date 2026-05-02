@@ -14,6 +14,7 @@ export default function ProductCarousel({
   items,
   catalogLabel,
   catalogLink,
+  renderCard,
 }) {
   const { emblaRef, emblaApi } = useEmblaSlider(
     {
@@ -22,6 +23,10 @@ export default function ProductCarousel({
     },
     [Autoplay({ delay: 4000, stopOnInteraction: true })],
   );
+
+  // Default to ProductCard if no custom render function is provided
+  const CardComponent =
+    renderCard || ((item) => <ProductCard product={item} />);
 
   return (
     <div>
@@ -61,9 +66,7 @@ export default function ProductCarousel({
               key={item.id}
               className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3"
             >
-              <div className="h-full">
-                <ProductCard product={item} />
-              </div>
+              <div className="h-full">{CardComponent(item)}</div>
             </div>
           ))}
         </div>

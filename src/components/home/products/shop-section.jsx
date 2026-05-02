@@ -1,11 +1,11 @@
 import { acParts, acUnits } from "@/data/products-data";
-import CarouselSection from "./product-carousel";
+import ProductCarousel from "./product-carousel";
 
 export default function ShopSection() {
   return (
     <section className="container py-10">
       <div className="space-y-10">
-        <CarouselSection
+        <ProductCarousel
           title="Premium AC Units"
           tag="Our Store"
           items={acUnits}
@@ -13,7 +13,7 @@ export default function ShopSection() {
           catalogLink="/items/ac_units"
         />
 
-        <CarouselSection
+        <ProductCarousel
           title="Precision AC Parts"
           tag="Replacements"
           items={acParts}
