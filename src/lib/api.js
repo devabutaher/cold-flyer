@@ -66,6 +66,27 @@ const api = {
     return this.request(endpoint, { ...options, method: "DELETE" });
   },
 
+  async upload(endpoint, file, fieldName = "image") {
+    const token =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("accessToken")
+        : null;
+
+    const formData = new FormData();
+    formData.append(fieldName, file);
+
+    const config = {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    };
+
+    const response = await fetch(`${this.baseUrl}${endpoint}`, config);
+    return handleResponse(response);
+  },
+
   async loginWithFirebase(firebaseToken) {
     try {
       const data = await this.post("/api/auth/firebase/login", {
@@ -74,10 +95,6 @@ const api = {
       if (data.data?.accessToken && typeof window !== "undefined") {
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("user", JSON.stringify(data.data.user));
-        console.log(
-          ">>> stored in localStorage, verify:",
-          localStorage.getItem("accessToken")?.substring(0, 20),
-        );
       }
       return data;
     } catch (error) {
