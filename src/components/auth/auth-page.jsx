@@ -4,10 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
+import api from "@/lib/api";
 import { createAccountSchema, signInSchema } from "@/lib/auth-schemas";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Crown, Eye, EyeOff, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,9 +21,11 @@ export default function AuthPage() {
   const [firebaseError, setFirebaseError] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [showAdminHint, setShowAdminHint] = useState(false);
 
   const router = useRouter();
-  const { signIn, signUp, signInWithGoogle, resetPassword } = useAuth();
+  const { signIn, signUp, signInWithGoogle, resetPassword, backendUser } =
+    useAuth();
 
   const isSignIn = tab === "signin";
 
@@ -50,7 +53,13 @@ export default function AuthPage() {
     try {
       if (isSignIn) {
         await signIn(data.email, data.password);
-        toast.success("Welcome back! Redirecting...");
+
+        const user = api.getUser();
+        if (user?.role === "admin") {
+          toast.success("Welcome back, Admin! Redirecting to dashboard...");
+        } else {
+          toast.success("Welcome back! Redirecting...");
+        }
       } else {
         await signUp(data.name, data.phone ?? "", data.email, data.password);
         toast.success("Account created! Welcome to ColdFlyer 🎉");
@@ -68,7 +77,13 @@ export default function AuthPage() {
     setFirebaseError("");
     try {
       await signInWithGoogle();
-      toast.success("Signed in with Google!");
+
+      const user = api.getUser();
+      if (user?.role === "admin") {
+        toast.success("Welcome back, Admin! Redirecting...");
+      } else {
+        toast.success("Signed in with Google!");
+      }
       router.push("/");
     } catch (err) {
       setFirebaseError(getFirebaseError(err.code));
@@ -147,6 +162,31 @@ export default function AuthPage() {
                 {t.label}
               </button>
             ))}
+          </div>
+
+          {/* Admin hint toggle */}
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={() => setShowAdminHint(!showAdminHint)}
+              className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1"
+            >
+              <Shield size={12} />
+              {showAdminHint ? "Hide admin info" : "Are you an admin?"}
+            </button>
+
+            {showAdminHint && (
+              <div className="mt-2 p-3 rounded-md bg-amber-500/10 border border-amber-500/30 text-sm">
+                <p className="text-amber-600 font-medium flex items-center gap-1">
+                  <Crown size={14} />
+                  Admin Access
+                </p>
+                <p className="text-muted-foreground text-xs mt-1">
+                  To access admin dashboard. Contact administrator to add your
+                  email.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Reset sent confirmation */}
@@ -288,6 +328,16 @@ export default function AuthPage() {
                   ? "Enter Workspace →"
                   : "Create Account →"}
             </Button>
+
+            {/* Role indicator after form */}
+            {backendUser?.role === "admin" && (
+              <div className="mt-4 p-3 rounded-md bg-amber-500/10 border border-amber-500/30 flex items-center gap-2">
+                <Crown size={16} className="text-amber-500" />
+                <span className="text-amber-600 text-sm font-medium">
+                  Admin Account - Full Access Enabled
+                </span>
+              </div>
+            )}
           </form>
 
           {/* Divider */}
@@ -337,6 +387,9 @@ function getFirebaseError(code) {
     "auth/popup-closed-by-user": "Google sign-in was cancelled.",
     "auth/too-many-requests": "Too many attempts. Try again later.",
     "auth/invalid-credential": "Invalid email or password.",
+    "auth/user-disabled": "This account has been disabled.",
+    BAD_REQUEST:
+      "An account with this email already exists. Please sign in instead.",
   };
   return errors[code] ?? "Something went wrong. Please try again.";
 }

@@ -1,6 +1,6 @@
 import AuthPage from "@/components/auth/auth-page";
 
-export default function Login() {
+export default function Auth() {
   return (
     <div>
       <AuthPage />
