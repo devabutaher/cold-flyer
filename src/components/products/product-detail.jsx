@@ -12,8 +12,8 @@ import { useState } from "react";
 import QuantityInput from "../ui/quantity-input";
 import InfoTabs from "./info-tabs";
 
-export default function ProductDetail({ productId }) {
-  const { product, loading, error } = useProduct(productId);
+export default function ProductDetail({ productSlug }) {
+  const { product, loading, error } = useProduct(productSlug);
   const [quantity, setQuantity] = useState(1);
 
   if (loading) {
@@ -36,11 +36,9 @@ export default function ProductDetail({ productId }) {
   const isOutOfStock = product.stock === 0;
   const total = product.price * quantity;
 
-  const images = [
-    { url: product.img, title: product.name },
-    { url: product.img, title: `${product.name} — view 2` },
-    { url: product.img, title: `${product.name} — view 3` },
-  ];
+  const images = product.images?.length > 0
+    ? product.images.map((img, idx) => ({ url: img.url, title: `${product.name} — view ${idx + 1}` }))
+    : [{ url: "", title: product.name }];
 
   return (
     <div className="bg-background min-h-screen pb-10">
@@ -54,12 +52,10 @@ export default function ProductDetail({ productId }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
         {/* Left: Image Carousel */}
         <div className="relative">
-          {product.tag && (
+          {product.onSale && (
             <div className="absolute top-2 left-2 z-20">
-              <Badge
-                variant={product.tag === "Sale" ? "destructive" : "default"}
-              >
-                {product.tag}
+              <Badge variant="destructive">
+                Sale
               </Badge>
             </div>
           )}
@@ -84,15 +80,17 @@ export default function ProductDetail({ productId }) {
             </span>
           </div>
 
-          {/* Name & Sub */}
+          {/* Name & Description */}
           <div className="mb-4">
             <h1 className="font-sans font-bold text-2xl md:text-3xl text-foreground leading-tight tracking-tight mb-2">
               {product.name}
             </h1>
 
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              {product.sub}
-            </p>
+            {product.description && (
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                {product.description}
+              </p>
+            )}
           </div>
 
           {/* Price */}

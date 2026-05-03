@@ -27,6 +27,10 @@ export const productsApi = {
     return api.get(endpoint);
   },
 
+  async getProductBySlug(slug) {
+    return api.get(`/api/products/slug/${slug}`);
+  },
+
   async getProductById(id) {
     return api.get(`/api/products/${id}`);
   },

@@ -27,15 +27,15 @@ export function useProductSearch({
   return { products, loading, error };
 }
 
-export function useProduct(id) {
+export function useProduct(slugOrId) {
   const { data: product, isLoading: loading, error } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["product", slugOrId],
     queryFn: async () => {
-      const response = await productsApi.getProductById(id);
-      const productData = response.data?.data || response.data || response;
+      const response = await productsApi.getProductBySlug(slugOrId);
+      const productData = response.data?.product || response.data || response;
       return productData || null;
     },
-    enabled: !!id,
+    enabled: !!slugOrId,
   });
 
   return { product, loading, error };
