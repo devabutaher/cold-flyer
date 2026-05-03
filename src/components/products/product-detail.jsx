@@ -4,7 +4,7 @@ import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
-import { acParts, acUnits } from "@/data/products-data";
+import { useProduct } from "@/hooks/use-product-search";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ShieldCheck, Tag, Truck } from "lucide-react";
 import Link from "next/link";
@@ -12,12 +12,25 @@ import { useState } from "react";
 import QuantityInput from "../ui/quantity-input";
 import InfoTabs from "./info-tabs";
 
-// ProductDetail
 export default function ProductDetail({ productId }) {
-  const all = [...acUnits, ...acParts];
-  const product = all.find((p) => p.id === productId);
-
+  const { product, loading, error } = useProduct(productId);
   const [quantity, setQuantity] = useState(1);
+
+  if (loading) {
+    return (
+      <div className="bg-background min-h-screen pb-10 flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading product...</div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="bg-background min-h-screen pb-10 flex items-center justify-center">
+        <div className="text-destructive">Failed to load product</div>
+      </div>
+    );
+  }
 
   const isLowStock = product.stock > 0 && product.stock <= 10;
   const isOutOfStock = product.stock === 0;
