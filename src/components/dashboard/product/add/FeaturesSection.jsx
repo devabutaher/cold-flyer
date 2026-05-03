@@ -33,7 +33,7 @@ export function FeaturesSection({ control }) {
 
   return (
     <Card>
-      <CardHeader className="pb-4">
+      <CardHeader>
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <ListChecks className="h-4 w-4 text-primary" />
@@ -75,13 +75,13 @@ export function FeaturesSection({ control }) {
           render={({ field }) => (
             <Field>
               <div className="flex items-center justify-between">
-                <FieldLabel>What's in the Box</FieldLabel>
+                <FieldLabel>What&apos;s in the Box</FieldLabel>
                 <LineCountBadge value={inBox} label="item" />
               </div>
               <Textarea
                 {...field}
                 placeholder={
-                  "1× Indoor unit\n1× Outdoor unit\n1× Remote control\n2× AAA batteries\nInstallation manual"
+                  "1× Indoor unit\n1× Outdoor unit\n1× Remote control\n2× AAA batteries"
                 }
                 rows={5}
                 className="resize-none font-mono text-xs leading-relaxed"

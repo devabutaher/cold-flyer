@@ -26,7 +26,7 @@ function StockBadge({ stock }) {
         "flex items-center gap-1.5 text-xs font-medium",
         isOut && "text-destructive",
         isLow && !isOut && "text-amber-600",
-        !isLow && !isOut && "text-green-600"
+        !isLow && !isOut && "text-green-600",
       )}
     >
       <div
@@ -34,7 +34,7 @@ function StockBadge({ stock }) {
           "h-1.5 w-1.5 rounded-full",
           isOut && "bg-destructive",
           isLow && !isOut && "bg-amber-500",
-          !isLow && !isOut && "bg-green-500"
+          !isLow && !isOut && "bg-green-500",
         )}
       />
       {isOut ? "Out of Stock" : isLow ? "Low Stock" : "In Stock"}
@@ -62,16 +62,22 @@ export function PricingSection({ control }) {
 
   return (
     <Card>
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-            <BadgeDollarSign className="h-4 w-4 text-primary" />
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+              <BadgeDollarSign className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <CardTitle className="text-base">Pricing & Inventory</CardTitle>
+              <CardDescription className="text-xs mt-0.5">
+                Set sale price, original price, and stock levels.
+              </CardDescription>
+            </div>
           </div>
-          <div>
-            <CardTitle className="text-base">Pricing & Inventory</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Set sale price, original price, and stock levels.
-            </CardDescription>
+          <div className="flex flex-col gap-1.5">
+            <StockBadge stock={stock} />
+            <DiscountBadge price={price} originalPrice={originalPrice} />
           </div>
         </div>
       </CardHeader>
@@ -123,11 +129,6 @@ export function PricingSection({ control }) {
               </Field>
             )}
           />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <StockBadge stock={stock} />
-          <DiscountBadge price={price} originalPrice={originalPrice} />
         </div>
       </CardContent>
     </Card>

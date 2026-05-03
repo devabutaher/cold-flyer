@@ -29,7 +29,7 @@ export function FormActions({ onReset, isPending }) {
             type="submit"
             size="sm"
             disabled={isPending}
-            className="gap-1.5 min-w-[110px]"
+            className="gap-1.5 min-w-27.5"
           >
             {isPending ? (
               <>
