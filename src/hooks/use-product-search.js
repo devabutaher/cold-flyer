@@ -12,9 +12,15 @@ export function useProductSearch({
   const { data: products = [], isLoading: loading, error } = useQuery({
     queryKey: ["products", { q, category, brand, sort }],
     queryFn: async () => {
-      const response = await productsApi.getProducts({ q, category, brand, sort });
-      const productsData = response.data?.data || response.data || response;
-      return Array.isArray(productsData) ? productsData : [];
+      try {
+        const response = await productsApi.getProducts({ q, category, brand, sort });
+        console.log("Products API response:", response);
+        const productsData = response.data?.products || response.products || response.data || [];
+        return Array.isArray(productsData) ? productsData : [];
+      } catch (err) {
+        console.error("Products API error:", err);
+        throw err;
+      }
     },
   });
 

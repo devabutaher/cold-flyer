@@ -11,7 +11,7 @@ export default async function ItemsPage({ searchParams }) {
       {q && (
         <div className="mt-4">
           <h1 className="font-sans font-bold text-2xl text-foreground">
-            Results for <span className="text-primary">"{q}"</span>
+            Results for <span className="text-primary">&quot;{q}&quot;</span>
           </h1>
         </div>
       )}

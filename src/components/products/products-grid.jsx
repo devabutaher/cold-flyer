@@ -2,15 +2,22 @@
 
 import ProductCard from "@/components/products/product-card";
 import { useProductSearch } from "@/hooks/use-product-search";
-import { PackageSearch, Loader2 } from "lucide-react";
+import { Loader2, PackageSearch } from "lucide-react";
 
 export default function ProductsGrid({ q, category, brand, sort }) {
-  const { products: results, loading, error } = useProductSearch({ q, category, brand, sort });
+  const {
+    products: results,
+    loading,
+    error,
+  } = useProductSearch({ q, category, brand, sort });
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <Loader2 size={48} className="text-muted-foreground mb-4 animate-spin" />
+        <Loader2
+          size={48}
+          className="text-muted-foreground mb-4 animate-spin"
+        />
         <p className="text-muted-foreground text-sm">Loading products...</p>
       </div>
     );
@@ -23,9 +30,7 @@ export default function ProductsGrid({ q, category, brand, sort }) {
         <h3 className="font-sans font-bold text-lg text-destructive mb-1">
           Failed to load products
         </h3>
-        <p className="text-muted-foreground text-sm">
-          Please try again later.
-        </p>
+        <p className="text-muted-foreground text-sm">Please try again later.</p>
       </div>
     );
   }
@@ -64,9 +69,9 @@ export default function ProductsGrid({ q, category, brand, sort }) {
         {results.length} product{results.length !== 1 ? "s" : ""} found
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {results.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {results.map((product) => {
+          return <ProductCard key={product._id} product={product} />;
+        })}
       </div>
     </div>
   );

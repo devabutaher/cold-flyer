@@ -34,4 +34,5 @@ export const sortOptions = [
   "Price: High to Low",
   "Best Rated",
   "Most Popular",
+  "Newest",
 ];

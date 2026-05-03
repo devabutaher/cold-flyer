@@ -6,12 +6,12 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { DEFAULT_FORM_VALUES } from "@/data/product-form-constants";
 import { BasicInfoSection } from "./BasicInfoSection";
 import { FeaturesSection } from "./FeaturesSection";
 import { FormActions } from "./FormActions";
 import { FormHeader } from "./FormHeader";
 import { PricingSection } from "./PricingSection";
+import { DEFAULT_FORM_VALUES } from "./product-form-constants";
 import { ProductTypeSelector } from "./ProductTypeSelector";
 import { SpecificationsSection } from "./SpecificationsSection";
 

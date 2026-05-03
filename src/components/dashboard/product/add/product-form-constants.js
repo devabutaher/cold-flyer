@@ -27,12 +27,7 @@ export const TAGS = [
   { value: "new", label: "New" },
 ];
 
-export const WARRANTIES = [
-  "1 Year",
-  "2 Years",
-  "3 Years",
-  "5 Years",
-];
+export const WARRANTIES = ["1 Year", "2 Years", "3 Years", "5 Years"];
 
 export const DEFAULT_FORM_VALUES = {
   name: "",

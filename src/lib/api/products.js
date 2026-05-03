@@ -1,16 +1,27 @@
 import api from "../api";
 
+const sortMap = {
+  "Price: Low to High": "price_asc",
+  "Price: High to Low": "price_desc",
+  "Rating": "rating",
+  "Popular": "popular",
+  "Newest": "newest",
+};
+
 export const productsApi = {
   async getProducts(params = {}) {
     const query = new URLSearchParams();
-    if (params.q) query.set("q", params.q);
+    if (params.q) query.set("search", params.q);
     if (params.category && params.category !== "All Categories") {
       query.set("category", params.category);
     }
     if (params.brand && params.brand !== "All Brands") {
       query.set("brand", params.brand);
     }
-    if (params.sort) query.set("sort", params.sort);
+    if (params.sort) {
+      const sortBy = sortMap[params.sort] || "price_asc";
+      query.set("sortBy", sortBy);
+    }
 
     const endpoint = query.toString() ? `/api/products?${query}` : "/api/products";
     return api.get(endpoint);
