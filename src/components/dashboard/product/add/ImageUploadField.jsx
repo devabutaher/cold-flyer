@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -12,21 +12,12 @@ const MAX_IMAGES = 5;
 export function ImageUploadField({ value = [], onChange }) {
   const [previews, setPreviews] = useState([]);
 
-  useEffect(() => {
-    if (Array.isArray(value)) {
-      const externalPreviews = value.filter(
-        (item) => !item.file && item.preview,
-      );
-      setPreviews(value);
-    }
-  }, [value]);
-
   const handleAddImages = useCallback(
     (e) => {
       const files = Array.from(e.target.files || []);
       if (files.length === 0) return;
 
-      const currentCount = previews.filter((p) => p.file).length;
+      const currentCount = previews.length;
       const remainingSlots = MAX_IMAGES - currentCount;
 
       if (remainingSlots <= 0) {
@@ -45,7 +36,7 @@ export function ImageUploadField({ value = [], onChange }) {
       onChange(updatedPreviews);
 
       if (filesToAdd.length < files.length) {
-        toast.warning(`Maximum ${MAX_IMAGES} images can be uploaded`);
+        toast.warning(`Only ${remainingSlots} more image(s) can be added`);
       }
 
       e.target.value = "";
@@ -66,11 +57,13 @@ export function ImageUploadField({ value = [], onChange }) {
     [previews, onChange],
   );
 
+  const displayImages = previews.length > 0 ? previews : value;
+
   return (
     <Field>
       <FieldLabel>Product Images (Max {MAX_IMAGES})</FieldLabel>
       <div className="flex flex-wrap gap-3 mt-2">
-        {previews.map((item, index) => (
+        {displayImages.map((item, index) => (
           <div key={index} className="relative w-24 h-24">
             <img
               src={item.preview || item.url}
@@ -89,7 +82,7 @@ export function ImageUploadField({ value = [], onChange }) {
           </div>
         ))}
 
-        {previews.length < MAX_IMAGES && (
+        {displayImages.length < MAX_IMAGES && (
           <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
             <ImagePlus className="h-6 w-6 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">Add</span>

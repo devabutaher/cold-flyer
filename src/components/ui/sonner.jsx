@@ -11,11 +11,12 @@ import { useTheme } from "next-themes";
 import { Toaster as Sonner } from "sonner";
 
 const Toaster = ({ ...props }) => {
-  const { theme = "system" } = useTheme();
+  const { theme = "light" } = useTheme();
 
   return (
     <Sonner
       theme={theme}
+      richColors
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,
@@ -24,15 +25,13 @@ const Toaster = ({ ...props }) => {
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
-      style={{
-        "--normal-bg": "var(--popover)",
-        "--normal-text": "var(--popover-foreground)",
-        "--normal-border": "var(--border)",
-        "--border-radius": "var(--radius)",
-      }}
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          toast: "group toast has-[>button]:button-root",
+          error: "!bg-destructive !text-destructive-foreground !border-destructive/30",
+          success: "!bg-green-600 !text-white !border-green-700",
+          warning: "!bg-amber-500 !text-white !border-amber-600",
+          info: "!bg-blue-600 !text-white !border-blue-700",
         },
       }}
       position="top-right"

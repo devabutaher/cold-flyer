@@ -33,7 +33,7 @@ export function FeaturesSection({ control }) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={"px-4 md:px-6"}>
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <ListChecks className="h-4 w-4 text-primary" />
@@ -47,7 +47,7 @@ export function FeaturesSection({ control }) {
         </div>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 md:px-6">
         <Controller
           name="features"
           control={control}

@@ -62,7 +62,7 @@ export function PricingSection({ control }) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={"px-4 md:px-6"}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
@@ -82,17 +82,25 @@ export function PricingSection({ control }) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 px-4 md:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Controller
             name="price"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   Sale Price (৳) <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input {...field} type="number" min={0} placeholder="2499" />
+                <Input 
+                  {...field} 
+                  type="number" 
+                  min={0} 
+                  placeholder="2499"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -103,10 +111,18 @@ export function PricingSection({ control }) {
           <Controller
             name="originalPrice"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Original Price (৳)</FieldLabel>
-                <Input {...field} type="number" min={0} placeholder="2999" />
+                <Input 
+                  {...field} 
+                  type="number" 
+                  min={0} 
+                  placeholder="2999"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -117,12 +133,20 @@ export function PricingSection({ control }) {
           <Controller
             name="stock"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   Stock Qty <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input {...field} type="number" min={0} placeholder="50" />
+                <Input 
+                  {...field} 
+                  type="number" 
+                  min={0} 
+                  placeholder="50"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

@@ -6,13 +6,14 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
+import { DEFAULT_FORM_VALUES } from "@/data/product-form-constants";
 import { BasicInfoSection } from "./BasicInfoSection";
 import { FeaturesSection } from "./FeaturesSection";
 import { FormActions } from "./FormActions";
 import { FormHeader } from "./FormHeader";
 import { PricingSection } from "./PricingSection";
 import { ProductTypeSelector } from "./ProductTypeSelector";
-import { DEFAULT_FORM_VALUES } from "./product-form-constants";
+import { SpecificationsSection } from "./SpecificationsSection";
 
 function useCompletedSections(control) {
   const [name, price, stock] = useWatch({
@@ -41,6 +42,7 @@ const initialValues = {
   features: "",
   inBox: "",
   images: [],
+  specs: {},
 };
 
 export default function AddProductForm() {
@@ -61,14 +63,26 @@ export default function AddProductForm() {
 
   async function onSubmit(values) {
     const features = values.features
-      ? values.features.split("\n").map((s) => s.trim()).filter(Boolean)
+      ? values.features
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean)
       : [];
 
     const inBox = values.inBox
-      ? values.inBox.split("\n").map((s) => s.trim()).filter(Boolean)
+      ? values.inBox
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean)
       : [];
 
-    if (!values.name || !values.sku || !values.price || !values.category || !values.brand) {
+    if (
+      !values.name ||
+      !values.sku ||
+      !values.price ||
+      !values.category ||
+      !values.brand
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -81,7 +95,7 @@ export default function AddProductForm() {
 
       if (imageArray.length > 0) {
         const imagesWithFiles = imageArray.filter((img) => img && img.file);
-        
+
         if (imagesWithFiles.length > 0) {
           for (const img of imagesWithFiles) {
             const formData = new FormData();
@@ -92,7 +106,7 @@ export default function AddProductForm() {
               {
                 method: "POST",
                 body: formData,
-              }
+              },
             );
 
             if (!response.ok) {
@@ -107,13 +121,25 @@ export default function AddProductForm() {
         }
       }
 
+      const specs = {};
+      if (values.specs) {
+        Object.entries(values.specs).forEach(([key, val]) => {
+          if (val && val.trim()) {
+            specs[key] = val.trim();
+          }
+        });
+      }
+
       const payload = {
         name: values.name,
         slug: generateSlug(values.name),
         sku: values.sku,
-        description: values.description || `${values.name} - High quality product`,
+        description:
+          values.description || `${values.name} - High quality product`,
         price: Number(values.price),
-        originalPrice: values.originalPrice ? Number(values.originalPrice) : undefined,
+        originalPrice: values.originalPrice
+          ? Number(values.originalPrice)
+          : undefined,
         stock: Number(values.stock) || 0,
         productType: values.productType || productType,
         category: values.category,
@@ -122,11 +148,12 @@ export default function AddProductForm() {
         features: features.length > 0 ? features : undefined,
         inBox: inBox.length > 0 ? inBox : undefined,
         images: uploadedImages.length > 0 ? uploadedImages : undefined,
+        specs: Object.keys(specs).length > 0 ? specs : undefined,
       };
 
       await createProduct.mutateAsync(payload);
       toast.success(`"${values.name}" added successfully!`);
-      
+
       form.reset(initialValues);
     } catch (error) {
       toast.error(error.message || "Failed to add product");
@@ -140,7 +167,7 @@ export default function AddProductForm() {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-6 sm:px-6">
+    <div className="w-full max-w-4xl mx-auto">
       <FormHeader completedSections={completedSections} />
 
       <ProductTypeSelector value={productType} onChange={handleTypeChange} />
@@ -148,6 +175,10 @@ export default function AddProductForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <BasicInfoSection control={form.control} />
         <PricingSection control={form.control} />
+        <SpecificationsSection
+          control={form.control}
+          productType={productType}
+        />
         <FeaturesSection control={form.control} />
         <FormActions
           onReset={handleReset}

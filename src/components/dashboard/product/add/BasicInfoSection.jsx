@@ -17,15 +17,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePlus, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
-import { BRANDS, CATEGORIES, WARRANTIES } from "./product-form-constants";
 import { ImageUploadField } from "./ImageUploadField";
+import { BRANDS, CATEGORIES, WARRANTIES } from "./product-form-constants";
 
 export function BasicInfoSection({ control }) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <Info className="h-4 w-4 text-primary" />
@@ -44,12 +44,18 @@ export function BasicInfoSection({ control }) {
           <Controller
             name="name"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   Product Name <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input {...field} placeholder="e.g. Arctic V2 Condenser" />
+                <Input
+                  {...field}
+                  placeholder="e.g. Arctic V2 Condenser"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -60,12 +66,18 @@ export function BasicInfoSection({ control }) {
           <Controller
             name="sku"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   SKU <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input {...field} placeholder="CF-ARC-V2-2024" />
+                <Input
+                  {...field}
+                  placeholder="CF-ARC-V2-2024"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -76,12 +88,16 @@ export function BasicInfoSection({ control }) {
           <Controller
             name="brand"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   Brand <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select brand" />
                   </SelectTrigger>
@@ -103,12 +119,16 @@ export function BasicInfoSection({ control }) {
           <Controller
             name="category"
             control={control}
+            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
                   Category <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -130,10 +150,14 @@ export function BasicInfoSection({ control }) {
           <Controller
             name="warranty"
             control={control}
+            defaultValue=""
             render={({ field }) => (
               <Field>
                 <FieldLabel>Warranty</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select warranty" />
                   </SelectTrigger>
@@ -153,6 +177,7 @@ export function BasicInfoSection({ control }) {
         <Controller
           name="description"
           control={control}
+          defaultValue=""
           render={({ field }) => (
             <Field>
               <FieldLabel>Description</FieldLabel>
@@ -161,6 +186,8 @@ export function BasicInfoSection({ control }) {
                 placeholder="Describe the product..."
                 rows={3}
                 className="resize-none"
+                value={field.value ?? ""}
+                onChange={(e) => field.onChange(e.target.value)}
               />
             </Field>
           )}
@@ -169,10 +196,11 @@ export function BasicInfoSection({ control }) {
         <Controller
           name="images"
           control={control}
+          defaultValue={[]}
           render={({ field }) => (
             <ImageUploadField
               value={field.value || []}
-              onChange={(newValue) => field.onChange(newValue)}
+              onChange={(newValue) => field.onChange(newValue ?? [])}
             />
           )}
         />
