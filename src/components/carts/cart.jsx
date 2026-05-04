@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, ShoppingCart, X } from "lucide-react";
+import Link from "next/link";
 
 import { QuantityInput } from "./quantity-input";
 
@@ -86,58 +87,69 @@ export function Cart({
         {!isLoading && !errorMessage && !isCartEmpty && (
           <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
             <div className="space-y-3">
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className="flex gap-4 rounded-2xl border border-border bg-card p-4 transition-shadow hover:shadow-sm sm:gap-5 sm:p-5"
-                >
-                  <div className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-
-                  <div className="flex flex-1 flex-col justify-between gap-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h3 className="font-semibold leading-tight text-foreground">
-                          {product.name}
-                        </h3>
-                        {product.sub && (
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            {product.sub}
-                          </p>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => onRemoveProduct(product.id)}
-                        className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                      >
-                        <X size={15} />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <QuantityInput
-                        quantity={product.quantity}
-                        onChange={(q) => onUpdateQuantity(product.id, q)}
+              {products.map((product) => {
+                const slug = product.slug || product.productId;
+                return (
+                  <div
+                    key={product.id}
+                    className="flex gap-4 rounded-2xl border border-border bg-card p-4 transition-shadow hover:shadow-sm sm:gap-5 sm:p-5"
+                  >
+                    <Link
+                      href={`/items/${slug}`}
+                      className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
+                    >
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
                       />
-                      <div className="text-right">
-                        <p className="text-sm font-bold text-foreground">
-                          {currencyPrefix}
-                          {(product.price * product.quantity).toLocaleString()}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {currencyPrefix}
-                          {product.price.toLocaleString()} each
-                        </p>
+                    </Link>
+
+                    <div className="flex flex-1 flex-col justify-between gap-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <Link
+                            href={`/items/${slug}`}
+                            className="font-semibold leading-tight text-foreground hover:text-primary"
+                          >
+                            {product.name}
+                          </Link>
+                          {product.description && (
+                            <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                              {product.description}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => onRemoveProduct(product.id)}
+                          className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          <X size={15} />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <QuantityInput
+                          quantity={product.quantity}
+                          onChange={(q) => onUpdateQuantity(product.id, q)}
+                        />
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-foreground">
+                            {currencyPrefix}
+                            {(
+                              product.price * product.quantity
+                            ).toLocaleString()}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {currencyPrefix}
+                            {product.price.toLocaleString()} each
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               <div className="pt-2">
                 <Button

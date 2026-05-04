@@ -1,11 +1,23 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
+import { useCart } from "@/context/cart-context";
 import { Package, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function ProductCard({ product }) {
+  const { addItem } = useCart();
   const hasImage = product.images?.[0]?.url;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, 1);
+    toast.success(`${product.name} added to cart`);
+  };
 
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
@@ -50,7 +62,7 @@ export default function ProductCard({ product }) {
             classNameSalePrice="text-lg text-primary"
           />
 
-          <Button size="icon" className="shrink-0">
+          <Button size="icon" className="shrink-0" onClick={handleAddToCart}>
             <ShoppingCart size={16} />
           </Button>
         </div>

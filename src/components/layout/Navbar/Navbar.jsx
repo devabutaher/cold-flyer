@@ -3,7 +3,9 @@
 import { DesktopNav } from "@/components/layout/navbar/desktop-nav";
 import { MobileNav } from "@/components/layout/navbar/mobile-nav";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Logo from "@/components/ui/logo";
+import { useCart } from "@/context/cart-context";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
@@ -15,6 +17,7 @@ import { NavButtons } from "./shared";
 
 export default function Navbar() {
   const scrolled = useScroll(10);
+  const { itemCount } = useCart();
 
   return (
     <header
@@ -32,18 +35,34 @@ export default function Navbar() {
           <Suspense fallback={null}>
             <NavSearch />
           </Suspense>
-          <Link href="/cart">
+          <Link href="/cart" className="relative">
             <Button size="icon" variant="outline">
               <ShoppingCart size={20} />
             </Button>
+            {itemCount > 0 && (
+              <Badge
+                variant="default"
+                className="absolute -right-1 -top-1 h-5 w-5 translate-x-1/3 -translate-y-1/3 justify-center p-0 text-xs"
+              >
+                {itemCount > 99 ? "99+" : itemCount}
+              </Badge>
+            )}
           </Link>
           <NavButtons />
         </div>
         <div className="flex items-center gap-2 lg:hidden">
-          <Link href="/cart">
+          <Link href="/cart" className="relative">
             <Button size="icon" variant="outline">
               <ShoppingCart size={20} />
             </Button>
+            {itemCount > 0 && (
+              <Badge
+                variant="default"
+                className="absolute -right-1 -top-1 h-5 w-5 translate-x-1/3 -translate-y-1/3 justify-center p-0 text-xs"
+              >
+                {itemCount > 99 ? "99+" : itemCount}
+              </Badge>
+            )}
           </Link>
           <MobileNav />
         </div>

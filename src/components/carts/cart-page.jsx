@@ -1,51 +1,21 @@
 "use client";
 
-import { useState } from "react";
-
 import { Cart } from "./cart";
-
-const INITIAL_PRODUCTS = [
-  {
-    id: "prod-1",
-    imageUrl:
-      "https://raw.githubusercontent.com/stackzero-labs/ui/refs/heads/main/public/placeholders/headphone-1.jpg",
-    name: "Wireless Headphones",
-    sub: "Noise Cancelling · Black",
-    price: 8500,
-    quantity: 1,
-  },
-  {
-    id: "prod-2",
-    imageUrl:
-      "https://raw.githubusercontent.com/stackzero-labs/ui/refs/heads/main/public/placeholders/smartwatch-01.jpg",
-    name: "Smart Watch",
-    sub: "Series 5 · Silver",
-    price: 12999,
-    quantity: 2,
-  },
-  {
-    id: "prod-3",
-    imageUrl:
-      "https://raw.githubusercontent.com/stackzero-labs/ui/refs/heads/main/public/placeholders/speaker-01.jpg",
-    name: "Bluetooth Speaker",
-    sub: "Portable · White",
-    price: 6500,
-    quantity: 1,
-  },
-];
+import { useCart } from "@/context/cart-context";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
-  const [products, setProducts] = useState(INITIAL_PRODUCTS);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { items, updateQuantity, removeItem, isLoading } = useCart();
+  const router = useRouter();
+  const errorMessage = "";
 
-  const handleUpdateQuantity = (id, qty) =>
-    setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, quantity: qty } : p)),
-    );
+  const handleUpdateQuantity = (id, qty) => {
+    updateQuantity(id, qty);
+  };
 
-  const handleRemoveProduct = (id) =>
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+  const handleRemoveProduct = (id) => {
+    removeItem(id);
+  };
 
   const handleCheckout = (payload) => {
     alert(
@@ -53,9 +23,13 @@ export default function CartPage() {
     );
   };
 
+  const handleContinueShopping = () => {
+    router.push("/items");
+  };
+
   return (
     <Cart
-      products={products}
+      products={items}
       isLoading={isLoading}
       errorMessage={errorMessage}
       currencyPrefix="৳"
@@ -64,7 +38,7 @@ export default function CartPage() {
       onUpdateQuantity={handleUpdateQuantity}
       onRemoveProduct={handleRemoveProduct}
       onCheckout={handleCheckout}
-      onContinueShopping={() => {}}
+      onContinueShopping={handleContinueShopping}
     />
   );
 }

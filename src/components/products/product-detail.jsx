@@ -4,17 +4,35 @@ import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
+import { useCart } from "@/context/cart-context";
 import { useProduct } from "@/hooks/use-product-search";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ShieldCheck, Tag, Truck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import QuantityInput from "../ui/quantity-input";
 import InfoTabs from "./info-tabs";
 
 export default function ProductDetail({ productSlug }) {
   const { product, loading, error } = useProduct(productSlug);
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = () => {
+    if (product && !isOutOfStock) {
+      addItem(product, quantity);
+      toast.success(`${quantity} × ${product.name} added to cart`);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (product && !isOutOfStock) {
+      addItem(product, quantity);
+      toast.success(`${quantity} × ${product.name} added to cart`);
+      window.location.href = "/cart";
+    }
+  };
 
   if (loading) {
     return (
@@ -180,10 +198,16 @@ export default function ProductDetail({ productSlug }) {
               size="lg"
               className="flex-1"
               disabled={isOutOfStock}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </Button>
-            <Button size="lg" className="flex-1" disabled={isOutOfStock}>
+            <Button
+              size="lg"
+              className="flex-1"
+              disabled={isOutOfStock}
+              onClick={handleBuyNow}
+            >
               Buy Now
             </Button>
           </div>
