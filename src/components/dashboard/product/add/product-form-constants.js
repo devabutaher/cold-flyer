@@ -21,10 +21,10 @@ export const BRANDS = [
 ];
 
 export const TAGS = [
-  { value: "none", label: "None" },
-  { value: "sale", label: "Sale" },
-  { value: "bestSeller", label: "Best Seller" },
-  { value: "new", label: "New" },
+  { value: "Sale", label: "Sale" },
+  { value: "New", label: "New" },
+  { value: "Hot", label: "Hot" },
+  { value: "Featured", label: "Featured" },
 ];
 
 export const WARRANTIES = ["1 Year", "2 Years", "3 Years", "5 Years"];
@@ -40,6 +40,7 @@ export const DEFAULT_FORM_VALUES = {
   stock: "",
   productType: "unit",
   warranty: "",
+  tag: "None",
   features: "",
   inBox: "",
   images: [],

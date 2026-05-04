@@ -19,7 +19,9 @@ export default function ProductDetail({ productSlug }) {
   if (loading) {
     return (
       <div className="bg-background min-h-screen pb-10 flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading product...</div>
+        <div className="animate-pulse text-muted-foreground">
+          Loading product...
+        </div>
       </div>
     );
   }
@@ -36,9 +38,13 @@ export default function ProductDetail({ productSlug }) {
   const isOutOfStock = product.stock === 0;
   const total = product.price * quantity;
 
-  const images = product.images?.length > 0
-    ? product.images.map((img, idx) => ({ url: img.url, title: `${product.name} — view ${idx + 1}` }))
-    : [{ url: "", title: product.name }];
+  const images =
+    product.images?.length > 0
+      ? product.images.map((img, idx) => ({
+          url: img.url,
+          title: `${product.name} — view ${idx + 1}`,
+        }))
+      : [{ url: "", title: product.name }];
 
   return (
     <div className="bg-background min-h-screen pb-10">
@@ -52,10 +58,16 @@ export default function ProductDetail({ productSlug }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
         {/* Left: Image Carousel */}
         <div className="relative">
-          {product.onSale && (
+          {(product.tag || product.onSale) && (
             <div className="absolute top-2 left-2 z-20">
-              <Badge variant="destructive">
-                Sale
+              <Badge
+                variant={
+                  product.tag === "Sale" || product.onSale
+                    ? "destructive"
+                    : "default"
+                }
+              >
+                {product.tag || "Sale"}
               </Badge>
             </div>
           )}
@@ -196,17 +208,25 @@ export default function ProductDetail({ productSlug }) {
           </div>
 
           {/* Meta */}
-          <div className="flex gap-4 text-xs text-muted-foreground">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span>
               Brand:{" "}
               <span className="font-bold text-foreground">{product.brand}</span>
             </span>
-            <span>
-              Warranty:{" "}
-              <span className="font-bold text-foreground">
-                {product.warranty}
+            {product.warranty && (
+              <span>
+                Warranty:{" "}
+                <span className="font-bold text-foreground">
+                  {product.warranty}
+                </span>
               </span>
-            </span>
+            )}
+            {product.tag && (
+              <span>
+                Tag:{" "}
+                <span className="font-bold text-foreground">{product.tag}</span>
+              </span>
+            )}
           </div>
 
           {/* Info Tabs */}

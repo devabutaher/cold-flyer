@@ -100,6 +100,7 @@ export function PricingSection({ control }) {
                   placeholder="2499"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                  aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -122,6 +123,7 @@ export function PricingSection({ control }) {
                   placeholder="2999"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                  aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -146,6 +148,7 @@ export function PricingSection({ control }) {
                   placeholder="50"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                  aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

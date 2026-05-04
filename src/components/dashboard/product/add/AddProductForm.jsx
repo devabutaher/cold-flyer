@@ -1,10 +1,13 @@
 "use client";
 
 import { useCreateProduct } from "@/hooks/use-product-mutation";
+import { parseListInput, parseSpecs, uploadImages } from "@/lib/image-upload";
 import { generateSlug } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 import { BasicInfoSection } from "./BasicInfoSection";
 import { FeaturesSection } from "./FeaturesSection";
@@ -14,6 +17,22 @@ import { PricingSection } from "./PricingSection";
 import { DEFAULT_FORM_VALUES } from "./product-form-constants";
 import { ProductTypeSelector } from "./ProductTypeSelector";
 import { SpecificationsSection } from "./SpecificationsSection";
+
+const productFormSchema = z.object({
+  name: z.string().min(1, "Product name is required"),
+  sku: z.string().min(1, "SKU is required"),
+  brand: z.string().min(1, "Brand is required"),
+  category: z.string().min(1, "Category is required"),
+  price: z.coerce.number().min(1, "Price is required"),
+  originalPrice: z.coerce.number().optional(),
+  stock: z.coerce.number().optional(),
+  productType: z.string().optional(),
+  description: z.string().optional(),
+  warranty: z.string().optional(),
+  tag: z.string().optional(),
+  features: z.string().optional(),
+  inBox: z.string().optional(),
+});
 
 function useCompletedSections(control) {
   const [name, price, stock] = useWatch({
@@ -39,10 +58,10 @@ const initialValues = {
   stock: "",
   description: "",
   warranty: "",
+  tag: "None",
   features: "",
   inBox: "",
   images: [],
-  specs: {},
 };
 
 export default function AddProductForm() {
@@ -52,6 +71,8 @@ export default function AddProductForm() {
 
   const form = useForm({
     defaultValues: initialValues,
+    resolver: zodResolver(productFormSchema),
+    mode: "onTouched",
   });
 
   const completedSections = useCompletedSections(form.control);
@@ -62,73 +83,15 @@ export default function AddProductForm() {
   }
 
   async function onSubmit(values) {
-    const features = values.features
-      ? values.features
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : [];
-
-    const inBox = values.inBox
-      ? values.inBox
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : [];
-
-    if (
-      !values.name ||
-      !values.sku ||
-      !values.price ||
-      !values.category ||
-      !values.brand
-    ) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      let uploadedImages = [];
-      const imageArray = values.images || [];
+      const images = form.getValues("images") || [];
+      const uploadedImages = await uploadImages(images);
 
-      if (imageArray.length > 0) {
-        const imagesWithFiles = imageArray.filter((img) => img && img.file);
-
-        if (imagesWithFiles.length > 0) {
-          for (const img of imagesWithFiles) {
-            const formData = new FormData();
-            formData.append("image", img.file);
-
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/upload`,
-              {
-                method: "POST",
-                body: formData,
-              },
-            );
-
-            if (!response.ok) {
-              throw new Error("Failed to upload image");
-            }
-
-            const data = await response.json();
-            if (data.data?.url) {
-              uploadedImages.push({ url: data.data.url });
-            }
-          }
-        }
-      }
-
-      const specs = {};
-      if (values.specs) {
-        Object.entries(values.specs).forEach(([key, val]) => {
-          if (val && val.trim()) {
-            specs[key] = val.trim();
-          }
-        });
-      }
+      const features = parseListInput(values.features);
+      const inBox = parseListInput(values.inBox);
+      const specs = parseSpecs(form.getValues("specs"));
 
       const payload = {
         name: values.name,
@@ -145,6 +108,8 @@ export default function AddProductForm() {
         category: values.category,
         brand: values.brand,
         warranty: values.warranty || undefined,
+        tag: values.tag && values.tag !== "None" ? values.tag : undefined,
+        onSale: values.tag === "Sale",
         features: features.length > 0 ? features : undefined,
         inBox: inBox.length > 0 ? inBox : undefined,
         images: uploadedImages.length > 0 ? uploadedImages : undefined,
@@ -153,7 +118,6 @@ export default function AddProductForm() {
 
       await createProduct.mutateAsync(payload);
       toast.success(`"${values.name}" added successfully!`);
-
       form.reset(initialValues);
     } catch (error) {
       toast.error(error.message || "Failed to add product");
@@ -169,9 +133,7 @@ export default function AddProductForm() {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <FormHeader completedSections={completedSections} />
-
       <ProductTypeSelector value={productType} onChange={handleTypeChange} />
-
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <BasicInfoSection control={form.control} />
         <PricingSection control={form.control} />

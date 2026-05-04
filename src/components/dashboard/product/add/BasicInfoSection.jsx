@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./ImageUploadField";
-import { BRANDS, CATEGORIES, WARRANTIES } from "./product-form-constants";
+import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "./product-form-constants";
 
 export function BasicInfoSection({ control }) {
   return (
@@ -55,6 +55,7 @@ export function BasicInfoSection({ control }) {
                   placeholder="e.g. Arctic V2 Condenser"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                  aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -77,6 +78,7 @@ export function BasicInfoSection({ control }) {
                   placeholder="CF-ARC-V2-2024"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                  aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -98,7 +100,7 @@ export function BasicInfoSection({ control }) {
                   value={field.value ?? ""}
                   onValueChange={field.onChange}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select brand" />
                   </SelectTrigger>
                   <SelectContent>
@@ -129,7 +131,7 @@ export function BasicInfoSection({ control }) {
                   value={field.value ?? ""}
                   onValueChange={field.onChange}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -165,6 +167,33 @@ export function BasicInfoSection({ control }) {
                     {WARRANTIES.map((w) => (
                       <SelectItem key={w} value={w}>
                         {w}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
+          />
+
+          <Controller
+            name="tag"
+            control={control}
+            defaultValue="None"
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Tag</FieldLabel>
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select tag" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="None">None</SelectItem>
+                    {TAGS.map((t) => (
+                      <SelectItem key={t.value} value={t.value}>
+                        {t.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
