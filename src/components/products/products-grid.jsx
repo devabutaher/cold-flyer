@@ -1,24 +1,41 @@
 "use client";
 
 import ProductCard from "@/components/products/product-card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useProductSearch } from "@/hooks/use-product-search";
-import { Loader2, PackageSearch } from "lucide-react";
+import { PackageSearch } from "lucide-react";
 
-export default function ProductsGrid({ q, category, brand, sort }) {
+function ProductCardSkeleton() {
+  return (
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card">
+      <Skeleton className="h-52 w-full" />
+      <div className="flex flex-1 flex-col justify-between gap-2 p-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-3 w-full" />
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-9 w-9 rounded-md" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ProductsGrid({ q, category, brand, sort, productType }) {
   const {
     products: results,
     loading,
     error,
-  } = useProductSearch({ q, category, brand, sort });
+  } = useProductSearch({ q, category, brand, sort, productType });
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <Loader2
-          size={48}
-          className="text-muted-foreground mb-4 animate-spin"
-        />
-        <p className="text-muted-foreground text-sm">Loading products...</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {[...Array(8)].map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
       </div>
     );
   }

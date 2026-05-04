@@ -1,10 +1,11 @@
 import OfferBanner from "@/components/products/offer-banner";
-import ProductCard from "@/components/products/product-card";
 import ProductFilters from "@/components/products/product-filters";
-import { acParts } from "@/data/products-data";
+import ProductsGrid from "@/components/products/products-grid";
 import { Suspense } from "react";
 
-export default function ACParts() {
+export default async function ACPartsPage({ searchParams }) {
+  const { q, brand, sort } = await searchParams;
+
   return (
     <>
       <OfferBanner />
@@ -20,11 +21,12 @@ export default function ACParts() {
             Precision AC Parts
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {acParts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <ProductsGrid
+          q={q ?? ""}
+          productType="part"
+          brand={brand ?? ""}
+          sort={sort ?? ""}
+        />
       </div>
     </>
   );

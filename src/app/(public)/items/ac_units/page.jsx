@@ -1,10 +1,11 @@
 import OfferBanner from "@/components/products/offer-banner";
-import ProductCard from "@/components/products/product-card";
 import ProductFilters from "@/components/products/product-filters";
-import { acUnits } from "@/data/products-data";
+import ProductsGrid from "@/components/products/products-grid";
 import { Suspense } from "react";
 
-export default function ACUnits() {
+export default async function ACUnitsPage({ searchParams }) {
+  const { q, brand, sort } = await searchParams;
+
   return (
     <>
       <OfferBanner />
@@ -21,11 +22,12 @@ export default function ACUnits() {
             Premium AC Units
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {acUnits.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <ProductsGrid
+          q={q ?? ""}
+          productType="unit"
+          brand={brand ?? ""}
+          sort={sort ?? ""}
+        />
       </div>
     </>
   );
