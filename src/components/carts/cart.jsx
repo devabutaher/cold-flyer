@@ -14,6 +14,7 @@ export function Cart({
   products = [],
   shippingCost = 60,
   vatRate = 0.05,
+  loadingSkeleton = null,
   onCheckout = () => {},
   onContinueShopping = () => {},
   onUpdateQuantity = () => {},
@@ -49,14 +50,16 @@ export function Cart({
           </h1>
         </div>
 
-        {isLoading && (
+        {isLoading && loadingSkeleton ? (
+          loadingSkeleton
+        ) : isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
             <p className="mt-4 text-sm text-muted-foreground">
               Loading your cart…
             </p>
           </div>
-        )}
+        ) : null}
 
         {!isLoading && errorMessage && (
           <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
@@ -107,7 +110,7 @@ export function Cart({
 
                     <div className="flex flex-1 flex-col justify-between gap-3">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
+                        <div className="w-full">
                           <Link
                             href={`/items/${slug}`}
                             className="font-semibold leading-tight text-foreground hover:text-primary"
@@ -115,7 +118,7 @@ export function Cart({
                             {product.name}
                           </Link>
                           {product.description && (
-                            <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                            <p className="mt-0.5 line-clamp-1 md:line-clamp-2 text-xs text-muted-foreground md:w-1/2">
                               {product.description}
                             </p>
                           )}
@@ -153,7 +156,7 @@ export function Cart({
 
               <div className="pt-2">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   className="text-muted-foreground"
                   onClick={() => onContinueShopping(checkoutPayload)}
