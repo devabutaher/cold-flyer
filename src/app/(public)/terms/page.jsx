@@ -20,7 +20,7 @@ const sections = [
     id: "orders",
     title: "Orders and Payment",
     content:
-      "Orders placed through our platform are subject to acceptance and confirmation. We accept major credit cards and wire transfers for payment. All prices are displayed in USD unless otherwise specified. Taxes and shipping fees are calculated at checkout.",
+      "Orders placed through our platform are subject to acceptance and confirmation. We accept major credit cards and wire transfers for payment. All prices are displayed in BDT unless otherwise specified. Taxes and shipping fees are calculated at checkout.",
   },
   {
     id: "shipping",

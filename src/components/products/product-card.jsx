@@ -11,10 +11,12 @@ import { toast } from "sonner";
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
   const hasImage = product.images?.[0]?.url;
+  const isOutOfStock = product.stock === 0 || !product.stock;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isOutOfStock) return;
     addItem(product, 1);
     toast.success(`${product.name} added to cart`);
   };
@@ -62,7 +64,12 @@ export default function ProductCard({ product }) {
             classNameSalePrice="text-lg text-primary"
           />
 
-          <Button size="icon" className="shrink-0" onClick={handleAddToCart}>
+          <Button 
+            size="icon" 
+            className="shrink-0" 
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+          >
             <ShoppingCart size={16} />
           </Button>
         </div>

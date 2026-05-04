@@ -8,12 +8,12 @@ const PriceFormat = ({
   classNameSalePercentage,
   classNameSalePrice,
   decimalScale = 2,
-  decimalSeparator = ",",
+  decimalSeparator = ".",
   originalPrice,
-  prefix = "$",
+  prefix = "৳",
   salePrice,
   showSavePercentage = false,
-  thousandSeparator = ".",
+  thousandSeparator = ",",
 }) => {
   const isSale = salePrice !== undefined && salePrice < originalPrice;
   const savePercentage = isSale

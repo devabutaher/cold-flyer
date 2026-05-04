@@ -17,8 +17,12 @@ export const ordersApi = {
     return api.get(`/api/orders/${id}`);
   },
 
-  async createCheckoutSession(orderId) {
+  async getCheckoutSession(orderId) {
     return api.post(`/api/orders/${orderId}/checkout`, {});
+  },
+
+  async verifyPayment(orderId, sessionId) {
+    return api.post(`/api/orders/${orderId}/verify-payment`, { sessionId });
   },
 
   async updateOrderStatus(orderId, status) {
@@ -27,6 +31,10 @@ export const ordersApi = {
 
   async cancelOrder(orderId) {
     return api.delete(`/api/orders/${orderId}`);
+  },
+
+  async createPaymentLink(orderId) {
+    return api.post(`/api/orders/${orderId}/checkout`, {});
   },
 };
 

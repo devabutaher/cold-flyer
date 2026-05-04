@@ -39,16 +39,7 @@ const api = {
     };
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, config);
-    const data = await response.json();
-    console.log("API Response:", response.status, JSON.stringify(data, null, 2));
-    if (!response.ok) {
-      throw new ApiError(
-        data.message || "Something went wrong",
-        response.status,
-        data,
-      );
-    }
-    return data;
+    return handleResponse(response);
   },
 
   async get(endpoint, options = {}) {

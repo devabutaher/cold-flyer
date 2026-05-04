@@ -79,10 +79,7 @@ export function Cart({
             <p className="mb-7 text-sm text-muted-foreground">
               Looks like you haven&apos;t added anything yet.
             </p>
-            <Button
-              variant="primary"
-              onClick={() => onContinueShopping(checkoutPayload)}
-            >
+            <Button onClick={() => onContinueShopping(checkoutPayload)}>
               Start Shopping
             </Button>
           </div>

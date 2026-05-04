@@ -13,35 +13,15 @@ import { useState } from "react";
 import { toast } from "sonner";
 import QuantityInput from "../ui/quantity-input";
 import InfoTabs from "./info-tabs";
+import { ProductDetailSkeleton } from "./product-detail-skeleton";
 
 export default function ProductDetail({ productSlug }) {
   const { product, loading, error } = useProduct(productSlug);
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  const handleAddToCart = () => {
-    if (product && !isOutOfStock) {
-      addItem(product, quantity);
-      toast.success(`${quantity} × ${product.name} added to cart`);
-    }
-  };
-
-  const handleBuyNow = () => {
-    if (product && !isOutOfStock) {
-      addItem(product, quantity);
-      toast.success(`${quantity} × ${product.name} added to cart`);
-      window.location.href = "/cart";
-    }
-  };
-
   if (loading) {
-    return (
-      <div className="bg-background min-h-screen pb-10 flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">
-          Loading product...
-        </div>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (error || !product) {
@@ -55,6 +35,20 @@ export default function ProductDetail({ productSlug }) {
   const isLowStock = product.stock > 0 && product.stock <= 10;
   const isOutOfStock = product.stock === 0;
   const total = product.price * quantity;
+
+  const handleAddToCart = () => {
+    if (product && !isOutOfStock) {
+      addItem(product, quantity);
+      toast.success(`${quantity} × ${product.name} added to cart`);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (product && !isOutOfStock) {
+      addItem(product, quantity);
+      window.location.href = "/cart";
+    }
+  };
 
   const images =
     product.images?.length > 0
