@@ -10,13 +10,23 @@ export function useProductSearch({
   sort = "Price: Low to High",
   productType = "",
 }) {
-  const { data: products = [], isLoading: loading, error } = useQuery({
+  const {
+    data: products = [],
+    isLoading: loading,
+    error,
+  } = useQuery({
     queryKey: ["products", { q, category, brand, sort, productType }],
     queryFn: async () => {
       try {
-        const response = await productsApi.getProducts({ q, category, brand, sort, productType });
-        console.log("Products API response:", response);
-        const productsData = response.data?.products || response.products || response.data || [];
+        const response = await productsApi.getProducts({
+          q,
+          category,
+          brand,
+          sort,
+          productType,
+        });
+        const productsData =
+          response.data?.products || response.products || response.data || [];
         return Array.isArray(productsData) ? productsData : [];
       } catch (err) {
         console.error("Products API error:", err);
@@ -29,7 +39,11 @@ export function useProductSearch({
 }
 
 export function useProduct(slugOrId) {
-  const { data: product, isLoading: loading, error } = useQuery({
+  const {
+    data: product,
+    isLoading: loading,
+    error,
+  } = useQuery({
     queryKey: ["product", slugOrId],
     queryFn: async () => {
       const response = await productsApi.getProductBySlug(slugOrId);

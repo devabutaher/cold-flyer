@@ -19,6 +19,7 @@ export function Cart({
   onContinueShopping = () => {},
   onUpdateQuantity = () => {},
   onRemoveProduct = () => {},
+  isProcessing = false,
 }) {
   const subtotal = products.reduce(
     (total, p) => total + p.price * p.quantity,
@@ -217,8 +218,16 @@ export function Cart({
                   className="w-full"
                   size="lg"
                   onClick={() => onCheckout(checkoutPayload)}
+                  disabled={isProcessing}
                 >
-                  Proceed to Checkout
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    "Proceed to Payment"
+                  )}
                 </Button>
                 <Button
                   variant="outline"

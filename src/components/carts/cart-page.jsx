@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import { Cart } from "./cart";
 import { useCart } from "@/context/cart-context";
-import { Separator } from "@/components/ui/separator";
+import { ordersApi } from "@/lib/api/orders";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function CartSkeleton() {
   return (
@@ -67,6 +71,7 @@ function CartSkeleton() {
 export default function CartPage() {
   const { items, updateQuantity, removeItem, isLoading } = useCart();
   const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
   const errorMessage = "";
 
   const handleUpdateQuantity = (id, qty) => {
@@ -77,10 +82,53 @@ export default function CartPage() {
     removeItem(id);
   };
 
-  const handleCheckout = (payload) => {
-    alert(
-      `Checkout! ${payload.products.reduce((s, p) => s + p.quantity, 0)} items · Total ৳${payload.totalAmount.toFixed(0)}`,
-    );
+  const handleCheckout = async () => {
+    if (items.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const orderData = {
+        items: items.map((item) => ({
+          product: item.productRef || item.productId || item._id,
+          quantity: item.quantity,
+          name: item.name,
+          price: item.price,
+        })),
+        paymentMethod: "card",
+        isPickup: false,
+      };
+
+      console.log('Sending order data:', JSON.stringify(orderData, null, 2));
+      
+      const response = await ordersApi.createOrder(orderData);
+
+      if (response.data?.order?._id) {
+        const orderId = response.data.order._id;
+        const sessionResponse = await ordersApi.createCheckoutSession(orderId);
+
+        if (sessionResponse.data?.checkoutUrl) {
+          window.location.href = sessionResponse.data.checkoutUrl;
+        } else {
+          toast.success("Order created! Redirecting to payment...");
+        }
+      } else {
+        toast.error(response.message || "Failed to create order");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      // Show generic error in toast, full error in console
+      const errorMsg = error.data?.message || error.message || "";
+      if (errorMsg.includes("payment_method_types")) {
+        toast.error("Payment system unavailable. Please try again later.");
+      } else {
+        toast.error("Failed to create checkout. Please try again.");
+      }
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleContinueShopping = () => {
@@ -100,6 +148,7 @@ export default function CartPage() {
       onCheckout={handleCheckout}
       onContinueShopping={handleContinueShopping}
       loadingSkeleton={<CartSkeleton />}
+      isProcessing={isProcessing}
     />
   );
 }

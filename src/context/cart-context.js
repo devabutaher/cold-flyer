@@ -105,6 +105,7 @@ export function CartProvider({ children }) {
     const cartItem = {
       id: `${productId}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
       productId,
+      productRef: product._id || product.id || product.slug,
       slug: product.slug,
       name: product.name,
       price: product.price,
