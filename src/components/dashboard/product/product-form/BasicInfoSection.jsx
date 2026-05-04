@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./ImageUploadField";
-import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "./product-form-constants";
+import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "@/data/product-form-constants";
 
 export function BasicInfoSection({ control }) {
   return (
@@ -212,11 +212,10 @@ export function BasicInfoSection({ control }) {
               <FieldLabel>Description</FieldLabel>
               <Textarea
                 {...field}
-                placeholder="Describe the product..."
-                rows={3}
-                className="resize-none"
                 value={field.value ?? ""}
                 onChange={(e) => field.onChange(e.target.value)}
+                placeholder="Enter product description..."
+                rows={3}
               />
             </Field>
           )}

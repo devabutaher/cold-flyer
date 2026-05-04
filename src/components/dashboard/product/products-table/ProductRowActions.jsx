@@ -25,6 +25,7 @@ import { useState } from "react";
 export function ProductRowActions({ row, onDelete }) {
   const router = useRouter();
   const [showDelete, setShowDelete] = useState(false);
+  const slug = row.original.slug;
   const id = row.original._id ?? row.original.id;
 
   return (
@@ -42,11 +43,11 @@ export function ProductRowActions({ row, onDelete }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-36">
-          <DropdownMenuItem onClick={() => router.push(`/items/${id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/items/${slug || id}`)}>
             <EyeIcon size={13} className="mr-2" />
             View
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/dashboard/items/${id}/edit`)}>
+          <DropdownMenuItem onClick={() => router.push(`/dashboard/items/edit/${slug || id}`)}>
             <PencilIcon size={13} className="mr-2" />
             Edit
           </DropdownMenuItem>

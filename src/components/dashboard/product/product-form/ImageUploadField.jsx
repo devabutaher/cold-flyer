@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -10,14 +10,12 @@ import { toast } from "sonner";
 const MAX_IMAGES = 5;
 
 export function ImageUploadField({ value = [], onChange }) {
-  const [previews, setPreviews] = useState([]);
-
   const handleAddImages = useCallback(
     (e) => {
       const files = Array.from(e.target.files || []);
       if (files.length === 0) return;
 
-      const currentCount = previews.length;
+      const currentCount = value.filter((img) => !img.file).length + value.filter((img) => img.file).length;
       const remainingSlots = MAX_IMAGES - currentCount;
 
       if (remainingSlots <= 0) {
@@ -26,14 +24,14 @@ export function ImageUploadField({ value = [], onChange }) {
       }
 
       const filesToAdd = files.slice(0, remainingSlots);
-      const newPreviews = filesToAdd.map((file) => ({
+      const newImages = filesToAdd.map((file) => ({
         file,
         preview: URL.createObjectURL(file),
+        url: null,
       }));
 
-      const updatedPreviews = [...previews, ...newPreviews];
-      setPreviews(updatedPreviews);
-      onChange(updatedPreviews);
+      const updatedImages = [...value, ...newImages];
+      onChange(updatedImages);
 
       if (filesToAdd.length < files.length) {
         toast.warning(`Only ${remainingSlots} more image(s) can be added`);
@@ -41,29 +39,30 @@ export function ImageUploadField({ value = [], onChange }) {
 
       e.target.value = "";
     },
-    [previews, onChange],
+    [value, onChange],
   );
 
   const handleRemove = useCallback(
     (index) => {
-      const removed = previews[index];
-      if (removed?.preview && removed.file) {
-        URL.revokeObjectURL(removed.preview);
+      const item = value[index];
+      
+      // Revoke object URL for new files to free memory
+      if (item?.preview && item?.file) {
+        URL.revokeObjectURL(item.preview);
       }
-      const newPreviews = previews.filter((_, i) => i !== index);
-      setPreviews(newPreviews);
-      onChange(newPreviews);
-    },
-    [previews, onChange],
-  );
 
-  const displayImages = previews.length > 0 ? previews : value;
+      // Filter out the removed image
+      const newImages = value.filter((_, i) => i !== index);
+      onChange(newImages);
+    },
+    [value, onChange],
+  );
 
   return (
     <Field>
       <FieldLabel>Product Images (Max {MAX_IMAGES})</FieldLabel>
       <div className="flex flex-wrap gap-3 mt-2">
-        {displayImages.map((item, index) => (
+        {value.map((item, index) => (
           <div key={index} className="relative w-24 h-24">
             <img
               src={item.preview || item.url}
@@ -82,7 +81,7 @@ export function ImageUploadField({ value = [], onChange }) {
           </div>
         ))}
 
-        {displayImages.length < MAX_IMAGES && (
+        {value.length < MAX_IMAGES && (
           <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
             <ImagePlus className="h-6 w-6 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">Add</span>

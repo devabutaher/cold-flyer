@@ -40,7 +40,7 @@ export const productsApi = {
   },
 
   async updateProduct(id, productData) {
-    return api.put(`/api/products/${id}`, productData);
+    return api.patch(`/api/products/${id}`, productData);
   },
 
   async deleteProduct(id) {

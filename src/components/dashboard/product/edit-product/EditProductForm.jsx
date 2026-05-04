@@ -1,22 +1,24 @@
 "use client";
 
-import { useCreateProduct } from "@/hooks/use-product-mutation";
+import { useUpdateProduct } from "@/hooks/use-product-mutation";
 import { parseListInput, parseSpecs, uploadImages } from "@/lib/image-upload";
 import { generateSlug } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { BasicInfoSection } from "./BasicInfoSection";
-import { FeaturesSection } from "./FeaturesSection";
-import { FormActions } from "./FormActions";
-import { FormHeader } from "./FormHeader";
-import { PricingSection } from "./PricingSection";
-import { DEFAULT_FORM_VALUES } from "./product-form-constants";
-import { ProductTypeSelector } from "./ProductTypeSelector";
-import { SpecificationsSection } from "./SpecificationsSection";
+import {
+  BasicInfoSection,
+  FeaturesSection,
+  FormActions,
+  FormHeader,
+  PricingSection,
+  ProductTypeSelector,
+  SpecificationsSection,
+} from "../product-form";
 
 const productFormSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -34,48 +36,42 @@ const productFormSchema = z.object({
   inBox: z.string().optional(),
 });
 
-function useCompletedSections(control) {
-  const [name, price, stock] = useWatch({
-    control,
-    name: ["name", "price", "stock"],
-  });
-
-  let count = 0;
-  if (name) count++;
-  if (price) count++;
-  if (stock) count++;
-  return count;
+function getInitialValues(product) {
+  return {
+    name: product.name || "",
+    sku: product.sku || "",
+    brand: product.brand || "",
+    category: product.category || "",
+    description: product.description || "",
+    price: product.price?.toString() || "",
+    originalPrice: product.originalPrice?.toString() || "",
+    stock: product.stock?.toString() || "",
+    productType: product.productType || "unit",
+    warranty: product.warranty || "",
+    tag: product.tag || "None",
+    features: product.features?.join("\n") || "",
+    inBox: product.inBox?.join("\n") || "",
+    images:
+      product.images?.map((img) => ({ url: img.url, preview: img.url })) || [],
+    specs: product.specs || {},
+  };
 }
 
-const initialValues = {
-  ...DEFAULT_FORM_VALUES,
-  name: "",
-  sku: "",
-  brand: "",
-  category: "",
-  price: "",
-  originalPrice: "",
-  stock: "",
-  description: "",
-  warranty: "",
-  tag: "None",
-  features: "",
-  inBox: "",
-  images: [],
-};
-
-export default function AddProductForm() {
-  const [productType, setProductType] = useState("unit");
+export default function EditProductForm({ product }) {
+  const router = useRouter();
+  const [productType, setProductType] = useState(product.productType || "unit");
   const [isUploading, setIsUploading] = useState(false);
-  const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
 
   const form = useForm({
-    defaultValues: initialValues,
+    defaultValues: getInitialValues(product),
     resolver: zodResolver(productFormSchema),
     mode: "onTouched",
   });
 
-  const completedSections = useCompletedSections(form.control);
+  const completedSections = form
+    .watch(["name", "price", "stock"])
+    .filter(Boolean).length;
 
   function handleTypeChange(value) {
     setProductType(value);
@@ -87,7 +83,19 @@ export default function AddProductForm() {
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await uploadImages(images);
+
+      // Separate new files from existing URLs
+      const newFiles = images.filter((img) => img.file);
+      const existingImages = images
+        .filter((img) => img.url && !img.file)
+        .map((img) => ({ url: img.url }));
+
+      let uploadedImages = existingImages;
+
+      if (newFiles.length > 0) {
+        const newUploaded = await uploadImages(newFiles);
+        uploadedImages = [...uploadedImages, ...newUploaded];
+      }
 
       const features = parseListInput(values.features);
       const inBox = parseListInput(values.inBox);
@@ -116,23 +124,24 @@ export default function AddProductForm() {
         specs: Object.keys(specs).length > 0 ? specs : undefined,
       };
 
-      await createProduct.mutateAsync(payload);
-      toast.success(`"${values.name}" added successfully!`);
-      form.reset(initialValues);
+      await updateProduct.mutateAsync({ id: product._id, data: payload });
+      toast.success(`"${values.name}" updated successfully!`);
+      router.push("/dashboard/items");
     } catch (error) {
-      toast.error(error.message || "Failed to add product");
+      console.error("Update product error:", error);
+      toast.error("Failed to update product. Please try again.");
     } finally {
       setIsUploading(false);
     }
   }
 
   function handleReset() {
-    form.reset(initialValues);
+    form.reset(getInitialValues(product));
   }
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <FormHeader completedSections={completedSections} />
+      <FormHeader completedSections={completedSections} title="Edit Product" />
       <ProductTypeSelector value={productType} onChange={handleTypeChange} />
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <BasicInfoSection control={form.control} />
@@ -143,8 +152,9 @@ export default function AddProductForm() {
         />
         <FeaturesSection control={form.control} />
         <FormActions
-          onReset={handleReset}
-          isPending={createProduct.isPending || isUploading}
+          onCancel={() => router.push("/dashboard/items")}
+          isPending={updateProduct.isPending || isUploading}
+          submitLabel="Update Product"
         />
       </form>
     </div>

@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, RotateCcw, Save } from "lucide-react";
+import { Loader2, RotateCcw, Save, ArrowLeft } from "lucide-react";
 
-export function FormActions({ onReset, isPending }) {
+export function FormActions({ onReset, isPending, submitLabel, onCancel, cancelLabel }) {
   return (
     <div>
       <Separator />
@@ -14,6 +14,19 @@ export function FormActions({ onReset, isPending }) {
           are required.
         </p>
         <div className="flex items-center gap-2">
+          {onCancel && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onCancel}
+              disabled={isPending}
+              className="gap-1.5"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              {cancelLabel || "Cancel"}
+            </Button>
+          )}
           <Button
             type="button"
             variant="outline"
@@ -39,7 +52,7 @@ export function FormActions({ onReset, isPending }) {
             ) : (
               <>
                 <Save className="h-3.5 w-3.5" />
-                Save Product
+                {submitLabel || "Save Product"}
               </>
             )}
           </Button>

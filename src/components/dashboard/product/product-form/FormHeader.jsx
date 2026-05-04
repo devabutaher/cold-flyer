@@ -8,15 +8,18 @@ const STEPS = [
   { id: 3, label: "Features" },
 ];
 
-export function FormHeader({ completedSections = 0 }) {
+export function FormHeader({ completedSections = 0, title }) {
+  const isEdit = title === "Edit Product";
   return (
     <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">
-          Add New Product
+          {title || "Add New Product"}
         </h1>
         <p className="text-sm text-muted-foreground mt-0.5">
-          Fill in the details to add a product to your catalog.
+          {isEdit
+            ? "Update the details to modify this product in your catalog."
+            : "Fill in the details to add a product to your catalog."}
         </p>
       </div>
 

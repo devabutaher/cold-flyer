@@ -62,6 +62,14 @@ const api = {
     });
   },
 
+  async patch(endpoint, body, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+  },
+
   async delete(endpoint, options = {}) {
     return this.request(endpoint, { ...options, method: "DELETE" });
   },
