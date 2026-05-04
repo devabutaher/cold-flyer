@@ -1,11 +1,4 @@
-import {
-  pdf,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 const pdfStyles = StyleSheet.create({
   page: { padding: 30, fontFamily: "Helvetica" },
@@ -51,7 +44,7 @@ export function ProductsPDF({ data }) {
             ))}
           </View>
           {data.map((p) => (
-            <View key={p.id} style={pdfStyles.row}>
+            <View key={p.sku} style={pdfStyles.row}>
               <Text style={pdfStyles.cell}>{p.sku}</Text>
               <Text style={pdfStyles.cell}>{p.name}</Text>
               <Text style={pdfStyles.cell}>{p.category}</Text>
