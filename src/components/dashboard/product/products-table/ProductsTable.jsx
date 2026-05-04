@@ -1,6 +1,7 @@
 "use client";
 
 import productsApi from "@/lib/api/products";
+import { toast } from "sonner";
 import { Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { DataTable } from "../../table/DataTable";
@@ -50,8 +51,15 @@ export default function ProductsTable() {
     })();
   }, []);
 
-  const handleDelete = (id) =>
-    setData((prev) => prev.filter((p) => (p._id ?? p.id) !== id));
+  const handleDelete = async (id) => {
+    try {
+      await productsApi.deleteProduct(id);
+      setData((prev) => prev.filter((p) => (p._id ?? p.id) !== id));
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      toast.error(error.message || "Failed to delete product");
+    }
+  };
 
   const columns = useMemo(
     () => buildProductColumns({ onDelete: handleDelete }),
