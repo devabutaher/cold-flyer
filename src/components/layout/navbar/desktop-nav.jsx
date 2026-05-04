@@ -16,7 +16,7 @@ export function DesktopNav() {
       <NavigationMenuList>
         <NavigationMenuItem className="bg-transparent">
           <NavigationMenuTrigger className="bg-transparent">
-            <Link href={"/items"}>Product</Link>
+            <NavigationMenuLink>Product</NavigationMenuLink>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="p-1 pr-1.5">
             <div className="rounded-lg w-xs space-y-2 bg-popover p-2">

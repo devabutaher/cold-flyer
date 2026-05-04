@@ -2,6 +2,7 @@
 
 import { UserDropdown } from "@/components/auth/user-dropdown";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -38,7 +39,15 @@ export function LinkItem({
 export function NavButtons() {
   const { user, loading } = useAuth();
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+        <Skeleton className="h-9 w-18 rounded-md" />
+        <Skeleton className="h-9 w-20 rounded-md" />
+      </div>
+    );
+  }
+
   return (
     <>
       {user ? (

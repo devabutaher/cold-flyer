@@ -1,87 +1,75 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Badge } from "../ui/badge";
 
 export default function OfferBanner() {
   return (
     <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-accent-foreground -mt-8">
-      {/* Background patterns */}
-      <div className="absolute inset-0">
+      {/* Decorative background shapes */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
         <svg
-          className="absolute top-0 left-0 h-full w-full"
+          className="absolute inset-0 h-full w-full"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
+          preserveAspectRatio="none"
         >
-          <circle cx="80%" cy="60%" r="100" fill="white" fillOpacity="0.07" />
-          <circle cx="50%" cy="20%" r="40" fill="white" fillOpacity="0.07" />
-          <path
-            d="M0 20 L40 0 L40 40 Z"
+          <circle cx="92%" cy="50%" r="80" fill="white" fillOpacity="0.06" />
+          <circle cx="80%" cy="-10%" r="55" fill="white" fillOpacity="0.05" />
+          <circle cx="5%" cy="80%" r="45" fill="white" fillOpacity="0.05" />
+          <polygon
+            points="0,0 28,0 0,28"
             fill="white"
             fillOpacity="0.07"
-            transform="translate(20, 40)"
-          />
-          <path
-            d="M0 20 L40 0 L40 40 Z"
-            fill="white"
-            fillOpacity="0.07"
-            transform="translate(460, 140) rotate(180)"
+            transform="translate(16,16)"
           />
         </svg>
       </div>
 
-      <div className="relative z-10 px-6 py-10 md:px-10">
-        <div className="mx-auto max-w-4xl">
-          {/* Badge */}
-          <div className="mb-3 flex items-center justify-center">
-            <Badge className={"uppercase bg-background/20 font-semibold"}>
-              Limited Time Offer
-            </Badge>
-          </div>
+      {/* ── Content ─────────────────────────────────── */}
+      <div className="relative z-10 px-5 py-4 sm:px-7 sm:py-5 md:px-10 md:py-6">
+        <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:justify-between">
+          {/* Left: badge + text */}
+          <div className="flex flex-col items-center gap-1.5 md:flex-row md:items-start md:gap-3 text-center md:text-left">
+            <div>
+              <Badge className="shrink-0 bg-background/20 text-primary-foreground uppercase text-[10px] font-bold tracking-widest px-2.5 py-0.5">
+                Limited Time
+              </Badge>
 
-          {/* Title */}
-          <h2 className="mb-3 text-center text-3xl font-bold tracking-tight text-primary-foreground uppercase md:text-4xl lg:text-5xl">
-            Summer Sale
-          </h2>
-
-          {/* Discount */}
-          <div className="mb-4 flex justify-center">
-            <div className="relative">
-              <div className="text-center text-5xl font-bold text-primary-foreground md:text-6xl">
-                20% OFF
-              </div>
-              <div className="absolute -top-1 -right-8 rotate-12 rounded-md border-2 border-green-400 bg-green-500 px-2 py-1 text-xs font-bold text-white">
-                EXCLUSIVE
+              <div>
+                <div className="flex items-baseline gap-2 justify-center md:justify-start">
+                  <span className="text-xl font-extrabold tracking-tight text-primary-foreground md:text-2xl">
+                    Summer Sale
+                  </span>
+                  <span className="text-lg font-black text-primary-foreground/90 md:text-xl">
+                    — 20% OFF
+                  </span>
+                  {/* EXCLUSIVE chip */}
+                  <span className="hidden md:inline-flex items-center rounded border-2 border-green-400 bg-green-500 px-1.5 py-px text-[9px] font-bold text-white rotate-2 leading-none">
+                    EXCLUSIVE
+                  </span>
+                </div>
+                <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug max-w-md">
+                  All premium AC units & HVAC systems. Valid until Aug 31st.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Description */}
-          <p className="mb-7 text-center text-base text-primary-foreground/80 max-w-xl mx-auto leading-relaxed">
-            Beat the heat with our premium AC units and HVAC systems. All
-            products included in this special seasonal promotion!
-          </p>
-
-          {/* Buttons */}
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          {/* Right: CTAs */}
+          <div className="flex shrink-0 items-center gap-2">
             <Button
-              size="lg"
-              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold"
+              size="md"
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4"
             >
-              Shop Summer Collection
+              Shop Now
             </Button>
             <Button
-              size="lg"
+              size="md"
               variant="outline"
-              className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground font-bold"
+              className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground font-bold text-xs h-8 px-4"
             >
-              View All Deals
+              All Deals
             </Button>
           </div>
-
-          {/* Fine print */}
-          <p className="mt-5 text-center text-xs text-primary-foreground/60">
-            * Offer valid until August 31st. Cannot be combined with other
-            promotions.
-          </p>
         </div>
       </div>
     </div>
