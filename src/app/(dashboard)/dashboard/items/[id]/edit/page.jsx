@@ -29,7 +29,7 @@ export default async function EditProductPage({ params }) {
 
   if (!product) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <p className="text-muted-foreground">Product not found</p>
       </div>
     );

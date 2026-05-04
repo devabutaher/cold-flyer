@@ -18,6 +18,9 @@ export const productsApi = {
     if (params.brand && params.brand !== "All Brands") {
       query.set("brand", params.brand);
     }
+    if (params.productType) {
+      query.set("productType", params.productType);
+    }
     if (params.sort) {
       const sortBy = sortMap[params.sort] || "price_asc";
       query.set("sortBy", sortBy);

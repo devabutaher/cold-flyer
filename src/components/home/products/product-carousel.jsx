@@ -63,7 +63,7 @@ export default function ProductCarousel({
         <div className="embla__container">
           {items.map((item) => (
             <div
-              key={item.id}
+              key={item._id ?? item.id}
               className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3"
             >
               <div className="h-full">{CardComponent(item)}</div>
