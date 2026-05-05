@@ -105,7 +105,7 @@ export function DataTable({
   const table = useReactTable({
     data,
     columns,
-    getRowId,
+    getRowId: getRowId ?? ((row) => row._id ?? row.id ?? Math.random().toString()),
     state: { sorting, columnFilters, rowSelection, pagination, globalFilter },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -119,6 +119,8 @@ export function DataTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     globalFilterFn: "includesString",
+    enableColumnFilters: true,
+    enableGlobalFilter: true,
     enableSortingRemoval: false,
   });
 

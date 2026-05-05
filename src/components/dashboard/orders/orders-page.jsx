@@ -1,8 +1,5 @@
 "use client";
 
-import { DataTable } from "@/components/dashboard/table/data-table";
-import { ExportMenu } from "@/components/dashboard/table/export-menu";
-import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { Button } from "@/components/ui/button";
 import { ordersApi } from "@/lib/api/orders";
 import { ShoppingBag } from "lucide-react";
@@ -10,6 +7,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { DataTable } from "../table/data-table";
+import { ExportMenu } from "../table/export-menu";
+import { TableToolbar } from "../table/table-toolbar";
 import { buildOrderColumns } from "./orders-table/order-columns";
 
 // Fields written to every export format
@@ -29,8 +29,6 @@ export default function OrdersPage() {
   const [payingOrderId, setPayingOrderId] = useState(null);
 
   // ── Data fetching ──────────────────────────────────
-  // Defined outside useEffect so handleCancel can call it on failure,
-  // but NOT wrapped in useCallback to avoid the cascading-setState lint error.
   async function fetchOrders() {
     try {
       setLoading(true);
@@ -89,6 +87,14 @@ export default function OrdersPage() {
     [payingOrderId],
   );
 
+  // Extract unique statuses from data
+  const statusOptions = [
+    ...new Set(orders.map((o) => o.status).filter(Boolean)),
+  ].sort();
+  const paymentStatusOptions = [
+    ...new Set(orders.map((o) => o.paymentStatus).filter(Boolean)),
+  ].sort();
+
   return (
     <>
       <div className="mb-6">
@@ -122,11 +128,13 @@ export default function OrdersPage() {
                 columnId: "status",
                 placeholder: "All Statuses",
                 allLabel: "All Statuses",
+                options: statusOptions,
               },
               {
                 columnId: "paymentStatus",
                 placeholder: "All Payments",
                 allLabel: "All Payments",
+                options: paymentStatusOptions,
               },
             ]}
             actions={

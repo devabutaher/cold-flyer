@@ -11,27 +11,52 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchIcon, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-function FilterSelect({ table, columnId, placeholder, allLabel = "All" }) {
+function FilterSelect({
+  table,
+  columnId,
+  placeholder,
+  allLabel = "All",
+  options = [],
+}) {
   const col = table.getColumn(columnId);
-  const options = col
-    ? Array.from(col.getFacetedUniqueValues().keys()).sort()
-    : [];
-  const value = col?.getFilterValue() ?? "all";
+  const filterValue = col?.getFilterValue();
+
+  // Track selected value locally for display
+  const [selected, setSelected] = useState(filterValue || "all");
+
+  // Update when column filter changes externally
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelected(filterValue || "all");
+  }, [filterValue]);
+
+  // Handle string options - keep original value
+  const displayOptions = options.map((opt) => {
+    const str = String(opt);
+    return {
+      value: str,
+      label: str.charAt(0).toUpperCase() + str.slice(1),
+    };
+  });
 
   return (
     <Select
-      value={value?.toString() ?? "all"}
-      onValueChange={(v) => col?.setFilterValue(v === "all" ? undefined : v)}
+      value={selected}
+      onValueChange={(v) => {
+        setSelected(v);
+        col?.setFilterValue(v === "all" ? undefined : v);
+      }}
     >
       <SelectTrigger className="h-9 w-40 text-sm">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="all">{allLabel}</SelectItem>
-        {options.map((v) => (
-          <SelectItem key={v} value={v}>
-            {v}
+        {displayOptions.map((opt) => (
+          <SelectItem key={opt.value} value={opt.value}>
+            {opt.label}
           </SelectItem>
         ))}
       </SelectContent>
@@ -46,14 +71,45 @@ export function TableToolbar({
   actions,
   selectedLabel = "rows",
 }) {
+  const [searchValue, setSearchValue] = useState(
+    table.getState().globalFilter || "",
+  );
+
+  // Sync search value with table state
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      table.setGlobalFilter(searchValue);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchValue, table]);
+
   const selectedCount = table.getSelectedRowModel().rows.length;
-  const isFiltered =
-    table.getState().globalFilter || table.getState().columnFilters.length > 0;
+  const isFiltered = searchValue || table.getState().columnFilters.length > 0;
 
   const clearAll = () => {
+    setSearchValue("");
     table.setGlobalFilter("");
     table.resetColumnFilters();
   };
+
+  // Build filter options - prefer provided options, fallback to table values
+  const filterOptionsMap = useMemo(() => {
+    const map = {};
+    filters.forEach((f) => {
+      // Use provided options if available
+      if (f.options && f.options.length > 0) {
+        map[f.columnId] = f.options;
+        return;
+      }
+      // Otherwise get from table column
+      const col = table.getColumn(f.columnId);
+      if (col) {
+        const values = Array.from(col.getFacetedUniqueValues().keys()).sort();
+        map[f.columnId] = values;
+      }
+    });
+    return map;
+  }, [table, filters]);
 
   return (
     <>
@@ -67,8 +123,8 @@ export function TableToolbar({
           />
           <Input
             placeholder={searchPlaceholder}
-            value={table.getState().globalFilter ?? ""}
-            onChange={(e) => table.setGlobalFilter(e.target.value)}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             className="pl-8 h-9 w-52 text-sm"
           />
         </div>
@@ -81,6 +137,7 @@ export function TableToolbar({
             columnId={f.columnId}
             placeholder={f.placeholder}
             allLabel={f.allLabel}
+            options={filterOptionsMap[f.columnId] || f.options || []}
           />
         ))}
 

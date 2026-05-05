@@ -66,6 +66,14 @@ export default function ProductsTable() {
     [],
   );
 
+  // Extract unique categories and brands from data
+  const getUnique = (arr, key) => {
+    const values = arr.map((item) => item[key]).filter((v) => v);
+    return [...new Set(values)].sort();
+  };
+  const categoriesOptions = getUnique(data, "category");
+  const brandsOptions = getUnique(data, "brand");
+
   return (
     <DataTable
       columns={columns}
@@ -85,11 +93,13 @@ export default function ProductsTable() {
               columnId: "category",
               placeholder: "All Categories",
               allLabel: "All Categories",
+              options: categoriesOptions,
             },
             {
               columnId: "brand",
               placeholder: "All Brands",
               allLabel: "All Brands",
+              options: brandsOptions,
             },
           ]}
           actions={
