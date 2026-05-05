@@ -32,7 +32,11 @@ export default function Navbar() {
           <DesktopNav />
         </div>
         <div className="hidden items-center gap-2 lg:flex">
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <div className="w-48 h-8 bg-muted animate-pulse rounded" />
+            }
+          >
             <NavSearch />
           </Suspense>
           <Link href="/cart" className="relative">

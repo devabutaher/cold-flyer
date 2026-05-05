@@ -50,7 +50,11 @@ export function MobileNav() {
           >
             <div className="flex w-full flex-col gap-y-6">
               {/* Search */}
-              <Suspense fallback={null}>
+              <Suspense
+                fallback={
+                  <div className="w-48 h-8 bg-muted animate-pulse rounded" />
+                }
+              >
                 <div className="w-full lg:w-auto mt-6 lg:mt-0 h-12 grid place-items-center">
                   <NavSearch />
                 </div>

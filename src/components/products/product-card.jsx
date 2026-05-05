@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/context/cart-context";
@@ -7,6 +8,13 @@ import { Package, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+
+const TAG_STYLES = {
+  Sale: "bg-destructive text-destructive-foreground",
+  New: "bg-blue-500 text-white",
+  "Best Seller": "bg-primary text-primary-foreground",
+  Hot: "bg-orange-500 text-white",
+};
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
@@ -27,6 +35,15 @@ export default function ProductCard({ product }) {
         href={`/items/${product.slug}`}
         className="relative block h-52 overflow-hidden bg-linear-to-br from-muted to-muted/50"
       >
+        {product.tag && product.tag !== "none" && (
+          <Badge
+            className={`absolute left-2 top-2 z-10 ${
+              TAG_STYLES[product.tag] || "bg-primary"
+            }`}
+          >
+            {product.tag}
+          </Badge>
+        )}
         {hasImage ? (
           <Image
             src={product.images[0].url}
