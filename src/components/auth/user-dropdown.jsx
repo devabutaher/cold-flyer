@@ -35,12 +35,7 @@ export function UserDropdown({ user }) {
             />
 
             <AvatarFallback className={"bg-primary text-background"}>
-              {user?.displayName
-                ?.split(" ")
-                .map((name) => name[0])
-                .join("")
-                .slice(0, 2)
-                .toUpperCase() || "U"}
+              {user?.displayName?.[0]?.toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
         </Button>

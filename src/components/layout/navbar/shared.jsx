@@ -13,12 +13,14 @@ export function LinkItem({
   icon,
   className,
   href,
+  onClick,
   ...props
 }) {
   return (
     <a
       className={cn("flex items-center gap-x-2", className)}
       href={href}
+      onClick={onClick}
       {...props}
     >
       <div
@@ -36,7 +38,7 @@ export function LinkItem({
   );
 }
 
-export function NavButtons() {
+export function NavButtons({ onAuthenticated } = {}) {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -55,17 +57,25 @@ export function NavButtons() {
           <Link href={"/dashboard"} className="w-full lg:w-auto">
             <Button className="w-full lg:w-auto">Dashboard</Button>
           </Link>
-          <UserDropdown user={user} />
+          <div className="hidden lg:block">
+            <UserDropdown user={user} />
+          </div>
         </div>
       ) : (
         <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Link href={"/auth"} className="w-full lg:w-auto">
-            <Button variant="destructive" className="w-full lg:w-auto">
+            <Button
+              variant="destructive"
+              className="w-full lg:w-auto"
+              onClick={onAuthenticated}
+            >
               Sign In
             </Button>
           </Link>
           <Link href={"/auth"} className="w-full lg:w-auto">
-            <Button className="w-full lg:w-auto">Register</Button>
+            <Button className="w-full lg:w-auto" onClick={onAuthenticated}>
+              Register
+            </Button>
           </Link>
         </div>
       )}

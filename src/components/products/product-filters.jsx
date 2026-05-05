@@ -45,8 +45,14 @@ export default function ProductFilters() {
   };
 
   return (
-    <div className="py-4 flex flex-col md:flex-row items-start md:items-center gap-3">
-      <div className="w-full md:w-max md:order-2 md:ml-auto shrink-0">
+    <div className="py-3 flex flex-col lg:flex-row items-start lg:items-center gap-3">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <ListFilter size={15} strokeWidth={2.5} />
+        <span className="text-[10px] font-black uppercase tracking-widest">
+          Filters:
+        </span>
+      </div>
+      <div className="w-full lg:w-max lg:order-2 lg:ml-auto shrink-0">
         <Suspense
           fallback={
             <div className="w-full h-8 bg-muted animate-pulse rounded" />
@@ -56,14 +62,7 @@ export default function ProductFilters() {
         </Suspense>
       </div>
 
-      <div className="flex items-center gap-2 flex-nowrap overflow-x-auto scrollbar-none w-full md:order-1">
-        <div className="flex items-center gap-2 text-muted-foreground mr-1 shrink-0">
-          <ListFilter size={15} strokeWidth={2.5} />
-          <span className="text-[10px] font-black uppercase tracking-widest">
-            Filters:
-          </span>
-        </div>
-
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 w-full lg:order-1">
         <FilterDropdown
           value={categoryParam || "All Categories"}
           options={["All Categories", ...categories]}

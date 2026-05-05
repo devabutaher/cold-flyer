@@ -1,10 +1,12 @@
 import {
   AirVent,
+  FileText,
   HelpCircle,
   Layers,
   LayoutGrid,
   Settings,
   ShieldCheck,
+  Users,
 } from "lucide-react";
 
 export const productLinks = [
@@ -40,5 +42,29 @@ export const serviceLinks = [
     label: "Support",
     href: "/services/support",
     icon: <HelpCircle />,
+  },
+];
+
+export const staticLinks = [
+  {
+    label: "About",
+    href: "/about",
+    icon: <Users />,
+  },
+  {
+    label: "Terms",
+    href: "/terms",
+    icon: <FileText />,
+  },
+];
+
+export const mainNavLinks = [
+  {
+    category: "Products",
+    links: productLinks,
+  },
+  {
+    category: "Services",
+    links: serviceLinks,
   },
 ];

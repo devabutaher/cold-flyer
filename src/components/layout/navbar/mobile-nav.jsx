@@ -1,14 +1,17 @@
 import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
+import { UserDropdown } from "@/components/auth/user-dropdown";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
-import { productLinks, serviceLinks } from "@/data/nav-links";
+import { mainNavLinks, staticLinks } from "@/data/nav-links";
 import { cn } from "@/lib/utils";
 import { MenuIcon, XIcon } from "lucide-react";
 import { Suspense, useState } from "react";
 import { NavSearch } from "./nav-search";
+import { useAuth } from "@/context/auth-context";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <div className="lg:hidden">
@@ -49,43 +52,49 @@ export function MobileNav() {
             data-slot={open ? "open" : "closed"}
           >
             <div className="flex w-full flex-col gap-y-6">
-              {/* Search */}
-              <Suspense
-                fallback={
-                  <div className="w-48 h-8 bg-muted animate-pulse rounded" />
-                }
-              >
-                <div className="w-full lg:w-auto mt-6 lg:mt-0 h-12 grid place-items-center">
-                  <NavSearch />
-                </div>
-              </Suspense>
-              <div className="flex flex-col gap-y-5">
-                {/* Product Links */}
-                <div className="space-y-2">
-                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Products
-                  </span>
-                  <div className="grid gap-1">
-                    {productLinks.map((link) => (
-                      <LinkItem
-                        className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
-                        key={`product-${link.label}`}
-                        {...link}
-                      />
-                    ))}
+              {/* Search & User */}
+              <div className="flex items-center gap-2 w-full mt-6 lg:mt-0">
+                <Suspense
+                  fallback={
+                    <div className="w-48 h-8 bg-muted animate-pulse rounded" />
+                  }
+                >
+                  <div className="flex-1 lg:w-auto h-12 grid place-items-center">
+                    <NavSearch />
                   </div>
-                </div>
-
-                {/* Service Links */}
+                </Suspense>
+                {user && (
+                  <div className="shrink-0">
+                    <UserDropdown user={user} />
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-y-5">
+                {mainNavLinks.map((category) => (
+                  <div key={category.category} className="space-y-2">
+                    <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      {category.category}
+                    </span>
+                    <div className="grid gap-1">
+                      {category.links.map((link) => (
+                        <LinkItem
+                          className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
+                          key={`${category.category}-${link.label}`}
+                          {...link}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
                 <div className="space-y-2">
                   <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Services
+                    Pages
                   </span>
                   <div className="grid gap-1">
-                    {serviceLinks.map((link) => (
+                    {staticLinks.map((link) => (
                       <LinkItem
                         className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
-                        key={`service-${link.label}`}
+                        key={link.label}
                         {...link}
                       />
                     ))}

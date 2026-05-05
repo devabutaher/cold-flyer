@@ -7,51 +7,39 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { productLinks } from "@/data/nav-links";
+import { mainNavLinks, staticLinks } from "@/data/nav-links";
 import Link from "next/link";
 
 export function DesktopNav() {
   return (
     <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList>
-        <NavigationMenuItem className="bg-transparent">
-          <NavigationMenuTrigger className="bg-transparent">
-            <NavigationMenuLink>Product</NavigationMenuLink>
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-1 pr-1.5">
-            <div className="rounded-lg w-xs space-y-2 bg-popover p-2">
-              {productLinks.map((item, i) => (
-                <NavigationMenuLink asChild key={`item-${item.label}-${i}`}>
-                  <LinkItem {...item} />
-                </NavigationMenuLink>
-              ))}
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuLink asChild className="px-4">
-          <Link
-            className="rounded-md p-2 hover:bg-accent font-medium"
-            href="/services"
-          >
-            Services
-          </Link>
-        </NavigationMenuLink>
-        <NavigationMenuLink asChild className="px-4">
-          <Link
-            className="rounded-md p-2 hover:bg-accent font-medium"
-            href="/about"
-          >
-            About
-          </Link>
-        </NavigationMenuLink>
-        <NavigationMenuLink asChild className="px-4">
-          <Link
-            className="rounded-md p-2 hover:bg-accent font-medium"
-            href="/terms"
-          >
-            Terms
-          </Link>
-        </NavigationMenuLink>
+        {mainNavLinks.map((category) => (
+          <NavigationMenuItem key={category.category} className="bg-transparent">
+            <NavigationMenuTrigger className="bg-transparent">
+              <NavigationMenuLink>{category.category}</NavigationMenuLink>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="p-1 pr-1.5">
+              <div className="rounded-lg w-xs space-y-2 bg-popover p-2">
+                {category.links.map((item, i) => (
+                  <NavigationMenuLink asChild key={`item-${item.label}-${i}`}>
+                    <LinkItem {...item} />
+                  </NavigationMenuLink>
+                ))}
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        ))}
+        {staticLinks.map((link) => (
+          <NavigationMenuLink key={link.label} asChild className="px-4">
+            <Link
+              className="rounded-md p-2 hover:bg-accent font-medium"
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          </NavigationMenuLink>
+        ))}
       </NavigationMenuList>
     </NavigationMenu>
   );

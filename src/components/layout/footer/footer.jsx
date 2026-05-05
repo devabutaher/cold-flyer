@@ -1,35 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-
-const cols = [
-  {
-    title: "Services",
-    links: [
-      { label: "Residential Cooling", href: "/services" },
-      { label: "Commercial HVAC", href: "/services" },
-      { label: "Duct Cleaning", href: "/services" },
-      { label: "Smart Thermostats", href: "/services" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/about" },
-      { label: "Careers", href: "/about" },
-      { label: "FAQ", href: "/about" },
-    ],
-  },
-];
+import { footerColumns, footerLinks } from "@/data/footer-links";
 
 export default function Footer() {
   return (
     <footer className="bg-foreground/95 text-background">
       <div className="container py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-1">
+          <div className="lg:col-span-1">
             <Link href={"/"} className="flex items-center gap-2 mb-4">
               <div className="bg-primary p-2 rounded-md">
                 <Image
@@ -63,7 +43,7 @@ export default function Footer() {
           </div>
 
           {/* Nav cols */}
-          {cols.map((col) => (
+          {footerColumns.map((col) => (
             <div key={col.title}>
               <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">
                 {col.title}
@@ -84,20 +64,20 @@ export default function Footer() {
           ))}
 
           {/* Newsletter */}
-          <div>
+          <div className="lg:col-span-1">
             <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">
               Newsletter
             </h4>
             <p className="text-muted-foreground text-sm mb-4">
               Stay cool with our latest efficiency tips and product releases.
             </p>
-            <div className="flex rounded-md overflow-hidden">
+            <div className="flex rounded-md overflow-hidden w-full">
               <input
                 type="email"
                 placeholder="Email address"
-                className="flex-1 bg-background/10 border-none outline-none text-sm text-background placeholder:text-muted-foreground px-3 py-2.5"
+                className="flex-1 min-w-0 bg-background/10 border-none outline-none text-sm text-background placeholder:text-muted-foreground px-3 py-2.5"
               />
-              <button className="bg-primary hover:bg-primary/90 px-4 py-2.5 text-primary-foreground transition-colors">
+              <button className="bg-primary hover:bg-primary/90 px-3 py-2.5 text-primary-foreground transition-colors shrink-0">
                 →
               </button>
             </div>
@@ -107,25 +87,16 @@ export default function Footer() {
         <div className="border-t border-background/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs">
           <span>© 2025 ColdFlyer Precision Climate. All rights reserved.</span>
           <div className="flex gap-4">
+            {footerLinks.quickLinks.map((link) => (
               <Link
-                href="/terms"
+                key={link.label}
+                href={link.href}
                 className="hover:text-background transition-colors"
               >
-                Privacy Policy
+                {link.label}
               </Link>
-              <Link
-                href="/terms"
-                className="hover:text-background transition-colors"
-              >
-                Shipping & Returns
-              </Link>
-              <Link
-                href="/terms"
-                className="hover:text-background transition-colors"
-              >
-                Terms & Conditions
-              </Link>
-            </div>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
