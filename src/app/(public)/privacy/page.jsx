@@ -1,0 +1,390 @@
+"use client";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Eye,
+  EyeOff,
+  Globe,
+  Mail,
+  MessageSquare,
+  Phone,
+  Shield,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+
+const principles = [
+  {
+    icon: User,
+    title: "Your Data, Your Control",
+    desc: "You have full authority over your personal information. Access, modify, or delete your data anytime through your account settings or by contacting us directly.",
+    highlight: true,
+  },
+  {
+    icon: Shield,
+    title: "Enterprise-Grade Protection",
+    desc: "We employ bank-level encryption and security protocols to safeguard your information against unauthorized access, ensuring your data remains confidential.",
+  },
+  {
+    icon: Globe,
+    title: "Transparency First",
+    desc: "No hidden clauses or surprise data uses. We believe in complete transparency about what data we collect and exactly how we use it.",
+  },
+  {
+    icon: EyeOff,
+    title: "Minimal Data Principle",
+    desc: "We collect only what's essential. Every piece of data has a clear purpose, and we never gather more than necessary.",
+  },
+];
+
+const dataTypes = [
+  {
+    category: "Personal Information",
+    items: [
+      {
+        name: "Full Name",
+        description: "For identification and communication",
+      },
+      {
+        name: "Email Address",
+        description: "For account access and notifications",
+      },
+      { name: "Phone Number", description: "For order updates and support" },
+      {
+        name: "Company Details",
+        description: "For business account management",
+      },
+    ],
+  },
+  {
+    category: "Technical Data",
+    items: [
+      { name: "IP Address", description: "For security and analytics" },
+      { name: "Browser Type", description: "For website optimization" },
+      { name: "Device Information", description: "For mobile responsiveness" },
+      { name: "Usage Patterns", description: "For improving our services" },
+    ],
+  },
+  {
+    category: "Transaction Data",
+    items: [
+      { name: "Order History", description: "For purchase records" },
+      {
+        name: "Payment Information",
+        description: "For processing transactions",
+      },
+      { name: "Shipping Details", description: "For delivery coordination" },
+      { name: "Communication History", description: "For customer support" },
+    ],
+  },
+];
+
+const timeline = [
+  { year: "2024", event: "Implemented GDPR compliance framework" },
+  { year: "2025", event: "Launched data privacy dashboard" },
+  { year: "2026", event: "Achieved ISO 27001 certification" },
+  { year: "2027", event: "Introduced end-to-end encryption" },
+];
+
+export default function PrivacyPage() {
+  return (
+    <main className="bg-background text-foreground">
+      {/* Hero */}
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+        <img
+          src="https://images.unsplash.com/photo-1584433144697-205892243f4d?q=80&w=1630&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Privacy concept"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
+
+        <div className="relative z-10 container">
+          <div className="max-w-2xl">
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
+              Your Privacy Matters
+            </Badge>
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+              Protecting <br />
+              <span className="text-primary">What Matters</span>
+            </h1>
+            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
+              Your trust is our most valuable asset. We&apos;re committed to
+              safeguarding your personal information with the highest standards
+              of privacy and security.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Principles */}
+      <section className="py-28 bg-background">
+        <div className="container">
+          <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
+            <div>
+              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+                Our Commitment
+              </span>
+              <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+                Privacy Principles
+              </h2>
+            </div>
+
+            <p className="max-w-md font-medium text-muted-foreground">
+              Every decision we make is guided by these core principles that put
+              your privacy first.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {principles.map((principle, i) => {
+              const Icon = principle.icon;
+
+              return (
+                <div
+                  key={i}
+                  className={`
+                    group rounded-xl bg-card p-10 transition-all duration-500
+                    ${
+                      principle.highlight
+                        ? "hover:bg-primary border border-primary/20"
+                        : "hover:shadow-lg"
+                    }
+                  `}
+                >
+                  <Icon
+                    size={44}
+                    className={`
+                      mb-7 transition-colors
+                      ${
+                        principle.highlight
+                          ? "text-primary group-hover:text-primary-foreground"
+                          : "text-primary"
+                      }
+                    `}
+                  />
+
+                  <h3
+                    className={`
+                      mb-3 font-sans text-2xl font-extrabold transition-colors
+                      ${
+                        principle.highlight
+                          ? "text-foreground group-hover:text-primary-foreground"
+                          : "text-foreground"
+                      }
+                    `}
+                  >
+                    {principle.title}
+                  </h3>
+
+                  <p
+                    className={`
+                      text-sm leading-relaxed transition-colors
+                      ${
+                        principle.highlight
+                          ? "text-muted-foreground group-hover:text-primary-foreground/80"
+                          : "text-muted-foreground"
+                      }
+                    `}
+                  >
+                    {principle.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* What We Collect */}
+      <section className="py-28 bg-secondary/40">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
+            <div className="md:col-span-5 space-y-8">
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
+                <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
+                  Understanding Your Data
+                </h2>
+              </div>
+
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                We believe in radical transparency about what information we
+                collect and why. Here&apos;s a complete breakdown of the data we
+                handle.
+              </p>
+
+              <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">
+                  100%
+                </div>
+                <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
+                  You <br />
+                  Control
+                </div>
+              </div>
+
+              <Button size="lg" className="gap-2">
+                Manage Your Data <User size={16} />
+              </Button>
+            </div>
+
+            <div className="md:col-span-7 space-y-8">
+              {dataTypes.map((type) => (
+                <div key={type.category} className="bg-card rounded-xl p-8">
+                  <h3 className="font-sans font-extrabold text-xl mb-6 text-foreground">
+                    {type.category}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {type.items.map((item, i) => (
+                      <div key={i}>
+                        <div className="font-medium text-foreground mb-1">
+                          {item.name}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {item.description}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Timeline */}
+      <section className="py-28 bg-foreground text-background">
+        <div className="container">
+          <div className="text-center mb-20">
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-background mb-5">
+              Our Privacy Journey
+            </h2>
+            <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {timeline.map((item, index) => (
+              <div key={index} className="relative">
+                <div className="font-sans font-extrabold text-6xl text-primary/30 mb-4">
+                  {item.year}
+                </div>
+                <p className="text-lg font-medium leading-relaxed">
+                  {item.event}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Your Rights */}
+      <section className="py-28 bg-background">
+        <div className="container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
+              <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?q=80&w=1630&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Privacy security"
+                  className="w-full h-full object-cover opacity-80"
+                />
+              </div>
+            </div>
+
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+                Your Control
+              </span>
+              <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
+                Exercising Your Rights
+              </h2>
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <Eye size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">
+                      Right to Access
+                    </h4>
+                    <p className="text-muted-foreground">
+                      Request a copy of all personal data we hold about you.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <MessageSquare size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">
+                      Right to Correction
+                    </h4>
+                    <p className="text-muted-foreground">
+                      Have inaccurate personal information corrected.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <ShieldCheck size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">
+                      Right to Deletion
+                    </h4>
+                    <p className="text-muted-foreground">
+                      Request complete removal of your data from our systems.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <Globe size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">
+                      Data Portability
+                    </h4>
+                    <p className="text-muted-foreground">
+                      Transfer your data to another service provider.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="py-20 bg-primary">
+        <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
+              Questions about privacy?
+            </h3>
+            <p className="text-primary-foreground/70 text-sm">
+              Our privacy team is here to help.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+            <Button variant="secondary" size="lg" className="gap-2">
+              <Mail size={16} /> privacy@coldflyer.com
+            </Button>
+            <Button variant="secondary" size="lg" className="gap-2">
+              <Phone size={16} /> Contact Us
+            </Button>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
