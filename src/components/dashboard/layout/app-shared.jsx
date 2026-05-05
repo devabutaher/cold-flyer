@@ -32,7 +32,7 @@ export const navGroups = [
       },
       {
         title: "My Orders",
-        path: "",
+        path: "/dashboard/orders",
         icon: <ShoppingCart />,
       },
     ],

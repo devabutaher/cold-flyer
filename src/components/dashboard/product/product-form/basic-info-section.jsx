@@ -17,10 +17,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  BRANDS,
+  CATEGORIES,
+  TAGS,
+  WARRANTIES,
+} from "@/data/product-form-constants";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
-import { ImageUploadField } from "./ImageUploadField";
-import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "@/data/product-form-constants";
+import { ImageUploadField } from "./image-upload-field";
 
 export function BasicInfoSection({ control }) {
   return (
@@ -182,10 +187,7 @@ export function BasicInfoSection({ control }) {
             render={({ field }) => (
               <Field>
                 <FieldLabel>Tag</FieldLabel>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select tag" />
                   </SelectTrigger>

@@ -20,7 +20,7 @@ import {
 import Papa from "papaparse";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { ReportPDF } from "./ReportPDF";
+import { ReportPDF } from "./report-pdf";
 
 function triggerDownload(blob, filename) {
   const url = URL.createObjectURL(blob);

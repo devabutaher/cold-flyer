@@ -1,4 +1,4 @@
-import EditProductForm from "@/components/dashboard/product/edit-product/EditProductForm";
+import EditProductForm from "@/components/dashboard/product/edit-product/edit-product-form";
 import productsApi from "@/lib/api/products";
 
 export async function generateMetadata({ params }) {

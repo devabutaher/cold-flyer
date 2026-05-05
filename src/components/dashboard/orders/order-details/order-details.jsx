@@ -1,0 +1,349 @@
+"use client";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/context/auth-context";
+import { ordersApi } from "@/lib/api/orders";
+import {
+  ArrowLeft,
+  CalendarDays,
+  CreditCard,
+  Download,
+  Loader2,
+  MapPin,
+  Package,
+  ReceiptText,
+  Truck,
+  X,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { StatusPill } from "./status-pill";
+import { OrderDetailSkeleton } from "./order-detail-skeleton";
+import { OrderItemRow } from "./order-item-row";
+import { PriceRow } from "./price-row";
+
+const ORDER_STATUS = {
+  pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
+  confirmed: { label: "Confirmed", className: "bg-blue-500/10 text-blue-600 border-blue-200" },
+  processing: { label: "Processing", className: "bg-indigo-500/10 text-indigo-600 border-indigo-200" },
+  shipped: { label: "Shipped", className: "bg-primary/10 text-primary border-primary/20" },
+  delivered: { label: "Delivered", className: "bg-green-500/10 text-green-600 border-green-200" },
+  cancelled: { label: "Cancelled", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  refunded: { label: "Refunded", className: "bg-destructive/10 text-destructive border-destructive/20" },
+};
+
+const PAYMENT_STATUS = {
+  paid: { label: "Paid", className: "bg-green-500/10 text-green-600 border-green-200" },
+  pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
+  failed: { label: "Failed", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  refunded: { label: "Refunded", className: "bg-destructive/10 text-destructive border-destructive/20" },
+};
+
+export function OrderDetails({ orderId }) {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
+
+  useEffect(() => {
+    if (!orderId) return;
+    (async () => {
+      try {
+        const res = await ordersApi.getOrderById(orderId);
+        setOrder(res.data?.order ?? null);
+      } catch {
+        toast.error("Failed to load order");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [orderId]);
+
+  const handlePayment = async () => {
+    setPaying(true);
+    try {
+      const res = await ordersApi.createPaymentLink(orderId);
+      if (res.success && res.data?.checkoutUrl) {
+        router.push(res.data.checkoutUrl);
+      } else {
+        toast.success("Payment link created!");
+      }
+    } catch {
+      toast.error("Failed to create payment");
+    } finally {
+      setPaying(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      await ordersApi.cancelOrder(orderId);
+      toast.success("Order cancelled");
+      setOrder((prev) => ({ ...prev, status: "cancelled" }));
+    } catch {
+      toast.error("Failed to cancel order");
+    }
+  };
+
+  const downloadInvoice = async () => {
+    try {
+      const [{ default: InvoiceDoc }, { pdf }] = await Promise.all([
+        import("@/components/dashboard/orders/invoice-pdf"),
+        import("@react-pdf/renderer"),
+      ]);
+      const blob = await pdf(<InvoiceDoc order={order} user={user} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `invoice-${order.orderNumber ?? order._id}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Failed to generate invoice");
+    }
+  };
+
+  if (loading) return <OrderDetailSkeleton />;
+
+  if (!order) {
+    return (
+      <div className="py-16 text-center">
+        <Package size={48} className="mx-auto mb-4 text-muted-foreground/30" />
+        <p className="text-sm text-muted-foreground mb-4">Order not found.</p>
+        <Button asChild size="sm">
+          <Link href="/dashboard/orders">Back to Orders</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
+  const canCancel = canPay;
+  const orderRef = order.orderNumber ?? `#${order._id?.slice(-8).toUpperCase()}`;
+
+  return (
+    <div className="max-w-5xl py-8">
+      <div className="mb-7 flex items-center gap-3">
+        <Button variant="outline" size="icon" className="h-9 w-9 shrink-0 rounded-lg" asChild>
+          <Link href="/dashboard/orders">
+            <ArrowLeft size={16} />
+            <span className="sr-only">Back</span>
+          </Link>
+        </Button>
+        <div className="min-w-0">
+          <h1 className="text-lg font-semibold tracking-tight truncate">
+            Order {orderRef}
+          </h1>
+          <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <CalendarDays size={11} />
+              {new Date(order.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+            <span>·</span>
+            <StatusPill value={order.status} map={ORDER_STATUS} />
+            <StatusPill value={order.paymentStatus} map={PAYMENT_STATUS} />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-3">
+        <div className="space-y-5 lg:col-span-2">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Package size={15} className="text-primary" />
+                Order Items
+                <span className="ml-auto text-xs font-normal text-muted-foreground">
+                  {order.items?.length ?? 0} {order.items?.length === 1 ? "item" : "items"}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="divide-y divide-border">
+                {order.items?.map((item, i) => (
+                  <OrderItemRow key={item._id ?? i} item={item} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {order.shippingAddress && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <MapPin size={15} className="text-primary" />
+                  Delivery Address
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 text-sm text-muted-foreground space-y-0.5">
+                {order.shippingAddress.fullName && (
+                  <p className="font-medium text-foreground">
+                    {order.shippingAddress.fullName}
+                  </p>
+                )}
+                {order.shippingAddress.phone && (
+                  <p>{order.shippingAddress.phone}</p>
+                )}
+                <p>
+                  {[
+                    order.shippingAddress.addressLine1,
+                    order.shippingAddress.addressLine2,
+                    order.shippingAddress.city,
+                    order.shippingAddress.state,
+                    order.shippingAddress.postalCode,
+                  ].filter(Boolean).join(", ")}
+                </p>
+                {order.shippingAddress.instructions && (
+                  <p className="mt-1 text-xs italic">
+                    Note: {order.shippingAddress.instructions}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {order.trackingNumber && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Truck size={15} className="text-primary" />
+                  Tracking
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 text-sm">
+                <p className="font-mono text-muted-foreground">
+                  {order.trackingNumber}
+                </p>
+                {order.trackingUrl && (
+                  <a
+                    href={order.trackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-primary text-xs hover:underline"
+                  >
+                    Track shipment →
+                  </a>
+                )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        <div className="space-y-5">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <ReceiptText size={15} className="text-primary" />
+                Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 space-y-2">
+              <PriceRow
+                label="Subtotal"
+                value={`৳${order.subtotal?.toLocaleString()}`}
+                muted
+              />
+              {order.discount > 0 && (
+                <PriceRow
+                  label="Discount"
+                  value={`−৳${order.discount?.toLocaleString()}`}
+                  className="text-green-600"
+                />
+              )}
+              {order.couponDiscount > 0 && (
+                <PriceRow
+                  label="Coupon"
+                  value={`−৳${order.couponDiscount?.toLocaleString()}`}
+                  className="text-green-600"
+                />
+              )}
+              <PriceRow
+                label="Shipping"
+                value={order.shippingCost > 0 ? `৳${order.shippingCost?.toLocaleString()}` : "Free"}
+                muted
+              />
+              <PriceRow label="Tax" value={`৳${order.tax?.toFixed(2)}`} muted />
+              <Separator className="my-1" />
+              <PriceRow
+                label="Total"
+                value={`৳${order.total?.toLocaleString()}`}
+                highlight
+              />
+            </CardContent>
+          </Card>
+
+          <div className="space-y-2">
+            <Button variant="outline" className="w-full gap-2" onClick={downloadInvoice}>
+              <Download size={14} />
+              Download Invoice
+            </Button>
+
+            {canPay && (
+              <Button className="w-full gap-2" onClick={handlePayment} disabled={paying}>
+                {paying ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  <CreditCard size={14} />
+                )}
+                {paying ? "Processing…" : "Pay Now"}
+              </Button>
+            )}
+
+            {canCancel && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full gap-2 text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/5"
+                  >
+                    <X size={14} />
+                    Cancel Order
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Order <strong>{orderRef}</strong> will be permanently cancelled.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Keep Order</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                      onClick={handleCancel}
+                    >
+                      Cancel Order
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

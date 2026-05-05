@@ -42,7 +42,7 @@ import {
   ChevronUpIcon,
 } from "lucide-react";
 import { useId, useState } from "react";
-import { TableSkeleton } from "./TableSkeleton";
+import { TableSkeleton } from "./table-skeleton";
 
 const NAV_BUTTONS = [
   {
@@ -81,6 +81,7 @@ export function DataTable({
   loading = false,
   emptyMessage = "No results found.",
   emptyIcon,
+  emptyAction,
   toolbar,
   rowCount = "rows",
   pageSizes = [5, 10, 20, 50],
@@ -100,6 +101,7 @@ export function DataTable({
     pageSize: pageSizes[1] ?? 10,
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
@@ -220,11 +222,12 @@ export function DataTable({
                     colSpan={columns.length}
                     className="h-48 text-center"
                   >
-                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <div className="flex flex-col items-center gap-3 text-muted-foreground">
                       {emptyIcon && (
                         <div className="opacity-40">{emptyIcon}</div>
                       )}
                       <p className="text-sm">{emptyMessage}</p>
+                      {emptyAction}
                     </div>
                   </TableCell>
                 </TableRow>

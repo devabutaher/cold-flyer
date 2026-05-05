@@ -1,12 +1,12 @@
 "use client";
 
 import productsApi from "@/lib/api/products";
-import { toast } from "sonner";
 import { Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { DataTable } from "../../table/DataTable";
-import { ExportMenu } from "../../table/ExportMenu";
-import { TableToolbar } from "../../table/TableToolbar";
+import { toast } from "sonner";
+import { DataTable } from "../../table/data-table";
+import { ExportMenu } from "../../table/export-menu";
+import { TableToolbar } from "../../table/table-toolbar";
 import { buildProductColumns } from "./product-columns";
 
 const mapProductRow = (p) => ({

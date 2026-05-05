@@ -105,7 +105,18 @@ const styles = StyleSheet.create({
 });
 
 export default function InvoicePDF({ order, user }) {
+  const CURRENCY = "BDT";
+
+  const formatPrice = (amount) => {
+    if (amount === undefined || amount === null) return "0.00";
+    return Number(amount).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const formatDate = (date) => {
+    if (!date) return "-";
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -170,10 +181,10 @@ export default function InvoicePDF({ order, user }) {
                 {item.quantity}
               </Text>
               <Text style={[styles.tableCell, styles.col3]}>
-                ৳ {item.price?.toLocaleString()}
+                {CURRENCY} {formatPrice(item.price)}
               </Text>
               <Text style={[styles.tableCell, styles.col4]}>
-                ৳ {item.total?.toLocaleString()}
+                {CURRENCY} {formatPrice(item.total)}
               </Text>
             </View>
           ))}
@@ -184,14 +195,14 @@ export default function InvoicePDF({ order, user }) {
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal</Text>
             <Text style={styles.totalValue}>
-              ৳ {order.subtotal?.toLocaleString()}
+              {CURRENCY} {formatPrice(order.subtotal)}
             </Text>
           </View>
           {order.discount > 0 && (
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Discount</Text>
               <Text style={styles.totalValue}>
-                -৳ {order.discount?.toLocaleString()}
+                -{CURRENCY} {formatPrice(order.discount)}
               </Text>
             </View>
           )}
@@ -199,18 +210,20 @@ export default function InvoicePDF({ order, user }) {
             <Text style={styles.totalLabel}>Shipping</Text>
             <Text style={styles.totalValue}>
               {order.shippingCost > 0
-                ? `৳ ${order.shippingCost?.toLocaleString()}`
+                ? `${CURRENCY} ${formatPrice(order.shippingCost)}`
                 : "Free"}
             </Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Tax</Text>
-            <Text style={styles.totalValue}>৳ {order.tax?.toFixed(2)}</Text>
+            <Text style={styles.totalValue}>
+              {CURRENCY} {formatPrice(order.tax)}
+            </Text>
           </View>
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={styles.totalLabel}>Total</Text>
             <Text style={styles.totalValue}>
-              ৳ {order.total?.toLocaleString()}
+              {CURRENCY} {formatPrice(order.total)}
             </Text>
           </View>
         </View>
