@@ -91,6 +91,7 @@ export function CartProvider({ children }) {
   useEffect(() => {
     const items = loadFromStorage();
     dispatch({ type: "LOAD_CART", payload: items });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsHydrated(true);
   }, []);
 

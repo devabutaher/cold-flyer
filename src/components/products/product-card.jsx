@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
@@ -16,7 +17,7 @@ const TAG_STYLES = {
   Hot: "bg-orange-500 text-white",
 };
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, animate = true }) {
   const { addItem } = useCart();
   const hasImage = product.images?.[0]?.url;
   const isOutOfStock = product.stock === 0 || !product.stock;
@@ -29,7 +30,7 @@ export default function ProductCard({ product }) {
     toast.success(`${product.name} added to cart`);
   };
 
-  return (
+  const cardContent = (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
       <Link
         href={`/items/${product.slug}`}
@@ -62,7 +63,7 @@ export default function ProductCard({ product }) {
       <div className="flex flex-1 flex-col justify-between gap-2 p-4">
         <div className="space-y-1">
           <Link href={`/items/${product.slug}`}>
-            <h4 className="truncate font-bold text-foreground hover:text-primary">
+            <h4 className="truncate font-bold text-foreground hover:text-primary transition-colors">
               {product.name}
             </h4>
           </Link>
@@ -92,5 +93,21 @@ export default function ProductCard({ product }) {
         </div>
       </div>
     </div>
+  );
+
+  if (!animate) {
+    return cardContent;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+    >
+      {cardContent}
+    </motion.div>
   );
 }

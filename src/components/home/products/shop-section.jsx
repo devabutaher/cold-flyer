@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import productsApi from "@/lib/api/products";
 import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
+import { AnimatedSection } from "@/components/ui/animated-section";
 
 function ProductCardSkeleton() {
   return (
@@ -71,7 +72,7 @@ export default function ShopSection() {
   }, []);
 
   return (
-    <section className="container py-10">
+    <AnimatedSection className="container py-10">
       <div className="space-y-10">
         {loading ? (
           <CarouselSkeleton title="Premium AC Units" tag="Our Store" />
@@ -97,6 +98,6 @@ export default function ShopSection() {
           />
         ) : null}
       </div>
-    </section>
+    </AnimatedSection>
   );
 }

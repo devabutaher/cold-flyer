@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, ShoppingCart, X } from "lucide-react";
@@ -97,12 +98,13 @@ export function Cart({
                   >
                     <Link
                       href={`/items/${slug}`}
-                      className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
+                      className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
                     >
-                      <img
+                      <Image
                         src={product.imageUrl}
                         alt={product.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     </Link>
 

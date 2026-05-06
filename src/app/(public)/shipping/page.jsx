@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,85 +16,18 @@ import {
   Truck,
   Warehouse,
 } from "lucide-react";
-
-const shippingOptions = [
-  {
-    icon: Truck,
-    title: "Standard Shipping",
-    time: "7-14 Business Days",
-    price: "Free for orders over $500",
-    description: "Reliable ground shipping for non-urgent orders. Perfect for scheduled projects.",
-  },
-  {
-    icon: Ship,
-    title: "Express Shipping",
-    time: "3-5 Business Days",
-    price: "$150",
-    description: "Fast air freight for time-sensitive deliveries. Includes priority handling.",
-  },
-  {
-    icon: Globe,
-    title: "International Shipping",
-    time: "10-21 Business Days",
-    price: "Calculated at Checkout",
-    description: "Global coverage with customs clearance assistance. Duties may apply.",
-  },
-  {
-    icon: Warehouse,
-    title: "Freight Shipping",
-    time: "5-10 Business Days",
-    price: "Quote-Based",
-    description: "For large equipment and bulk orders. Includes loading dock delivery.",
-  },
-];
-
-const process = [
-  { step: "01", title: "Order Processing", desc: "We verify and prepare your items within 24-48 hours." },
-  { step: "02", title: "Packaging", desc: "Industrial-grade packaging ensures safe transport." },
-  { step: "03", title: "Shipment", desc: "Your order is dispatched via your chosen delivery method." },
-  { step: "04", title: "Track & Deliver", desc: "Real-time tracking until final delivery to your location." },
-];
-
-const returns = [
-  {
-    icon: RefreshCw,
-    title: "Easy Returns",
-    desc: "Return any unused item within 30 days of delivery. No questions asked for standard items.",
-  },
-  {
-    icon: Box,
-    title: "Original Packaging",
-    desc: "Items must be returned in original packaging with all accessories and labels intact.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Refund Process",
-    desc: "Refunds are processed within 5-7 business days after inspection. Original shipping costs may apply.",
-  },
-  {
-    icon: Calendar,
-    title: "Exchange Option",
-    desc: "Prefer a different product? We offer hassle-free exchanges for alternative sizes or models.",
-  },
-];
-
-const restrictions = [
-  "Custom or specially ordered items are non-returnable",
-  "Items that have been installed or used are not eligible for return",
-  "Products past 30-day return window",
-  "Items damaged due to improper installation or misuse",
-  "Specialty refrigeration units may have modified return terms",
-];
+import { shippingOptions, process, returns, restrictions } from "@/data/shipping-data";
 
 export default function ShippingPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
       <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1170&auto=format&fit=crop"
           alt="Shipping warehouse"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          fill
+          className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
 
@@ -264,10 +198,11 @@ export default function ShippingPage() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
               <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80"
                   alt="Package return"
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  className="object-cover opacity-80"
                 />
               </div>
             </div>

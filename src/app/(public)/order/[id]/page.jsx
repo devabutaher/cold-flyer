@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CheckCircle, Loader2, ArrowRight, Package } from "lucide-react";
 import Link from "next/link";
@@ -16,13 +16,7 @@ export default function OrderSuccessPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (orderId) {
-      verifyAndFetchOrder();
-    }
-  }, [orderId]);
-
-  const verifyAndFetchOrder = async () => {
+  const verifyAndFetchOrder = useCallback(async () => {
     setLoading(true);
     try {
       if (success === "true") {
@@ -35,7 +29,14 @@ export default function OrderSuccessPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId, success]);
+
+  useEffect(() => {
+    if (orderId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      verifyAndFetchOrder();
+    }
+  }, [orderId, verifyAndFetchOrder]);
 
   if (loading) {
     return (

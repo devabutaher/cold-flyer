@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
 
 const QuantityInput = ({
   className,
@@ -12,14 +11,6 @@ const QuantityInput = ({
   quantity,
   step = 1,
 }) => {
-  // Internal state to handle input field text during editing
-  const [inputValue, setInputValue] = useState(quantity.toString());
-
-  // Update internal input value when external quantity prop changes
-  useEffect(() => {
-    setInputValue(quantity.toString());
-  }, [quantity]);
-
   const handleDecrease = () => {
     if (quantity - step >= min) {
       onChange(quantity - step);
@@ -33,76 +24,53 @@ const QuantityInput = ({
   };
 
   const handleInputChange = (e) => {
-    // Allow any input including empty string during editing
-    setInputValue(e.target.value);
-
-    // If the input is a valid number, update the parent component
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= min && (max === null || value <= max)) {
-      onChange(value);
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      const clampedValue = Math.min(Math.max(value, min), max || Infinity);
+      onChange(clampedValue);
     }
   };
 
-  const handleBlur = () => {
-    // When the field loses focus, ensure we have a valid value
-    const value = parseInt(inputValue);
+  const handleInputBlur = (e) => {
+    const value = parseInt(e.target.value, 10);
     if (isNaN(value) || value < min) {
-      // If invalid or below min, reset to min
-      setInputValue(min.toString());
       onChange(min);
     } else if (max !== null && value > max) {
-      // If above max and max is defined, reset to max
-      setInputValue(max.toString());
       onChange(max);
-    } else {
-      // Ensure the displayed value matches the actual value
-      setInputValue(value.toString());
-      onChange(value);
     }
   };
 
   return (
-    <div
-      className={cn(
-        "inline-flex cursor-pointer rounded-lg shadow-xs shadow-black/5",
-        className,
-      )}
-    >
+    <div className={cn("flex items-center gap-2", className)}>
       <button
-        className={cn(
-          "hover:bg-muted-foreground/10 flex cursor-pointer items-center justify-center rounded-s-lg border px-3 py-1 focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-50",
-          disabled && "pointer-events-none",
-        )}
+        type="button"
         onClick={handleDecrease}
         disabled={disabled || quantity <= min}
-        aria-label="Decrease quantity"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm font-medium hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
       >
-        <Minus size={16} strokeWidth={2} aria-hidden="true" />
+        <Minus size={16} />
       </button>
       <input
-        type="text"
-        value={inputValue}
+        type="number"
+        value={quantity}
         onChange={handleInputChange}
-        onBlur={handleBlur}
-        className="w-12 border-y px-2 py-1 text-center font-mono outline-none"
+        onBlur={handleInputBlur}
         min={min}
-        max={max !== null ? max : undefined}
+        max={max}
         disabled={disabled}
-        aria-label="Quantity"
+        className="flex h-9 w-16 rounded-md border border-input bg-background px-2 py-1 text-center text-sm font-medium [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
       <button
-        className={cn(
-          "hover:bg-muted-foreground/10 flex cursor-pointer items-center justify-center rounded-e-lg border px-3 py-1 focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-50",
-          disabled && "pointer-events-none",
-        )}
+        type="button"
         onClick={handleIncrease}
         disabled={disabled || (max !== null && quantity >= max)}
-        aria-label="Increase quantity"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm font-medium hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
       >
-        <Plus size={16} strokeWidth={2} aria-hidden="true" />
+        <Plus size={16} />
       </button>
     </div>
   );
 };
 
 export default QuantityInput;
+export { QuantityInput };

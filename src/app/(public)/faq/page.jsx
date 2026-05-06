@@ -1,146 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Calculator,
   Clock,
-  CreditCard,
   HelpCircle,
   Home,
   Mail,
   MessageSquare,
-  Package,
   Phone,
   Search,
   Settings,
   Truck,
-  Users,
   Wrench,
 } from "lucide-react";
-
-const categories = [
-  {
-    icon: Wrench,
-    name: "Products & Services",
-    questions: [
-      {
-        q: "What types of HVAC systems do you offer?",
-        a: "We offer a comprehensive range of industrial and commercial HVAC solutions including central air conditioning units, split systems, VRF systems, chillers, heat pumps, and custom refrigeration units. Our catalog includes leading brands and custom solutions for specialized applications.",
-      },
-      {
-        q: "Do you provide installation services?",
-        a: "Yes, we provide professional installation services through our certified network of HVAC technicians. Our team handles projects of all sizes, from small commercial setups to large industrial installations. Request a quote for installation assistance.",
-      },
-      {
-        q: "What brands do you work with?",
-        a: "We partner with industry-leading manufacturers including Carrier, Trane, LG, Samsung, Daikin, and Mitsubishi. Our product selection ensures you find the perfect solution for any requirement and budget.",
-      },
-      {
-        q: "Can I get a custom HVAC solution?",
-        a: "Absolutely. We specialize in custom HVAC solutions for unique industrial requirements. Our engineering team works closely with you to design and specify systems tailored to your specific needs.",
-      },
-    ],
-  },
-  {
-    icon: CreditCard,
-    name: "Orders & Payment",
-    questions: [
-      {
-        q: "What payment methods do you accept?",
-        a: "We accept major credit cards (Visa, MasterCard, American Express), bank wire transfers, and corporate purchase orders for verified businesses. All transactions are secured with industry-standard encryption.",
-      },
-      {
-        q: "Do you offer financing options?",
-        a: "Yes, we offer flexible financing options through our lending partners. Payment plans are available for qualified businesses with competitive rates. Contact our sales team for more information.",
-      },
-      {
-        q: "How do I place a bulk order?",
-        a: "For bulk orders, please contact our B2B sales team directly at b2b@coldflyer.com or call 1-800-COLD-FLYER. We offer volume discounts and dedicated account managers for large orders.",
-      },
-      {
-        q: "Can I get a quote before ordering?",
-        a: "Yes, we provide free quotes for all products and projects. Request a quote through our website or contact our sales team. Most quotes are generated within 24 hours.",
-      },
-    ],
-  },
-  {
-    icon: Truck,
-    name: "Shipping & Delivery",
-    questions: [
-      {
-        q: "How long does shipping take?",
-        a: "Shipping times vary by product and location. Standard shipping takes 7-14 business days, express shipping 3-5 business days. Heavy equipment may require additional time. Track your order for real-time updates.",
-      },
-      {
-        q: "Do you ship internationally?",
-        a: "Yes, we ship globally. International orders may require additional documentation and are subject to customs regulations. Contact us for specific international shipping quotes and requirements.",
-      },
-      {
-        q: "How much is shipping?",
-        a: "Shipping costs are calculated at checkout based on weight, dimensions, and destination. Orders over $500 qualify for free standard shipping. Freight shipping is available for large equipment.",
-      },
-      {
-        q: "Can I track my order?",
-        a: "Yes, all orders include tracking information. You'll receive tracking details via email once your order ships. Track your package through our website or the carrier's portal.",
-      },
-    ],
-  },
-  {
-    icon: Package,
-    name: "Returns & Warranty",
-    questions: [
-      {
-        q: "What is your return policy?",
-        a: "We offer a 30-day return policy for unused items in original packaging. Custom orders and installed items are not returnable. Contact our support team to initiate a return.",
-      },
-      {
-        q: "How do warranties work?",
-        a: "All products include manufacturer warranties typically ranging from 1-10 years depending on the product. Extended warranties are available at checkout. Register your product for warranty coverage.",
-      },
-      {
-        q: "How do I file a warranty claim?",
-        a: "To file a warranty claim, gather your purchase receipt and product serial number, then contact our support team. We'll guide you through the claims process and arrange repairs or replacements.",
-      },
-      {
-        q: "Who handles repairs?",
-        a: "Repairs are handled by our certified service network. Create a support ticket through your account or contact our service department directly for assistance with repairs.",
-      },
-    ],
-  },
-  {
-    icon: Users,
-    name: "Account & Support",
-    questions: [
-      {
-        q: "How do I create an account?",
-        a: "Click 'Sign Up' in the navigation and complete the registration form. Accounts provide order tracking, history, and preferential pricing on many products.",
-      },
-      {
-        q: "How do I reset my password?",
-        a: "Use the 'Forgot Password' link on the login page. You'll receive a password reset email. For security, the link expires after one hour.",
-      },
-      {
-        q: "How can I contact support?",
-        a: "Reach our support team via email at support@coldflyer.com, call 1-800-COLD-FLYER, or use the live chat feature. We're available Monday-Friday, 9AM-6PM.",
-      },
-      {
-        q: "Is there a loyalty program?",
-        a: "Yes, our loyalty program rewards repeat customers with exclusive discounts, early access to new products, and special offers. Enroll through your account dashboard.",
-      },
-    ],
-  },
-];
+import { categories, contactInfo } from "@/data/faq-data";
 
 export default function FAQPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
       <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1665789318391-6057c533005e?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="FAQ support"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          fill
+          className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
 
@@ -177,7 +64,7 @@ export default function FAQPage() {
               />
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Can't find what you're looking for?{" "}
+              Can&#8217;t find what you&#8217;re looking for?{" "}
               <a href="#contact" className="text-primary hover:underline">
                 Contact our team
               </a>
@@ -313,11 +200,11 @@ export default function FAQPage() {
                 Still Need Help?
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                We're Here to <br /> Help
+                We&#8217;re Here to <br /> Help
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8">
-                Can't find the answer you're looking for? Our dedicated support
+                Can&#8217;t find the answer you&#8217;re looking for? Our dedicated support
                 team is ready to assist you with any questions.
               </p>
 
@@ -361,10 +248,11 @@ export default function FAQPage() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
               <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80"
                   alt="Customer support"
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  className="object-cover opacity-80"
                 />
               </div>
             </div>

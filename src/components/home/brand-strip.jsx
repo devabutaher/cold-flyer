@@ -1,6 +1,7 @@
 "use client";
 
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { AnimatedSection } from "@/components/ui/animated-section";
 
 const brands = [
   "HYUNDAI",
@@ -17,7 +18,7 @@ export default function BrandsStrip() {
   const repeated = [...brands, ...brands, ...brands];
 
   return (
-    <section className="py-10 bg-background border-y border-border">
+    <AnimatedSection className="py-10 bg-background border-y border-border">
       <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-6">
         Trusted by Industry Leaders
       </p>
@@ -33,6 +34,6 @@ export default function BrandsStrip() {
           ))}
         </InfiniteSlider>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }

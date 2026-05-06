@@ -126,7 +126,7 @@ export function OrderDetails({ orderId }) {
       <div className="py-16 text-center">
         <Package size={48} className="mx-auto mb-4 text-muted-foreground/30" />
         <p className="text-sm text-muted-foreground mb-4">Order not found.</p>
-        <Button asChild size="sm">
+        <Button asChild size="sm" animate={false}>
           <Link href="/dashboard/orders">Back to Orders</Link>
         </Button>
       </div>

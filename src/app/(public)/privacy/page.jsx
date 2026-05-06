@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,94 +9,24 @@ import {
   Globe,
   Mail,
   MessageSquare,
+  Package,
   Phone,
   Shield,
   ShieldCheck,
   User,
 } from "lucide-react";
-
-const principles = [
-  {
-    icon: User,
-    title: "Your Data, Your Control",
-    desc: "You have full authority over your personal information. Access, modify, or delete your data anytime through your account settings or by contacting us directly.",
-    highlight: true,
-  },
-  {
-    icon: Shield,
-    title: "Enterprise-Grade Protection",
-    desc: "We employ bank-level encryption and security protocols to safeguard your information against unauthorized access, ensuring your data remains confidential.",
-  },
-  {
-    icon: Globe,
-    title: "Transparency First",
-    desc: "No hidden clauses or surprise data uses. We believe in complete transparency about what data we collect and exactly how we use it.",
-  },
-  {
-    icon: EyeOff,
-    title: "Minimal Data Principle",
-    desc: "We collect only what's essential. Every piece of data has a clear purpose, and we never gather more than necessary.",
-  },
-];
-
-const dataTypes = [
-  {
-    category: "Personal Information",
-    items: [
-      {
-        name: "Full Name",
-        description: "For identification and communication",
-      },
-      {
-        name: "Email Address",
-        description: "For account access and notifications",
-      },
-      { name: "Phone Number", description: "For order updates and support" },
-      {
-        name: "Company Details",
-        description: "For business account management",
-      },
-    ],
-  },
-  {
-    category: "Technical Data",
-    items: [
-      { name: "IP Address", description: "For security and analytics" },
-      { name: "Browser Type", description: "For website optimization" },
-      { name: "Device Information", description: "For mobile responsiveness" },
-      { name: "Usage Patterns", description: "For improving our services" },
-    ],
-  },
-  {
-    category: "Transaction Data",
-    items: [
-      { name: "Order History", description: "For purchase records" },
-      {
-        name: "Payment Information",
-        description: "For processing transactions",
-      },
-      { name: "Shipping Details", description: "For delivery coordination" },
-      { name: "Communication History", description: "For customer support" },
-    ],
-  },
-];
-
-const timeline = [
-  { year: "2024", event: "Implemented GDPR compliance framework" },
-  { year: "2025", event: "Launched data privacy dashboard" },
-  { year: "2026", event: "Achieved ISO 27001 certification" },
-  { year: "2027", event: "Introduced end-to-end encryption" },
-];
+import { principles, dataTypes, timeline } from "@/data/privacy-data";
 
 export default function PrivacyPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
       <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1584433144697-205892243f4d?q=80&w=1630&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Privacy concept"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          fill
+          className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
 
@@ -286,10 +217,11 @@ export default function PrivacyPage() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
               <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?q=80&w=1630&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Privacy security"
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  className="object-cover opacity-80"
                 />
               </div>
             </div>

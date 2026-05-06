@@ -1,113 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Award,
   Briefcase,
   Building,
-  Calendar,
   Clock,
-  DollarSign,
-  Globe,
   GraduationCap,
-  Heart,
-  Home,
   Mail,
   MapPin,
   Phone,
-  Rocket,
   Users,
   Video,
 } from "lucide-react";
-
-const benefits = [
-  {
-    icon: DollarSign,
-    title: "Competitive Compensation",
-    desc: "Industry-leading salaries with annual performance reviews and bonuses.",
-    highlight: true,
-  },
-  {
-    icon: Heart,
-    title: "Health & Wellness",
-    desc: "Comprehensive health, dental, and vision insurance plus wellness programs.",
-  },
-  {
-    icon: Calendar,
-    title: "Flexible Time Off",
-    desc: "Unlimited PTO policy with minimum required rest days.",
-  },
-  {
-    icon: Rocket,
-    title: "Growth Opportunities",
-    desc: "Clear career paths with training budget and mentorship programs.",
-  },
-  {
-    icon: Home,
-    title: "Remote-First Culture",
-    desc: "Work from anywhere with home office stipend provided.",
-  },
-  {
-    icon: Globe,
-    title: "Global Exposure",
-    desc: "Work on international projects with teams across 32 countries.",
-  },
-];
-
-const departments = [
-  {
-    name: "Engineering",
-    positions: [
-      { title: "Senior HVAC Engineer", location: "Remote", type: "Full-time" },
-      { title: "Systems Integration Specialist", location: "New York, NY", type: "Full-time" },
-      { title: "IoT Development Lead", location: "Remote", type: "Full-time" },
-    ],
-  },
-  {
-    name: "Sales & Business",
-    positions: [
-      { title: "Regional Sales Manager", location: "Multiple Locations", type: "Full-time" },
-      { title: "Enterprise Account Executive", location: "Chicago, IL", type: "Full-time" },
-      { title: "B2B Solutions Architect", location: "Remote", type: "Full-time" },
-    ],
-  },
-  {
-    name: "Operations",
-    positions: [
-      { title: "Project Manager", location: "Miami, FL", type: "Full-time" },
-      { title: "Supply Chain Coordinator", location: "Atlanta, GA", type: "Full-time" },
-      { title: "Quality Assurance Lead", location: "Remote", type: "Full-time" },
-    ],
-  },
-  {
-    name: "Customer Success",
-    positions: [
-      { title: "Technical Support Manager", location: "Remote", type: "Full-time" },
-      { title: "Customer Success Specialist", location: "Dallas, TX", type: "Full-time" },
-      { title: "Field Service Technician", location: "Los Angeles, CA", type: "Full-time" },
-    ],
-  },
-];
-
-const culture = [
-  {
-    value: "800+",
-    label: "Team Members",
-  },
-  {
-    value: "32",
-    label: "Countries",
-  },
-  {
-    value: "94%",
-    label: "Retention Rate",
-  },
-  {
-    value: "4.8",
-    label: "Glassdoor Rating",
-  },
-];
+import { benefits, departments, culture } from "@/data/careers-data";
 
 const process = [
   { step: "01", title: "Apply Online", desc: "Submit your resume and application through our careers portal." },
@@ -121,10 +29,13 @@ export default function CareersPage() {
     <main className="bg-background text-foreground">
       {/* Hero */}
       <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1170&auto=format&fit=crop"
           alt="Team collaboration"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
 
@@ -158,9 +69,9 @@ export default function CareersPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We're more than an HVAC company—we're a movement toward
+                We&#8217;re more than an HVAC company&#8212;we&#8217;re a movement toward
                 sustainable living. Our team combines passion with purpose
-                to solve the world's most pressing climate challenges.
+                to solve the world&#8217;s most pressing climate challenges.
               </p>
 
               <div className="grid grid-cols-2 gap-6">
@@ -181,10 +92,11 @@ export default function CareersPage() {
               <div className="relative group">
                 <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
                 <div className="relative overflow-hidden rounded-2xl aspect-video shadow-2xl">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80"
                     alt="Team meeting"
-                    className="w-full h-full object-cover opacity-80"
+                    fill
+                    className="object-cover opacity-80"
                   />
                 </div>
               </div>
@@ -207,7 +119,7 @@ export default function CareersPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              We invest in our people because they're our greatest asset.
+              We invest in our people because they&#8217;re our greatest asset.
               Enjoy comprehensive benefits designed for your wellbeing.
             </p>
           </div>
@@ -348,10 +260,11 @@ export default function CareersPage() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
               <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80"
                   alt="Job application"
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  className="object-cover opacity-80"
                 />
               </div>
             </div>
@@ -364,7 +277,7 @@ export default function CareersPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              Don't see the right role?
+              Don&#8217;t see the right role?
             </h3>
             <p className="text-primary-foreground/70 text-sm">
               Submit your resume for future opportunities.

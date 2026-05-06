@@ -1,7 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
 
 const values = [
@@ -22,7 +25,7 @@ const values = [
   {
     icon: Users,
     title: "Customer-Centricity",
-    desc: "We don't just sell systems; we build partnerships based on trust, transparency, and lifetime support.",
+    desc: "We don\u2019t just sell systems; we build partnerships based on trust, transparency, and lifetime support.",
     wide: false,
     hover: "none",
   },
@@ -61,7 +64,6 @@ const stats = [
   { value: "400M", label: "kWh Saved Annually" },
 ];
 
-// Kinetic Pulse dot
 function KineticPulse() {
   return (
     <span className="relative inline-block">
@@ -80,62 +82,202 @@ function KineticPulse() {
   );
 }
 
+function ValueCard({ value, index }) {
+  const Icon = value.icon;
+  const isPrimaryHover = value.hover === "bg-primary";
+  const isForegroundHover = value.hover === "bg-foreground";
+
+  return (
+    <motion.div
+      className={`group rounded-xl bg-card p-10 transition-all duration-500 ${
+        value.wide ? "md:col-span-2" : ""
+      } ${
+        isPrimaryHover
+          ? "hover:bg-primary"
+          : isForegroundHover
+            ? "hover:bg-foreground"
+            : "hover:shadow-lg"
+      }`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.35, delay: index * 0.1 }}
+      whileHover={{ y: -2 }}
+    >
+      {value.img ? (
+        <div className="flex flex-col items-center gap-10 md:flex-row">
+          <div className="flex-1">
+            <Icon size={44} className="mb-7 text-primary" />
+            <h3 className="mb-3 font-sans text-2xl font-extrabold text-foreground">
+              {value.title}
+            </h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {value.desc}
+            </p>
+          </div>
+          <div className="h-44 w-full shrink-0 overflow-hidden rounded-lg transition-all duration-700 group-hover:grayscale-0 md:w-56 grayscale relative">
+            <Image src={value.img} alt={value.title} fill sizes="(max-width: 768px) 100vw, 200px" className="object-cover" />
+          </div>
+        </div>
+      ) : (
+        <>
+          <Icon
+            size={44}
+            className={`mb-7 transition-colors ${
+              isPrimaryHover
+                ? "text-primary group-hover:text-primary-foreground"
+                : isForegroundHover
+                  ? "text-primary group-hover:text-primary"
+                  : "text-primary"
+            }`}
+          />
+          <h3 className={`mb-3 font-sans text-2xl font-extrabold transition-colors ${
+            isPrimaryHover
+              ? "text-foreground group-hover:text-primary-foreground"
+              : isForegroundHover
+                ? "text-foreground group-hover:text-background"
+                : "text-foreground"
+          }`}>
+            {value.title}
+          </h3>
+          <p className={`text-sm leading-relaxed transition-colors ${
+            isPrimaryHover
+              ? "text-muted-foreground group-hover:text-primary-foreground/80"
+              : isForegroundHover
+                ? "text-muted-foreground group-hover:text-background/70"
+                : "text-muted-foreground"
+          }`}>
+            {value.desc}
+          </p>
+        </>
+      )}
+    </motion.div>
+  );
+}
+
+function TeamCard({ member, index }) {
+  return (
+    <motion.div
+      className="group"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.35, delay: index * 0.1 }}
+    >
+      <div className="relative aspect-4/5 mb-5 overflow-hidden rounded-xl bg-secondary">
+        <Image
+          src={member.img}
+          alt={member.name}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+        />
+        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
+      <h4 className="font-sans font-extrabold text-xl text-foreground">
+        {member.name}
+      </h4>
+      <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">
+        {member.role}
+      </p>
+    </motion.div>
+  );
+}
+
+function StatItem({ stat, index }) {
+  return (
+    <motion.div
+      className="p-7 border-l-2 border-primary bg-background/5"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.3, delay: index * 0.1 }}
+    >
+      <div className="font-sans font-extrabold text-4xl mb-1.5">
+        {stat.value}
+      </div>
+      <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">
+        {stat.label}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
-        <img
+      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+        <Image
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=80"
           alt="HVAC facility"
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
-
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-              Precision Engineering
-            </Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
+                Precision Engineering
+              </Badge>
+            </motion.div>
+            <motion.h1
+              className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               Engineering <br />
               <span className="text-primary">the Future</span> <br />
               of Comfort
-            </h1>
-            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
+            </motion.h1>
+            <motion.p
+              className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               Redefining thermal efficiency through kinetic innovation and
               architectural integration.
-            </p>
+            </motion.p>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Our Story */}
-      <section className="py-28 bg-background">
+      <AnimatedSection className="py-28 bg-background">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
             <div className="md:col-span-5 space-y-8">
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
                 <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
-                  Since 1998, we've pioneered the science of thermal dynamics.
+                  Since 1998, we&#8217;ve pioneered the science of thermal dynamics.
                 </h2>
               </div>
-
-              <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
+              <motion.div
+                className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+              >
                 <div className="font-sans font-extrabold text-6xl text-primary leading-none">
                   26
                 </div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   Years of <br /> Excellence
                 </div>
-              </div>
-
+              </motion.div>
               <Button size="lg" className="gap-2">
                 Our Story <ArrowRight size={16} />
               </Button>
             </div>
-
             <div className="md:col-span-7 space-y-6">
               <p className="text-lg leading-relaxed text-muted-foreground">
                 Cold Flyer Industrial began with a singular focus: to solve the
@@ -144,12 +286,11 @@ export default function AboutPage() {
                 into a global leader in sustainable climate solutions.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Our journey has been defined by a relentless pursuit of "Kinetic
-                Efficiency"—the belief that climate control systems should not
+                Our journey has been defined by a relentless pursuit of &#34;Kinetic
+                Efficiency&#34;&#8212;the belief that climate control systems should not
                 just respond to environments, but anticipate and adapt to them
                 with minimal energy footprint.
               </p>
-
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
                 <div>
                   <div className="font-sans font-extrabold text-3xl text-primary mb-1 relative inline-block">
@@ -173,128 +314,33 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Core Values */}
-      <section className="bg-secondary/40 py-28">
+      <AnimatedSection className="bg-secondary/40 py-28">
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
               <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
                 Our DNA
               </span>
-
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
                 The Kinetic Core
               </h2>
             </div>
-
             <p className="max-w-md font-medium text-muted-foreground">
               Guided by precision, fueled by innovation, and committed to a
               sustainable legacy for the built environment.
             </p>
           </div>
-
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {values.map((value) => {
-              const Icon = value.icon;
-
-              const isPrimaryHover = value.hover === "bg-primary";
-              const isForegroundHover = value.hover === "bg-foreground";
-
-              return (
-                <div
-                  key={value.title}
-                  className={`
-              group rounded-xl bg-card p-10 transition-all duration-500
-              ${value.wide ? "md:col-span-2" : ""}
-              ${
-                isPrimaryHover
-                  ? "hover:bg-primary"
-                  : isForegroundHover
-                    ? "hover:bg-foreground"
-                    : "hover:shadow-lg"
-              }
-            `}
-                >
-                  {value.img ? (
-                    <div className="flex flex-col items-center gap-10 md:flex-row">
-                      <div className="flex-1">
-                        <Icon size={44} className="mb-7 text-primary" />
-
-                        <h3 className="mb-3 font-sans text-2xl font-extrabold text-foreground">
-                          {value.title}
-                        </h3>
-
-                        <p className="text-sm leading-relaxed text-muted-foreground">
-                          {value.desc}
-                        </p>
-                      </div>
-
-                      <div className="h-44 w-full shrink-0 overflow-hidden rounded-lg transition-all duration-700 group-hover:grayscale-0 md:w-56 grayscale">
-                        <img
-                          src={value.img}
-                          alt={value.title}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <Icon
-                        size={44}
-                        className={`
-                    mb-7 transition-colors
-                    ${
-                      isPrimaryHover
-                        ? "text-primary group-hover:text-primary-foreground"
-                        : isForegroundHover
-                          ? "text-primary group-hover:text-primary"
-                          : "text-primary"
-                    }
-                  `}
-                      />
-
-                      <h3
-                        className={`
-                    mb-3 font-sans text-2xl font-extrabold transition-colors
-                    ${
-                      isPrimaryHover
-                        ? "text-foreground group-hover:text-primary-foreground"
-                        : isForegroundHover
-                          ? "text-foreground group-hover:text-background"
-                          : "text-foreground"
-                    }
-                  `}
-                      >
-                        {value.title}
-                      </h3>
-
-                      <p
-                        className={`
-                    text-sm leading-relaxed transition-colors
-                    ${
-                      isPrimaryHover
-                        ? "text-muted-foreground group-hover:text-primary-foreground/80"
-                        : isForegroundHover
-                          ? "text-muted-foreground group-hover:text-background/70"
-                          : "text-muted-foreground"
-                    }
-                  `}
-                      >
-                        {value.desc}
-                      </p>
-                    </>
-                  )}
-                </div>
-              );
-            })}
+            {values.map((value, index) => (
+              <ValueCard key={value.title} value={value} index={index} />
+            ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Leadership Team */}
-      <section className="py-28 bg-background">
+      <AnimatedSection className="py-28 bg-background">
         <div className="container">
           <div className="text-center mb-20">
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground mb-5">
@@ -302,32 +348,15 @@ export default function AboutPage() {
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {team.map((member) => (
-              <div key={member.name} className="group">
-                <div className="relative aspect-4/5 mb-5 overflow-hidden rounded-xl bg-secondary">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
-                  />
-                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <h4 className="font-sans font-extrabold text-xl text-foreground">
-                  {member.name}
-                </h4>
-                <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">
-                  {member.role}
-                </p>
-              </div>
+            {team.map((member, index) => (
+              <TeamCard key={member.name} member={member} index={index} />
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Global Impact */}
-      <section className="py-28 bg-foreground text-background">
+      <AnimatedSection className="py-28 bg-foreground text-background">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
@@ -337,40 +366,35 @@ export default function AboutPage() {
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
                 Impact Without <br /> Borders
               </h2>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {stats.map((s) => (
-                  <div
-                    key={s.label}
-                    className="p-7 border-l-2 border-primary bg-background/5"
-                  >
-                    <div className="font-sans font-extrabold text-4xl mb-1.5">
-                      {s.value}
-                    </div>
-                    <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">
-                      {s.label}
-                    </div>
-                  </div>
+                {stats.map((stat, index) => (
+                  <StatItem key={stat.label} stat={stat} index={index} />
                 ))}
               </div>
             </div>
-
-            <div className="relative group">
+            <motion.div
+              className="relative group"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
               <div className="relative overflow-hidden rounded-2xl aspect-square shadow-2xl">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80"
                   alt="Global operations"
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover opacity-80"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* CTA Strip */}
-      <section className="py-20 bg-primary">
+      <AnimatedSection className="py-20 bg-primary">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
@@ -384,7 +408,7 @@ export default function AboutPage() {
             Get a Quote <ArrowRight size={16} />
           </Button>
         </div>
-      </section>
+      </AnimatedSection>
     </main>
   );
 }

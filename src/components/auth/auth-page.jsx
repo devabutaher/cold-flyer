@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
 import api from "@/lib/api";
-import { createAccountSchema, signInSchema } from "@/lib/auth-schemas";
+import { createAccountSchema, signInSchema } from "@/lib/schema/auth-schemas";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Crown, Eye, EyeOff, Shield } from "lucide-react";
@@ -114,10 +115,11 @@ export default function AuthPage() {
     <div className="flex h-screen w-full overflow-hidden">
       {/* Left — image panel */}
       <div className="hidden md:flex md:w-1/2 relative flex-col justify-center p-10">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80"
           alt="HVAC"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/20" />
         <div className="relative z-10">
@@ -126,7 +128,7 @@ export default function AuthPage() {
             Kinetic <br /> Comfort.
           </h1>
           <p className="text-white/70 text-sm leading-relaxed max-w-md">
-            Experience industrial-grade HVAC management with ColdFlyer's
+            Experience industrial-grade HVAC management with ColdFlyer&#8217;s
             proprietary fleet telemetry and thermal precision engineering.
           </p>
         </div>

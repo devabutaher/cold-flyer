@@ -113,7 +113,7 @@ export default function OrdersPage() {
         emptyMessage="You haven't placed any orders yet."
         emptyIcon={<ShoppingBag size={40} />}
         emptyAction={
-          <Button asChild size="sm">
+          <Button asChild size="sm" animate={false}>
             <Link href="/items">Start Shopping</Link>
           </Button>
         }

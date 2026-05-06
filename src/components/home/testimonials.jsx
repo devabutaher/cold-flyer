@@ -3,6 +3,8 @@
 import { reviews } from "@/data/reviews-data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
+import { motion } from "framer-motion";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -24,14 +26,48 @@ function Stars({ count }) {
   );
 }
 
+function TestimonialCard({ review, index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.35, delay: index * 0.1, ease: "easeOut" }}
+      whileHover={{ y: -2 }}
+    >
+      <div className="bg-secondary rounded-xl p-6 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative">
+        <Quote
+          size={28}
+          className="text-primary/20 absolute top-5 right-5"
+        />
+        <Stars count={review.stars} />
+        <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-5">
+          &#34;{review.body}&#34;
+        </p>
+        <div className="flex items-center gap-3 border-t border-border pt-4">
+          <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-sans font-bold text-sm shrink-0">
+            {review.avatar}
+          </div>
+          <div>
+            <p className="font-sans font-bold text-foreground text-sm">
+              {review.name}
+            </p>
+            <p className="text-muted-foreground text-xs">{review.role}</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Testimonials() {
-  const { emblaRef, emblaApi, selectedIndex, canScrollPrev, canScrollNext } =
+  const { emblaRef, emblaApi, selectedIndex } =
     useEmblaSlider({ align: "start" }, [
       Autoplay({ delay: 4500, stopOnInteraction: true }),
     ]);
 
   return (
-    <section className="py-16 bg-background">
+    <AnimatedSection className="py-16 bg-background">
       <div className="container">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
@@ -55,32 +91,12 @@ export default function Testimonials() {
 
         <div className="embla" ref={emblaRef}>
           <div className="embla__container gap-4 px-4">
-            {reviews.map((r) => (
+            {reviews.map((r, i) => (
               <div
                 key={r.name}
                 className="embla__slide flex-[0_0_90%] sm:flex-[0_0_48%] lg:flex-[0_0_31%] shrink-0"
               >
-                <div className="bg-secondary rounded-xl p-6 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative">
-                  <Quote
-                    size={28}
-                    className="text-primary/20 absolute top-5 right-5"
-                  />
-                  <Stars count={r.stars} />
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-5">
-                    "{r.body}"
-                  </p>
-                  <div className="flex items-center gap-3 border-t border-border pt-4">
-                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-sans font-bold text-sm shrink-0">
-                      {r.avatar}
-                    </div>
-                    <div>
-                      <p className="font-sans font-bold text-foreground text-sm">
-                        {r.name}
-                      </p>
-                      <p className="text-muted-foreground text-xs">{r.role}</p>
-                    </div>
-                  </div>
-                </div>
+                <TestimonialCard review={r} index={i} />
               </div>
             ))}
           </div>
@@ -100,6 +116,6 @@ export default function Testimonials() {
           ))}
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }

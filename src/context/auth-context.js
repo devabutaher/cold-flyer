@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storedUser = api.getUser();
     if (storedUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBackendUser(storedUser);
     }
 

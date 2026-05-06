@@ -57,11 +57,10 @@ const ImageContainer = ({
       <Dialog>
         <DialogTrigger asChild>
           <div className={`cursor-pointer`}>
-            <img
+            <Image
               src={image.url}
               alt={image.title || alt}
-              width={400}
-              height={600}
+              fill
               className={cn(
                 "absolute inset-0 h-full w-full",
                 fit === "contain" && "object-contain",
@@ -167,11 +166,10 @@ const Thumb = (props) => {
             getAspectRatioClass("square"),
           )}
         >
-          <img
+          <Image
             src={imgUrl}
             alt={title || `Thumbnail ${index + 1}`}
-            width={400}
-            height={600}
+            fill
             className={cn("h-full w-full object-cover")}
           />
         </div>
@@ -309,6 +307,7 @@ const ImageCarousel = ({
   useEffect(() => {
     if (!emblaApi) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect();
     emblaApi.on("reInit", onSelect);
     emblaApi.on("select", onSelect);

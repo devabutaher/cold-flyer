@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { ImagePlus, X } from "lucide-react";
@@ -64,10 +65,11 @@ export function ImageUploadField({ value = [], onChange }) {
       <div className="flex flex-wrap gap-3 mt-2">
         {value.map((item, index) => (
           <div key={index} className="relative w-24 h-24">
-            <img
+            <Image
               src={item.preview || item.url}
               alt={`Image ${index + 1}`}
-              className="w-full h-full object-cover rounded-lg border"
+              fill
+              className="object-cover rounded-lg border"
             />
             <Button
               type="button"
