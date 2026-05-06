@@ -119,6 +119,7 @@ export default function AuthPage() {
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80"
           alt="HVAC"
           fill
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/20" />

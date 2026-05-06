@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, X, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
 import { QuantityInput } from "./quantity-input";
@@ -55,11 +56,17 @@ export function Cart({
         {isLoading && loadingSkeleton ? (
           loadingSkeleton
         ) : isLoading ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Loading your cart…
-            </p>
+          <div className="space-y-4 py-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex gap-4 p-4 bg-card rounded-xl border border-border">
+                <Skeleton className="h-24 w-24 rounded-xl" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-8 w-24" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
 
@@ -104,6 +111,7 @@ export function Cart({
                         src={product.imageUrl}
                         alt={product.name}
                         fill
+                        sizes="100px"
                         className="object-cover"
                       />
                     </Link>

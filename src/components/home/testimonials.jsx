@@ -35,13 +35,13 @@ function TestimonialCard({ review, index }) {
       transition={{ duration: 0.35, delay: index * 0.1, ease: "easeOut" }}
       whileHover={{ y: -2 }}
     >
-      <div className="bg-secondary rounded-xl p-6 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative">
+      <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-[220px] sm:min-h-[200px]">
         <Quote
           size={28}
-          className="text-primary/20 absolute top-5 right-5"
+          className="text-primary/20 absolute top-4 right-4"
         />
         <Stars count={review.stars} />
-        <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-5">
+        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4">
           &#34;{review.body}&#34;
         </p>
         <div className="flex items-center gap-3 border-t border-border pt-4">
@@ -69,7 +69,7 @@ export default function Testimonials() {
   return (
     <AnimatedSection className="py-16 bg-background">
       <div className="container">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div className="mb-5 flex items-end justify-between gap-3">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
               Client Stories
@@ -78,6 +78,7 @@ export default function Testimonials() {
               Words of <span className="text-primary">Satisfaction.</span>
             </h2>
           </div>
+
           <div className="flex items-center gap-2">
             <Button variant="secondary" onClick={() => emblaApi?.scrollPrev()}>
               <ChevronLeft size={16} />
@@ -90,7 +91,7 @@ export default function Testimonials() {
         </div>
 
         <div className="embla" ref={emblaRef}>
-          <div className="embla__container gap-4 px-4">
+          <div className="embla__container gap-4 px-4" style={{ minHeight: "240px" }}>
             {reviews.map((r, i) => (
               <div
                 key={r.name}

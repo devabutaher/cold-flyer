@@ -23,7 +23,7 @@ export default function ServicesCarousel() {
   );
 }
 
-function ServiceCard({ service }) {
+function ServiceCard({ service, index }) {
   return (
     <motion.div
       className="group relative overflow-hidden rounded-2xl bg-card transition-all duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col"
@@ -39,6 +39,8 @@ function ServiceCard({ service }) {
             src={service.img}
             alt={service.name}
             fill
+            priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />

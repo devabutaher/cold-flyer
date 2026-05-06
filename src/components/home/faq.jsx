@@ -121,7 +121,7 @@ function FaqItem({ item, index, openValue }) {
 function FaqImage() {
   return (
     <motion.div
-      className="relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-[520px]"
+      className="relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-130"
       initial={{ opacity: 0, x: 24 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}

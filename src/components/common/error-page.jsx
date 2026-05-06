@@ -27,6 +27,7 @@ const Error = () => {
           src="https://cdn.shadcnstudio.com/ss-assets/blocks/marketing/error/image-1.png"
           alt="404 illustration"
           fill
+          loading="eager"
           className="object-contain"
         />
       </div>

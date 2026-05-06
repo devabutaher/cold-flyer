@@ -84,7 +84,13 @@ export default function ProductCarousel({
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
               >
-                <div className="h-full">{CardComponent(item)}</div>
+                <div className="h-full">
+                  {renderCard ? (
+                    renderCard(item, index)
+                  ) : (
+                    <ProductCard product={item} animate={false} />
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>

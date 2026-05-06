@@ -6,6 +6,10 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
 function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
+  const normalizedOptions = options.map((opt) =>
+    typeof opt === "string" ? { value: opt, label: opt } : opt
+  );
+
   return (
     <SelectPrimitive.Root value={value} onValueChange={onChange}>
       <SelectPrimitive.Trigger
@@ -25,7 +29,7 @@ function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
           sideOffset={4}
         >
           <SelectPrimitive.Viewport className="p-1">
-            {options.map((option) => (
+            {normalizedOptions.map((option) => (
               <SelectPrimitive.Item
                 key={option.value}
                 value={option.value}

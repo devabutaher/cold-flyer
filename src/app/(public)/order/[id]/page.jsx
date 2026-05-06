@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { CheckCircle, Loader2, ArrowRight, Package } from "lucide-react";
+import { CheckCircle, ArrowRight, Package } from "lucide-react";
 import Link from "next/link";
 import { ordersApi } from "@/lib/api/orders";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function OrderSuccessPage() {
   const params = useParams();
@@ -41,7 +42,18 @@ export default function OrderSuccessPage() {
   if (loading) {
     return (
       <div className="container flex min-h-[60vh] items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-8 space-y-4">
+            <Skeleton className="h-16 w-16 rounded-full mx-auto" />
+            <Skeleton className="h-8 w-3/4 mx-auto" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+            <div className="flex gap-3 pt-4">
+              <Skeleton className="h-10 flex-1" />
+              <Skeleton className="h-10 flex-1" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

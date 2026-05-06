@@ -48,20 +48,16 @@ export default function CartPage() {
         const orderId = response.data.order._id;
 
         try {
-          const sessionResponse =
-            await ordersApi.createCheckoutSession(orderId);
+          const sessionResponse = await ordersApi.createPaymentLink(orderId);
 
           if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
             clearCart();
             window.location.href = sessionResponse.data.checkoutUrl;
           } else {
-            // Payment failed but order was saved
-            clearCart();
-            toast.success("Order created! You can pay later.");
+            toast.error(sessionResponse.message || "Failed to create checkout");
           }
         } catch (paymentError) {
-          clearCart();
-          toast.success("Order created! You can pay later.");
+          toast.error("Payment system unavailable. Please try again later.");
         }
       } else {
         toast.error(response.message || "Failed to create order");

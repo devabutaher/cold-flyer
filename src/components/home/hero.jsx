@@ -29,6 +29,7 @@ export default function Hero() {
                 fill
                 sizes="100vw"
                 priority={i === 0}
+                loading={i === 0 ? "eager" : "lazy"}
                 className="absolute inset-0 object-cover object-center opacity-55"
               />
 

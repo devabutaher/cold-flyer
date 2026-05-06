@@ -27,6 +27,7 @@ export default function FAQPage() {
           src="https://images.unsplash.com/photo-1665789318391-6057c533005e?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="FAQ support"
           fill
+          sizes="100vw"
           className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />

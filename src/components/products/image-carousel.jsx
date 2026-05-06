@@ -56,11 +56,13 @@ const ImageContainer = ({
     >
       <Dialog>
         <DialogTrigger asChild>
-          <div className={`cursor-pointer`}>
+          <div className="cursor-pointer relative h-full w-full">
             <Image
               src={image.url}
               alt={image.title || alt}
               fill
+              loading="eager"
+              sizes="(max-width: 768px) 100vw, 50vw"
               className={cn(
                 "absolute inset-0 h-full w-full",
                 fit === "contain" && "object-contain",
@@ -98,6 +100,7 @@ const ImageContainer = ({
                         height={1920}
                         quality={95}
                         priority
+                        loading="eager"
                         className={cn(
                           "max-h-[90vh] max-w-[90vw] object-contain",
                           classNameImage,
@@ -170,6 +173,7 @@ const Thumb = (props) => {
             src={imgUrl}
             alt={title || `Thumbnail ${index + 1}`}
             fill
+            sizes="100px"
             className={cn("h-full w-full object-cover")}
           />
         </div>

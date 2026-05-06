@@ -96,6 +96,7 @@ export default function CareersPage() {
                     src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80"
                     alt="Team meeting"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover opacity-80"
                   />
                 </div>
@@ -264,6 +265,7 @@ export default function CareersPage() {
                   src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80"
                   alt="Job application"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover opacity-80"
                 />
               </div>
