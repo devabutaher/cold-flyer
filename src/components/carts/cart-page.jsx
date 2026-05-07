@@ -51,8 +51,8 @@ export default function CartPage() {
           const sessionResponse = await ordersApi.createPaymentLink(orderId);
 
           if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
-            clearCart();
             window.location.href = sessionResponse.data.checkoutUrl;
+            clearCart();
           } else {
             toast.error(sessionResponse.message || "Failed to create checkout");
           }

@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/context/cart-context";
+import { motion } from "framer-motion";
 import { Package, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,6 +50,7 @@ export default function ProductCard({ product, animate = true }) {
             src={product.images[0].url}
             alt={product.name}
             fill
+            loading="eager"
             sizes="100%"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
@@ -82,9 +83,9 @@ export default function ProductCard({ product, animate = true }) {
             classNameSalePrice="text-lg text-primary"
           />
 
-          <Button 
-            size="icon" 
-            className="shrink-0" 
+          <Button
+            size="icon"
+            className="shrink-0"
             onClick={handleAddToCart}
             disabled={isOutOfStock}
           >

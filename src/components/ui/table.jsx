@@ -1,22 +1,5 @@
 "use client";
 
-/**
- * Table — lightweight Framer Motion animations.
- *
- * What's animated:
- *  - TableRow: staggered fade+slide entrance via `whileInView`
- *  - TableRow: subtle y-lift on hover (body rows only)
- *  - TableCell: no animation (keeps text readable during scroll)
- *
- * New props on TableRow:
- *  - index?   number   Row index for stagger delay (default 0)
- *  - animate? boolean  Opt out per-row (default true)
- *
- * Everything else — API, classNames — is unchanged.
- */
-
-import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ── Table container ──────────────────────────────────────────
@@ -71,43 +54,15 @@ function TableFooter({ className, ...props }) {
   );
 }
 
-// ── Row — stagger entrance + hover lift ──────────────────────
-// `motion.tr` is valid — Framer Motion supports any HTML element.
+// ── Row ───────────────────────────────────────────────────────
 function TableRow({ className, index = 0, animate = true, ...props }) {
-  const reduced = useReducedMotion();
-
-  if (!animate || reduced) {
-    return (
-      <tr
-        data-slot="table-row"
-        className={cn(
-          "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
-          className,
-        )}
-        {...props}
-      />
-    );
-  }
-
   return (
-    <motion.tr
+    <tr
       data-slot="table-row"
       className={cn(
-        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        "border-b transition-all duration-150 hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
         className,
       )}
-      // ── Entrance: staggered fade + slide up ──────────────
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -24px 0px" }}
-      transition={{
-        duration: 0.25,
-        delay: Math.min(index * 0.04, 0.3), // cap at 0.3s so long tables don't drag
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      // ── Hover: 1px lift, no scale (keeps table alignment intact) ──
-      whileHover={{ y: -1, transition: { duration: 0.15, ease: "easeOut" } }}
-      whileTap={{ y: 0, transition: { duration: 0.1 } }}
       {...props}
     />
   );

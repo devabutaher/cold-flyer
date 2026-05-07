@@ -29,8 +29,8 @@ export const ordersApi = {
     return api.patch(`/api/orders/${orderId}`, { status });
   },
 
-  async cancelOrder(orderId) {
-    return api.delete(`/api/orders/${orderId}`);
+  async cancelOrder(orderId, reason) {
+    return api.patch(`/api/orders/${orderId}/cancel`, { reason });
   },
 
   async createPaymentLink(orderId) {

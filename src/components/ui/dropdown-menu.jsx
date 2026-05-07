@@ -143,6 +143,7 @@ function DropdownMenuItem({
   index = 0, // pass index from parent for stagger
   ...props
 }) {
+  const { asChild: _, ...restProps } = props;
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -159,7 +160,7 @@ function DropdownMenuItem({
       <motion.div
         custom={index}
         variants={shouldReduceMotion ? undefined : itemVariants}
-        {...props}
+        {...restProps}
       />
     </DropdownMenuPrimitive.Item>
   );
@@ -172,6 +173,7 @@ function DropdownMenuCheckboxItem({
   inset,
   ...props
 }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
@@ -181,7 +183,7 @@ function DropdownMenuCheckboxItem({
         className,
       )}
       checked={checked}
-      {...props}
+      {...restProps}
     >
       <span
         className="pointer-events-none absolute right-2 flex items-center justify-center"
@@ -206,6 +208,7 @@ function DropdownMenuRadioGroup({ ...props }) {
 }
 
 function DropdownMenuRadioItem({ className, children, inset, ...props }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
@@ -214,7 +217,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
         "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
-      {...props}
+      {...restProps}
     >
       <span
         className="pointer-events-none absolute right-2 flex items-center justify-center"
@@ -230,6 +233,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
 }
 
 function DropdownMenuLabel({ className, inset, ...props }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
@@ -238,22 +242,24 @@ function DropdownMenuLabel({ className, inset, ...props }) {
         "px-2 py-1.5 text-xs font-medium text-muted-foreground data-inset:pl-8",
         className,
       )}
-      {...props}
+      {...restProps}
     />
   );
 }
 
 function DropdownMenuSeparator({ className, ...props }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
       className={cn("-mx-1 my-1 h-px bg-border", className)}
-      {...props}
+      {...restProps}
     />
   );
 }
 
 function DropdownMenuShortcut({ className, ...props }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <span
       data-slot="dropdown-menu-shortcut"
@@ -261,7 +267,7 @@ function DropdownMenuShortcut({ className, ...props }) {
         "ml-auto text-xs tracking-widest text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground",
         className,
       )}
-      {...props}
+      {...restProps}
     />
   );
 }
@@ -271,6 +277,7 @@ function DropdownMenuSub({ ...props }) {
 }
 
 function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
+  const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.SubTrigger
       data-slot="dropdown-menu-sub-trigger"
@@ -279,7 +286,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
         "flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-8 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
-      {...props}
+      {...restProps}
     >
       {children}
       <ChevronRightIcon className="ml-auto" />

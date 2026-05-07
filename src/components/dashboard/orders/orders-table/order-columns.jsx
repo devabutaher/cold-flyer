@@ -1,9 +1,3 @@
-/**
- * order-columns.jsx
- * Column definitions for the customer orders table.
- * Uses shared cell renderers from table-cells.jsx.
- */
-
 import {
   MonoCell,
   PriceCell,

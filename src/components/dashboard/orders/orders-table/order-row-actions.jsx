@@ -24,15 +24,38 @@ import { useState } from "react";
 
 export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
   const [showCancel, setShowCancel] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
-  const canPay = order.paymentStatus !== "paid";
+  const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
   const canCancel =
     order.paymentStatus !== "paid" && order.status !== "cancelled";
   const isPaying = payingOrderId === order._id;
 
+  const handleConfirmCancel = async (e) => {
+    e.stopPropagation();
+    setIsCancelling(true);
+    try {
+      await onCancel(order._id);
+      setShowCancel(false);
+    } catch (error) {
+      console.error("Failed to cancel order:", error);
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
+  const handleDialogClose = (open) => {
+    if (!open) {
+      setShowCancel(false);
+    }
+  };
+
   return (
     <>
-      <div className="flex items-center justify-end gap-2">
+      <div
+        className="flex items-center justify-end gap-2"
+        onClick={(e) => e.stopPropagation()} // Prevent row click when clicking action buttons
+      >
         {canPay && (
           <Button
             size="sm"
@@ -49,11 +72,12 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
         )}
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
               className="h-7 w-7 text-muted-foreground"
+              onClick={(e) => e.stopPropagation()}
             >
               <MoreHorizontal size={14} />
               <span className="sr-only">Order actions</span>
@@ -63,7 +87,8 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
             <DropdownMenuItem asChild>
               <Link
                 href={`/dashboard/orders/${order._id}`}
-                className="flex items-center"
+                className="flex items-center w-full"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Eye size={13} className="mr-2" />
                 View Details
@@ -79,7 +104,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
                     setShowCancel(true);
                   }}
                 >
-                  <X size={13} className="mr-2" />
+                  <X size={13} />
                   Cancel Order
                 </DropdownMenuItem>
               </>
@@ -88,8 +113,8 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
         </DropdownMenu>
       </div>
 
-      <AlertDialog open={showCancel} onOpenChange={setShowCancel}>
-        <AlertDialogContent>
+      <AlertDialog open={showCancel} onOpenChange={handleDialogClose}>
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
           <AlertDialogHeader>
             <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -101,15 +126,20 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Keep Order</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-              onClick={() => {
-                onCancel(order._id);
+            <AlertDialogCancel
+              onClick={(e) => {
+                e.stopPropagation();
                 setShowCancel(false);
               }}
             >
-              Cancel Order
+              Keep Order
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              onClick={handleConfirmCancel}
+              disabled={isCancelling}
+            >
+              {isCancelling ? "Cancelling..." : "Cancel Order"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

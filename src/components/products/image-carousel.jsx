@@ -16,6 +16,7 @@ import {
   ArrowLeft,
   ArrowRight,
   MinusCircle,
+  Package,
   PlusCircle,
   X,
 } from "lucide-react";
@@ -47,6 +48,8 @@ const ImageContainer = ({
   image,
   showImageControls,
 }) => {
+  const hasImage = image?.url;
+
   return (
     <div
       className={cn(
@@ -57,20 +60,26 @@ const ImageContainer = ({
       <Dialog>
         <DialogTrigger asChild>
           <div className="cursor-pointer relative h-full w-full">
-            <Image
-              src={image.url}
-              alt={image.title || alt}
-              fill
-              loading="eager"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className={cn(
-                "absolute inset-0 h-full w-full",
-                fit === "contain" && "object-contain",
-                fit === "cover" && "object-cover",
-                fit === "fill" && "object-fill",
-                classNameThumbnail,
-              )}
-            />
+            {hasImage ? (
+              <Image
+                src={image.url}
+                alt={image.title || alt}
+                fill
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className={cn(
+                  "absolute inset-0 h-full w-full",
+                  fit === "contain" && "object-contain",
+                  fit === "cover" && "object-cover",
+                  fit === "fill" && "object-fill",
+                  classNameThumbnail,
+                )}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <Package size={48} className="text-muted-foreground/30" />
+              </div>
+            )}
           </div>
         </DialogTrigger>
 
@@ -93,21 +102,27 @@ const ImageContainer = ({
                 {({ zoomIn, zoomOut }) => (
                   <>
                     <TransformComponent>
-                      <Image
-                        src={image.url}
-                        alt={image.title || "Full size"}
-                        width={1920}
-                        height={1920}
-                        quality={95}
-                        priority
-                        loading="eager"
-                        className={cn(
-                          "max-h-[90vh] max-w-[90vw] object-contain",
-                          classNameImage,
-                        )}
-                      />
+                      {hasImage && image?.url ? (
+                        <Image
+                          src={image.url}
+                          alt={image.title || "Full size"}
+                          width={1920}
+                          height={1920}
+                          quality={95}
+                          priority
+                          loading="eager"
+                          className={cn(
+                            "max-h-[90vh] max-w-[90vw] object-contain",
+                            classNameImage,
+                          )}
+                        />
+                      ) : (
+                        <div className="flex h-[90vh] w-[90vw] items-center justify-center">
+                          <Package size={96} className="text-muted-foreground/30" />
+                        </div>
+                      )}
                     </TransformComponent>
-                    {showImageControls && (
+                    {showImageControls && hasImage && (
                       <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
                         <button
                           onClick={() => zoomOut()}
@@ -146,6 +161,7 @@ const ImageContainer = ({
 
 const Thumb = (props) => {
   const { imgUrl, index, onClick, selected, title } = props;
+  const hasImage = imgUrl;
 
   return (
     <div
@@ -169,13 +185,19 @@ const Thumb = (props) => {
             getAspectRatioClass("square"),
           )}
         >
-          <Image
-            src={imgUrl}
-            alt={title || `Thumbnail ${index + 1}`}
-            fill
-            sizes="100px"
-            className={cn("h-full w-full object-cover")}
-          />
+          {hasImage ? (
+            <Image
+              src={imgUrl}
+              alt={title || `Thumbnail ${index + 1}`}
+              fill
+              sizes="100px"
+              className={cn("h-full w-full object-cover")}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <Package size={20} className="text-muted-foreground/40" />
+            </div>
+          )}
         </div>
       </button>
     </div>

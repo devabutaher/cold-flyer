@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, X, Loader2 } from "lucide-react";
+import { Package, ShoppingCart, X, Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
@@ -107,13 +107,19 @@ export function Cart({
                       href={`/items/${slug}`}
                       className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
                     >
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        sizes="100px"
-                        className="object-cover"
-                      />
+                      {product.imageUrl ? (
+                        <Image
+                          src={product.imageUrl}
+                          alt={product.name}
+                          fill
+                          sizes="100px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <Package size={24} className="text-muted-foreground/40" />
+                        </div>
+                      )}
                     </Link>
 
                     <div className="flex flex-1 flex-col justify-between gap-3">

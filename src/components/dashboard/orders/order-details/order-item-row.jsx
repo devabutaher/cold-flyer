@@ -1,11 +1,13 @@
 import Image from "next/image";
-import { Box, Hash } from "lucide-react";
+import { Package, Hash } from "lucide-react";
 
 export function OrderItemRow({ item }) {
+  const hasImage = item.image;
+
   return (
     <div className="flex items-center gap-4 py-4">
       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
-        {item.image ? (
+        {hasImage ? (
           <Image
             src={item.image}
             alt={item.name ?? "Product"}
@@ -15,7 +17,7 @@ export function OrderItemRow({ item }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <Box size={20} className="text-muted-foreground/40" />
+            <Package size={20} className="text-muted-foreground/40" />
           </div>
         )}
       </div>

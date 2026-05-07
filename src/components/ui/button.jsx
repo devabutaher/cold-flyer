@@ -119,8 +119,8 @@ function Button({
   const shouldReduceMotion = useReducedMotion();
   const classNames = cn(buttonVariants({ variant, size, className }));
 
-  // Honour prefers-reduced-motion and asChild (Slot doesn't accept motion props)
   if (!animate || asChild || shouldReduceMotion) {
+    const { asChild: _, ...restProps } = props;
     const Element = asChild ? Slot.Root : "button";
     return (
       <Element
@@ -128,13 +128,14 @@ function Button({
         data-variant={variant}
         data-size={size}
         className={classNames}
-        {...props}
+        {...restProps}
       />
     );
   }
 
   const motionCfg = VARIANT_MOTION[variant] ?? VARIANT_MOTION.default;
   const { shimmer, ...motionProps } = motionCfg;
+  const { asChild: _, ...restProps } = props;
 
   return (
     <motion.button
@@ -147,7 +148,7 @@ function Button({
       whileTap="tap"
       animate="rest"
       {...motionProps}
-      {...props}
+      {...restProps}
     >
       {shimmer && <ShimmerLayer />}
       {/* Content sits above the shimmer layer */}
