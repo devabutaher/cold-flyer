@@ -29,15 +29,26 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
+<SidebarGroup>
           <SidebarMenuItem className="flex items-center gap-2">
-            <Link href={"/dashboard/items/add"} className="w-full">
+            <Link href="/dashboard/items/add" className="w-full">
               <SidebarMenuButton
                 className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground font-bold"
                 tooltip="Add New Product"
               >
                 <PlusIcon />
                 <span>Add New Product</span>
+              </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
+          <SidebarMenuItem className="flex items-center gap-2">
+            <Link href="/dashboard/services/add" className="w-full">
+              <SidebarMenuButton
+                className="min-w-8 bg-secondary text-secondary-foreground duration-200 ease-linear hover:bg-secondary/90 hover:text-secondary-foreground active:bg-secondary/90 active:text-secondary-foreground font-bold"
+                tooltip="Add New Service"
+              >
+                <PlusIcon />
+                <span>Add New Service</span>
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>

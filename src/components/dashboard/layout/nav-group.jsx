@@ -45,6 +45,7 @@ export function NavGroup({ label, items }) {
                   <>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
+                        tooltip={item.title}
                         isActive={hasActiveChild}
                         className={cn(
                           hasActiveChild &&
@@ -84,6 +85,7 @@ export function NavGroup({ label, items }) {
                 ) : (
                   <SidebarMenuButton
                     asChild
+                    tooltip={item.title}
                     isActive={isActive}
                     className={cn(
                       isActive &&

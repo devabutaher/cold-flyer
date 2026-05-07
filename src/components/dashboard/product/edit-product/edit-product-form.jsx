@@ -1,14 +1,17 @@
 "use client";
 
 import { useUpdateProduct } from "@/hooks/use-product-mutation";
-import { parseListInput, parseSpecs, uploadImages } from "@/lib/image-upload";
-import { generateSlug } from "@/lib/utils";
+import { uploadImages } from "@/lib/image-upload";
+import {
+  getProductInitialValues,
+  productFormSchema,
+} from "@/lib/schema/product-schemas";
+import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import {
   BasicInfoSection,
@@ -20,43 +23,6 @@ import {
   SpecificationsSection,
 } from "../product-form";
 
-const productFormSchema = z.object({
-  name: z.string().min(1, "Product name is required"),
-  sku: z.string().min(1, "SKU is required"),
-  brand: z.string().min(1, "Brand is required"),
-  category: z.string().min(1, "Category is required"),
-  price: z.coerce.number().min(1, "Price is required"),
-  originalPrice: z.coerce.number().optional(),
-  stock: z.coerce.number().optional(),
-  productType: z.string().optional(),
-  description: z.string().optional(),
-  warranty: z.string().optional(),
-  tag: z.string().optional(),
-  features: z.string().optional(),
-  inBox: z.string().optional(),
-});
-
-function getInitialValues(product) {
-  return {
-    name: product.name || "",
-    sku: product.sku || "",
-    brand: product.brand || "",
-    category: product.category || "",
-    description: product.description || "",
-    price: product.price?.toString() || "",
-    originalPrice: product.originalPrice?.toString() || "",
-    stock: product.stock?.toString() || "",
-    productType: product.productType || "unit",
-    warranty: product.warranty || "",
-    tag: product.tag || "None",
-    features: product.features?.join("\n") || "",
-    inBox: product.inBox?.join("\n") || "",
-    images:
-      product.images?.map((img) => ({ url: img.url, preview: img.url })) || [],
-    specs: product.specs || {},
-  };
-}
-
 export default function EditProductForm({ product }) {
   const router = useRouter();
   const [productType, setProductType] = useState(product.productType || "unit");
@@ -64,7 +30,7 @@ export default function EditProductForm({ product }) {
   const updateProduct = useUpdateProduct();
 
   const form = useForm({
-    defaultValues: getInitialValues(product),
+    defaultValues: getProductInitialValues(product),
     resolver: zodResolver(productFormSchema),
     mode: "onTouched",
   });
@@ -84,7 +50,6 @@ export default function EditProductForm({ product }) {
     try {
       const images = form.getValues("images") || [];
 
-      // Separate new files from existing URLs
       const newFiles = images.filter((img) => img.file);
       const existingImages = images
         .filter((img) => img.url && !img.file)
@@ -133,10 +98,6 @@ export default function EditProductForm({ product }) {
     } finally {
       setIsUploading(false);
     }
-  }
-
-  function handleReset() {
-    form.reset(getInitialValues(product));
   }
 
   return (

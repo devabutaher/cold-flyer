@@ -1,14 +1,35 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { services } from "@/data/services-carousel-data";
+import servicesApi from "@/lib/api/services";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Wrench } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
 
 export default function ServicesCarousel() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await servicesApi.getFeaturedServices();
+        setServices(res.data?.services ?? res.services ?? []);
+      } catch {
+        setServices([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (!loading && services.length === 0) {
+    return null;
+  }
+
   return (
     <AnimatedSection className="container pb-10">
       <ProductCarousel
@@ -17,13 +38,17 @@ export default function ServicesCarousel() {
         items={services}
         catalogLabel="View All Services"
         catalogLink="/services"
-        renderCard={(service) => <ServiceCard service={service} />}
+        renderCard={(service, index) => (
+          <ServiceCard service={service} index={index} />
+        )}
       />
     </AnimatedSection>
   );
 }
 
 function ServiceCard({ service, index }) {
+  const src = service.image || service.images?.[0]?.url;
+
   return (
     <motion.div
       className="group relative overflow-hidden rounded-2xl bg-card transition-all duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col"
@@ -33,10 +58,10 @@ function ServiceCard({ service, index }) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      <div className="mb-6 overflow-hidden rounded-t-l bg-muted h-48 relative">
-        {service.img ? (
+      <div className="mb-6 overflow-hidden rounded-t-lg bg-muted h-48 relative">
+        {src ? (
           <Image
-            src={service.img}
+            src={src}
             alt={service.name}
             fill
             priority={index === 0}
@@ -45,7 +70,9 @@ function ServiceCard({ service, index }) {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-primary/10" />
+          <div className="w-full h-full flex items-center justify-center bg-primary/10">
+            <Wrench className="h-12 w-12 text-primary/40" />
+          </div>
         )}
       </div>
 
@@ -54,10 +81,10 @@ function ServiceCard({ service, index }) {
           {service.name}
         </h3>
         <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base grow">
-          {service.description}
+          {service.shortDescription || service.description}
         </p>
         <div className="mb-6 space-y-3">
-          {service.features?.map((feature, idx) => (
+          {service.includes?.slice(0, 3).map((feature, idx) => (
             <motion.div
               key={idx}
               className="flex items-center gap-3"

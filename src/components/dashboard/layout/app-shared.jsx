@@ -5,7 +5,7 @@ import {
   HelpCircle,
   Layers,
   LayoutDashboard,
-  LayoutGrid,
+  Package,
   Settings,
   ShoppingCart,
   User,
@@ -27,7 +27,7 @@ export const navGroups = [
     items: [
       {
         title: "Products",
-        icon: <LayoutGrid />,
+        icon: <Package />,
         path: "/dashboard/items",
       },
       {
@@ -40,6 +40,11 @@ export const navGroups = [
   {
     label: "Services",
     items: [
+      {
+        title: "Services",
+        path: "/dashboard/services",
+        icon: <Wrench />,
+      },
       {
         title: "Service Bookings",
         path: "",
