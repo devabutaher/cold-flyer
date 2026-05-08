@@ -1,10 +1,10 @@
 "use client";
 
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Skeleton } from "@/components/ui/skeleton";
 import productsApi from "@/lib/api/products";
 import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
-import { AnimatedSection } from "@/components/ui/animated-section";
 
 function ProductCardSkeleton() {
   return (
@@ -24,7 +24,7 @@ function ProductCardSkeleton() {
   );
 }
 
-function CarouselSkeleton({ title, tag }) {
+function CarouselSkeleton() {
   return (
     <div>
       <div className="mb-5 flex items-end justify-between gap-3">
@@ -75,7 +75,7 @@ export default function ShopSection() {
     <AnimatedSection className="container py-10">
       <div className="space-y-10">
         {loading ? (
-          <CarouselSkeleton title="Premium AC Units" tag="Our Store" />
+          <CarouselSkeleton />
         ) : acUnits.length > 0 ? (
           <ProductCarousel
             title="Premium AC Units"
@@ -87,7 +87,7 @@ export default function ShopSection() {
         ) : null}
 
         {loading ? (
-          <CarouselSkeleton title="Precision AC Parts" tag="Replacements" />
+          <CarouselSkeleton />
         ) : acParts.length > 0 ? (
           <ProductCarousel
             title="Precision AC Parts"

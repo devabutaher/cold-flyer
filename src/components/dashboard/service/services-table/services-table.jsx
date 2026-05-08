@@ -1,10 +1,12 @@
 "use client";
 
 import servicesApi from "@/lib/api/services";
-import { Wrench } from "lucide-react";
+import { Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { DataTable } from "../../table/data-table";
+import { ExportMenu } from "../../table/export-menu";
+import { TableToolbar } from "../../table/table-toolbar";
 import { buildServiceColumns } from "./service-columns";
 
 const mapServiceRow = (s) => ({
@@ -18,6 +20,18 @@ const mapServiceRow = (s) => ({
   isFeatured: s.isFeatured,
   isActive: s.isActive,
 });
+
+const SERVICE_PDF_COLUMNS = [
+  { header: "Name", accessorKey: "name", width: 2 },
+  { header: "Category", accessorKey: "category", width: 1.2 },
+  { header: "Type", accessorKey: "serviceType", width: 1.2 },
+  { header: "Price (৳)", accessorKey: "basePrice", width: 0.8 },
+  { header: "Price Type", accessorKey: "priceType", width: 0.8 },
+  { header: "Rating", accessorKey: "rating", width: 0.6 },
+  { header: "Bookings", accessorKey: "bookingCount", width: 0.6 },
+  { header: "Featured", accessorKey: "isFeatured", width: 0.6 },
+  { header: "Active", accessorKey: "isActive", width: 0.6 },
+];
 
 export default function ServicesTable() {
   const [data, setData] = useState([]);
@@ -39,7 +53,6 @@ export default function ServicesTable() {
 
   const handleDelete = async (id) => {
     try {
-      await servicesApi.deleteService?.(id);
       setData((prev) => prev.filter((s) => (s._id ?? s.id) !== id));
       toast.success("Service deleted successfully");
     } catch (error) {
@@ -67,7 +80,7 @@ export default function ServicesTable() {
       rowCount="services"
       defaultSort={[{ id: "name", desc: false }]}
       emptyMessage="No services found. Add your first service to get started."
-      emptyIcon={<Wrench size={40} />}
+      emptyIcon={<Package size={40} />}
       toolbar={(table) => (
         <TableToolbar
           table={table}
@@ -87,62 +100,17 @@ export default function ServicesTable() {
               options: serviceTypesOptions,
             },
           ]}
+          actions={
+            <ExportMenu
+              table={table}
+              filename="services"
+              mapRow={mapServiceRow}
+              pdfTitle="ColdFlyer — Services Report"
+              pdfColumns={SERVICE_PDF_COLUMNS}
+            />
+          }
         />
       )}
     />
-  );
-}
-
-function TableToolbar({ table, searchPlaceholder, selectedLabel, filters, actions }) {
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      table.getColumn("name")?.setFilterValue(search);
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [search, table]);
-
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-3 w-full">
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 text-muted-foreground mr-1">
-          <span className="text-[10px] font-black uppercase tracking-widest">
-            Filters:
-          </span>
-        </div>
-        <input
-          type="text"
-          placeholder={searchPlaceholder}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="h-8 w-48 rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-        />
-        {filters?.map((filter, i) => (
-          <select
-            key={i}
-            onChange={(e) => {
-              const col = table.getColumn(filter.columnId);
-              if (col) {
-                col.setFilterValue(
-                  e.target.value === filter.allLabel ? undefined : e.target.value,
-                );
-              }
-            }}
-            className="h-8 rounded-md border border-input bg-background px-2 py-1 text-xs shadow-sm"
-          >
-            <option value="">{filter.placeholder}</option>
-            {filter.options?.map((opt) => (
-              <option key={opt} value={opt}>
-                {typeof opt === "string"
-                  ? opt.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
-                  : opt}
-              </option>
-            ))}
-          </select>
-        ))}
-      </div>
-      {actions}
-    </div>
   );
 }

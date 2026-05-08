@@ -26,9 +26,6 @@ export default function ProductCarousel({
     [Autoplay({ delay: 4000, stopOnInteraction: true })],
   );
 
-  const CardComponent =
-    renderCard || ((item) => <ProductCard product={item} />);
-
   return (
     <AnimatedSection className="w-full">
       <div>
