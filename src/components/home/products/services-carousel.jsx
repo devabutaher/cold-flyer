@@ -6,6 +6,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { CheckCircle, Wrench } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
 
@@ -59,27 +60,31 @@ function ServiceCard({ service, index }) {
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <div className="mb-6 overflow-hidden rounded-t-lg bg-muted h-48 relative">
-        {src ? (
-          <Image
-            src={src}
-            alt={service.name}
-            fill
-            priority={index === 0}
-            loading={index === 0 ? "eager" : "lazy"}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-primary/10">
-            <Wrench className="h-12 w-12 text-primary/40" />
-          </div>
-        )}
+        <Link href={`/services/${service.slug}`}>
+          {src ? (
+            <Image
+              src={src}
+              alt={service.name}
+              fill
+              priority={index === 0}
+              loading={index === 0 ? "eager" : "lazy"}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-primary/10">
+              <Wrench className="h-12 w-12 text-primary/40" />
+            </div>
+          )}
+        </Link>
       </div>
 
       <div className="p-4 flex flex-col grow">
-        <h3 className="mb-3 text-xl font-bold text-foreground md:text-2xl">
-          {service.name}
-        </h3>
+        <Link href={`/services/${service.slug}`}>
+          <h3 className="mb-3 text-xl font-bold text-foreground md:text-2xl hover:text-primary transition-colors">
+            {service.name}
+          </h3>
+        </Link>
         <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base grow">
           {service.shortDescription || service.description}
         </p>

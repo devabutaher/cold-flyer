@@ -24,9 +24,9 @@ import { ImageUploadField } from "./image-upload-field";
 const CATEGORIES = ["installation", "maintenance", "repair", "support"];
 const SERVICE_TYPES = [
   "installation",
-  "preventative_care",
-  "efficiency_tuning",
-  "rapid_response",
+  "preventative care",
+  "efficiency tuning",
+  "rapid response",
   "repair",
   "consultation",
   "emergency",

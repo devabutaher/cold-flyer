@@ -1,6 +1,6 @@
 import OfferBanner from "@/components/products/offer-banner";
 
-export default function ItemsLayout({ children }) {
+export default function ServicesLayout({ children }) {
   return (
     <div className="container py-10">
       <OfferBanner />

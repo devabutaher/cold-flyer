@@ -8,7 +8,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import Link from "next/link";
-import ProductCard from "../../products/product-card";
+import { CatalogCard } from "../../catalog/catalog-card";
 
 export default function ProductCarousel({
   title,
@@ -85,7 +85,7 @@ export default function ProductCarousel({
                   {renderCard ? (
                     renderCard(item, index)
                   ) : (
-                    <ProductCard product={item} animate={false} />
+                    <CatalogCard item={item} type="product" animate={false} />
                   )}
                 </div>
               </motion.div>

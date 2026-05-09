@@ -3,17 +3,19 @@
 import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/context/cart-context";
 import { useProduct } from "@/hooks/use-product-search";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ShieldCheck, Tag, Truck } from "lucide-react";
-import Link from "next/link";
+import { ShieldCheck, Tag, Truck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import InfoTabs from "../products/info-tabs";
 import QuantityInput from "../ui/quantity-input";
-import InfoTabs from "./info-tabs";
-import { ProductDetailSkeleton } from "./product-detail-skeleton";
+import { DetailBackButton } from "./detail-back-button";
+import { DetailMetaInfo } from "./detail-meta-info";
+import { DetailPrice } from "./detail-price";
+import { DetailSkeleton } from "./detail-skeleton";
+import { DetailTrustBadges } from "./detail-trust-badges";
 
 export default function ProductDetail({ productSlug }) {
   const { product, loading, error } = useProduct(productSlug);
@@ -21,7 +23,7 @@ export default function ProductDetail({ productSlug }) {
   const [quantity, setQuantity] = useState(1);
 
   if (loading) {
-    return <ProductDetailSkeleton />;
+    return <DetailSkeleton />;
   }
 
   if (error || !product) {
@@ -60,15 +62,9 @@ export default function ProductDetail({ productSlug }) {
 
   return (
     <div className="bg-background min-h-screen pb-10">
-      <Link href="/items">
-        <Button variant="link" className={"px-0 py-6"}>
-          <ChevronLeft size={15} />
-          Back to Products
-        </Button>
-      </Link>
+      <DetailBackButton href="/items" label="Products" />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
-        {/* Left: Image Carousel */}
         <div className="relative">
           {(product.tag || product.onSale) && (
             <div className="absolute top-2 left-2 z-20">
@@ -92,9 +88,7 @@ export default function ProductDetail({ productSlug }) {
           />
         </div>
 
-        {/* Right: Product Info */}
         <div className="flex flex-col">
-          {/* Category + SKU */}
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               {product.category}
@@ -104,7 +98,6 @@ export default function ProductDetail({ productSlug }) {
             </span>
           </div>
 
-          {/* Name & Description */}
           <div className="mb-4">
             <h1 className="font-sans font-bold text-2xl md:text-3xl text-foreground leading-tight tracking-tight mb-2">
               {product.name}
@@ -117,20 +110,13 @@ export default function ProductDetail({ productSlug }) {
             )}
           </div>
 
-          {/* Price */}
-          <div className="mb-2">
-            <PriceFormat
-              originalPrice={product.originalPrice}
-              salePrice={product.price}
-              showSavePercentage
-              className="text-3xl"
-              classNameSalePrice="font-bold text-foreground"
-              classNameOriginalPrice="text-lg"
-              classNameSalePercentage="text-xs"
-            />
-          </div>
+          <DetailPrice
+            mode="product"
+            originalPrice={product.originalPrice}
+            salePrice={product.price}
+            showSavePercentage
+          />
 
-          {/* Stock status */}
           <div className="flex items-center gap-2 mb-6">
             <span
               className={cn(
@@ -160,7 +146,6 @@ export default function ProductDetail({ productSlug }) {
             </span>
           </div>
 
-          {/* Quantity + Total */}
           <div className="flex flex-wrap items-end gap-6 mb-6">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
@@ -185,7 +170,6 @@ export default function ProductDetail({ productSlug }) {
             </div>
           </div>
 
-          {/* CTA Buttons */}
           <div className="flex gap-3 mb-6">
             <Button
               variant="outline"
@@ -206,48 +190,24 @@ export default function ProductDetail({ productSlug }) {
             </Button>
           </div>
 
-          {/* Trust badges */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            {[
+          <DetailTrustBadges
+            items={[
               { icon: ShieldCheck, text: `${product.warranty} Warranty` },
               { icon: Truck, text: "Free Delivery" },
               { icon: Tag, text: "Best Price" },
-            ].map(({ icon: Icon, text }) => (
-              <div
-                key={text}
-                className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-accent text-center"
-              >
-                <Icon size={16} className="text-accent-foreground" />
-                <span className="text-xs font-bold text-accent-foreground leading-tight">
-                  {text}
-                </span>
-              </div>
-            ))}
-          </div>
+            ]}
+          />
 
-          {/* Meta */}
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <span>
-              Brand:{" "}
-              <span className="font-bold text-foreground">{product.brand}</span>
-            </span>
-            {product.warranty && (
-              <span>
-                Warranty:{" "}
-                <span className="font-bold text-foreground">
-                  {product.warranty}
-                </span>
-              </span>
-            )}
-            {product.tag && (
-              <span>
-                Tag:{" "}
-                <span className="font-bold text-foreground">{product.tag}</span>
-              </span>
-            )}
-          </div>
+          <DetailMetaInfo
+            fields={[
+              { label: "Brand", value: product.brand },
+              ...(product.warranty
+                ? [{ label: "Warranty", value: product.warranty }]
+                : []),
+              ...(product.tag ? [{ label: "Tag", value: product.tag }] : []),
+            ]}
+          />
 
-          {/* Info Tabs */}
           <InfoTabs product={product} />
         </div>
       </div>

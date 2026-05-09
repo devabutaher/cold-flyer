@@ -28,6 +28,10 @@ export const servicesApi = {
     return api.get(`/api/services/slug/${slug}`);
   },
 
+  async getServiceById(id) {
+    return api.get(`/api/services/id/${id}`);
+  },
+
   async getFeaturedServices() {
     return api.get("/api/services/featured");
   },

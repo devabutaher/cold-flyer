@@ -1,15 +1,13 @@
 import { Skeleton } from "../ui/skeleton";
 
-export function ProductDetailSkeleton() {
+export function DetailSkeleton() {
   return (
     <div className="bg-background min-h-screen py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
-        {/* Left: Image Carousel Skeleton */}
         <div className="relative">
           <Skeleton className="aspect-square w-full max-w-lg mx-auto rounded-lg" />
         </div>
 
-        {/* Right: Product Info Skeleton */}
         <div className="flex flex-col space-y-6">
           <div className="flex items-center justify-between">
             <Skeleton className="h-4 w-24" />
@@ -46,3 +44,5 @@ export function ProductDetailSkeleton() {
     </div>
   );
 }
+
+export default DetailSkeleton;
