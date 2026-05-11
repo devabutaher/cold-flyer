@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useOrdersQuery, useCancelOrder } from "@/hooks/queries";
+import { useCancelOrder, useOrdersQuery } from "@/hooks/queries";
 import { apiPost } from "@/lib/api-client";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";

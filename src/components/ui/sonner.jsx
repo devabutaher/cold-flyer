@@ -28,13 +28,14 @@ const Toaster = ({ ...props }) => {
       toastOptions={{
         classNames: {
           toast: "group toast has-[>button]:button-root",
-          error: "!bg-destructive !text-destructive-foreground !border-destructive/30",
+          error:
+            "!bg-destructive !text-destructive-foreground !border-destructive/30",
           success: "!bg-green-600 !text-white !border-green-700",
           warning: "!bg-amber-500 !text-white !border-amber-600",
           info: "!bg-blue-600 !text-white !border-blue-700",
         },
       }}
-      position="top-right"
+      position="bottom-right"
       {...props}
     />
   );

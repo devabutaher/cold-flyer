@@ -315,9 +315,9 @@ export function OrderDetails({ orderId }) {
                     <AlertDialogAction
                       className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                       onClick={handleCancel}
-                      disabled={cancelling}
+                      disabled={cancelOrder.isPending}
                     >
-                      {cancelling ? "Cancelling…" : "Cancel Order"}
+                      {cancelOrder.isPending ? "Cancelling…" : "Cancel Order"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
