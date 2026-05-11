@@ -3,7 +3,6 @@
 import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useService } from "@/hooks/use-service";
 import {
   CheckCircle,
   CircleAlert,
@@ -17,35 +16,18 @@ import { toast } from "sonner";
 import { DetailBackButton } from "./detail-back-button";
 import { DetailMetaInfo } from "./detail-meta-info";
 import { DetailPrice } from "./detail-price";
-import { DetailSkeleton } from "./detail-skeleton";
 import { DetailTabs } from "./detail-tabs";
 import { DetailTrustBadges } from "./detail-trust-badges";
 
-export default function ServiceDetail({ serviceSlug }) {
-  const { service, loading, error } = useService(serviceSlug);
-
-  if (loading) {
-    return <DetailSkeleton />;
-  }
-
-  if (error || !service) {
-    return (
-      <div className="bg-background min-h-screen pb-10 flex items-center justify-center">
-        <div className="text-destructive">Failed to load service</div>
-      </div>
-    );
-  }
+export default function ServiceDetailClient({ service }) {
+  if (!service) return null;
 
   const handleBookNow = () => {
-    if (service) {
-      toast.success(`${service.name} - Booking initiated`);
-    }
+    toast.success(`${service.name} - Booking initiated`);
   };
 
   const handleContact = () => {
-    if (service) {
-      toast.info(`Contacting about ${service.name}`);
-    }
+    toast.info(`Contacting about ${service.name}`);
   };
 
   const images =
@@ -55,6 +37,28 @@ export default function ServiceDetail({ serviceSlug }) {
           title: `${service.name} — view ${idx + 1}`,
         }))
       : [{ url: "", title: service.name }];
+  
+  const iconMap = {
+    CheckCircle,
+    CircleAlert,
+    FileText,
+    ShieldCheck,
+    ThumbsUp,
+    Clock,
+  };
+
+  const defaultTabsData = [
+    { key: "includes", label: "Includes", icon: CheckCircle, data: service.includes },
+    { key: "excludes", label: "Excludes", icon: CircleAlert, data: service.exclusions, variant: "exclude" },
+    { key: "requirements", label: "Requirements", icon: FileText, data: service.requirements },
+    { key: "qualifications", label: "Qualifications", icon: ShieldCheck, data: service.qualifications },
+  ].filter(tab => tab.data && (Array.isArray(tab.data) ? tab.data.length > 0 : tab.data.trim()));
+
+  const trustBadgesData = [
+    { icon: ShieldCheck, text: "Quality Service" },
+    { icon: ThumbsUp, text: "Satisfaction Guaranteed" },
+    { icon: Clock, text: "Timely Response" },
+  ];
 
   return (
     <div className="bg-background min-h-screen pb-10">
@@ -152,13 +156,7 @@ export default function ServiceDetail({ serviceSlug }) {
             </Button>
           </div>
 
-          <DetailTrustBadges
-            items={[
-              { icon: ShieldCheck, text: "Quality Service" },
-              { icon: ThumbsUp, text: "Satisfaction Guaranteed" },
-              { icon: Clock, text: "Timely Response" },
-            ]}
-          />
+          <DetailTrustBadges items={trustBadgesData} />
 
           <DetailMetaInfo
             fields={[
@@ -174,35 +172,7 @@ export default function ServiceDetail({ serviceSlug }) {
             ]}
           />
 
-          <DetailTabs
-            tabs={[
-              {
-                key: "includes",
-                label: "Includes",
-                icon: CheckCircle,
-                data: service.includes,
-              },
-              {
-                key: "excludes",
-                label: "Excludes",
-                icon: CircleAlert,
-                data: service.exclusions,
-                variant: "exclude",
-              },
-              {
-                key: "requirements",
-                label: "Requirements",
-                icon: FileText,
-                data: service.requirements,
-              },
-              {
-                key: "qualifications",
-                label: "Qualifications",
-                icon: ShieldCheck,
-                data: service.qualifications,
-              },
-            ].filter((tab) => tab.data && tab.data.length > 0)}
-          />
+          <DetailTabs tabs={defaultTabsData} />
         </div>
       </div>
     </div>

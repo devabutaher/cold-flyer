@@ -14,8 +14,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/context/auth-context";
-import { ordersApi } from "@/lib/api/orders";
+import { apiGet, apiPost, apiPatch } from "@/lib/api-client";
+import { useOrderQuery, useCancelOrder } from "@/hooks/queries";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
@@ -29,9 +31,6 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { StatusPill } from "./status-pill";
 import { OrderDetailSkeleton } from "./order-detail-skeleton";
 import { OrderItemRow } from "./order-item-row";
@@ -56,70 +55,11 @@ const PAYMENT_STATUS = {
 
 export function OrderDetails({ orderId }) {
   const router = useRouter();
-  const { user } = useAuth();
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: order, isLoading, refetch } = useOrderQuery(orderId);
+  const cancelOrder = useCancelOrder();
   const [paying, setPaying] = useState(false);
 
-  useEffect(() => {
-    if (!orderId) return;
-    (async () => {
-      try {
-        const res = await ordersApi.getOrderById(orderId);
-        setOrder(res.data?.order ?? null);
-      } catch {
-        toast.error("Failed to load order");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [orderId]);
-
-  const handlePayment = async () => {
-    setPaying(true);
-    try {
-      const res = await ordersApi.createPaymentLink(orderId);
-      if (res.success && res.data?.checkoutUrl) {
-        router.push(res.data.checkoutUrl);
-      } else {
-        toast.success("Payment link created!");
-      }
-    } catch {
-      toast.error("Failed to create payment");
-    } finally {
-      setPaying(false);
-    }
-  };
-
-  const handleCancel = async () => {
-    try {
-      await ordersApi.cancelOrder(orderId);
-      toast.success("Order cancelled");
-      setOrder((prev) => ({ ...prev, status: "cancelled" }));
-    } catch {
-      toast.error("Failed to cancel order");
-    }
-  };
-
-  const downloadInvoice = async () => {
-    try {
-      const [{ default: InvoiceDoc }, { pdf }] = await Promise.all([
-        import("@/components/dashboard/orders/invoice-pdf"),
-        import("@react-pdf/renderer"),
-      ]);
-      const blob = await pdf(<InvoiceDoc order={order} user={user} />).toBlob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `invoice-${order.orderNumber ?? order._id}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch {
-      toast.error("Failed to generate invoice");
-    }
-  };
-
-  if (loading) return <OrderDetailSkeleton />;
+  if (isLoading) return <OrderDetailSkeleton />;
 
   if (!order) {
     return (
@@ -132,6 +72,47 @@ export function OrderDetails({ orderId }) {
       </div>
     );
   }
+
+  const handlePayment = async () => {
+    setPaying(true);
+    try {
+      const res = await apiPost(`/orders/${orderId}/checkout`, {});
+      if (res.success && res.data?.checkoutUrl) {
+        router.push(res.data.checkoutUrl);
+      }
+    } catch {
+      console.error("Failed to create payment");
+    } finally {
+      setPaying(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      await cancelOrder.mutateAsync({ orderId, reason: "Customer request" });
+      refetch();
+    } catch {
+      console.error("Failed to cancel order");
+    }
+  };
+
+  const downloadInvoice = async () => {
+    try {
+      const [{ default: InvoiceDoc }, { pdf }] = await Promise.all([
+        import("@/components/dashboard/orders/invoice-pdf"),
+        import("@react-pdf/renderer"),
+      ]);
+      const blob = await pdf(<InvoiceDoc order={order} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `invoice-${order.orderNumber ?? order._id}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      console.error("Failed to generate invoice");
+    }
+  };
 
   const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
   const canCancel = canPay;
@@ -334,8 +315,9 @@ export function OrderDetails({ orderId }) {
                     <AlertDialogAction
                       className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                       onClick={handleCancel}
+                      disabled={cancelling}
                     >
-                      Cancel Order
+                      {cancelling ? "Cancelling…" : "Cancel Order"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

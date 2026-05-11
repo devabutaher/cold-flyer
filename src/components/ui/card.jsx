@@ -1,8 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 // ── Shared entrance variants ─────────────────────────────────
 const entranceVariants = {
@@ -260,10 +259,10 @@ function CardFooter({ className, ...props }) {
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
   CardAction,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };

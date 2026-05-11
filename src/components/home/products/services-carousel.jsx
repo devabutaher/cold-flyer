@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import servicesApi from "@/lib/api/services";
+import { apiGet } from "@/lib/api-client";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CheckCircle, Wrench } from "lucide-react";
 import { motion } from "framer-motion";
@@ -17,8 +17,13 @@ export default function ServicesCarousel() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await servicesApi.getFeaturedServices();
-        setServices(res.data?.services ?? res.services ?? []);
+        const res = await apiGet("/services/featured");
+        let data = [];
+        if (Array.isArray(res)) data = res;
+        else if (Array.isArray(res?.data)) data = res.data;
+        else if (Array.isArray(res?.data?.services)) data = res.data.services;
+        else if (Array.isArray(res?.services)) data = res.services;
+        setServices(data);
       } catch {
         setServices([]);
       } finally {
@@ -60,7 +65,7 @@ function ServiceCard({ service, index }) {
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <div className="mb-6 overflow-hidden rounded-t-lg bg-muted h-48 relative">
-        <Link href={`/services/${service.slug}`}>
+        <Link href={`/services/${service.slug}`} className="relative block h-full">
           {src ? (
             <Image
               src={src}

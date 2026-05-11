@@ -21,9 +21,10 @@ import {
 import { MoreHorizontal, PencilIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
-export function ServiceRowActions({ row, onDelete }) {
+export function ServiceRowActions({ row, onDelete, onEdit }) {
   const [showDelete, setShowDelete] = useState(false);
   const id = row.original._id ?? row.original.id;
+  const service = row.original;
 
   return (
     <>
@@ -40,7 +41,7 @@ export function ServiceRowActions({ row, onDelete }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-36">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onEdit?.(service)}>
             <PencilIcon size={13} className="mr-2" />
             Edit
           </DropdownMenuItem>

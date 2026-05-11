@@ -40,7 +40,6 @@ export function ServicePricingSection({ control }) {
         <Controller
           name="basePrice"
           control={control}
-          defaultValue=""
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>
@@ -62,7 +61,6 @@ export function ServicePricingSection({ control }) {
         <Controller
           name="priceType"
           control={control}
-          defaultValue="fixed"
           render={({ field }) => (
             <Field>
               <FieldLabel>Price Type</FieldLabel>

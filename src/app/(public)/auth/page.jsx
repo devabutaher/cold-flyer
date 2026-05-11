@@ -1,9 +1,5 @@
-import AuthPage from "@/components/auth/auth-page";
+import AuthPageComponent from "@/components/auth/auth-page";
 
-export default function Auth() {
-  return (
-    <div>
-      <AuthPage />
-    </div>
-  );
+export default function AuthPage() {
+  return <AuthPageComponent />;
 }

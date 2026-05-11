@@ -1,4 +1,7 @@
+"use client";
+
 import { BadgeCheckIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -10,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/components/providers";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -21,7 +24,6 @@ export function UserDropdown({ user }) {
   const handleLogOut = () => {
     logOut();
     router.push("/");
-    toast.success("Logged Out Successfully");
   };
 
   return (
@@ -42,19 +44,23 @@ export function UserDropdown({ user }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheckIcon />
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCardIcon />
-            Orders
-          </DropdownMenuItem>
+          <Link href="/dashboard/profile" passHref>
+            <DropdownMenuItem className="cursor-pointer">
+              <BadgeCheckIcon className="mr-2" />
+              Profile
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/dashboard/orders" passHref>
+            <DropdownMenuItem className="cursor-pointer">
+              <CreditCardIcon className="mr-2" />
+              Orders
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <button className="w-full" onClick={handleLogOut}>
           <DropdownMenuItem>
-            <LogOutIcon />
+            <LogOutIcon className="mr-2" />
             Sign Out
           </DropdownMenuItem>
         </button>

@@ -61,12 +61,14 @@ export function ImageUploadField({ value = [], onChange }) {
       <FieldLabel>Service Images (Max {MAX_IMAGES})</FieldLabel>
       <div className="flex flex-wrap gap-3 mt-2">
         {value.map((item, index) => (
-          <div key={index} className="relative w-24 h-24">
+          <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border">
             <Image
               src={item.preview || item.url}
               alt={`Image ${index + 1}`}
               fill
-              className="object-cover rounded-lg border"
+              sizes="96px"
+              quality={80}
+              className="object-cover"
             />
             <Button
               type="button"

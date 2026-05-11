@@ -1,12 +1,12 @@
 "use client";
 
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { AnimatedSection } from "@/components/ui/animated-section";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const contactInfo = [
@@ -100,7 +100,7 @@ export default function Contact() {
             </div>
 
             <div className="mt-8 text-center sm:text-left">
-              <Link href="/contact">
+              <Link href="/">
                 <Button size="lg">Send Us a Message</Button>
               </Link>
             </div>

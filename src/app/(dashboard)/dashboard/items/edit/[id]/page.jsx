@@ -1,11 +1,24 @@
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import api from "@/lib/api/master";
 import EditProductForm from "@/components/dashboard/product/edit-product/edit-product-form";
-import productsApi from "@/lib/api/products";
+import { getProductBySlugServer } from "@/lib/actions/products";
+
+export const dynamic = "force-dynamic";
+
+async function getUser() {
+  try {
+    const data = await api.getCurrentUser();
+    return data;
+  } catch {
+    return null;
+  }
+}
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
   try {
-    const response = await productsApi.getProductBySlug(id);
-    const product = response.data?.product || response.product;
+    const product = await getProductBySlugServer(id);
     return {
       title: product
         ? `Edit ${product.name} | ColdFlyer`
@@ -17,12 +30,23 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function EditProductPage({ params }) {
+  const cookieStore = await cookies();
+  
+  if (!cookieStore.get("accessToken")) {
+    redirect("/auth");
+  }
+  
+  const user = await getUser();
+  
+  if (!user) {
+    redirect("/");
+  }
+
   const { id: slugOrId } = await params;
 
   let product = null;
   try {
-    const response = await productsApi.getProductBySlug(slugOrId);
-    product = response.data?.product || response.product;
+    product = await getProductBySlugServer(slugOrId);
   } catch (error) {
     console.error("Failed to fetch product:", error);
   }
@@ -35,5 +59,5 @@ export default async function EditProductPage({ params }) {
     );
   }
 
-  return <EditProductForm product={product} />;
+  return <EditProductForm product={product} isAdmin={user.role === "admin"} />;
 }

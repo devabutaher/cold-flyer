@@ -1,12 +1,8 @@
 import {
-  ActivityIcon,
-  AirVent,
   ClipboardList,
   HelpCircle,
-  Layers,
   LayoutDashboard,
   Package,
-  Settings,
   ShoppingCart,
   User,
   Wrench,
@@ -50,21 +46,6 @@ export const navGroups = [
         path: "",
         icon: <ClipboardList />,
       },
-      {
-        title: "Repair Requests",
-        path: "",
-        icon: <Wrench />,
-      },
-      {
-        title: "AC Units",
-        path: "",
-        icon: <AirVent />,
-      },
-      {
-        title: "Parts & Accessories",
-        path: "",
-        icon: <Layers />,
-      },
     ],
   },
   {
@@ -75,15 +56,15 @@ export const navGroups = [
         path: "/dashboard/profile",
         icon: <User />,
       },
-      {
-        title: "Settings",
-        icon: <Settings />,
-        subItems: [
-          { title: "General", path: "" },
-          { title: "Notifications", path: "" },
-          { title: "Security", path: "" },
-        ],
-      },
+      // {
+      //   title: "Settings",
+      //   icon: <Settings />,
+      //   subItems: [
+      //     { title: "General", path: "" },
+      //     { title: "Notifications", path: "" },
+      //     { title: "Security", path: "" },
+      //   ],
+      // },
     ],
   },
 ];
@@ -93,11 +74,6 @@ export const footerNavLinks = [
     title: "Help & FAQ",
     path: "/faq",
     icon: <HelpCircle />,
-  },
-  {
-    title: "System Status",
-    path: "/status",
-    icon: <ActivityIcon />,
   },
 ];
 

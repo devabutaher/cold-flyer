@@ -1,5 +1,6 @@
-import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
 import { UserDropdown } from "@/components/auth/user-dropdown";
+import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
+import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
 import { mainNavLinks, staticLinks } from "@/data/nav-links";
@@ -7,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { MenuIcon, XIcon } from "lucide-react";
 import { Suspense, useState } from "react";
 import { NavSearch } from "./nav-search";
-import { useAuth } from "@/context/auth-context";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);

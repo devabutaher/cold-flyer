@@ -1,13 +1,13 @@
 "use client";
 
-import productsApi from "@/lib/api/products";
-import { Package } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { DataTable } from "../../table/data-table";
-import { ExportMenu } from "../../table/export-menu";
-import { TableToolbar } from "../../table/table-toolbar";
+import { useMemo } from "react";
+import { DataTable } from "@/components/dashboard/table/data-table";
+import { ExportMenu } from "@/components/dashboard/table/export-menu";
+import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { buildProductColumns } from "./product-columns";
+import { useProductsQuery, useDeleteProduct } from "@/hooks/queries";
+import { Package } from "lucide-react";
+import { toast } from "sonner";
 
 const mapProductRow = (p) => ({
   sku: p.sku,
@@ -33,51 +33,44 @@ const PRODUCT_PDF_COLUMNS = [
   { header: "Rating", accessorKey: "rating", width: 0.6 },
 ];
 
-export default function ProductsTable() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function ProductsTable({ isAdmin = false }) {
+  const { data: products = [], isLoading: loading } = useProductsQuery({ limit: 100 });
+  const deleteProduct = useDeleteProduct();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await productsApi.getProducts({ limit: 100 });
-        setData(res.data?.products ?? res.products ?? []);
-      } catch {
-        setData([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  const checkAdminAccess = () => {
+    if (!isAdmin) {
+      toast.error("Access Denied: This action requires Administrator privileges.");
+      return false;
+    }
+    return true;
+  };
 
   const handleDelete = async (id) => {
+    if (!checkAdminAccess()) return;
     try {
-      await productsApi.deleteProduct(id);
-      setData((prev) => prev.filter((p) => (p._id ?? p.id) !== id));
+      await deleteProduct.mutateAsync(id);
       toast.success("Product deleted successfully");
     } catch (error) {
-      toast.error(error.message || "Failed to delete product");
+      console.error(error);
     }
   };
 
   const columns = useMemo(
     () => buildProductColumns({ onDelete: handleDelete }),
-    [],
+    [handleDelete]
   );
 
-  // Extract unique categories and brands from data
   const getUnique = (arr, key) => {
     const values = arr.map((item) => item[key]).filter((v) => v);
     return [...new Set(values)].sort();
   };
-  const categoriesOptions = getUnique(data, "category");
-  const brandsOptions = getUnique(data, "brand");
+  const categoriesOptions = getUnique(products, "category");
+  const brandsOptions = getUnique(products, "brand");
 
-  return (
+return (
     <DataTable
       columns={columns}
-      data={data}
+      data={products}
       loading={loading}
       rowCount="products"
       defaultSort={[{ id: "name", desc: false }]}
@@ -86,7 +79,7 @@ export default function ProductsTable() {
       toolbar={(table) => (
         <TableToolbar
           table={table}
-          searchPlaceholder="Search products…"
+          searchPlaceholder="Search products."
           selectedLabel="products"
           filters={[
             {

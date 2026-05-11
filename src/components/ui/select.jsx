@@ -1,7 +1,7 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { Select as SelectPrimitive } from "radix-ui";
-import { motion, AnimatePresence } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";

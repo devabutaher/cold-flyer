@@ -1,9 +1,9 @@
 "use client";
 
 import { UserDropdown } from "@/components/auth/user-dropdown";
+import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 

@@ -1,11 +1,8 @@
 "use client";
 
-import { useUpdateProduct } from "@/hooks/use-product-mutation";
-import { uploadImages } from "@/lib/image-upload";
-import {
-  getProductInitialValues,
-  productFormSchema,
-} from "@/lib/schema/product-schemas";
+import { useUpdateProduct } from "@/hooks/queries";
+import { uploadImageAction } from "@/lib/actions/products";
+import { getProductInitialValues, productFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -23,7 +20,7 @@ import {
   SpecificationsSection,
 } from "../product-form";
 
-export default function EditProductForm({ product }) {
+export default function EditProductForm({ product, isAdmin = false }) {
   const router = useRouter();
   const [productType, setProductType] = useState(product.productType || "unit");
   const [isUploading, setIsUploading] = useState(false);
@@ -39,12 +36,22 @@ export default function EditProductForm({ product }) {
     .watch(["name", "price", "stock"])
     .filter(Boolean).length;
 
+  const checkAdminAccess = () => {
+    if (!isAdmin) {
+      toast.error("Access Denied: This action requires Administrator privileges.");
+      return false;
+    }
+    return true;
+  };
+
   function handleTypeChange(value) {
     setProductType(value);
     form.setValue("productType", value);
   }
 
   async function onSubmit(values) {
+    if (!checkAdminAccess()) return;
+    
     setIsUploading(true);
 
     try {
@@ -58,7 +65,9 @@ export default function EditProductForm({ product }) {
       let uploadedImages = existingImages;
 
       if (newFiles.length > 0) {
-        const newUploaded = await uploadImages(newFiles);
+        const newUploaded = await Promise.all(
+          newFiles.map((img) => uploadImageAction(img, "images")),
+        );
         uploadedImages = [...uploadedImages, ...newUploaded];
       }
 
@@ -90,11 +99,9 @@ export default function EditProductForm({ product }) {
       };
 
       await updateProduct.mutateAsync({ id: product._id, data: payload });
-      toast.success(`"${values.name}" updated successfully!`);
       router.push("/dashboard/items");
     } catch (error) {
       console.error("Update product error:", error);
-      toast.error("Failed to update product. Please try again.");
     } finally {
       setIsUploading(false);
     }

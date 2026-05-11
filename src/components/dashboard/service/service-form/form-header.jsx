@@ -34,7 +34,9 @@ export function ServiceFormHeader({ completedSections = 0, title }) {
                   "flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
                   done && "bg-primary text-primary-foreground",
                   active && "border-2 border-primary text-primary",
-                  !done && !active && "border border-border text-muted-foreground"
+                  !done &&
+                    !active &&
+                    "border border-border text-muted-foreground",
                 )}
               >
                 {done ? "✓" : step.id}
@@ -42,7 +44,7 @@ export function ServiceFormHeader({ completedSections = 0, title }) {
               <span
                 className={cn(
                   "hidden sm:inline",
-                  active && "text-foreground font-medium"
+                  active && "text-foreground font-medium",
                 )}
               >
                 {step.label}

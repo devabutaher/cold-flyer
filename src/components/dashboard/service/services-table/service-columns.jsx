@@ -8,7 +8,7 @@ import {
 import { Wrench } from "lucide-react";
 import { ServiceRowActions } from "./service-row-actions";
 
-export function buildServiceColumns({ onDelete } = {}) {
+export function buildServiceColumns({ onDelete, onEdit } = {}) {
   return [
     {
       id: "select",
@@ -39,7 +39,8 @@ export function buildServiceColumns({ onDelete } = {}) {
       accessorKey: "name",
       cell: ({ row }) => {
         const s = row.original;
-        const src = s.images?.[0];
+        const img = s.images?.[0];
+        const src = typeof img === 'string' ? img : img?.url;
         return (
           <div className="flex items-center gap-3 min-w-48">
             {src ? (
@@ -126,7 +127,7 @@ export function buildServiceColumns({ onDelete } = {}) {
       size: 52,
       enableSorting: false,
       header: "",
-      cell: ({ row }) => <ServiceRowActions row={row} onDelete={onDelete} />,
+      cell: ({ row }) => <ServiceRowActions row={row} onDelete={onDelete} onEdit={onEdit} />,
     },
   ];
 }

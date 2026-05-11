@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { CheckCircle, ArrowRight, Package } from "lucide-react";
+import { CheckCircle, Package } from "lucide-react";
 import Link from "next/link";
-import { ordersApi } from "@/lib/api/orders";
+import { getUser } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function OrderSuccessPage() {
   const params = useParams();
@@ -17,27 +18,40 @@ export default function OrderSuccessPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const verifyAndFetchOrder = useCallback(async () => {
+  const fetchOrder = useCallback(async () => {
     setLoading(true);
     try {
-      if (success === "true") {
-        await ordersApi.verifyPayment(orderId, null);
+      // Check if user is logged in
+      const user = getUser();
+      if (!user) {
+        toast.error("Please login to view your order");
+        return;
       }
-      const response = await ordersApi.getOrderById(orderId);
-      setOrder(response.data?.order);
+
+      // Fetch order with auth
+      const response = await fetch(`/api/orders/${orderId}`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setOrder(data.data?.order || data.order);
+      }
     } catch (error) {
       console.error("Failed to fetch order:", error);
     } finally {
       setLoading(false);
     }
-  }, [orderId, success]);
+  }, [orderId]);
 
   useEffect(() => {
     if (orderId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      verifyAndFetchOrder();
+      fetchOrder();
     }
-  }, [orderId, verifyAndFetchOrder]);
+  }, [orderId, fetchOrder]);
 
   if (loading) {
     return (
@@ -48,10 +62,6 @@ export default function OrderSuccessPage() {
             <Skeleton className="h-8 w-3/4 mx-auto" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3" />
-            <div className="flex gap-3 pt-4">
-              <Skeleton className="h-10 flex-1" />
-              <Skeleton className="h-10 flex-1" />
-            </div>
           </CardContent>
         </Card>
       </div>
@@ -89,20 +99,13 @@ export default function OrderSuccessPage() {
 
           <div className="flex flex-col gap-2">
             <Link href={`/dashboard/orders/${orderId}`}>
-              <Button className="w-full">
-                View Order Details
-                <ArrowRight size={16} className="ml-2" />
-              </Button>
+              <Button className="w-full">View Order Details</Button>
             </Link>
             <Link href="/dashboard/orders">
-              <Button variant="outline" className="w-full">
-                View All Orders
-              </Button>
+              <Button variant="outline" className="w-full">View All Orders</Button>
             </Link>
             <Link href="/">
-              <Button variant="ghost" className="w-full">
-                Continue Shopping
-              </Button>
+              <Button variant="ghost" className="w-full">Continue Shopping</Button>
             </Link>
           </div>
         </CardContent>

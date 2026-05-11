@@ -73,22 +73,18 @@ export default function ProductCarousel({
         <div className="embla" ref={emblaRef}>
           <div className="embla__container">
             {items.map((item, index) => (
-              <motion.div
+              <div
                 key={item._id ?? item.id}
                 className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
               >
                 <div className="h-full">
                   {renderCard ? (
                     renderCard(item, index)
                   ) : (
-                    <CatalogCard item={item} type="product" animate={false} />
+                    <CatalogCard item={item} type="product" animate={false} index={index} />
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

@@ -55,7 +55,6 @@ export function ServiceBasicInfoSection({ control }) {
           <Controller
             name="name"
             control={control}
-            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
@@ -78,7 +77,6 @@ export function ServiceBasicInfoSection({ control }) {
           <Controller
             name="category"
             control={control}
-            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
@@ -109,7 +107,6 @@ export function ServiceBasicInfoSection({ control }) {
           <Controller
             name="serviceType"
             control={control}
-            defaultValue=""
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>
@@ -143,7 +140,6 @@ export function ServiceBasicInfoSection({ control }) {
         <Controller
           name="description"
           control={control}
-          defaultValue=""
           render={({ field }) => (
             <Field>
               <FieldLabel>Description</FieldLabel>
@@ -161,7 +157,6 @@ export function ServiceBasicInfoSection({ control }) {
         <Controller
           name="images"
           control={control}
-          defaultValue={[]}
           render={({ field }) => (
             <ImageUploadField
               value={field.value || []}

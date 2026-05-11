@@ -1,8 +1,8 @@
 "use client";
 
-import { useCreateService } from "@/hooks/use-service-mutation";
-import { uploadImages } from "@/lib/image-upload";
-import { serviceFormSchema } from "@/lib/schema/service-schemas";
+import { useCreateService } from "@/hooks/queries";
+import { uploadImageAction } from "@/lib/actions/products";
+import { serviceFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -11,11 +11,11 @@ import { toast } from "sonner";
 
 import {
   ServiceBasicInfoSection,
+  ServiceDetailsSection,
   ServiceFormActions,
   ServiceFormHeader,
   ServicePricingSection,
 } from "../service-form";
-import { ServiceDetailsSection } from "./details-section";
 
 function useCompletedSections(control) {
   const [name, basePrice, category] = useWatch({
@@ -44,9 +44,17 @@ const initialValues = {
   images: [],
 };
 
-export default function AddServiceForm() {
+export default function AddServiceForm({ isAdmin = false }) {
   const [isUploading, setIsUploading] = useState(false);
   const createService = useCreateService();
+
+  const checkAdminAccess = () => {
+    if (!isAdmin) {
+      toast.error("Access Denied: This action requires Administrator privileges.");
+      return false;
+    }
+    return true;
+  };
 
   const form = useForm({
     defaultValues: initialValues,
@@ -57,11 +65,15 @@ export default function AddServiceForm() {
   const completedSections = useCompletedSections(form.control);
 
   async function onSubmit(values) {
+    if (!checkAdminAccess()) return;
+    
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await uploadImages(images);
+      const uploadedImages = await Promise.all(
+        images.map((img) => uploadImageAction(img, "images")),
+      );
 
       const includes = parseListInput(values.includes);
       const exclusions = parseListInput(values.exclusions);
@@ -85,10 +97,9 @@ export default function AddServiceForm() {
       };
 
       await createService.mutateAsync(payload);
-      toast.success(`"${values.name}" added successfully!`);
       form.reset(initialValues);
     } catch (error) {
-      toast.error(error.message || "Failed to add service");
+      console.error(error);
     } finally {
       setIsUploading(false);
     }

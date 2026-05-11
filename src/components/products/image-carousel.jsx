@@ -118,7 +118,10 @@ const ImageContainer = ({
                         />
                       ) : (
                         <div className="flex h-[90vh] w-[90vw] items-center justify-center">
-                          <Package size={96} className="text-muted-foreground/30" />
+                          <Package
+                            size={96}
+                            className="text-muted-foreground/30"
+                          />
                         </div>
                       )}
                     </TransformComponent>

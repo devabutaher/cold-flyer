@@ -29,7 +29,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-<SidebarGroup>
+        <SidebarGroup className="space-y-2">
           <SidebarMenuItem className="flex items-center gap-2">
             <Link href="/dashboard/items/add" className="w-full">
               <SidebarMenuButton

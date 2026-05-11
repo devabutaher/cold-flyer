@@ -3,9 +3,9 @@
 import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/context/cart-context";
-import { useProduct } from "@/hooks/use-product-search";
+import { useProduct } from "@/hooks/queries";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/store/cart";
 import { ShieldCheck, Tag, Truck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -1,18 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ordersApi } from "@/lib/api/orders";
+import { useOrdersQuery, useCancelOrder } from "@/hooks/queries";
+import { apiPost } from "@/lib/api-client";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { useMemo, useState } from "react";
 import { DataTable } from "../table/data-table";
 import { ExportMenu } from "../table/export-menu";
 import { TableToolbar } from "../table/table-toolbar";
 import { buildOrderColumns } from "./orders-table/order-columns";
 
-// Fields written to every export format
 const mapOrderRow = (o) => ({
   order: o.orderNumber ?? o._id?.slice(-8).toUpperCase(),
   date: o.createdAt ? new Date(o.createdAt).toLocaleDateString() : "—",
@@ -22,43 +21,27 @@ const mapOrderRow = (o) => ({
   paymentStatus: o.paymentStatus,
 });
 
-export default function OrdersPage() {
+export default function OrdersPage({ isAdmin = false }) {
   const router = useRouter();
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [payingOrderId, setPayingOrderId] = useState(null);
-
-  // ── Data fetching ──────────────────────────────────
-  async function fetchOrders() {
-    try {
-      setLoading(true);
-      const res = await ordersApi.getOrders();
-      setOrders(res.data?.orders ?? []);
-    } catch {
-      toast.error("Failed to load orders");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // Initial load — stable reference: fetchOrders is a plain function, not reactive
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchOrders();
-  }, []);
+  const {
+    data: ordersData = [],
+    isLoading: loading,
+    refetch,
+  } = useOrdersQuery();
+  const cancelOrder = useCancelOrder();
+  const orders = ordersData ?? [];
 
   // ── Handlers ───────────────────────────────────────
   const handlePay = async (orderId) => {
     setPayingOrderId(orderId);
     try {
-      const res = await ordersApi.createPaymentLink(orderId);
+      const res = await apiPost(`/orders/${orderId}/checkout`, {});
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
-      } else {
-        toast.success("Payment link created! You can pay later.");
       }
     } catch {
-      toast.error("Failed to create payment");
+      console.error("Failed to create payment");
     } finally {
       setPayingOrderId(null);
     }
@@ -66,12 +49,10 @@ export default function OrdersPage() {
 
   const handleCancel = async (orderId) => {
     try {
-      await ordersApi.cancelOrder(orderId);
-      toast.success("Order cancelled");
-      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      await cancelOrder.mutateAsync({ orderId, reason: "Cancelled by admin" });
+      refetch();
     } catch {
-      toast.error("Failed to cancel order");
-      fetchOrders();
+      console.error("Failed to cancel order");
     }
   };
 
@@ -83,6 +64,7 @@ export default function OrdersPage() {
         onCancel: handleCancel,
         payingOrderId,
       }),
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [payingOrderId],
   );

@@ -1,13 +1,13 @@
 "use client";
 
-import servicesApi from "@/lib/api/services";
-import { Package } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { DataTable } from "../../table/data-table";
-import { ExportMenu } from "../../table/export-menu";
-import { TableToolbar } from "../../table/table-toolbar";
+import { useMemo } from "react";
+import { DataTable } from "@/components/dashboard/table/data-table";
+import { ExportMenu } from "@/components/dashboard/table/export-menu";
+import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { buildServiceColumns } from "./service-columns";
+import { useServicesQuery, useDeleteService } from "@/hooks/queries";
+import { Package } from "lucide-react";
+import { toast } from "sonner";
 
 const mapServiceRow = (s) => ({
   name: s.name,
@@ -33,49 +33,44 @@ const SERVICE_PDF_COLUMNS = [
   { header: "Active", accessorKey: "isActive", width: 0.6 },
 ];
 
-export default function ServicesTable() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function ServicesTable({ isAdmin = false }) {
+  const { data: services = [], isLoading: loading } = useServicesQuery({ limit: 100 });
+  const deleteService = useDeleteService();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await servicesApi.getServices({ limit: 100 });
-        setData(res.data?.services ?? res.services ?? []);
-      } catch {
-        setData([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  const checkAdminAccess = () => {
+    if (!isAdmin) {
+      toast.error("Access Denied: This action requires Administrator privileges.");
+      return false;
+    }
+    return true;
+  };
 
   const handleDelete = async (id) => {
+    if (!checkAdminAccess()) return;
     try {
-      setData((prev) => prev.filter((s) => (s._id ?? s.id) !== id));
+      await deleteService.mutateAsync(id);
       toast.success("Service deleted successfully");
     } catch (error) {
-      toast.error(error.message || "Failed to delete service");
+      console.error(error);
     }
   };
 
   const columns = useMemo(
     () => buildServiceColumns({ onDelete: handleDelete }),
-    [],
+    [handleDelete],
   );
 
   const getUnique = (arr, key) => {
     const values = arr.map((item) => item[key]).filter((v) => v);
     return [...new Set(values)].sort();
   };
-  const categoriesOptions = getUnique(data, "category");
-  const serviceTypesOptions = getUnique(data, "serviceType");
+  const categoriesOptions = getUnique(services, "category");
+  const serviceTypesOptions = getUnique(services, "serviceType");
 
   return (
     <DataTable
       columns={columns}
-      data={data}
+      data={services}
       loading={loading}
       rowCount="services"
       defaultSort={[{ id: "name", desc: false }]}
@@ -84,7 +79,7 @@ export default function ServicesTable() {
       toolbar={(table) => (
         <TableToolbar
           table={table}
-          searchPlaceholder="Search services…"
+          searchPlaceholder="Search services."
           selectedLabel="services"
           filters={[
             {

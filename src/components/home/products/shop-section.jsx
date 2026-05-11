@@ -2,7 +2,7 @@
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Skeleton } from "@/components/ui/skeleton";
-import productsApi from "@/lib/api/products";
+import { apiGet } from "@/lib/api-client";
 import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
 
@@ -57,11 +57,25 @@ export default function ShopSection() {
     async function fetchProducts() {
       try {
         const [unitsRes, partsRes] = await Promise.all([
-          productsApi.getProducts({ productType: "unit", limit: 10 }),
-          productsApi.getProducts({ productType: "part", limit: 10 }),
+          apiGet("/products?productType=unit&limit=10"),
+          apiGet("/products?productType=part&limit=10"),
         ]);
-        setAcUnits(unitsRes.data?.products || unitsRes.products || []);
-        setAcParts(partsRes.data?.products || partsRes.products || []);
+
+        let units = [];
+        let parts = [];
+
+        if (Array.isArray(unitsRes)) units = unitsRes;
+        else if (Array.isArray(unitsRes?.data)) units = unitsRes.data;
+        else if (Array.isArray(unitsRes?.data?.products)) units = unitsRes.data.products;
+        else if (Array.isArray(unitsRes?.products)) units = unitsRes.products;
+
+        if (Array.isArray(partsRes)) parts = partsRes;
+        else if (Array.isArray(partsRes?.data)) parts = partsRes.data;
+        else if (Array.isArray(partsRes?.data?.products)) parts = partsRes.data.products;
+        else if (Array.isArray(partsRes?.products)) parts = partsRes.products;
+
+        setAcUnits(units);
+        setAcParts(parts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {

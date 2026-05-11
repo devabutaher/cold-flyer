@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 const sectionVariants = {
   fadeUp: {
@@ -37,7 +36,7 @@ export function AnimatedSection({
   ...props
 }) {
   const Component = motion[as] || motion.section;
-  
+
   return (
     <Component
       id={id}

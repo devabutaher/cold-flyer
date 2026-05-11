@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
-import { useCart } from "@/context/cart-context";
+import { useCart } from "@/store/cart";
 import { motion } from "framer-motion";
 import { Package, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
@@ -17,7 +17,7 @@ const TAG_STYLES = {
   Hot: "bg-orange-500 text-white",
 };
 
-export function CatalogCard({ item, type = "product", animate = true }) {
+export function CatalogCard({ item, type = "product", animate = true, index = 0 }) {
   const isProduct = type === "product";
   const { addItem } = useCart();
 
@@ -72,8 +72,8 @@ export function CatalogCard({ item, type = "product", animate = true }) {
             src={image}
             alt={name}
             fill
-            loading="eager"
-            sizes="100%"
+            priority={index < 3}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

@@ -2,12 +2,12 @@
 
 import { DesktopNav } from "@/components/layout/navbar/desktop-nav";
 import { MobileNav } from "@/components/layout/navbar/mobile-nav";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import Logo from "@/components/ui/logo";
-import { useCart } from "@/context/cart-context";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/store/cart";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";

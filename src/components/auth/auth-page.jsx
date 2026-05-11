@@ -1,15 +1,25 @@
 "use client";
 
-import Image from "next/image";
+import { useAuth } from "@/components/providers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/context/auth-context";
-import api from "@/lib/api";
-import { createAccountSchema, signInSchema } from "@/lib/schema/auth-schemas";
+import {
+  loginWithFirebaseAction,
+  registerWithFirebaseAction,
+} from "@/lib/actions/auth";
+import api from "@/lib/api-client";
+import { auth } from "@/lib/firebase";
+import { createAccountSchema, signInSchema } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { Crown, Eye, EyeOff, Shield } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,8 +35,7 @@ export default function AuthPage() {
   const [showAdminHint, setShowAdminHint] = useState(false);
 
   const router = useRouter();
-  const { signIn, signUp, signInWithGoogle, resetPassword, backendUser } =
-    useAuth();
+  const { signInWithGoogle, resetPassword, backendUser } = useAuth();
 
   const isSignIn = tab === "signin";
 
@@ -53,21 +62,41 @@ export default function AuthPage() {
     setFirebaseError("");
     try {
       if (isSignIn) {
-        await signIn(data.email, data.password);
-
-        const user = api.getUser();
-        if (user?.role === "admin") {
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          data.email,
+          data.password,
+        );
+        const idToken = await user.getIdToken();
+        const result = await loginWithFirebaseAction(idToken);
+        if (!result.success) {
+          throw new Error(result.message || "Login failed");
+        }
+        if (result.data?.user?.role === "admin") {
           toast.success("Welcome back, Admin! Redirecting to dashboard...");
         } else {
           toast.success("Welcome back! Redirecting...");
         }
       } else {
-        await signUp(data.name, data.phone ?? "", data.email, data.password);
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          data.email,
+          data.password,
+        );
+        await updateProfile(user, { displayName: data.name });
+        const idToken = await user.getIdToken();
+        const result = await registerWithFirebaseAction(
+          idToken,
+          data.phone || "",
+        );
+        if (!result.success) {
+          throw new Error(result.message || "Registration failed");
+        }
         toast.success("Account created! Welcome to ColdFlyer 🎉");
       }
       router.push("/");
     } catch (err) {
-      setFirebaseError(getFirebaseError(err.code));
+      setFirebaseError(err.message || getFirebaseError(err.code));
     } finally {
       setLoading(false);
     }

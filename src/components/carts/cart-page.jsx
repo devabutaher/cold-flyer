@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { useCart } from "@/context/cart-context";
-import { ordersApi } from "@/lib/api/orders";
+import { useCart } from "@/store/cart";
+import { apiPost, getUser } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Cart } from "./cart";
@@ -13,7 +13,6 @@ export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, isLoading } = useCart();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const errorMessage = "";
 
   const handleUpdateQuantity = (id, qty) => {
     updateQuantity(id, qty);
@@ -29,11 +28,19 @@ export default function CartPage() {
       return;
     }
 
+    // Check if user is logged in
+    const user = getUser();
+    if (!user) {
+      toast.error("Please login to proceed to checkout");
+      router.push("/auth");
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const orderData = {
         items: items.map((item) => ({
-          product: item.productRef || item.productId || item._id,
+          product: item.productId || item.productRef,
           quantity: item.quantity,
           name: item.name,
           price: item.price,
@@ -42,27 +49,23 @@ export default function CartPage() {
         isPickup: false,
       };
 
-      const response = await ordersApi.createOrder(orderData);
+      const response = await apiPost("/orders", orderData);
 
       if (response.data?.order?._id) {
         const orderId = response.data.order._id;
+        const sessionResponse = await apiPost(`/orders/${orderId}/checkout`, {});
 
-        try {
-          const sessionResponse = await ordersApi.createPaymentLink(orderId);
-
-          if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
-            window.location.href = sessionResponse.data.checkoutUrl;
-            clearCart();
-          } else {
-            toast.error(sessionResponse.message || "Failed to create checkout");
-          }
-        } catch (paymentError) {
-          toast.error("Payment system unavailable. Please try again later.");
+        if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
+          window.location.href = sessionResponse.data.checkoutUrl;
+          clearCart();
+        } else {
+          toast.error(sessionResponse.message || "Failed to create checkout");
         }
       } else {
         toast.error(response.message || "Failed to create order");
       }
     } catch (error) {
+      console.error("Checkout error:", error);
       const errData = error.data;
       const errorMsg = errData?.message || error.message || "";
 
@@ -73,9 +76,9 @@ export default function CartPage() {
           errData.errors[0]?.message || "Failed to create checkout";
         toast.error(firstError);
       } else if (error.status === 400) {
-        toast.error("Unable to process order. Please check your cart items.");
+        toast.error(errorMsg || "Unable to process order. Please check your cart items.");
       } else {
-        toast.error("Failed to create checkout. Please try again.");
+        toast.error(errorMsg || "Failed to create checkout. Please try again.");
       }
     } finally {
       setIsProcessing(false);

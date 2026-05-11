@@ -1,8 +1,8 @@
 "use client";
 
-import { useCreateProduct } from "@/hooks/use-product-mutation";
-import { uploadImages } from "@/lib/image-upload";
-import { productFormSchema } from "@/lib/schema/product-schemas";
+import { useCreateProduct } from "@/hooks/queries";
+import { uploadImageAction } from "@/lib/actions/products";
+import { productFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -50,7 +50,7 @@ const initialValues = {
   images: [],
 };
 
-export default function AddProductForm() {
+export default function AddProductForm({ isAdmin = false }) {
   const [productType, setProductType] = useState("unit");
   const [isUploading, setIsUploading] = useState(false);
   const createProduct = useCreateProduct();
@@ -63,17 +63,29 @@ export default function AddProductForm() {
 
   const completedSections = useCompletedSections(form.control);
 
+  const checkAdminAccess = () => {
+    if (!isAdmin) {
+      toast.error("Access Denied: This action requires Administrator privileges.");
+      return false;
+    }
+    return true;
+  };
+
   function handleTypeChange(value) {
     setProductType(value);
     form.setValue("productType", value);
   }
 
   async function onSubmit(values) {
+    if (!checkAdminAccess()) return;
+    
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await uploadImages(images);
+      const uploadedImages = await Promise.all(
+        images.map((img) => uploadImageAction(img, "images")),
+      );
 
       const features = parseListInput(values.features);
       const inBox = parseListInput(values.inBox);
@@ -103,10 +115,9 @@ export default function AddProductForm() {
       };
 
       await createProduct.mutateAsync(payload);
-      toast.success(`"${values.name}" added successfully!`);
       form.reset(initialValues);
     } catch (error) {
-      toast.error(error.message || "Failed to add product");
+      console.error(error);
     } finally {
       setIsUploading(false);
     }

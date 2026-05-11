@@ -1,25 +1,37 @@
 "use client";
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDownIcon } from "lucide-react";
+import * as React from "react";
 
-function Accordion({ className, children, type = "single", defaultValue, ...props }) {
+function Accordion({
+  className,
+  children,
+  type = "single",
+  defaultValue,
+  ...props
+}) {
   const [openValue, setOpenValue] = React.useState(defaultValue || null);
 
   const isOpen = (value) => openValue === value;
 
-  const handleToggle = React.useCallback((value) => {
-    if (type === "single") {
-      setOpenValue((prev) => (prev === value ? null : value));
-    }
-  }, [type]);
+  const handleToggle = React.useCallback(
+    (value) => {
+      if (type === "single") {
+        setOpenValue((prev) => (prev === value ? null : value));
+      }
+    },
+    [type],
+  );
 
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div data-slot="accordion" className={cn("flex w-full flex-col", className)}>
+    <div
+      data-slot="accordion"
+      className={cn("flex w-full flex-col", className)}
+    >
       {childrenArray.map((child) => {
         if (!React.isValidElement(child)) return null;
         const value = child.props.value;
@@ -32,10 +44,21 @@ function Accordion({ className, children, type = "single", defaultValue, ...prop
   );
 }
 
-function AccordionItem({ className, value, isOpen, onToggle, children, ...props }) {
+function AccordionItem({
+  className,
+  value,
+  isOpen,
+  onToggle,
+  children,
+  ...props
+}) {
   const childArray = React.Children.toArray(children);
-  const trigger = childArray.find((c) => React.isValidElement(c) && c.type === AccordionTrigger);
-  const content = childArray.find((c) => React.isValidElement(c) && c.type === AccordionContent);
+  const trigger = childArray.find(
+    (c) => React.isValidElement(c) && c.type === AccordionTrigger,
+  );
+  const content = childArray.find(
+    (c) => React.isValidElement(c) && c.type === AccordionContent,
+  );
 
   return (
     <div
@@ -89,7 +112,10 @@ function AccordionContent({ className, children, ...props }) {
   return (
     <div
       data-slot="accordion-content"
-      className={cn("text-muted-foreground pb-4 pt-1 leading-relaxed", className)}
+      className={cn(
+        "text-muted-foreground pb-4 pt-1 leading-relaxed",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -97,4 +123,4 @@ function AccordionContent({ className, children, ...props }) {
   );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

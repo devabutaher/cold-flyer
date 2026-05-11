@@ -47,6 +47,11 @@ export const serviceLinks = [
 
 export const staticLinks = [
   {
+    label: "Services",
+    href: "/services",
+    icon: <Settings />,
+  },
+  {
     label: "About",
     href: "/about",
     icon: <Users />,
@@ -62,9 +67,5 @@ export const mainNavLinks = [
   {
     category: "Products",
     links: productLinks,
-  },
-  {
-    category: "Services",
-    links: serviceLinks,
   },
 ];
