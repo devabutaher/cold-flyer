@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { backendUser, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !backendUser) {
       router.replace("/auth");
     }
-  }, [user, loading, router]);
+  }, [backendUser, loading, router]);
 
-  if (loading || !user) return null;
+  if (loading || !backendUser) return null;
 
   return children;
 }

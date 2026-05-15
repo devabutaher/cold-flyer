@@ -11,7 +11,7 @@ import { NavSearch } from "./nav-search";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const { backendUser } = useAuth();
 
   return (
     <div className="lg:hidden">
@@ -63,9 +63,9 @@ export function MobileNav() {
                     <NavSearch />
                   </div>
                 </Suspense>
-                {user && (
+                {backendUser && (
                   <div className="shrink-0">
-                    <UserDropdown user={user} />
+                    <UserDropdown />
                   </div>
                 )}
               </div>

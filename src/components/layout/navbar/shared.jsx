@@ -39,7 +39,7 @@ export function LinkItem({
 }
 
 export function NavButtons({ onAuthenticated } = {}) {
-  const { user, loading } = useAuth();
+  const { backendUser, loading } = useAuth();
 
   if (loading) {
     return (
@@ -52,7 +52,7 @@ export function NavButtons({ onAuthenticated } = {}) {
 
   return (
     <>
-      {user ? (
+      {backendUser ? (
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Link href={"/dashboard"} className="w-full lg:w-auto">
             <Button className="w-full lg:w-auto">Dashboard</Button>
@@ -61,7 +61,7 @@ export function NavButtons({ onAuthenticated } = {}) {
             <Button variant="outline" className="w-full lg:w-auto">My Bookings</Button>
           </Link>
           <div className="hidden lg:block">
-            <UserDropdown user={user} />
+            <UserDropdown />
           </div>
         </div>
       ) : (

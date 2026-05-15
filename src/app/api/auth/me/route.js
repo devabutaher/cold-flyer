@@ -6,13 +6,21 @@ export async function GET(request) {
   try {
     const cookieHeader = request.headers.get("cookie") || "";
 
+    // No cookies at all — definitely not authenticated, avoid 401 noise
+    if (!cookieHeader) {
+      return NextResponse.json({ success: true, data: null });
+    }
+
     const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
       headers: {
         "Content-Type": "application/json",
         Cookie: cookieHeader,
       },
-      credentials: "include",
     });
+
+    if (response.status === 401) {
+      return NextResponse.json({ success: true, data: null });
+    }
 
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });

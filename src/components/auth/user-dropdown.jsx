@@ -15,11 +15,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/components/providers";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
-export function UserDropdown({ user }) {
-  const { logOut } = useAuth();
+export function UserDropdown() {
+  const { backendUser, logOut } = useAuth();
   const router = useRouter();
+
+  if (!backendUser) return null;
+
+  const name = backendUser.name || backendUser.email || "User";
+  const initial = name[0]?.toUpperCase() || "U";
 
   const handleLogOut = () => {
     logOut();
@@ -30,14 +34,13 @@ export function UserDropdown({ user }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Avatar className={"bg-primary"}>
+          <Avatar className="bg-primary">
             <AvatarImage
-              src={user?.photoURL || ""}
-              alt={user?.displayName || "User avatar"}
+              src={backendUser.avatar || ""}
+              alt={name}
             />
-
-            <AvatarFallback className={"bg-primary text-background"}>
-              {user?.displayName?.[0]?.toUpperCase() || "U"}
+            <AvatarFallback className="bg-primary text-background">
+              {initial}
             </AvatarFallback>
           </Avatar>
         </Button>

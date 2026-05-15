@@ -5,29 +5,24 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { firebaseToken, phone } = body;
 
-    const response = await fetch(`${API_BASE_URL}/api/auth/firebase/register`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ firebaseToken, phone }),
-      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
-    const setCookie = response.headers.get("set-cookie");
+    const setCookies = response.headers.getSetCookie();
 
-    const responseOptions = {
-      status: response.status,
-    };
-
-    if (setCookie) {
-      responseOptions.headers = { "Set-Cookie": setCookie };
+    const headers = new Headers({ "Content-Type": "application/json" });
+    if (setCookies?.length > 0) {
+      for (const cookie of setCookies) {
+        headers.append("Set-Cookie", cookie);
+      }
     }
 
-    return NextResponse.json(data, responseOptions);
+    return NextResponse.json(data, { status: response.status, headers });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: "Registration failed" },

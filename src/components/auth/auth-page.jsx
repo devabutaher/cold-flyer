@@ -4,37 +4,29 @@ import { useAuth } from "@/components/providers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  loginWithFirebaseAction,
-  registerWithFirebaseAction,
-} from "@/lib/actions/auth";
-import api from "@/lib/api-client";
-import { auth } from "@/lib/firebase";
 import { createAccountSchema, signInSchema } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
 import { Crown, Eye, EyeOff, Shield } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
 export default function AuthPage() {
   const [tab, setTab] = useState("signin");
   const [showPassword, setShowPassword] = useState(false);
-  const [firebaseError, setFirebaseError] = useState("");
+  const [authError, setAuthError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
   const [showAdminHint, setShowAdminHint] = useState(false);
 
   const router = useRouter();
-  const { signInWithGoogle, resetPassword, backendUser } = useAuth();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
+  const { refreshUser } = useAuth();
 
   const isSignIn = tab === "signin";
 
@@ -48,92 +40,105 @@ export default function AuthPage() {
     resolver: zodResolver(isSignIn ? signInSchema : createAccountSchema),
   });
 
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) return;
+    if (!window.google?.accounts) {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const handleGoogle = async () => {
+    if (!GOOGLE_CLIENT_ID) {
+      setAuthError("Google sign-in is not configured");
+      return;
+    }
+
+    setLoading(true);
+    setAuthError("");
+
+    try {
+      const idToken = await new Promise((resolve, reject) => {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (response) => {
+            if (response?.credential) resolve(response.credential);
+            else reject(new Error("No credential received"));
+          },
+        });
+        window.google.accounts.id.prompt();
+      });
+
+      const res = await fetch("/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!data.success)
+        throw new Error(data.message || "Google sign-in failed");
+      await refreshUser();
+      toast.success("Signed in with Google!");
+      router.push(redirectTo);
+    } catch (err) {
+      if (err.message !== "No credential received") {
+        setAuthError(err.message || "Google sign-in failed");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleTabSwitch = (t) => {
     setTab(t);
-    setFirebaseError("");
+    setAuthError("");
     setShowPassword(false);
-    setResetSent(false);
     reset();
   };
 
   const onSubmit = async (data) => {
     setLoading(true);
-    setFirebaseError("");
+    setAuthError("");
     try {
+      const endpoint = isSignIn ? "/api/auth/login" : "/api/auth/register";
+      const body = isSignIn
+        ? { email: data.email, password: data.password }
+        : {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            phone: data.phone || "",
+          };
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        credentials: "include",
+      });
+
+      const result = await res.json();
+      if (!result.success)
+        throw new Error(result.message || "Something went wrong");
+
+      await refreshUser();
+
       if (isSignIn) {
-        const { user } = await signInWithEmailAndPassword(
-          auth,
-          data.email,
-          data.password,
-        );
-        const idToken = await user.getIdToken();
-        const result = await loginWithFirebaseAction(idToken);
-        if (!result.success) {
-          throw new Error(result.message || "Login failed");
-        }
         if (result.data?.user?.role === "admin") {
           toast.success("Welcome back, Admin! Redirecting to dashboard...");
         } else {
           toast.success("Welcome back! Redirecting...");
         }
       } else {
-        const { user } = await createUserWithEmailAndPassword(
-          auth,
-          data.email,
-          data.password,
-        );
-        await updateProfile(user, { displayName: data.name });
-        const idToken = await user.getIdToken();
-        const result = await registerWithFirebaseAction(
-          idToken,
-          data.phone || "",
-        );
-        if (!result.success) {
-          throw new Error(result.message || "Registration failed");
-        }
-        toast.success("Account created! Welcome to ColdFlyer 🎉");
+        toast.success("Account created! Welcome to ColdFlyer");
       }
-      router.push("/");
+      router.push(redirectTo);
     } catch (err) {
-      setFirebaseError(err.message || getFirebaseError(err.code));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogle = async () => {
-    setLoading(true);
-    setFirebaseError("");
-    try {
-      await signInWithGoogle();
-
-      const user = api.getUser();
-      if (user?.role === "admin") {
-        toast.success("Welcome back, Admin! Redirecting...");
-      } else {
-        toast.success("Signed in with Google!");
-      }
-      router.push("/");
-    } catch (err) {
-      setFirebaseError(getFirebaseError(err.code));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    const email = getValues("email");
-    if (!email) {
-      setFirebaseError("Enter your email above first.");
-      return;
-    }
-    setLoading(true);
-    setFirebaseError("");
-    try {
-      await resetPassword(email);
-      setResetSent(true);
-    } catch (err) {
-      setFirebaseError(getFirebaseError(err.code));
+      setAuthError(err.message);
     } finally {
       setLoading(false);
     }
@@ -141,7 +146,6 @@ export default function AuthPage() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      {/* Left — image panel */}
       <div className="hidden md:flex md:w-1/2 relative flex-col justify-center p-10">
         <Image
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80"
@@ -163,7 +167,6 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* Right — form panel */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 bg-background">
         <div className="w-full max-w-sm">
           <h2 className="font-sans font-bold text-2xl text-foreground mb-1">
@@ -173,7 +176,6 @@ export default function AuthPage() {
             Access your fleet dashboard or create a new account.
           </p>
 
-          {/* Tab switcher */}
           <div className="flex bg-secondary rounded-lg p-1 mb-6">
             {[
               { value: "signin", label: "Sign In" },
@@ -195,7 +197,6 @@ export default function AuthPage() {
             ))}
           </div>
 
-          {/* Admin hint toggle */}
           <div className="mb-4">
             <button
               type="button"
@@ -220,16 +221,7 @@ export default function AuthPage() {
             )}
           </div>
 
-          {/* Reset sent confirmation */}
-          {resetSent && (
-            <div className="mb-4 p-3 rounded-md bg-accent text-accent-foreground text-sm font-medium">
-              Password reset email sent! Check your inbox.
-            </div>
-          )}
-
-          {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name — create only */}
             {!isSignIn && (
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
@@ -251,7 +243,6 @@ export default function AuthPage() {
               </div>
             )}
 
-            {/* Phone — create only */}
             {!isSignIn && (
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
@@ -274,7 +265,6 @@ export default function AuthPage() {
               </div>
             )}
 
-            {/* Email */}
             <div>
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                 Email Address
@@ -282,7 +272,7 @@ export default function AuthPage() {
               <Input
                 {...register("email")}
                 type="email"
-                placeholder="name@company.com"
+                placeholder="name@mail.com"
                 className={cn(
                   errors.email &&
                     "border-destructive focus-visible:ring-destructive",
@@ -295,21 +285,11 @@ export default function AuthPage() {
               )}
             </div>
 
-            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Password
                 </label>
-                {isSignIn && (
-                  <button
-                    type="button"
-                    onClick={handleForgotPassword}
-                    className="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline"
-                  >
-                    Forgot?
-                  </button>
-                )}
               </div>
               <div className="relative">
                 <Input
@@ -338,40 +318,19 @@ export default function AuthPage() {
               )}
             </div>
 
-            {/* Keep signed in */}
-            {isSignIn && (
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="accent-primary w-3.5 h-3.5" />
-                <span className="text-sm text-muted-foreground">
-                  Keep me signed in for 30 days
-                </span>
-              </label>
-            )}
-
-            {firebaseError && (
-              <p className="text-destructive text-sm">{firebaseError}</p>
+            {authError && (
+              <p className="text-destructive text-sm">{authError}</p>
             )}
 
             <Button type="submit" disabled={loading} className="w-full">
               {loading
                 ? "Please wait..."
                 : isSignIn
-                  ? "Enter Workspace →"
-                  : "Create Account →"}
+                  ? "Enter Workspace \u2192"
+                  : "Create Account \u2192"}
             </Button>
-
-            {/* Role indicator after form */}
-            {backendUser?.role === "admin" && (
-              <div className="mt-4 p-3 rounded-md bg-amber-500/10 border border-amber-500/30 flex items-center gap-2">
-                <Crown size={16} className="text-amber-500" />
-                <span className="text-amber-600 text-sm font-medium">
-                  Admin Account - Full Access Enabled
-                </span>
-              </div>
-            )}
           </form>
 
-          {/* Divider */}
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-border" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -380,39 +339,40 @@ export default function AuthPage() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          {/* Google */}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleGoogle}
-              disabled={loading}
-              className="w-full"
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleGoogle}
+            disabled={loading}
+            className="w-full"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="100"
+              height="100"
+              viewBox="0 0 48 48"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 48 48"
-                width="15"
-                height="15"
-              >
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13L11.5 22.5c.64-.78 1.26-1.48 1.97-2.1L11.5 22.5z"
-                />
-                <path
-                  fill="#4285F4"
-                  d="M46.93 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.78c-.55 2.96-2.28 5.48-4.78 7.18l7.08 5.11-7.15-2.84C33.18 34.38 24 37 24 37v-12h12.93z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M10.53 28.59L24 28v-5.02l-13.47-5.02V28z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M24 28v12h12.78l-7.08-5.11c-2.1 1.41-4.62 2.31-7.78 2.31-S24 38.5 24 28z"
-                />
-              </svg>
-              Google
-            </Button>
+              <path
+                fill="#FFC107"
+                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
+              <path
+                fill="#FF3D00"
+                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+              ></path>
+              <path
+                fill="#4CAF50"
+                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+              ></path>
+              <path
+                fill="#1976D2"
+                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
+            </svg>
+            Google
+          </Button>
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             Protected by reCAPTCHA.{" "}
@@ -429,20 +389,4 @@ export default function AuthPage() {
       </div>
     </div>
   );
-}
-
-function getFirebaseError(code) {
-  const errors = {
-    "auth/user-not-found": "No account found with this email.",
-    "auth/wrong-password": "Incorrect password.",
-    "auth/email-already-in-use": "This email is already registered.",
-    "auth/invalid-email": "Invalid email address.",
-    "auth/popup-closed-by-user": "Google sign-in was cancelled.",
-    "auth/too-many-requests": "Too many attempts. Try again later.",
-    "auth/invalid-credential": "Invalid email or password.",
-    "auth/user-disabled": "This account has been disabled.",
-    BAD_REQUEST:
-      "An account with this email already exists. Please sign in instead.",
-  };
-  return errors[code] ?? "Something went wrong. Please try again.";
 }

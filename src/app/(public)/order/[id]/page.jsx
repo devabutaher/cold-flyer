@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CheckCircle, Package } from "lucide-react";
 import Link from "next/link";
-import { getUser } from "@/lib/api-client";
+import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +13,7 @@ import { toast } from "sonner";
 export default function OrderSuccessPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const { backendUser } = useAuth();
   const orderId = params.id;
   const success = searchParams.get("success");
   const [order, setOrder] = useState(null);
@@ -21,9 +22,7 @@ export default function OrderSuccessPage() {
   const fetchOrder = useCallback(async () => {
     setLoading(true);
     try {
-      // Check if user is logged in
-      const user = getUser();
-      if (!user) {
+      if (!backendUser) {
         toast.error("Please login to view your order");
         return;
       }

@@ -1,9 +1,3 @@
-/**
- * API Client - Centralized fetch utility with interceptors
- * Provides automatic toast notifications for mutations
- * Query invalidation is handled by TanStack Query hooks
- */
-
 import { toast } from "sonner";
 
 const API_BASE_URL = "/api";
@@ -33,10 +27,30 @@ const AUTH_ENDPOINTS = [
   "/auth/register",
   "/auth/logout",
   "/auth/me",
+  "/auth/refresh",
 ];
 
 function isAuthEndpoint(endpoint) {
   return AUTH_ENDPOINTS.some((authEndpoint) => endpoint.includes(authEndpoint));
+}
+
+let refreshPromise = null;
+
+async function attemptTokenRefresh() {
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = fetch(`${API_BASE_URL}/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+  }).then((res) => {
+    refreshPromise = null;
+    return res.ok;
+  }).catch(() => {
+    refreshPromise = null;
+    return false;
+  });
+
+  return refreshPromise;
 }
 
 async function apiClient(endpoint, options = {}) {
@@ -45,7 +59,7 @@ async function apiClient(endpoint, options = {}) {
   const queryKey = getQueryKeyFromEndpoint(endpoint);
   const isAuth = isAuthEndpoint(endpoint);
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  let response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -53,6 +67,23 @@ async function apiClient(endpoint, options = {}) {
     },
     credentials: "include",
   });
+
+  if (response.status === 401 && !isAuth) {
+    const refreshed = await attemptTokenRefresh();
+    if (refreshed) {
+      response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...options.headers,
+        },
+        credentials: "include",
+      });
+    } else {
+      window.location.href = "/auth";
+      throw new Error("Session expired. Please login again.");
+    }
+  }
 
   let data;
   try {
@@ -137,14 +168,11 @@ export function apiDelete(endpoint) {
 }
 
 export function getToken() {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("accessToken");
+  return null;
 }
 
 export function getUser() {
-  if (typeof window === "undefined") return null;
-  const userStr = localStorage.getItem("user");
-  return userStr ? JSON.parse(userStr) : null;
+  return null;
 }
 
 export function getProducts(params = {}) {
@@ -220,29 +248,19 @@ export function cancelOrder(orderId, reason) {
   return apiPatch(`/orders/${orderId}/cancel`, { reason });
 }
 
-export function loginWithFirebase(firebaseToken) {
-  return apiPost("/auth/login", { firebaseToken }).then((data) => {
-    if (typeof window !== "undefined" && data?.success && data?.data?.user) {
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      if (data.data.accessToken) {
-        localStorage.setItem("accessToken", data.data.accessToken);
-      }
-    }
-    return data;
-  });
+export function login(email, password) {
+  return apiPost("/auth/login", { email, password });
 }
 
-export function registerWithFirebase(firebaseToken, phone) {
-  return apiPost("/auth/register", { firebaseToken, phone }).then((data) => {
-    if (typeof window !== "undefined" && data?.success && data?.data?.user) {
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      if (data.data.accessToken) {
-        localStorage.setItem("accessToken", data.data.accessToken);
-      }
-    }
-    return data;
-  });
+export function register(name, email, password, phone) {
+  return apiPost("/auth/register", { name, email, password, phone });
 }
+
+export function googleLogin(idToken) {
+  return apiPost("/auth/google", { idToken });
+}
+
+
 
 export async function uploadImage(file, fieldName = "image") {
   const formData = new FormData();
@@ -262,10 +280,6 @@ export async function uploadImage(file, fieldName = "image") {
 }
 
 export async function logout() {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-  }
   return apiPost("/auth/logout", {});
 }
 
@@ -288,8 +302,10 @@ export default {
   createPaymentLink,
   verifyPayment,
   cancelOrder,
-  loginWithFirebase,
-  registerWithFirebase,
+  login,
+  register,
+  googleLogin,
+
   uploadImage,
   logout,
 };

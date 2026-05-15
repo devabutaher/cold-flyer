@@ -1,114 +1,60 @@
-/**
- * Auth Provider - Client-side wrapper for auth state
- * Uses Firebase auth with localStorage persistence
- */
-
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signOut as firebaseSignOut } from "firebase/auth";
-import { auth, googleProvider } from "@/lib/firebase";
-import api from "@/lib/api-client";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
   const [backendUser, setBackendUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const storedUser = api.getUser();
-    if (storedUser) {
-      setBackendUser(storedUser);
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          const idTokenResult = await firebaseUser.getIdToken();
-          try {
-            const response = await api.loginWithFirebase(idTokenResult);
-            if (response.success) {
-              setBackendUser(response.data?.user);
-            }
-          } catch (error) {
-            console.error("Backend auth error:", error);
-            const storedUser = api.getUser();
-            if (!storedUser) {
-              setBackendUser(null);
-            }
-          }
-        } catch (error) {
-          console.error("Auth error:", error);
-        }
-      } else {
-        setBackendUser(null);
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await fetch("/api/auth/me", { credentials: "include" });
+      if (response.ok) {
+        const data = await response.json();
+        const user = data?.data?.user || null;
+        setBackendUser(user);
+        return user;
       }
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+      setBackendUser(null);
+      return null;
+    } catch {
+      setBackendUser(null);
+      return null;
+    }
   }, []);
 
-  const signIn = async (email, password) => {
-    const result = await import("firebase/auth").then((m) =>
-      m.signInWithEmailAndPassword(auth, email, password)
-    );
-    return result;
-  };
+  useEffect(() => {
+    let mounted = true;
 
-  const signUp = async (name, phone, email, password) => {
-    const { createUserWithEmailAndPassword, updateProfile } = await import("firebase/auth");
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(user, { displayName: name });
-    return user;
-  };
+    refreshUser().then(() => {
+      if (mounted) setLoading(false);
+    });
 
-  const signInWithGoogle = async () => {
-    const { signInWithPopup } = await import("firebase/auth");
-    const result = await signInWithPopup(auth, googleProvider);
-    return result;
-  };
+    return () => { mounted = false; };
+  }, [refreshUser]);
 
-  const logOut = async () => {
+  const logOut = useCallback(async () => {
     try {
-      await api.logout();
-    } catch (error) {
-      // Ignore backend logout errors - user will be logged out anyway
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // Proceed even if backend call fails
     }
-    await firebaseSignOut(auth);
     setBackendUser(null);
     router.push("/");
-  };
-
-  const updateUserProfile = async ({ name }) => {
-    if (!auth.currentUser) throw new Error("No user logged in");
-    const { updateProfile } = await import("firebase/auth");
-    await updateProfile(auth.currentUser, {
-      displayName: name ?? auth.currentUser.displayName,
-    });
-    setUser({ ...auth.currentUser });
-  };
-
-  const resetPassword = async (email) => {
-    const { sendPasswordResetEmail } = await import("firebase/auth");
-    return await sendPasswordResetEmail(auth, email);
-  };
+  }, [router]);
 
   const value = {
-    user,
     backendUser,
     loading,
-    signIn,
-    signUp,
-    signInWithGoogle,
     logOut,
-    updateUserProfile,
-    resetPassword,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

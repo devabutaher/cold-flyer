@@ -11,7 +11,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/store/cart";
-import api, { getUser } from "@/lib/api-client";
+import { useAuth } from "@/components/providers";
+import api from "@/lib/api-client";
 import { QuantityInput } from "@/components/carts/quantity-input";
 
 function CartEmpty() {
@@ -50,6 +51,7 @@ function CartLoading() {
 
 function CartContent() {
   const router = useRouter();
+  const { backendUser } = useAuth();
   const { items, updateQuantity, removeItem, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
@@ -67,9 +69,7 @@ function CartContent() {
       return;
     }
 
-    // Check if user is logged in
-    const user = getUser();
-    if (!user) {
+    if (!backendUser) {
       toast.error("Please login to proceed to checkout");
       router.push("/auth");
       return;

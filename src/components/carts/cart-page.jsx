@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 import { useCart } from "@/store/cart";
-import { apiPost, getUser } from "@/lib/api-client";
+import { useAuth } from "@/components/providers";
+import { apiPost } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Cart } from "./cart";
@@ -11,6 +12,7 @@ import { CartSkeleton } from "./cart-skeleton";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, isLoading } = useCart();
+  const { backendUser } = useAuth();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -28,9 +30,7 @@ export default function CartPage() {
       return;
     }
 
-    // Check if user is logged in
-    const user = getUser();
-    if (!user) {
+    if (!backendUser) {
       toast.error("Please login to proceed to checkout");
       router.push("/auth");
       return;

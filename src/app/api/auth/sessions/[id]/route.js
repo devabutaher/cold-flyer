@@ -2,14 +2,17 @@ import { NextResponse } from "next/server";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export async function POST(request) {
+export async function DELETE(request, { params }) {
   try {
-    const body = await request.json();
+    const cookieHeader = request.headers.get("cookie") || "";
+    const { id } = await params;
 
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+    const response = await fetch(`${API_BASE_URL}/api/auth/sessions/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
     });
 
     const data = await response.json();
@@ -25,7 +28,7 @@ export async function POST(request) {
     return NextResponse.json(data, { status: response.status, headers });
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: "Login failed" },
+      { success: false, message: "Failed to revoke session" },
       { status: 500 }
     );
   }
