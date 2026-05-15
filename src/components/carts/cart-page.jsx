@@ -9,12 +9,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Cart } from "./cart";
 import { CartSkeleton } from "./cart-skeleton";
+import { CreditCard, Smartphone } from "lucide-react";
+
+const PAYMENT_PROVIDERS = [
+  { value: "stripe", label: "Card (Visa/MasterCard)", icon: CreditCard },
+  { value: "sslcommerz", label: "SSLCOMMERZ (bKash/Nagad/Card)", icon: Smartphone },
+];
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, isLoading } = useCart();
   const { backendUser } = useAuth();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentProvider, setPaymentProvider] = useState("stripe");
 
   const handleUpdateQuantity = (id, qty) => {
     updateQuantity(id, qty);
@@ -53,7 +60,7 @@ export default function CartPage() {
 
       if (response.data?.order?._id) {
         const orderId = response.data.order._id;
-        const sessionResponse = await apiPost(`/orders/${orderId}/checkout`, {});
+        const sessionResponse = await apiPost(`/orders/${orderId}/checkout`, { provider: paymentProvider });
 
         if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
           window.location.href = sessionResponse.data.checkoutUrl;
@@ -69,7 +76,7 @@ export default function CartPage() {
       const errData = error.data;
       const errorMsg = errData?.message || error.message || "";
 
-      if (errorMsg.includes("payment_method_types")) {
+      if (errorMsg.includes("payment_method_types") || errorMsg.includes("SSLCOMMERZ")) {
         toast.error("Payment system unavailable. Please try again later.");
       } else if (errData?.errors) {
         const firstError = errData.errors[0]?.message || "Failed to create checkout";
@@ -102,6 +109,9 @@ export default function CartPage() {
       onContinueShopping={handleContinueShopping}
       loadingSkeleton={<CartSkeleton />}
       isProcessing={isProcessing}
+      paymentProvider={paymentProvider}
+      onPaymentProviderChange={setPaymentProvider}
+      paymentProviders={PAYMENT_PROVIDERS}
     />
   );
 }

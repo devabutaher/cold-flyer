@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Package, ShoppingCart, X, Loader2 } from "lucide-react";
+import { Package, ShoppingCart, X, Loader2, Check } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 import { QuantityInput } from "./quantity-input";
@@ -22,6 +23,9 @@ export function Cart({
   onUpdateQuantity = () => {},
   onRemoveProduct = () => {},
   isProcessing = false,
+  paymentProvider = "stripe",
+  onPaymentProviderChange = () => {},
+  paymentProviders = [],
 }) {
   const subtotal = products.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * vatRate;
@@ -197,7 +201,36 @@ export function Cart({
                 </span>
               </div>
 
-              <div className="mt-6 space-y-3">
+              {paymentProviders.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground">Payment Method</p>
+                  <div className="grid gap-1.5">
+                    {paymentProviders.map((p) => {
+                      const Icon = p.icon;
+                      const selected = paymentProvider === p.value;
+                      return (
+                        <button
+                          key={p.value}
+                          type="button"
+                          onClick={() => onPaymentProviderChange(p.value)}
+                          className={cn(
+                            "flex items-center gap-2.5 rounded-lg border px-3 py-2 text-left text-xs transition-colors",
+                            selected
+                              ? "border-primary bg-primary/5 text-foreground"
+                              : "border-border text-muted-foreground hover:border-muted-foreground/30"
+                          )}
+                        >
+                          <Icon size={14} />
+                          <span className="flex-1">{p.label}</span>
+                          {selected && <Check size={12} className="text-primary" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 space-y-3">
                 <Button
                   className="w-full"
                   size="lg"
@@ -210,7 +243,7 @@ export function Cart({
                       Processing...
                     </>
                   ) : (
-                    "Proceed to Payment"
+                    `Pay with ${paymentProviders.find(p => p.value === paymentProvider)?.label || "Card"}`
                   )}
                 </Button>
                 <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>

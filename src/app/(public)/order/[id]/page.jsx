@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { CheckCircle, Package } from "lucide-react";
+import { CheckCircle, XCircle, Package } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,9 @@ export default function OrderSuccessPage() {
   const orderId = params.id;
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const isSuccess = searchParams.get("success") !== "false";
+  const provider = searchParams.get("provider") || "stripe";
 
   useEffect(() => {
     if (!orderId) return;
@@ -71,12 +75,33 @@ export default function OrderSuccessPage() {
     <div className="container flex min-h-[60vh] flex-col items-center justify-center py-12">
       <Card className="w-full max-w-md text-center">
         <CardContent className="pt-8">
-          <div className="mb-4 flex justify-center">
-            <CheckCircle className="h-16 w-16 text-green-500" />
-          </div>
+          {isSuccess ? (
+            <>
+              <div className="mb-4 flex justify-center">
+                <CheckCircle className="h-16 w-16 text-green-500" />
+              </div>
 
-          <h1 className="mb-2 text-2xl font-bold">Payment Successful!</h1>
-          <p className="mb-6 text-muted-foreground">Thank you for your order. Your payment has been processed.</p>
+              <h1 className="mb-2 text-2xl font-bold">Payment Successful!</h1>
+              <p className="mb-6 text-muted-foreground">
+                {provider === "sslcommerz"
+                  ? "Your payment via SSLCOMMERZ has been processed successfully."
+                  : "Thank you for your order. Your payment has been processed."}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="mb-4 flex justify-center">
+                <XCircle className="h-16 w-16 text-red-500" />
+              </div>
+
+              <h1 className="mb-2 text-2xl font-bold">Payment {order?.paymentStatus === "failed" ? "Failed" : "Cancelled"}</h1>
+              <p className="mb-6 text-muted-foreground">
+                {provider === "sslcommerz"
+                  ? "Your SSLCOMMERZ transaction could not be completed. Please try again."
+                  : "Your payment could not be completed. Please try again."}
+              </p>
+            </>
+          )}
 
           {order && (
             <div className="mb-6 rounded-lg bg-muted p-4 text-left">
@@ -85,10 +110,10 @@ export default function OrderSuccessPage() {
                 <span>Order #{order.orderNumber}</span>
               </div>
               <p className="mt-2 text-sm">
-                Status: <span className="font-medium text-green-600">{order.status?.toUpperCase()}</span>
+                Status: <span className={cn("font-medium", order.status === "cancelled" ? "text-red-600" : "text-green-600")}>{order.status?.toUpperCase()}</span>
               </p>
               <p className="text-sm">
-                Payment: <span className="font-medium text-green-600">{order.paymentStatus?.toUpperCase()}</span>
+                Payment: <span className={cn("font-medium", order.paymentStatus === "paid" ? "text-green-600" : "text-red-600")}>{order.paymentStatus?.toUpperCase()}</span>
               </p>
               <p className="mt-2 text-lg font-bold">Total: ৳{order.total?.toLocaleString()}</p>
             </div>
@@ -98,6 +123,13 @@ export default function OrderSuccessPage() {
             <Link href={`/dashboard/orders/${orderId}`}>
               <Button className="w-full">View Order Details</Button>
             </Link>
+            {!isSuccess && (
+              <Link href={`/dashboard/orders/${orderId}`}>
+                <Button variant="outline" className="w-full">
+                  Retry Payment
+                </Button>
+              </Link>
+            )}
             <Link href="/dashboard/orders">
               <Button variant="outline" className="w-full">
                 View All Orders

@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, Eye, MoreHorizontal, X } from "lucide-react";
+import { CreditCard, Eye, MoreHorizontal, Smartphone, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -56,18 +56,44 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
         onClick={(e) => e.stopPropagation()} // Prevent row click when clicking action buttons
       >
         {canPay && (
-          <Button
-            size="sm"
-            className="h-7 px-3 text-xs"
-            disabled={isPaying}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPay(order._id);
-            }}
-          >
-            <CreditCard size={12} className="mr-1.5" />
-            {isPaying ? "Processing…" : "Pay Now"}
-          </Button>
+          <>
+            <Button
+              size="sm"
+              className="h-7 px-3 text-xs"
+              disabled={isPaying}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPay(order._id, "stripe");
+              }}
+            >
+              <CreditCard size={12} className="mr-1.5" />
+              {isPaying ? "Processing…" : "Pay"}
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-7 w-7 text-muted-foreground"
+                  disabled={isPaying}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <MoreHorizontal size={14} />
+                  <span className="sr-only">Payment options</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onPay(order._id, "stripe"); }}>
+                  <CreditCard size={13} className="mr-2" />
+                  Pay with Card (Stripe)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onPay(order._id, "sslcommerz"); }}>
+                  <Smartphone size={13} className="mr-2" />
+                  Pay with SSLCOMMERZ
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
         )}
 
         <DropdownMenu>

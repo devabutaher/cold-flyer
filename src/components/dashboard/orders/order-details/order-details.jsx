@@ -27,6 +27,7 @@ import {
   MapPin,
   Package,
   ReceiptText,
+  Smartphone,
   Truck,
   X,
 } from "lucide-react";
@@ -73,10 +74,10 @@ export function OrderDetails({ orderId }) {
     );
   }
 
-  const handlePayment = async () => {
+  const handlePayment = async (provider = "stripe") => {
     setPaying(true);
     try {
-      const res = await apiPost(`/orders/${orderId}/checkout`, {});
+      const res = await apiPost(`/orders/${orderId}/checkout`, { provider });
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }
@@ -262,10 +263,21 @@ export function OrderDetails({ orderId }) {
             </Button>
 
             {canPay && (
-              <Button className="w-full gap-2" onClick={handlePayment} disabled={paying}>
-                {paying ? <Loader2 size={14} className="animate-spin" /> : <CreditCard size={14} />}
-                {paying ? "Processing…" : "Pay Now"}
-              </Button>
+              <div className="space-y-2">
+                <Button className="w-full gap-2" onClick={() => handlePayment("stripe")} disabled={paying}>
+                  {paying ? <Loader2 size={14} className="animate-spin" /> : <CreditCard size={14} />}
+                  {paying ? "Processing…" : "Pay with Card (Stripe)"}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={() => handlePayment("sslcommerz")}
+                  disabled={paying}
+                >
+                  {paying ? <Loader2 size={14} className="animate-spin" /> : <Smartphone size={14} />}
+                  {paying ? "Processing…" : "Pay with SSLCOMMERZ (bKash/Nagad)"}
+                </Button>
+              </div>
             )}
 
             {canCancel && (

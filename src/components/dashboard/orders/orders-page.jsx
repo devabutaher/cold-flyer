@@ -29,10 +29,10 @@ export default function OrdersPage({ isAdmin = false }) {
   const orders = ordersData ?? [];
 
   // ── Handlers ───────────────────────────────────────
-  const handlePay = async (orderId) => {
+  const handlePay = async (orderId, provider = "stripe") => {
     setPayingOrderId(orderId);
     try {
-      const res = await apiPost(`/orders/${orderId}/checkout`, {});
+      const res = await apiPost(`/orders/${orderId}/checkout`, { provider });
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }

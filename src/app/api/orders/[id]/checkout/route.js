@@ -14,13 +14,15 @@ export async function POST(request, { params }) {
   try {
     const cookieHeader = request.headers.get("cookie") || "";
 
+    const body = await request.json().catch(() => ({}));
+
     const response = await fetch(`${API_BASE_URL}/api/orders/${id}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Cookie: cookieHeader,
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify(body),
       credentials: "include",
     });
 
