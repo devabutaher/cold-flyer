@@ -15,10 +15,7 @@ export const signInSchema = z.object({
 export const createAccountSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z
-    .string()
-    .optional()
-    .or(z.literal("")),
+  phone: z.string().optional().or(z.literal("")),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -59,8 +56,7 @@ export function getProductInitialValues(product) {
     tag: product.tag || "None",
     features: product.features?.join("\n") || "",
     inBox: product.inBox?.join("\n") || "",
-    images:
-      product.images?.map((img) => ({ url: img.url, preview: img.url })) || [],
+    images: product.images?.map((img) => ({ url: img.url, preview: img.url })) || [],
     specs: product.specs || {},
   };
 }

@@ -3,18 +3,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Eye,
-  EyeOff,
-  Globe,
-  Mail,
-  MessageSquare,
-  Package,
-  Phone,
-  Shield,
-  ShieldCheck,
-  User,
-} from "lucide-react";
+import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, ShieldCheck, User } from "lucide-react";
 import { principles, dataTypes, timeline } from "@/data/privacy-data";
 
 export default function PrivacyPage() {
@@ -33,17 +22,14 @@ export default function PrivacyPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-              Your Privacy Matters
-            </Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Your Privacy Matters</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Protecting <br />
               <span className="text-primary">What Matters</span>
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Your trust is our most valuable asset. We&apos;re committed to
-              safeguarding your personal information with the highest standards
-              of privacy and security.
+              Your trust is our most valuable asset. We&apos;re committed to safeguarding your personal information with
+              the highest standards of privacy and security.
             </p>
           </div>
         </div>
@@ -63,8 +49,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              Every decision we make is guided by these core principles that put
-              your privacy first.
+              Every decision we make is guided by these core principles that put your privacy first.
             </p>
           </div>
 
@@ -77,33 +62,21 @@ export default function PrivacyPage() {
                   key={i}
                   className={`
                     group rounded-xl bg-card p-10 transition-all duration-500
-                    ${
-                      principle.highlight
-                        ? "hover:bg-primary border border-primary/20"
-                        : "hover:shadow-lg"
-                    }
+                    ${principle.highlight ? "hover:bg-primary border border-primary/20" : "hover:shadow-lg"}
                   `}
                 >
                   <Icon
                     size={44}
                     className={`
                       mb-7 transition-colors
-                      ${
-                        principle.highlight
-                          ? "text-primary group-hover:text-primary-foreground"
-                          : "text-primary"
-                      }
+                      ${principle.highlight ? "text-primary group-hover:text-primary-foreground" : "text-primary"}
                     `}
                   />
 
                   <h3
                     className={`
                       mb-3 font-sans text-2xl font-extrabold transition-colors
-                      ${
-                        principle.highlight
-                          ? "text-foreground group-hover:text-primary-foreground"
-                          : "text-foreground"
-                      }
+                      ${principle.highlight ? "text-foreground group-hover:text-primary-foreground" : "text-foreground"}
                     `}
                   >
                     {principle.title}
@@ -141,15 +114,12 @@ export default function PrivacyPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We believe in radical transparency about what information we
-                collect and why. Here&apos;s a complete breakdown of the data we
-                handle.
+                We believe in radical transparency about what information we collect and why. Here&apos;s a complete
+                breakdown of the data we handle.
               </p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
-                <div className="font-sans font-extrabold text-6xl text-primary leading-none">
-                  100%
-                </div>
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">100%</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   You <br />
                   Control
@@ -164,18 +134,12 @@ export default function PrivacyPage() {
             <div className="md:col-span-7 space-y-8">
               {dataTypes.map((type) => (
                 <div key={type.category} className="bg-card rounded-xl p-8">
-                  <h3 className="font-sans font-extrabold text-xl mb-6 text-foreground">
-                    {type.category}
-                  </h3>
+                  <h3 className="font-sans font-extrabold text-xl mb-6 text-foreground">{type.category}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {type.items.map((item, i) => (
                       <div key={i}>
-                        <div className="font-medium text-foreground mb-1">
-                          {item.name}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {item.description}
-                        </div>
+                        <div className="font-medium text-foreground mb-1">{item.name}</div>
+                        <div className="text-sm text-muted-foreground">{item.description}</div>
                       </div>
                     ))}
                   </div>
@@ -199,12 +163,8 @@ export default function PrivacyPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {timeline.map((item, index) => (
               <div key={index} className="relative">
-                <div className="font-sans font-extrabold text-6xl text-primary/30 mb-4">
-                  {item.year}
-                </div>
-                <p className="text-lg font-medium leading-relaxed">
-                  {item.event}
-                </p>
+                <div className="font-sans font-extrabold text-6xl text-primary/30 mb-4">{item.year}</div>
+                <p className="text-lg font-medium leading-relaxed">{item.event}</p>
               </div>
             ))}
           </div>
@@ -242,12 +202,8 @@ export default function PrivacyPage() {
                     <Eye size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">
-                      Right to Access
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Request a copy of all personal data we hold about you.
-                    </p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Access</h4>
+                    <p className="text-muted-foreground">Request a copy of all personal data we hold about you.</p>
                   </div>
                 </div>
 
@@ -256,12 +212,8 @@ export default function PrivacyPage() {
                     <MessageSquare size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">
-                      Right to Correction
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Have inaccurate personal information corrected.
-                    </p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Correction</h4>
+                    <p className="text-muted-foreground">Have inaccurate personal information corrected.</p>
                   </div>
                 </div>
 
@@ -270,12 +222,8 @@ export default function PrivacyPage() {
                     <ShieldCheck size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">
-                      Right to Deletion
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Request complete removal of your data from our systems.
-                    </p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Deletion</h4>
+                    <p className="text-muted-foreground">Request complete removal of your data from our systems.</p>
                   </div>
                 </div>
 
@@ -284,12 +232,8 @@ export default function PrivacyPage() {
                     <Globe size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">
-                      Data Portability
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Transfer your data to another service provider.
-                    </p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">Data Portability</h4>
+                    <p className="text-muted-foreground">Transfer your data to another service provider.</p>
                   </div>
                 </div>
               </div>
@@ -305,9 +249,7 @@ export default function PrivacyPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Questions about privacy?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">
-              Our privacy team is here to help.
-            </p>
+            <p className="text-primary-foreground/70 text-sm">Our privacy team is here to help.</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">

@@ -66,9 +66,7 @@ export default function Contact() {
     <AnimatedSection className="bg-muted py-10 sm:py-16" id="contact">
       <div className="container">
         <div className="mb-6">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-            Get In Touch
-          </span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Get In Touch</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
             Contact <span className="text-primary">Our Team.</span>
           </h2>

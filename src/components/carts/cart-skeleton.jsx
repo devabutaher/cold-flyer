@@ -6,10 +6,7 @@ export function CartSkeleton() {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="flex gap-4 rounded-2xl border border-border bg-card p-4 sm:gap-5 sm:p-5"
-          >
+          <div key={i} className="flex gap-4 rounded-2xl border border-border bg-card p-4 sm:gap-5 sm:p-5">
             <Skeleton className="h-24 w-24 shrink-0 rounded-xl sm:h-28 sm:w-28" />
             <div className="flex flex-1 flex-col justify-between gap-3">
               <div className="flex items-start justify-between gap-2">
@@ -28,9 +25,7 @@ export function CartSkeleton() {
         ))}
       </div>
       <div className="h-fit rounded-2xl border border-border bg-card p-6">
-        <h2 className="mb-5 text-lg font-bold text-foreground">
-          Order Summary
-        </h2>
+        <h2 className="mb-5 text-lg font-bold text-foreground">Order Summary</h2>
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-muted-foreground">
             <Skeleton className="h-4 w-24" />

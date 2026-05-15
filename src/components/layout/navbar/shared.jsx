@@ -7,22 +7,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export function LinkItem({
-  label,
-  description,
-  icon,
-  className,
-  href,
-  onClick,
-  ...props
-}) {
+export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   return (
-    <a
-      className={cn("flex items-center gap-x-2", className)}
-      href={href}
-      onClick={onClick}
-      {...props}
-    >
+    <a className={cn("flex items-center gap-x-2", className)} href={href} onClick={onClick} {...props}>
       <div
         className={cn(
           "flex aspect-square size-6 items-center justify-center rounded-lg border bg-card text-sm shadow-sm",
@@ -58,7 +45,9 @@ export function NavButtons({ onAuthenticated } = {}) {
             <Button className="w-full lg:w-auto">Dashboard</Button>
           </Link>
           <Link href={"/my-bookings"} className="w-full lg:w-auto">
-            <Button variant="outline" className="w-full lg:w-auto">My Bookings</Button>
+            <Button variant="outline" className="w-full lg:w-auto">
+              My Bookings
+            </Button>
           </Link>
           <div className="hidden lg:block">
             <UserDropdown />
@@ -67,11 +56,7 @@ export function NavButtons({ onAuthenticated } = {}) {
       ) : (
         <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Link href={"/auth"} className="w-full lg:w-auto">
-            <Button
-              variant="destructive"
-              className="w-full lg:w-auto"
-              onClick={onAuthenticated}
-            >
+            <Button variant="destructive" className="w-full lg:w-auto" onClick={onAuthenticated}>
               Sign In
             </Button>
           </Link>

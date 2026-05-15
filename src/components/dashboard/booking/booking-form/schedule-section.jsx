@@ -1,19 +1,9 @@
 "use client";
 
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Card,
-  CardContent,
-  CardDescription as CardDesc,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription as CardDesc, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { CalendarDays, Clock2Icon } from "lucide-react";
 import { Controller, useWatch } from "react-hook-form";
 
@@ -65,9 +55,7 @@ export function ScheduleSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Schedule</CardTitle>
-            <CardDesc className="text-xs mt-0.5">
-              Pick a date and time window
-            </CardDesc>
+            <CardDesc className="text-xs mt-0.5">Pick a date and time window</CardDesc>
           </div>
         </div>
       </CardHeader>
@@ -91,15 +79,9 @@ export function ScheduleSection({ control }) {
                     <div className="w-full overflow-x-auto">
                       <Calendar
                         mode="single"
-                        selected={
-                          field.value ? new Date(field.value) : undefined
-                        }
-                        onSelect={(date) =>
-                          field.onChange(date ? date.toISOString() : "")
-                        }
-                        disabled={(date) =>
-                          date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
+                        selected={field.value ? new Date(field.value) : undefined}
+                        onSelect={(date) => field.onChange(date ? date.toISOString() : "")}
+                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                         style={{ width: "100%", minWidth: "280px" }}
                         className="rounded-lg border [--cell-size:--spacing(8)] md:[--cell-size:--spacing(6)]"
                       />
@@ -110,9 +92,7 @@ export function ScheduleSection({ control }) {
                   <div className="rounded-lg border bg-card p-4 space-y-4 flex-1">
                     <div className="flex items-center gap-2 pb-2 border-b">
                       <Clock2Icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium text-muted-foreground">
-                        Time Window
-                      </span>
+                      <span className="text-sm font-medium text-muted-foreground">Time Window</span>
                     </div>
 
                     <Field>
@@ -122,12 +102,7 @@ export function ScheduleSection({ control }) {
                         control={control}
                         render={({ field: tf }) => (
                           <InputGroup>
-                            <InputGroupInput
-                              id="time-from"
-                              type="time"
-                              value={tf.value ?? ""}
-                              onChange={tf.onChange}
-                            />
+                            <InputGroupInput id="time-from" type="time" value={tf.value ?? ""} onChange={tf.onChange} />
                             <InputGroupAddon>
                               <Clock2Icon className="h-3.5 w-3.5" />
                             </InputGroupAddon>
@@ -149,12 +124,7 @@ export function ScheduleSection({ control }) {
                         control={control}
                         render={({ field: tf }) => (
                           <InputGroup>
-                            <InputGroupInput
-                              id="time-to"
-                              type="time"
-                              value={tf.value ?? ""}
-                              onChange={tf.onChange}
-                            />
+                            <InputGroupInput id="time-to" type="time" value={tf.value ?? ""} onChange={tf.onChange} />
                             <InputGroupAddon>
                               <Clock2Icon className="h-3.5 w-3.5" />
                             </InputGroupAddon>
@@ -170,9 +140,7 @@ export function ScheduleSection({ control }) {
                   <div className="rounded-lg border bg-muted/30 p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">
-                        Selected Schedule
-                      </p>
+                      <p className="text-xs text-muted-foreground">Selected Schedule</p>
                     </div>
                     <p className="text-sm font-medium">{formatDateTime()}</p>
                   </div>

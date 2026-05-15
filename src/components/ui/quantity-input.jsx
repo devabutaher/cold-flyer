@@ -2,15 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
 
-const QuantityInput = ({
-  className,
-  disabled = false,
-  max = null,
-  min = 1,
-  onChange,
-  quantity,
-  step = 1,
-}) => {
+const QuantityInput = ({ className, disabled = false, max = null, min = 1, onChange, quantity, step = 1 }) => {
   const handleDecrease = () => {
     if (quantity - step >= min) {
       onChange(quantity - step);

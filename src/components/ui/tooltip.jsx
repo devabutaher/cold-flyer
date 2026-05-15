@@ -40,13 +40,7 @@ function buildVariants(side = "top") {
 
 // ── Provider — unchanged ─────────────────────────────────────
 function TooltipProvider({ delayDuration = 0, ...props }) {
-  return (
-    <TooltipPrimitive.Provider
-      data-slot="tooltip-provider"
-      delayDuration={delayDuration}
-      {...props}
-    />
-  );
+  return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
 // ── Root — tracks open state ─────────────────────────────────
@@ -61,12 +55,7 @@ function Tooltip({ open: controlledOpen, onOpenChange, ...props }) {
 
   return (
     <TooltipOpenContext.Provider value={isOpen}>
-      <TooltipPrimitive.Root
-        data-slot="tooltip"
-        open={isOpen}
-        onOpenChange={handleChange}
-        {...props}
-      />
+      <TooltipPrimitive.Root data-slot="tooltip" open={isOpen} onOpenChange={handleChange} {...props} />
     </TooltipOpenContext.Provider>
   );
 }
@@ -76,13 +65,7 @@ function TooltipTrigger({ ...props }) {
 }
 
 // ── Content — AnimatePresence drives open/exit ───────────────
-function TooltipContent({
-  className,
-  sideOffset = 6,
-  side = "top",
-  children,
-  ...props
-}) {
+function TooltipContent({ className, sideOffset = 6, side = "top", children, ...props }) {
   const isOpen = useContext(TooltipOpenContext);
   const reduced = useReducedMotion();
   const variants = buildVariants(side);

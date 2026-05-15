@@ -35,7 +35,11 @@ function ProductsGrid() {
   const brand = searchParams.get("brand") || "";
   const sort = searchParams.get("sort") || "";
 
-  const { products: data, loading, error } = useProductSearch({
+  const {
+    products: data,
+    loading,
+    error,
+  } = useProductSearch({
     q,
     category,
     brand,
@@ -56,9 +60,7 @@ function ProductsGrid() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-destructive mb-4" />
-        <h3 className="font-sans font-bold text-lg text-destructive mb-1">
-          Failed to load products
-        </h3>
+        <h3 className="font-sans font-bold text-lg text-destructive mb-1">Failed to load products</h3>
         <p className="text-muted-foreground text-sm">Please try again later.</p>
       </div>
     );

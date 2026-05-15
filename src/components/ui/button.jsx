@@ -10,8 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shadow-primary/20",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shadow-primary/20",
         outline:
           "border border-border bg-background text-foreground hover:border-primary hover:bg-primary/5 hover:text-primary",
         secondary:
@@ -32,8 +31,7 @@ const buttonVariants = cva(
         icon: "size-9",
         "icon-xs":
           "size-6 rounded-[min(var(--radius-md),8px)] in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md",
+        "icon-sm": "size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md",
         "icon-lg": "size-10",
       },
     },
@@ -92,8 +90,7 @@ function ShimmerLayer() {
       aria-hidden
       className="pointer-events-none absolute inset-0 -translate-x-full"
       style={{
-        background:
-          "linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.18) 50%, transparent 60%)",
+        background: "linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.18) 50%, transparent 60%)",
       }}
       initial={false}
       variants={{
@@ -108,29 +105,14 @@ function ShimmerLayer() {
   );
 }
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  animate = true,
-  ...props
-}) {
+function Button({ className, variant = "default", size = "default", asChild = false, animate = true, ...props }) {
   const shouldReduceMotion = useReducedMotion();
   const classNames = cn(buttonVariants({ variant, size, className }));
 
   if (!animate || asChild || shouldReduceMotion) {
     const { asChild: _, ...restProps } = props;
     const Element = asChild ? Slot.Root : "button";
-    return (
-      <Element
-        data-slot="button"
-        data-variant={variant}
-        data-size={size}
-        className={classNames}
-        {...restProps}
-      />
-    );
+    return <Element data-slot="button" data-variant={variant} data-size={size} className={classNames} {...restProps} />;
   }
 
   const motionCfg = VARIANT_MOTION[variant] ?? VARIANT_MOTION.default;
@@ -152,9 +134,7 @@ function Button({
     >
       {shimmer && <ShimmerLayer />}
       {/* Content sits above the shimmer layer */}
-      <span className="relative z-10 inline-flex items-center gap-[inherit]">
-        {props.children}
-      </span>
+      <span className="relative z-10 inline-flex items-center gap-[inherit]">{props.children}</span>
     </motion.button>
   );
 }

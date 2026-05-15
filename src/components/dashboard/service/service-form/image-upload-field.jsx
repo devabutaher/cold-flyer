@@ -86,13 +86,7 @@ export function ImageUploadField({ value = [], onChange }) {
           <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
             <ImagePlus className="h-6 w-6 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">Add</span>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={handleAddImages}
-            />
+            <input type="file" accept="image/*" multiple className="hidden" onChange={handleAddImages} />
           </label>
         )}
       </div>

@@ -3,18 +3,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Award,
-  Briefcase,
-  Building,
-  Clock,
-  GraduationCap,
-  Mail,
-  MapPin,
-  Phone,
-  Users,
-  Video,
-} from "lucide-react";
+import { Award, Briefcase, Building, Clock, GraduationCap, Mail, MapPin, Phone, Users, Video } from "lucide-react";
 import { benefits, departments, culture } from "@/data/careers-data";
 
 const process = [
@@ -41,16 +30,13 @@ export default function CareersPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-              Join Our Team
-            </Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Join Our Team</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Build the <br />
               <span className="text-primary">Future</span> of Comfort
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Join a global team of innovators shaping sustainable climate
-              solutions for generations to come.
+              Join a global team of innovators shaping sustainable climate solutions for generations to come.
             </p>
           </div>
         </div>
@@ -69,17 +55,14 @@ export default function CareersPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We&#8217;re more than an HVAC company&#8212;we&#8217;re a movement toward
-                sustainable living. Our team combines passion with purpose
-                to solve the world&#8217;s most pressing climate challenges.
+                We&#8217;re more than an HVAC company&#8212;we&#8217;re a movement toward sustainable living. Our team
+                combines passion with purpose to solve the world&#8217;s most pressing climate challenges.
               </p>
 
               <div className="grid grid-cols-2 gap-6">
                 {culture.map((item) => (
                   <div key={item.label} className="p-6 bg-card rounded-xl">
-                    <div className="font-sans font-extrabold text-3xl text-primary mb-1">
-                      {item.value}
-                    </div>
+                    <div className="font-sans font-extrabold text-3xl text-primary mb-1">{item.value}</div>
                     <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">
                       {item.label}
                     </div>
@@ -120,8 +103,8 @@ export default function CareersPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              We invest in our people because they&#8217;re our greatest asset.
-              Enjoy comprehensive benefits designed for your wellbeing.
+              We invest in our people because they&#8217;re our greatest asset. Enjoy comprehensive benefits designed
+              for your wellbeing.
             </p>
           </div>
 
@@ -186,12 +169,8 @@ export default function CareersPage() {
                   <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
                     <Briefcase size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-sans font-extrabold text-2xl">
-                    {dept.name}
-                  </h3>
-                  <span className="ml-auto text-sm text-muted-foreground">
-                    {dept.positions.length} open positions
-                  </span>
+                  <h3 className="font-sans font-extrabold text-2xl">{dept.name}</h3>
+                  <span className="ml-auto text-sm text-muted-foreground">{dept.positions.length} open positions</span>
                 </div>
 
                 <div className="divide-y divide-border/30">
@@ -201,9 +180,7 @@ export default function CareersPage() {
                       className="p-6 flex items-center justify-between hover:bg-primary/10 transition-colors cursor-pointer"
                     >
                       <div>
-                        <div className="font-medium text-lg mb-1">
-                          {position.title}
-                        </div>
+                        <div className="font-medium text-lg mb-1">{position.title}</div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <MapPin size={14} />
@@ -243,14 +220,10 @@ export default function CareersPage() {
                 {process.map((p) => (
                   <div key={p.step} className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <span className="font-sans font-extrabold text-sm text-primary">
-                        {p.step}
-                      </span>
+                      <span className="font-sans font-extrabold text-sm text-primary">{p.step}</span>
                     </div>
                     <div>
-                      <h4 className="font-sans font-extrabold text-lg mb-1">
-                        {p.title}
-                      </h4>
+                      <h4 className="font-sans font-extrabold text-lg mb-1">{p.title}</h4>
                       <p className="text-muted-foreground">{p.desc}</p>
                     </div>
                   </div>
@@ -281,9 +254,7 @@ export default function CareersPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Don&#8217;t see the right role?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">
-              Submit your resume for future opportunities.
-            </p>
+            <p className="text-primary-foreground/70 text-sm">Submit your resume for future opportunities.</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">

@@ -24,9 +24,6 @@ export async function POST(request) {
       headers: setCookie ? { "Set-Cookie": setCookie } : {},
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to upload file" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to upload file" }, { status: 500 });
   }
 }

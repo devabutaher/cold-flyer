@@ -3,15 +3,7 @@
 import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  CheckCircle,
-  CircleAlert,
-  Clock,
-  FileText,
-  ShieldCheck,
-  Star,
-  ThumbsUp,
-} from "lucide-react";
+import { CheckCircle, CircleAlert, Clock, FileText, ShieldCheck, Star, ThumbsUp } from "lucide-react";
 import { DetailBackButton } from "./detail-back-button";
 import { DetailMetaInfo } from "./detail-meta-info";
 import { DetailPrice } from "./detail-price";
@@ -34,7 +26,7 @@ export default function ServiceDetailClient({ service }) {
           title: `${service.name} — view ${idx + 1}`,
         }))
       : [{ url: "", title: service.name }];
-  
+
   const iconMap = {
     CheckCircle,
     CircleAlert,
@@ -49,7 +41,7 @@ export default function ServiceDetailClient({ service }) {
     { key: "excludes", label: "Excludes", icon: CircleAlert, data: service.exclusions, variant: "exclude" },
     { key: "requirements", label: "Requirements", icon: FileText, data: service.requirements },
     { key: "qualifications", label: "Qualifications", icon: ShieldCheck, data: service.qualifications },
-  ].filter(tab => tab.data && (Array.isArray(tab.data) ? tab.data.length > 0 : tab.data.trim()));
+  ].filter((tab) => tab.data && (Array.isArray(tab.data) ? tab.data.length > 0 : tab.data.trim()));
 
   const trustBadgesData = [
     { icon: ShieldCheck, text: "Quality Service" },
@@ -82,9 +74,7 @@ export default function ServiceDetailClient({ service }) {
 
         <div className="flex flex-col">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              {service.category}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">{service.category}</span>
             <span className="text-xs font-medium text-muted-foreground capitalize">
               {service.serviceType?.replace(/_/g, " ")}
             </span>
@@ -95,30 +85,17 @@ export default function ServiceDetailClient({ service }) {
               {service.name}
             </h1>
 
-            {service.description && (
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                {service.description}
-              </p>
-            )}
+            {service.description && <p className="text-muted-foreground leading-relaxed mb-4">{service.description}</p>}
           </div>
 
-          <DetailPrice
-            mode="service"
-            basePrice={service.basePrice}
-            priceType={service.priceType}
-            showLabel
-          />
+          <DetailPrice mode="service" basePrice={service.basePrice} priceType={service.priceType} showLabel />
 
           <div className="flex items-center gap-4 mb-6">
             {service.rating > 0 && (
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-                <span className="font-bold text-foreground">
-                  {service.rating.toFixed(1)}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  ({service.reviewCount || 0} reviews)
-                </span>
+                <span className="font-bold text-foreground">{service.rating.toFixed(1)}</span>
+                <span className="text-sm text-muted-foreground">({service.reviewCount || 0} reviews)</span>
               </div>
             )}
             {service.duration && (
@@ -134,9 +111,7 @@ export default function ServiceDetailClient({ service }) {
           {service.bookingCount > 0 && (
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-xs font-medium text-green-600">
-                {service.bookingCount} bookings completed
-              </span>
+              <span className="text-xs font-medium text-green-600">{service.bookingCount} bookings completed</span>
             </div>
           )}
 
@@ -144,12 +119,7 @@ export default function ServiceDetailClient({ service }) {
             <Button size="lg" className="flex-1" asChild>
               <Link href={bookingUrl}>Book Now</Link>
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="flex-1"
-              onClick={handleContact}
-            >
+            <Button variant="outline" size="lg" className="flex-1" onClick={handleContact}>
               Contact Us
             </Button>
           </div>

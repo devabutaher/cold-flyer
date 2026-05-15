@@ -5,9 +5,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
 function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
-  const normalizedOptions = options.map((opt) =>
-    typeof opt === "string" ? { value: opt, label: opt } : opt,
-  );
+  const normalizedOptions = options.map((opt) => (typeof opt === "string" ? { value: opt, label: opt } : opt));
 
   return (
     <SelectPrimitive.Root value={value} onValueChange={onChange}>
@@ -39,9 +37,7 @@ function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
                 <SelectPrimitive.ItemIndicator className="absolute right-2 flex size-4 items-center justify-center">
                   <CheckIcon className="size-3" />
                 </SelectPrimitive.ItemIndicator>
-                <SelectPrimitive.ItemText>
-                  {option.label}
-                </SelectPrimitive.ItemText>
+                <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
               </SelectPrimitive.Item>
             ))}
           </SelectPrimitive.Viewport>

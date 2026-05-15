@@ -105,13 +105,13 @@ export default function EditServiceForm({ service, isAdmin = false }) {
 
   async function onSubmit(values) {
     if (!checkAdminAccess()) return;
-    
+
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
       const uploadedImages = await Promise.all(
-        images.map((img) => img.file ? uploadImageAction(img, "images") : img),
+        images.map((img) => (img.file ? uploadImageAction(img, "images") : img)),
       );
 
       const includes = parseListInput(values.includes);

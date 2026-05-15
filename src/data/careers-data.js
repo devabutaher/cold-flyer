@@ -1,11 +1,4 @@
-import {
-  DollarSign,
-  Heart,
-  Calendar,
-  Rocket,
-  Home,
-  Globe,
-} from "lucide-react";
+import { DollarSign, Heart, Calendar, Rocket, Home, Globe } from "lucide-react";
 
 export const benefits = [
   {

@@ -17,16 +17,7 @@ export const categories = [
   "Tools",
 ];
 
-export const brands = [
-  "All Brands",
-  "ColdFlyer",
-  "Daikin",
-  "LG",
-  "Samsung",
-  "Carrier",
-  "Mitsubishi",
-  "Hyundai",
-];
+export const brands = ["All Brands", "ColdFlyer", "Daikin", "LG", "Samsung", "Carrier", "Mitsubishi", "Hyundai"];
 
 export const sortOptions = [
   "All Products",

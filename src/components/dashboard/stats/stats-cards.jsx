@@ -8,9 +8,7 @@ function StatCard({ title, value, icon: Icon, prefix, loading }) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
         <Icon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
@@ -18,7 +16,8 @@ function StatCard({ title, value, icon: Icon, prefix, loading }) {
           <Skeleton className="h-8 w-24" />
         ) : (
           <div className="text-2xl font-bold">
-            {prefix}{typeof value === "number" ? value.toLocaleString() : value}
+            {prefix}
+            {typeof value === "number" ? value.toLocaleString() : value}
           </div>
         )}
       </CardContent>

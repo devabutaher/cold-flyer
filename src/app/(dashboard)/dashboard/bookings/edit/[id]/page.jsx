@@ -39,9 +39,9 @@ export default async function EditBookingPage({ params }) {
     );
   }
 
-  const EditBookingForm = await import(
-    "@/components/dashboard/booking/edit-booking/edit-booking-form"
-  ).then((mod) => mod.default);
+  const EditBookingForm = await import("@/components/dashboard/booking/edit-booking/edit-booking-form").then(
+    (mod) => mod.default,
+  );
 
   return <EditBookingForm booking={booking} isAdmin={user.role === "admin"} />;
 }

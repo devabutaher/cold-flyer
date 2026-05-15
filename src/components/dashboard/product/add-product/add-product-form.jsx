@@ -78,14 +78,12 @@ export default function AddProductForm({ isAdmin = false }) {
 
   async function onSubmit(values) {
     if (!checkAdminAccess()) return;
-    
+
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await Promise.all(
-        images.map((img) => uploadImageAction(img, "images")),
-      );
+      const uploadedImages = await Promise.all(images.map((img) => uploadImageAction(img, "images")));
 
       const features = parseListInput(values.features);
       const inBox = parseListInput(values.inBox);
@@ -95,12 +93,9 @@ export default function AddProductForm({ isAdmin = false }) {
         name: values.name,
         slug: generateSlug(values.name),
         sku: values.sku,
-        description:
-          values.description || `${values.name} - High quality product`,
+        description: values.description || `${values.name} - High quality product`,
         price: Number(values.price),
-        originalPrice: values.originalPrice
-          ? Number(values.originalPrice)
-          : undefined,
+        originalPrice: values.originalPrice ? Number(values.originalPrice) : undefined,
         stock: Number(values.stock) || 0,
         productType: values.productType || productType,
         category: values.category,
@@ -134,15 +129,9 @@ export default function AddProductForm({ isAdmin = false }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <BasicInfoSection control={form.control} />
         <PricingSection control={form.control} />
-        <SpecificationsSection
-          control={form.control}
-          productType={productType}
-        />
+        <SpecificationsSection control={form.control} productType={productType} />
         <FeaturesSection control={form.control} />
-        <FormActions
-          onReset={handleReset}
-          isPending={createProduct.isPending || isUploading}
-        />
+        <FormActions onReset={handleReset} isPending={createProduct.isPending || isUploading} />
       </form>
     </div>
   );

@@ -21,16 +21,13 @@ export default function TermsPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs bg-primary text-primary-foreground">
-              Legal
-            </Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs bg-primary text-primary-foreground">Legal</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Terms & <br />
               <span className="text-primary">Conditions</span>
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Please read these terms carefully before using our products and
-              services.
+              Please read these terms carefully before using our products and services.
             </p>
           </div>
         </div>
@@ -63,9 +60,7 @@ export default function TermsPage() {
                 <div className="p-6 bg-card rounded-xl border border-border/30">
                   <div className="flex items-center gap-2 mb-4">
                     <Shield size={18} className="text-primary" />
-                    <h3 className="font-sans font-extrabold text-sm uppercase tracking-wider">
-                      Quick Navigation
-                    </h3>
+                    <h3 className="font-sans font-extrabold text-sm uppercase tracking-wider">Quick Navigation</h3>
                   </div>
                   <nav className="space-y-1">
                     {sections.map((section) => (
@@ -82,18 +77,12 @@ export default function TermsPage() {
 
                 <div className="p-4 bg-destructive/10 rounded-xl border border-destructive/20">
                   <div className="flex items-start gap-3">
-                    <AlertTriangle
-                      size={18}
-                      className="text-destructive shrink-0 mt-0.5"
-                    />
+                    <AlertTriangle size={18} className="text-destructive shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-sans font-extrabold text-sm mb-1">
-                        Important Notice
-                      </h4>
+                      <h4 className="font-sans font-extrabold text-sm mb-1">Important Notice</h4>
                       <p className="text-xs text-muted-foreground leading-relaxed">
-                        By using this website, you acknowledge that you have
-                        read and understood these terms and agree to be bound by
-                        them.
+                        By using this website, you acknowledge that you have read and understood these terms and agree
+                        to be bound by them.
                       </p>
                     </div>
                   </div>
@@ -107,17 +96,11 @@ export default function TermsPage() {
                 <div key={section.id} id={section.id} className="scroll-mt-8">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <span className="font-sans font-extrabold text-sm text-primary">
-                        {index + 1}
-                      </span>
+                      <span className="font-sans font-extrabold text-sm text-primary">{index + 1}</span>
                     </div>
-                    <h2 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight">
-                      {section.title}
-                    </h2>
+                    <h2 className="font-sans font-extrabold text-2xl md:text-3xl tracking-tight">{section.title}</h2>
                   </div>
-                  <p className="text-lg leading-relaxed text-muted-foreground ml-12">
-                    {section.content}
-                  </p>
+                  <p className="text-lg leading-relaxed text-muted-foreground ml-12">{section.content}</p>
                 </div>
               ))}
             </div>

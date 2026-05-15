@@ -128,9 +128,7 @@ export function OrderDetails({ orderId }) {
           </Link>
         </Button>
         <div className="min-w-0">
-          <h1 className="text-lg font-semibold tracking-tight truncate">
-            Order {orderRef}
-          </h1>
+          <h1 className="text-lg font-semibold tracking-tight truncate">Order {orderRef}</h1>
           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <CalendarDays size={11} />
@@ -180,13 +178,9 @@ export function OrderDetails({ orderId }) {
               </CardHeader>
               <CardContent className="pt-0 text-sm text-muted-foreground space-y-0.5">
                 {order.shippingAddress.fullName && (
-                  <p className="font-medium text-foreground">
-                    {order.shippingAddress.fullName}
-                  </p>
+                  <p className="font-medium text-foreground">{order.shippingAddress.fullName}</p>
                 )}
-                {order.shippingAddress.phone && (
-                  <p>{order.shippingAddress.phone}</p>
-                )}
+                {order.shippingAddress.phone && <p>{order.shippingAddress.phone}</p>}
                 <p>
                   {[
                     order.shippingAddress.addressLine1,
@@ -194,12 +188,12 @@ export function OrderDetails({ orderId }) {
                     order.shippingAddress.city,
                     order.shippingAddress.state,
                     order.shippingAddress.postalCode,
-                  ].filter(Boolean).join(", ")}
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
                 </p>
                 {order.shippingAddress.instructions && (
-                  <p className="mt-1 text-xs italic">
-                    Note: {order.shippingAddress.instructions}
-                  </p>
+                  <p className="mt-1 text-xs italic">Note: {order.shippingAddress.instructions}</p>
                 )}
               </CardContent>
             </Card>
@@ -214,9 +208,7 @@ export function OrderDetails({ orderId }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 text-sm">
-                <p className="font-mono text-muted-foreground">
-                  {order.trackingNumber}
-                </p>
+                <p className="font-mono text-muted-foreground">{order.trackingNumber}</p>
                 {order.trackingUrl && (
                   <a
                     href={order.trackingUrl}
@@ -241,17 +233,9 @@ export function OrderDetails({ orderId }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0 space-y-2">
-              <PriceRow
-                label="Subtotal"
-                value={`৳${order.subtotal?.toLocaleString()}`}
-                muted
-              />
+              <PriceRow label="Subtotal" value={`৳${order.subtotal?.toLocaleString()}`} muted />
               {order.discount > 0 && (
-                <PriceRow
-                  label="Discount"
-                  value={`−৳${order.discount?.toLocaleString()}`}
-                  className="text-green-600"
-                />
+                <PriceRow label="Discount" value={`−৳${order.discount?.toLocaleString()}`} className="text-green-600" />
               )}
               {order.couponDiscount > 0 && (
                 <PriceRow
@@ -267,11 +251,7 @@ export function OrderDetails({ orderId }) {
               />
               <PriceRow label="Tax" value={`৳${order.tax?.toFixed(2)}`} muted />
               <Separator className="my-1" />
-              <PriceRow
-                label="Total"
-                value={`৳${order.total?.toLocaleString()}`}
-                highlight
-              />
+              <PriceRow label="Total" value={`৳${order.total?.toLocaleString()}`} highlight />
             </CardContent>
           </Card>
 
@@ -283,11 +263,7 @@ export function OrderDetails({ orderId }) {
 
             {canPay && (
               <Button className="w-full gap-2" onClick={handlePayment} disabled={paying}>
-                {paying ? (
-                  <Loader2 size={14} className="animate-spin" />
-                ) : (
-                  <CreditCard size={14} />
-                )}
+                {paying ? <Loader2 size={14} className="animate-spin" /> : <CreditCard size={14} />}
                 {paying ? "Processing…" : "Pay Now"}
               </Button>
             )}

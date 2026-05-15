@@ -11,13 +11,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link href={"/"} className="flex items-center gap-2 mb-4">
               <div className="bg-primary p-2 rounded-md">
-                <Image
-                  src="/logo.png"
-                  width={200}
-                  height={200}
-                  alt="logo"
-                  className="w-4 h-4"
-                />
+                <Image src="/logo.png" width={200} height={200} alt="logo" className="w-4 h-4" />
               </div>
 
               <h1 className="font-bold text-xl font-sans">
@@ -25,8 +19,7 @@ export default function Footer() {
               </h1>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-5">
-              Leading the industry in precision climate engineering and
-              sustainable HVAC solutions since 1998.
+              Leading the industry in precision climate engineering and sustainable HVAC solutions since 1998.
             </p>
             <div className="flex gap-3">
               {[
@@ -93,9 +86,7 @@ export default function Footer() {
           {/* Nav cols */}
           {footerColumns.map((col) => (
             <div key={col.title}>
-              <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">
-                {col.title}
-              </h4>
+              <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">{col.title}</h4>
               <ul className="space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
@@ -113,9 +104,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="lg:col-span-1">
-            <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">
-              Newsletter
-            </h4>
+            <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">Newsletter</h4>
             <p className="text-muted-foreground text-sm mb-4">
               Stay cool with our latest efficiency tips and product releases.
             </p>
@@ -136,11 +125,7 @@ export default function Footer() {
           <span>© 2025 ColdFlyer Precision Climate. All rights reserved.</span>
           <div className="flex gap-4">
             {footerLinks.quickLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="hover:text-background transition-colors"
-              >
+              <Link key={link.label} href={link.href} className="hover:text-background transition-colors">
                 {link.label}
               </Link>
             ))}

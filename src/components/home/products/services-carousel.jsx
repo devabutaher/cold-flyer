@@ -44,9 +44,7 @@ export default function ServicesCarousel() {
         items={services}
         catalogLabel="View All Services"
         catalogLink="/services"
-        renderCard={(service, index) => (
-          <ServiceCard service={service} index={index} />
-        )}
+        renderCard={(service, index) => <ServiceCard service={service} index={index} />}
       />
     </AnimatedSection>
   );
@@ -103,14 +101,8 @@ function ServiceCard({ service, index }) {
               viewport={{ once: true }}
               transition={{ duration: 0.2, delay: idx * 0.05 }}
             >
-              <CheckCircle
-                size={18}
-                className="shrink-0 text-primary"
-                strokeWidth={2.5}
-              />
-              <span className="text-sm font-medium text-foreground">
-                {feature}
-              </span>
+              <CheckCircle size={18} className="shrink-0 text-primary" strokeWidth={2.5} />
+              <span className="text-sm font-medium text-foreground">{feature}</span>
             </motion.div>
           ))}
         </div>

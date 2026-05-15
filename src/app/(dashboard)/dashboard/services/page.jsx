@@ -10,12 +10,10 @@ export default function ServicesPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">
-          {isAdmin ? "All Services" : "Services"}
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">{isAdmin ? "All Services" : "Services"}</h1>
         <p className="text-sm text-muted-foreground mt-0.5">
-          {isAdmin 
-            ? "Manage your AC services and maintenance offerings." 
+          {isAdmin
+            ? "Manage your AC services and maintenance offerings."
             : "Browse available AC repair and maintenance services."}
         </p>
       </div>

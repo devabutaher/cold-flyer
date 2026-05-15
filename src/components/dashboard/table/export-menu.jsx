@@ -10,13 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { pdf } from "@react-pdf/renderer";
-import {
-  DownloadIcon,
-  FileJsonIcon,
-  FileSpreadsheetIcon,
-  FileTextIcon,
-  Loader2,
-} from "lucide-react";
+import { DownloadIcon, FileJsonIcon, FileSpreadsheetIcon, FileTextIcon, Loader2 } from "lucide-react";
 import Papa from "papaparse";
 import { useState } from "react";
 import * as XLSX from "xlsx";
@@ -34,48 +28,28 @@ function triggerDownload(blob, filename) {
 const identity = (r) => r;
 
 // Keys that should never appear in auto-derived PDF columns
-const INTERNAL_KEYS = new Set([
-  "_id",
-  "__v",
-  "id",
-  "createdAt",
-  "updatedAt",
-  "passwordResetToken",
-  "refreshTokens",
-]);
+const INTERNAL_KEYS = new Set(["_id", "__v", "id", "createdAt", "updatedAt", "passwordResetToken", "refreshTokens"]);
 
 function deriveColumns(row) {
   return Object.keys(row)
     .filter((key) => !INTERNAL_KEYS.has(key) && !key.startsWith("_"))
     .map((key) => ({
       accessorKey: key,
-      header: key
-        .replace(/([A-Z])/g, " $1")
-        .replace(/^./, (c) => c.toUpperCase()),
+      header: key.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase()),
     }));
 }
 
-export function ExportMenu({
-  table,
-  filename = "export",
-  mapRow = identity,
-  pdfTitle = "Report",
-  pdfColumns,
-}) {
+export function ExportMenu({ table, filename = "export", mapRow = identity, pdfTitle = "Report", pdfColumns }) {
   const [pdfLoading, setPdfLoading] = useState(false);
 
   const getRows = () => {
     const selected = table.getSelectedRowModel().rows;
-    const source =
-      selected.length > 0 ? selected : table.getFilteredRowModel().rows;
+    const source = selected.length > 0 ? selected : table.getFilteredRowModel().rows;
     return source.map((r) => mapRow(r.original));
   };
 
   const exportCSV = () => {
-    triggerDownload(
-      new Blob([Papa.unparse(getRows())], { type: "text/csv" }),
-      `${filename}.csv`,
-    );
+    triggerDownload(new Blob([Papa.unparse(getRows())], { type: "text/csv" }), `${filename}.csv`);
   };
 
   const exportExcel = () => {
@@ -103,9 +77,7 @@ export function ExportMenu({
 
     setPdfLoading(true);
     try {
-      const blob = await pdf(
-        <ReportPDF title={pdfTitle} columns={cols} data={rows} />,
-      ).toBlob();
+      const blob = await pdf(<ReportPDF title={pdfTitle} columns={cols} data={rows} />).toBlob();
       triggerDownload(blob, `${filename}.pdf`);
     } finally {
       setPdfLoading(false);
@@ -117,23 +89,10 @@ export function ExportMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-9 gap-2"
-          disabled={pdfLoading}
-        >
-          {pdfLoading ? (
-            <Loader2 size={14} className="animate-spin" />
-          ) : (
-            <DownloadIcon size={14} />
-          )}
+        <Button variant="outline" size="sm" className="h-9 gap-2" disabled={pdfLoading}>
+          {pdfLoading ? <Loader2 size={14} className="animate-spin" /> : <DownloadIcon size={14} />}
           Export
-          {selectedCount > 0 && (
-            <Badge className="ml-0.5 h-4 min-w-4 px-1 text-[10px]">
-              {selectedCount}
-            </Badge>
-          )}
+          {selectedCount > 0 && <Badge className="ml-0.5 h-4 min-w-4 px-1 text-[10px]">{selectedCount}</Badge>}
         </Button>
       </DropdownMenuTrigger>
 

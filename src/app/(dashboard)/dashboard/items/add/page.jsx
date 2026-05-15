@@ -15,21 +15,21 @@ async function getUser() {
 
 export default async function AddProductPage() {
   const cookieStore = await cookies();
-  
+
   if (!cookieStore.get("accessToken")) {
     redirect("/auth");
   }
-  
+
   const user = await getUser();
-  
+
   if (!user) {
     redirect("/");
   }
-  
+
   const AddProductForm = await import("@/components/dashboard/product/add-product/add-product-form").then(
-    (mod) => mod.default
+    (mod) => mod.default,
   );
-  
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-bold mb-6">Add New Product</h1>

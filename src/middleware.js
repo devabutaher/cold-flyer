@@ -26,9 +26,7 @@ export function middleware(request) {
 
   if (accessToken) {
     try {
-      const payload = JSON.parse(
-        atob(accessToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))
-      );
+      const payload = JSON.parse(atob(accessToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
       response.headers.set("x-user-role", payload.role || "user");
 
       if (isAdmin && payload.role !== "admin") {
@@ -46,7 +44,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
 };

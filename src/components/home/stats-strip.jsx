@@ -32,9 +32,7 @@ function Counter({ end, suffix, label, format, started, index }) {
         {format(val)}
         {suffix}
       </div>
-      <div className="text-muted-foreground text-xs sm:text-sm uppercase tracking-widest font-semibold">
-        {label}
-      </div>
+      <div className="text-muted-foreground text-xs sm:text-sm uppercase tracking-widest font-semibold">{label}</div>
     </motion.div>
   );
 }

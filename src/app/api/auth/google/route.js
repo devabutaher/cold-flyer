@@ -25,9 +25,6 @@ export async function POST(request) {
 
     return NextResponse.json(data, { status: response.status, headers });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Google sign-in failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Google sign-in failed" }, { status: 500 });
   }
 }

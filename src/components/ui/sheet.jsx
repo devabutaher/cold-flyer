@@ -35,13 +35,7 @@ function SheetOverlay({ className, ...props }) {
   );
 }
 
-function SheetContent({
-  className,
-  children,
-  side = "right",
-  showCloseButton = true,
-  ...props
-}) {
+function SheetContent({ className, children, side = "right", showCloseButton = true, ...props }) {
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -57,11 +51,7 @@ function SheetContent({
         {children}
         {showCloseButton && (
           <SheetPrimitive.Close data-slot="sheet-close" asChild>
-            <Button
-              variant="ghost"
-              className="absolute top-4 right-4"
-              size="icon-sm"
-            >
+            <Button variant="ghost" className="absolute top-4 right-4" size="icon-sm">
               <XIcon />
               <span className="sr-only">Close</span>
             </Button>
@@ -73,32 +63,16 @@ function SheetContent({
 }
 
 function SheetHeader({ className, ...props }) {
-  return (
-    <div
-      data-slot="sheet-header"
-      className={cn("flex flex-col gap-1.5 p-4", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="sheet-header" className={cn("flex flex-col gap-1.5 p-4", className)} {...props} />;
 }
 
 function SheetFooter({ className, ...props }) {
-  return (
-    <div
-      data-slot="sheet-footer"
-      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="sheet-footer" className={cn("mt-auto flex flex-col gap-2 p-4", className)} {...props} />;
 }
 
 function SheetTitle({ className, ...props }) {
   return (
-    <SheetPrimitive.Title
-      data-slot="sheet-title"
-      className={cn("font-medium text-foreground", className)}
-      {...props}
-    />
+    <SheetPrimitive.Title data-slot="sheet-title" className={cn("font-medium text-foreground", className)} {...props} />
   );
 }
 
@@ -112,13 +86,4 @@ function SheetDescription({ className, ...props }) {
   );
 }
 
-export {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-};
+export { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger };

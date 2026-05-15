@@ -23,10 +23,7 @@ export function Cart({
   onRemoveProduct = () => {},
   isProcessing = false,
 }) {
-  const subtotal = products.reduce(
-    (total, p) => total + p.price * p.quantity,
-    0,
-  );
+  const subtotal = products.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * vatRate;
   const totalAmount = subtotal + shippingCost + vatAmount;
   const isCartEmpty = !products || products.length === 0;
@@ -45,12 +42,8 @@ export function Cart({
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-            My Cart
-          </span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">
-            Shopping Cart
-          </h1>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">My Cart</span>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">Shopping Cart</h1>
         </div>
 
         {isLoading && loadingSkeleton ? (
@@ -81,15 +74,9 @@ export function Cart({
             <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-muted">
               <ShoppingCart size={36} className="text-muted-foreground" />
             </div>
-            <h2 className="mb-2 text-xl font-bold text-foreground">
-              Your cart is empty
-            </h2>
-            <p className="mb-7 text-sm text-muted-foreground">
-              Looks like you haven&apos;t added anything yet.
-            </p>
-            <Button onClick={() => onContinueShopping(checkoutPayload)}>
-              Start Shopping
-            </Button>
+            <h2 className="mb-2 text-xl font-bold text-foreground">Your cart is empty</h2>
+            <p className="mb-7 text-sm text-muted-foreground">Looks like you haven&apos;t added anything yet.</p>
+            <Button onClick={() => onContinueShopping(checkoutPayload)}>Start Shopping</Button>
           </div>
         )}
 
@@ -108,13 +95,7 @@ export function Cart({
                       className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
                     >
                       {product.imageUrl ? (
-                        <Image
-                          src={product.imageUrl}
-                          alt={product.name}
-                          fill
-                          sizes="100px"
-                          className="object-cover"
-                        />
+                        <Image src={product.imageUrl} alt={product.name} fill sizes="100px" className="object-cover" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
                           <Package size={24} className="text-muted-foreground/40" />
@@ -146,16 +127,11 @@ export function Cart({
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <QuantityInput
-                          quantity={product.quantity}
-                          onChange={(q) => onUpdateQuantity(product.id, q)}
-                        />
+                        <QuantityInput quantity={product.quantity} onChange={(q) => onUpdateQuantity(product.id, q)} />
                         <div className="text-right">
                           <p className="text-sm font-bold text-foreground">
                             {currencyPrefix}
-                            {(
-                              product.price * product.quantity
-                            ).toLocaleString()}
+                            {(product.price * product.quantity).toLocaleString()}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {currencyPrefix}
@@ -181,16 +157,11 @@ export function Cart({
             </div>
 
             <div className="h-fit rounded-2xl border border-border bg-card p-6">
-              <h2 className="mb-5 text-lg font-bold text-foreground">
-                Order Summary
-              </h2>
+              <h2 className="mb-5 text-lg font-bold text-foreground">Order Summary</h2>
 
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between text-muted-foreground">
-                  <span>
-                    Subtotal ({products.reduce((s, p) => s + p.quantity, 0)}{" "}
-                    items)
-                  </span>
+                  <span>Subtotal ({products.reduce((s, p) => s + p.quantity, 0)} items)</span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {subtotal.toLocaleString()}
@@ -242,11 +213,7 @@ export function Cart({
                     "Proceed to Payment"
                   )}
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => onContinueShopping(checkoutPayload)}
-                >
+                <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>
                   Continue Shopping
                 </Button>
               </div>

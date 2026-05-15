@@ -13,8 +13,7 @@ const Error = () => {
         <h2 className="mb-6 text-5xl font-semibold">Whoops!</h2>
         <h3 className="mb-1.5 text-3xl font-semibold">Something went wrong</h3>
         <p className="text-muted-foreground mb-6 max-w-sm">
-          The page you&apos;re looking for isn&apos;t found, we suggest you to
-          go back.
+          The page you&apos;re looking for isn&apos;t found, we suggest you to go back.
         </p>
         <Button size="lg" onClick={() => router.back()}>
           Take Me Back

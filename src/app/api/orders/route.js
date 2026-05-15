@@ -7,24 +7,18 @@ export async function GET(request) {
   const queryString = searchParams.toString();
 
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/orders${queryString ? `?${queryString}` : ""}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: request.headers.get("cookie") || "",
-        },
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/api/orders${queryString ? `?${queryString}` : ""}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: request.headers.get("cookie") || "",
+      },
+      credentials: "include",
+    });
 
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to fetch orders" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to fetch orders" }, { status: 500 });
   }
 }
 
@@ -51,9 +45,6 @@ export async function POST(request) {
       headers: setCookie ? { "Set-Cookie": setCookie } : {},
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to create order" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to create order" }, { status: 500 });
   }
 }

@@ -32,10 +32,7 @@ export function DesktopNav() {
         ))}
         {staticLinks.map((link) => (
           <NavigationMenuLink key={link.label} asChild className="px-4">
-            <Link
-              className="rounded-md p-2 hover:bg-accent font-medium"
-              href={link.href}
-            >
+            <Link className="rounded-md p-2 hover:bg-accent font-medium" href={link.href}>
               {link.label}
             </Link>
           </NavigationMenuLink>

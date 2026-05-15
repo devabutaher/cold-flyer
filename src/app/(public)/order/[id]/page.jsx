@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CheckCircle, Package } from "lucide-react";
 import Link from "next/link";
@@ -15,42 +15,42 @@ export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
   const { backendUser } = useAuth();
   const orderId = params.id;
-  const success = searchParams.get("success");
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchOrder = useCallback(async () => {
-    setLoading(true);
-    try {
+  useEffect(() => {
+    if (!orderId) return;
+
+    let mounted = true;
+
+    const fetchOrder = async () => {
       if (!backendUser) {
         toast.error("Please login to view your order");
+        if (mounted) setLoading(false);
         return;
       }
 
-      // Fetch order with auth
-      const response = await fetch(`/api/orders/${orderId}`, {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setOrder(data.data?.order || data.order);
-      }
-    } catch (error) {
-      console.error("Failed to fetch order:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [orderId]);
+      try {
+        const response = await fetch(`/api/orders/${orderId}`, {
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        });
 
-  useEffect(() => {
-    if (orderId) {
-      fetchOrder();
-    }
-  }, [orderId, fetchOrder]);
+        if (response.ok && mounted) {
+          const data = await response.json();
+          setOrder(data.data?.order || data.order);
+        }
+      } catch (error) {
+        console.error("Failed to fetch order:", error);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchOrder();
+
+    return () => { mounted = false; };
+  }, [orderId, backendUser]);
 
   if (loading) {
     return (
@@ -74,11 +74,9 @@ export default function OrderSuccessPage() {
           <div className="mb-4 flex justify-center">
             <CheckCircle className="h-16 w-16 text-green-500" />
           </div>
-          
+
           <h1 className="mb-2 text-2xl font-bold">Payment Successful!</h1>
-          <p className="mb-6 text-muted-foreground">
-            Thank you for your order. Your payment has been processed.
-          </p>
+          <p className="mb-6 text-muted-foreground">Thank you for your order. Your payment has been processed.</p>
 
           {order && (
             <div className="mb-6 rounded-lg bg-muted p-4 text-left">
@@ -101,10 +99,14 @@ export default function OrderSuccessPage() {
               <Button className="w-full">View Order Details</Button>
             </Link>
             <Link href="/dashboard/orders">
-              <Button variant="outline" className="w-full">View All Orders</Button>
+              <Button variant="outline" className="w-full">
+                View All Orders
+              </Button>
             </Link>
             <Link href="/">
-              <Button variant="ghost" className="w-full">Continue Shopping</Button>
+              <Button variant="ghost" className="w-full">
+                Continue Shopping
+              </Button>
             </Link>
           </div>
         </CardContent>

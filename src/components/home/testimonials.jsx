@@ -15,11 +15,7 @@ function Stars({ count }) {
         <Star
           key={i}
           size={14}
-          className={
-            i < count
-              ? "fill-primary text-primary"
-              : "text-muted-foreground fill-muted-foreground"
-          }
+          className={i < count ? "fill-primary text-primary" : "text-muted-foreground fill-muted-foreground"}
         />
       ))}
     </div>
@@ -36,10 +32,7 @@ function TestimonialCard({ review, index }) {
       whileHover={{ y: -2 }}
     >
       <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-[220px] sm:min-h-[200px]">
-        <Quote
-          size={28}
-          className="text-primary/20 absolute top-4 right-4"
-        />
+        <Quote size={28} className="text-primary/20 absolute top-4 right-4" />
         <Stars count={review.stars} />
         <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4">
           &#34;{review.body}&#34;
@@ -49,9 +42,7 @@ function TestimonialCard({ review, index }) {
             {review.avatar}
           </div>
           <div>
-            <p className="font-sans font-bold text-foreground text-sm">
-              {review.name}
-            </p>
+            <p className="font-sans font-bold text-foreground text-sm">{review.name}</p>
             <p className="text-muted-foreground text-xs">{review.role}</p>
           </div>
         </div>
@@ -61,19 +52,16 @@ function TestimonialCard({ review, index }) {
 }
 
 export default function Testimonials() {
-  const { emblaRef, emblaApi, selectedIndex } =
-    useEmblaSlider({ align: "start" }, [
-      Autoplay({ delay: 4500, stopOnInteraction: true }),
-    ]);
+  const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ align: "start" }, [
+    Autoplay({ delay: 4500, stopOnInteraction: true }),
+  ]);
 
   return (
     <AnimatedSection className="py-16 bg-background">
       <div className="container">
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Client Stories
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Client Stories</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               Words of <span className="text-primary">Satisfaction.</span>
             </h2>
@@ -93,10 +81,7 @@ export default function Testimonials() {
         <div className="embla" ref={emblaRef}>
           <div className="embla__container gap-4 px-4" style={{ minHeight: "240px" }}>
             {reviews.map((r, i) => (
-              <div
-                key={r.name}
-                className="embla__slide flex-[0_0_90%] sm:flex-[0_0_48%] lg:flex-[0_0_31%] shrink-0"
-              >
+              <div key={r.name} className="embla__slide flex-[0_0_90%] sm:flex-[0_0_48%] lg:flex-[0_0_31%] shrink-0">
                 <TestimonialCard review={r} index={i} />
               </div>
             ))}
@@ -109,9 +94,7 @@ export default function Testimonials() {
               key={i}
               onClick={() => emblaApi?.scrollTo(i)}
               className={`rounded-full transition-all duration-300 ${
-                i === selectedIndex
-                  ? "w-6 h-2 bg-primary"
-                  : "w-2 h-2 bg-border hover:bg-muted-foreground"
+                i === selectedIndex ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-border hover:bg-muted-foreground"
               }`}
             />
           ))}

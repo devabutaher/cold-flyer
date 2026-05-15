@@ -24,11 +24,7 @@ const mapOrderRow = (o) => ({
 export default function OrdersPage({ isAdmin = false }) {
   const router = useRouter();
   const [payingOrderId, setPayingOrderId] = useState(null);
-  const {
-    data: ordersData = [],
-    isLoading: loading,
-    refetch,
-  } = useOrdersQuery();
+  const { data: ordersData = [], isLoading: loading, refetch } = useOrdersQuery();
   const cancelOrder = useCancelOrder();
   const orders = ordersData ?? [];
 
@@ -70,20 +66,14 @@ export default function OrdersPage({ isAdmin = false }) {
   );
 
   // Extract unique statuses from data
-  const statusOptions = [
-    ...new Set(orders.map((o) => o.status).filter(Boolean)),
-  ].sort();
-  const paymentStatusOptions = [
-    ...new Set(orders.map((o) => o.paymentStatus).filter(Boolean)),
-  ].sort();
+  const statusOptions = [...new Set(orders.map((o) => o.status).filter(Boolean))].sort();
+  const paymentStatusOptions = [...new Set(orders.map((o) => o.paymentStatus).filter(Boolean))].sort();
 
   return (
     <>
       <div className="mb-6">
         <h1 className="text-xl font-semibold tracking-tight">My Orders</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Track and manage your purchase history.
-        </p>
+        <p className="text-sm text-muted-foreground mt-0.5">Track and manage your purchase history.</p>
       </div>
 
       <DataTable

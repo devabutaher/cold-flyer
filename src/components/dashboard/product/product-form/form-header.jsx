@@ -13,9 +13,7 @@ export function FormHeader({ completedSections = 0, title }) {
   return (
     <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">
-          {title || "Add New Product"}
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">{title || "Add New Product"}</h1>
         <p className="text-sm text-muted-foreground mt-0.5">
           {isEdit
             ? "Update the details to modify this product in your catalog."
@@ -35,24 +33,13 @@ export function FormHeader({ completedSections = 0, title }) {
                   "flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
                   done && "bg-primary text-primary-foreground",
                   active && "border-2 border-primary text-primary",
-                  !done &&
-                    !active &&
-                    "border border-border text-muted-foreground",
+                  !done && !active && "border border-border text-muted-foreground",
                 )}
               >
                 {done ? "✓" : step.id}
               </span>
-              <span
-                className={cn(
-                  "hidden sm:inline",
-                  active && "text-foreground font-medium",
-                )}
-              >
-                {step.label}
-              </span>
-              {i < STEPS.length - 1 && (
-                <span className="mx-1 text-border">—</span>
-              )}
+              <span className={cn("hidden sm:inline", active && "text-foreground font-medium")}>{step.label}</span>
+              {i < STEPS.length - 1 && <span className="mx-1 text-border">—</span>}
             </li>
           );
         })}

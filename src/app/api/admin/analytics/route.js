@@ -11,6 +11,15 @@ export async function GET(request) {
     });
     return NextResponse.json(await response.json(), { status: response.status });
   } catch {
-    return NextResponse.json({ success: false, data: { sales: { dailySales: [], categorySales: [] }, services: { totalBookings: 0, completedBookings: 0, revenue: 0, byStatus: [], byCategory: [] } } }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        data: {
+          sales: { dailySales: [], categorySales: [] },
+          services: { totalBookings: 0, completedBookings: 0, revenue: 0, byStatus: [], byCategory: [] },
+        },
+      },
+      { status: 500 },
+    );
   }
 }

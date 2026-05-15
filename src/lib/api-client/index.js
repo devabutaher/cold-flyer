@@ -22,13 +22,7 @@ function getQueryKeyFromEndpoint(endpoint) {
   return null;
 }
 
-const AUTH_ENDPOINTS = [
-  "/auth/login",
-  "/auth/register",
-  "/auth/logout",
-  "/auth/me",
-  "/auth/refresh",
-];
+const AUTH_ENDPOINTS = ["/auth/login", "/auth/register", "/auth/logout", "/auth/me", "/auth/refresh"];
 
 function isAuthEndpoint(endpoint) {
   return AUTH_ENDPOINTS.some((authEndpoint) => endpoint.includes(authEndpoint));
@@ -42,13 +36,15 @@ async function attemptTokenRefresh() {
   refreshPromise = fetch(`${API_BASE_URL}/auth/refresh`, {
     method: "POST",
     credentials: "include",
-  }).then((res) => {
-    refreshPromise = null;
-    return res.ok;
-  }).catch(() => {
-    refreshPromise = null;
-    return false;
-  });
+  })
+    .then((res) => {
+      refreshPromise = null;
+      return res.ok;
+    })
+    .catch(() => {
+      refreshPromise = null;
+      return false;
+    });
 
   return refreshPromise;
 }
@@ -107,8 +103,7 @@ async function apiClient(endpoint, options = {}) {
   }
 
   if (isMutation && queryKey && !isAuth) {
-    const successMessage =
-      data.message || getDefaultSuccessMessage(method, endpoint);
+    const successMessage = data.message || getDefaultSuccessMessage(method, endpoint);
     if (successMessage && data.success !== false) {
       toast.success(successMessage);
     }
@@ -178,10 +173,8 @@ export function getUser() {
 export function getProducts(params = {}) {
   const query = new URLSearchParams();
   if (params.q) query.set("search", params.q);
-  if (params.category && params.category !== "All Categories")
-    query.set("category", String(params.category));
-  if (params.brand && params.brand !== "All Brands")
-    query.set("brand", String(params.brand));
+  if (params.category && params.category !== "All Categories") query.set("category", String(params.category));
+  if (params.brand && params.brand !== "All Brands") query.set("brand", String(params.brand));
   if (params.productType) query.set("productType", String(params.productType));
   if (params.sort) query.set("sortBy", String(params.sort));
   if (params.page) query.set("page", String(params.page));
@@ -260,8 +253,6 @@ export function googleLogin(idToken) {
   return apiPost("/auth/google", { idToken });
 }
 
-
-
 export async function uploadImage(file, fieldName = "image") {
   const formData = new FormData();
   formData.append(fieldName, file);
@@ -283,7 +274,7 @@ export async function logout() {
   return apiPost("/auth/logout", {});
 }
 
-export default {
+const api = {
   apiGet,
   apiPost,
   apiPut,
@@ -305,7 +296,8 @@ export default {
   login,
   register,
   googleLogin,
-
   uploadImage,
   logout,
 };
+
+export default api;

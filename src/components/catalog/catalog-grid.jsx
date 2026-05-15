@@ -5,14 +5,7 @@ import { PackageSearch } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { CatalogCard } from "./catalog-card";
 
-export function CatalogGrid({ 
-  type = "product",
-  apiFetchFn,
-  queryKey,
-  filterFn,
-  sortFn,
-  itemLabel = "item"
-}) {
+export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, sortFn, itemLabel = "item" }) {
   const {
     data: results,
     isLoading: loading,
@@ -43,9 +36,7 @@ export function CatalogGrid({
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-destructive mb-4" />
-        <h3 className="font-sans font-bold text-lg text-destructive mb-1">
-          Failed to load {type}s
-        </h3>
+        <h3 className="font-sans font-bold text-lg text-destructive mb-1">Failed to load {type}s</h3>
         <p className="text-muted-foreground text-sm">Please try again later.</p>
       </div>
     );
@@ -57,12 +48,8 @@ export function CatalogGrid({
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-muted-foreground mb-4" />
-        <h3 className="font-sans font-bold text-lg text-foreground mb-1">
-          No {type}s found
-        </h3>
-        <p className="text-muted-foreground text-sm">
-          Try a different search term or clear your filters.
-        </p>
+        <h3 className="font-sans font-bold text-lg text-foreground mb-1">No {type}s found</h3>
+        <p className="text-muted-foreground text-sm">Try a different search term or clear your filters.</p>
       </div>
     );
   }
@@ -70,15 +57,12 @@ export function CatalogGrid({
   return (
     <div>
       <p className="text-xs text-muted-foreground mb-4 font-medium">
-        {items.length} {itemLabel}{items.length !== 1 ? "s" : ""} found
+        {items.length} {itemLabel}
+        {items.length !== 1 ? "s" : ""} found
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {items.map((item) => (
-          <CatalogCard 
-            key={item._id ?? item.id} 
-            item={item} 
-            type={type}
-          />
+          <CatalogCard key={item._id ?? item.id} item={item} type={type} />
         ))}
       </div>
     </div>

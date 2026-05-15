@@ -1,12 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  AvatarCell,
-  MonoCell,
-  PriceCell,
-  RatingCell,
-  StatusBadge,
-  StockCell,
-} from "../../table/table-cells";
+import { AvatarCell, MonoCell, PriceCell, RatingCell, StatusBadge, StockCell } from "../../table/table-cells";
 import { ProductRowActions } from "./product-row -actions";
 
 // Tag badge config
@@ -29,10 +22,7 @@ export function buildProductColumns({ onDelete } = {}) {
       enableSorting: false,
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
           aria-label="Select all"
         />
@@ -57,9 +47,7 @@ export function buildProductColumns({ onDelete } = {}) {
         return (
           <div className="flex items-center gap-3 min-w-48">
             <AvatarCell src={src} name={p.name} avatarShape="rounded-full" />
-            {p.tag && p.tag !== "none" && (
-              <StatusBadge value={p.tag} map={TAG_MAP} />
-            )}
+            {p.tag && p.tag !== "none" && <StatusBadge value={p.tag} map={TAG_MAP} />}
           </div>
         );
       },
@@ -76,9 +64,7 @@ export function buildProductColumns({ onDelete } = {}) {
     {
       header: "Category",
       accessorKey: "category",
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue("category")}</span>
-      ),
+      cell: ({ row }) => <span className="text-sm">{row.getValue("category")}</span>,
       meta: { filterVariant: "select" },
     },
 
@@ -86,9 +72,7 @@ export function buildProductColumns({ onDelete } = {}) {
     {
       header: "Brand",
       accessorKey: "brand",
-      cell: ({ row }) => (
-        <span className="text-sm font-medium">{row.getValue("brand")}</span>
-      ),
+      cell: ({ row }) => <span className="text-sm font-medium">{row.getValue("brand")}</span>,
       meta: { filterVariant: "select" },
     },
 
@@ -96,12 +80,7 @@ export function buildProductColumns({ onDelete } = {}) {
     {
       header: "Price",
       accessorKey: "price",
-      cell: ({ row }) => (
-        <PriceCell
-          price={row.getValue("price")}
-          originalPrice={row.original.originalPrice}
-        />
-      ),
+      cell: ({ row }) => <PriceCell price={row.getValue("price")} originalPrice={row.original.originalPrice} />,
     },
 
     // ── Stock ────────────────────────────────────────────
@@ -115,11 +94,7 @@ export function buildProductColumns({ onDelete } = {}) {
     {
       header: "Warranty",
       accessorKey: "warranty",
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground">
-          {row.getValue("warranty") || "—"}
-        </span>
-      ),
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("warranty") || "—"}</span>,
     },
 
     // ── Rating ───────────────────────────────────────────

@@ -80,10 +80,7 @@ function FaqItem({ item, index, openValue }) {
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.35, delay: index * 0.07, ease: "easeOut" }}
     >
-      <AccordionPrimitive.Item
-        value={item.id}
-        className="border-b border-border last:border-0"
-      >
+      <AccordionPrimitive.Item value={item.id} className="border-b border-border last:border-0">
         {/* Trigger — Radix handles open/close; motion only animates the chevron */}
         <AccordionPrimitive.Header asChild>
           <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none">
@@ -105,9 +102,7 @@ function FaqItem({ item, index, openValue }) {
                 transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 style={{ overflow: "hidden" }}
               >
-                <p className="pb-4 text-sm leading-relaxed text-muted-foreground">
-                  {item.answer}
-                </p>
+                <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
               </motion.div>
             </AccordionPrimitive.Content>
           )}
@@ -137,12 +132,8 @@ function FaqImage() {
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
         <div className="inline-block rounded-lg border border-white/10 bg-background/10 p-4 backdrop-blur-md">
-          <p className="text-base font-bold text-white md:text-lg">
-            Expert Support When You Need It
-          </p>
-          <p className="mt-1 text-sm text-white/90">
-            Our team is ready to help with all your climate control needs
-          </p>
+          <p className="text-base font-bold text-white md:text-lg">Expert Support When You Need It</p>
+          <p className="mt-1 text-sm text-white/90">Our team is ready to help with all your climate control needs</p>
         </div>
       </div>
     </motion.div>
@@ -160,12 +151,9 @@ export default function Faq() {
           {/* Left column */}
           <div className="flex flex-col justify-center">
             <div className="mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-                Common Questions
-              </span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Common Questions</span>
               <h2 className="mt-1 font-sans text-2xl font-extrabold text-foreground md:text-3xl">
-                Frequently Asked{" "}
-                <span className="text-primary">Questions.</span>
+                Frequently Asked <span className="text-primary">Questions.</span>
               </h2>
             </div>
 
@@ -183,12 +171,7 @@ export default function Faq() {
               className="w-full"
             >
               {faqItems.map((item, index) => (
-                <FaqItem
-                  key={item.id}
-                  item={item}
-                  index={index}
-                  openValue={openValue}
-                />
+                <FaqItem key={item.id} item={item} index={index} openValue={openValue} />
               ))}
             </AccordionPrimitive.Root>
           </div>

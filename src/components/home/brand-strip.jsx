@@ -3,16 +3,7 @@
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { AnimatedSection } from "@/components/ui/animated-section";
 
-const brands = [
-  "HYUNDAI",
-  "DAIKIN",
-  "TRANE",
-  "LENNOX",
-  "CARRIER",
-  "MITSUBISHI",
-  "LG",
-  "SAMSUNG",
-];
+const brands = ["HYUNDAI", "DAIKIN", "TRANE", "LENNOX", "CARRIER", "MITSUBISHI", "LG", "SAMSUNG"];
 
 export default function BrandsStrip() {
   const repeated = [...brands, ...brands, ...brands];

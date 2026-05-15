@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
@@ -44,14 +44,18 @@ export default function UsersTable() {
   });
 
   const updateRole = useMutation({
-    mutationFn: ({ id, role }) => fetcher(`/api/admin/users/${id}`, { method: "PATCH", body: JSON.stringify({ role }) }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-users"] }); toast.success("User role updated"); },
+    mutationFn: ({ id, role }) =>
+      fetcher(`/api/admin/users/${id}`, { method: "PATCH", body: JSON.stringify({ role }) }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      toast.success("User role updated");
+    },
     onError: (err) => toast.error(err.message),
   });
 
-  const handleRoleChange = (id, role) => updateRole.mutate({ id, role });
+  const handleRoleChange = useCallback((id, role) => updateRole.mutate({ id, role }), [updateRole]);
 
-  const columns = useMemo(() => buildUserColumns({ onRoleChange: handleRoleChange }), []);
+  const columns = useMemo(() => buildUserColumns({ onRoleChange: handleRoleChange }), [handleRoleChange]);
 
   const roleOptions = ["user", "admin"];
 

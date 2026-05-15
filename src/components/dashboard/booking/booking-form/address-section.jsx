@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin } from "lucide-react";
 import { Controller } from "react-hook-form";
 
@@ -42,9 +30,7 @@ export function AddressSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Service Address</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Where should we come?
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Where should we come?</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -67,9 +53,7 @@ export function AddressSection({ control }) {
                   placeholder="01700000000"
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -84,10 +68,7 @@ export function AddressSection({ control }) {
                 <FieldLabel>
                   City <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
@@ -99,9 +80,7 @@ export function AddressSection({ control }) {
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />

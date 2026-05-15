@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useNotificationsQuery,
-  useMarkNotificationRead,
-  useMarkAllNotificationsRead,
-} from "@/hooks/queries";
+import { useNotificationsQuery, useMarkNotificationRead, useMarkAllNotificationsRead } from "@/hooks/queries";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -41,10 +37,7 @@ export function NotificationDropdown() {
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
 
-  const unreadCount = useMemo(
-    () => notifications.filter((n) => !n.isRead).length,
-    [notifications],
-  );
+  const unreadCount = useMemo(() => notifications.filter((n) => !n.isRead).length, [notifications]);
 
   const handleMarkAllRead = () => {
     markAllRead.mutate();
@@ -57,12 +50,7 @@ export function NotificationDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          aria-label="Notifications"
-          size="icon-sm"
-          variant="outline"
-          className="relative"
-        >
+        <Button aria-label="Notifications" size="icon-sm" variant="outline" className="relative">
           <BellIcon />
           {unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground px-1">
@@ -83,11 +71,7 @@ export function NotificationDropdown() {
               onClick={handleMarkAllRead}
               disabled={markAllRead.isPending}
             >
-              {markAllRead.isPending ? (
-                <Loader2 size={12} className="animate-spin" />
-              ) : (
-                <CheckCheck size={12} />
-              )}
+              {markAllRead.isPending ? <Loader2 size={12} className="animate-spin" /> : <CheckCheck size={12} />}
               Mark all read
             </Button>
           )}
@@ -100,9 +84,7 @@ export function NotificationDropdown() {
             <Loader2 size={20} className="animate-spin text-muted-foreground" />
           </div>
         ) : notifications.length === 0 ? (
-          <div className="py-8 text-center text-sm text-muted-foreground">
-            No notifications yet
-          </div>
+          <div className="py-8 text-center text-sm text-muted-foreground">No notifications yet</div>
         ) : (
           <div className="max-h-72 overflow-y-auto">
             {notifications.map((n) => (
@@ -121,19 +103,11 @@ export function NotificationDropdown() {
                   }}
                 >
                   <div className="flex items-center gap-2 w-full">
-                    <span className="text-sm">
-                      {TYPE_ICONS[n.type] || "📬"}
-                    </span>
-                    <span className="text-sm font-medium flex-1 truncate">
-                      {n.title}
-                    </span>
-                    {!n.isRead && (
-                      <span className="h-2 w-2 shrink-0 rounded-full bg-destructive" />
-                    )}
+                    <span className="text-sm">{TYPE_ICONS[n.type] || "📬"}</span>
+                    <span className="text-sm font-medium flex-1 truncate">{n.title}</span>
+                    {!n.isRead && <span className="h-2 w-2 shrink-0 rounded-full bg-destructive" />}
                   </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2 pl-6">
-                    {n.message}
-                  </p>
+                  <p className="text-xs text-muted-foreground line-clamp-2 pl-6">{n.message}</p>
                   <span className="text-[10px] text-muted-foreground pl-6 mt-0.5">
                     {new Date(n.createdAt).toLocaleDateString("en-US", {
                       month: "short",

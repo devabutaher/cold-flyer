@@ -10,14 +10,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { CatalogCard } from "../../catalog/catalog-card";
 
-export default function ProductCarousel({
-  title,
-  tag,
-  items,
-  catalogLabel,
-  catalogLink,
-  renderCard,
-}) {
+export default function ProductCarousel({ title, tag, items, catalogLabel, catalogLink, renderCard }) {
   const { emblaRef, emblaApi } = useEmblaSlider(
     {
       loop: true,
@@ -73,10 +66,7 @@ export default function ProductCarousel({
         <div className="embla" ref={emblaRef}>
           <div className="embla__container">
             {items.map((item, index) => (
-              <div
-                key={item._id ?? item.id}
-                className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3"
-              >
+              <div key={item._id ?? item.id} className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">
                 <div className="h-full">
                   {renderCard ? (
                     renderCard(item, index)

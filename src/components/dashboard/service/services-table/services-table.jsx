@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
@@ -37,15 +37,15 @@ export default function ServicesTable({ isAdmin = false }) {
   const { data: services = [], isLoading: loading } = useServicesQuery({ limit: 100 });
   const deleteService = useDeleteService();
 
-  const checkAdminAccess = () => {
+  const checkAdminAccess = useCallback(() => {
     if (!isAdmin) {
       toast.error("Access Denied: This action requires Administrator privileges.");
       return false;
     }
     return true;
-  };
+  }, [isAdmin]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     if (!checkAdminAccess()) return;
     try {
       await deleteService.mutateAsync(id);
@@ -53,12 +53,9 @@ export default function ServicesTable({ isAdmin = false }) {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [deleteService, checkAdminAccess]);
 
-  const columns = useMemo(
-    () => buildServiceColumns({ onDelete: handleDelete }),
-    [handleDelete],
-  );
+  const columns = useMemo(() => buildServiceColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const getUnique = (arr, key) => {
     const values = arr.map((item) => item[key]).filter((v) => v);

@@ -22,8 +22,7 @@ export default function Navbar() {
   return (
     <header
       className={cn("sticky top-0 z-50 w-full border-transparent border-b", {
-        "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-md":
-          scrolled,
+        "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-md": scrolled,
       })}
     >
       <nav className="mx-auto flex h-14 w-full container items-center justify-between px-4">
@@ -32,11 +31,7 @@ export default function Navbar() {
           <DesktopNav />
         </div>
         <div className="hidden items-center gap-2 lg:flex">
-          <Suspense
-            fallback={
-              <div className="w-48 h-8 bg-muted animate-pulse rounded" />
-            }
-          >
+          <Suspense fallback={<div className="w-48 h-8 bg-muted animate-pulse rounded" />}>
             <NavSearch />
           </Suspense>
           <Link href="/cart" className="relative">

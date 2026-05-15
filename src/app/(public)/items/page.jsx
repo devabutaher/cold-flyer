@@ -33,12 +33,8 @@ function ProductsGrid({ products }) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-muted-foreground mb-4" />
-        <h3 className="font-sans font-bold text-lg text-foreground mb-1">
-          No products found
-        </h3>
-        <p className="text-muted-foreground text-sm">
-          Try a different search term or clear your filters.
-        </p>
+        <h3 className="font-sans font-bold text-lg text-foreground mb-1">No products found</h3>
+        <p className="text-muted-foreground text-sm">Try a different search term or clear your filters.</p>
       </div>
     );
   }
@@ -165,9 +161,7 @@ export default function ItemsPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-destructive mb-4" />
-        <h3 className="font-sans font-bold text-lg text-destructive mb-1">
-          Failed to load products
-        </h3>
+        <h3 className="font-sans font-bold text-lg text-destructive mb-1">Failed to load products</h3>
         <p className="text-muted-foreground text-sm">Please try again later.</p>
       </div>
     );

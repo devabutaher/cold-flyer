@@ -18,13 +18,8 @@ export function TextSlider() {
       <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <InfiniteSlider gap={48} speed={40} speedOnHover={20}>
           {announcements.map((text, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-3 whitespace-nowrap"
-            >
-              <span className="text-sm font-semibold tracking-wide">
-                {text}
-              </span>
+            <div key={index} className="flex items-center gap-3 whitespace-nowrap">
+              <span className="text-sm font-semibold tracking-wide">{text}</span>
             </div>
           ))}
         </InfiniteSlider>

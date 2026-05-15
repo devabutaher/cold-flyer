@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
@@ -37,15 +37,15 @@ export default function ProductsTable({ isAdmin = false }) {
   const { data: products = [], isLoading: loading } = useProductsQuery({ limit: 100 });
   const deleteProduct = useDeleteProduct();
 
-  const checkAdminAccess = () => {
+  const checkAdminAccess = useCallback(() => {
     if (!isAdmin) {
       toast.error("Access Denied: This action requires Administrator privileges.");
       return false;
     }
     return true;
-  };
+  }, [isAdmin]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     if (!checkAdminAccess()) return;
     try {
       await deleteProduct.mutateAsync(id);
@@ -53,12 +53,9 @@ export default function ProductsTable({ isAdmin = false }) {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [deleteProduct, checkAdminAccess]);
 
-  const columns = useMemo(
-    () => buildProductColumns({ onDelete: handleDelete }),
-    [handleDelete]
-  );
+  const columns = useMemo(() => buildProductColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const getUnique = (arr, key) => {
     const values = arr.map((item) => item[key]).filter((v) => v);
@@ -67,7 +64,7 @@ export default function ProductsTable({ isAdmin = false }) {
   const categoriesOptions = getUnique(products, "category");
   const brandsOptions = getUnique(products, "brand");
 
-return (
+  return (
     <DataTable
       columns={columns}
       data={products}

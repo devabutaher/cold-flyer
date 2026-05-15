@@ -7,10 +7,7 @@ export async function GET(request, { params }) {
   const slug = resolvedParams?.slug;
 
   if (!slug) {
-    return NextResponse.json(
-      { success: false, message: "Slug is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Slug is required" }, { status: 400 });
   }
 
   try {
@@ -25,9 +22,6 @@ export async function GET(request, { params }) {
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to fetch product" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to fetch product" }, { status: 500 });
   }
 }

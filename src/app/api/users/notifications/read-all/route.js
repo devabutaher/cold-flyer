@@ -18,9 +18,6 @@ export async function PATCH(request) {
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to mark all as read" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to mark all as read" }, { status: 500 });
   }
 }

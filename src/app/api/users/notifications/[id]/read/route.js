@@ -7,10 +7,7 @@ export async function PATCH(request, { params }) {
   const id = resolvedParams?.id;
 
   if (!id) {
-    return NextResponse.json(
-      { success: false, message: "Notification ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Notification ID is required" }, { status: 400 });
   }
 
   try {
@@ -28,9 +25,6 @@ export async function PATCH(request, { params }) {
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to mark notification as read" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to mark notification as read" }, { status: 500 });
   }
 }

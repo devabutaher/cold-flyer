@@ -8,10 +8,7 @@ export async function POST(request, { params }) {
   const id = resolvedParams?.id;
 
   if (!id) {
-    return NextResponse.json(
-      { success: false, message: "Order ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Order ID is required" }, { status: 400 });
   }
 
   try {
@@ -36,9 +33,6 @@ export async function POST(request, { params }) {
     });
   } catch (error) {
     console.error("Checkout error:", error);
-    return NextResponse.json(
-      { success: false, message: "Failed to create checkout" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to create checkout" }, { status: 500 });
   }
 }

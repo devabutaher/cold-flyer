@@ -22,10 +22,14 @@ async function proxy(request, method) {
   } catch (error) {
     return NextResponse.json(
       { success: false, message: `Failed to ${method === "GET" ? "fetch" : "create"} coupons` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function GET(request) { return proxy(request, "GET"); }
-export async function POST(request) { return proxy(request, "POST"); }
+export async function GET(request) {
+  return proxy(request, "GET");
+}
+export async function POST(request) {
+  return proxy(request, "POST");
+}

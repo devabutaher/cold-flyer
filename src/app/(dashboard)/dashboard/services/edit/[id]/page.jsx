@@ -20,9 +20,7 @@ export async function generateMetadata({ params }) {
   try {
     const service = await getServiceBySlugServer(id);
     return {
-      title: service?.name
-        ? `Edit ${service.name} | ColdFlyer`
-        : "Edit Service | ColdFlyer",
+      title: service?.name ? `Edit ${service.name} | ColdFlyer` : "Edit Service | ColdFlyer",
     };
   } catch {
     return { title: "Edit Service | ColdFlyer" };
@@ -31,13 +29,13 @@ export async function generateMetadata({ params }) {
 
 export default async function EditServicePage({ params }) {
   const cookieStore = await cookies();
-  
+
   if (!cookieStore.get("accessToken")) {
     redirect("/auth");
   }
-  
+
   const user = await getUser();
-  
+
   if (!user) {
     redirect("/");
   }

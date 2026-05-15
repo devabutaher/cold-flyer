@@ -14,13 +14,9 @@ export default function BookingsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            {isAdmin ? "All Bookings" : "My Bookings"}
-          </h1>
+          <h1 className="text-xl font-semibold tracking-tight">{isAdmin ? "All Bookings" : "My Bookings"}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {isAdmin
-              ? "Manage all service bookings."
-              : "View your AC service bookings."}
+            {isAdmin ? "Manage all service bookings." : "View your AC service bookings."}
           </p>
         </div>
         <Button asChild size="sm">

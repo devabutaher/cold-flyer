@@ -85,8 +85,7 @@ export function BookingRowActions({ row, onCancel }) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Cancel this booking?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Booking <strong>{booking.bookingNumber}</strong> for{" "}
-                    {booking.service?.name} will be cancelled.
+                    Booking <strong>{booking.bookingNumber}</strong> for {booking.service?.name} will be cancelled.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="py-2">

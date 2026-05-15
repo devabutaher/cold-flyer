@@ -25,9 +25,6 @@ export async function GET(request) {
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to get current user" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to get current user" }, { status: 500 });
   }
 }

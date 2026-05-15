@@ -53,9 +53,7 @@ export default function MyBookingsPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">My Bookings</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            View and manage your service appointments
-          </p>
+          <p className="text-sm text-muted-foreground mt-1">View and manage your service appointments</p>
         </div>
         <Button asChild variant="outline" size="sm">
           <Link href="/services">
@@ -96,11 +94,7 @@ export default function MyBookingsPage() {
       ) : (
         <div className="space-y-4">
           {filtered.map((booking) => (
-            <Link
-              key={booking._id}
-              href={`/dashboard/bookings/${booking._id}`}
-              className="block"
-            >
+            <Link key={booking._id} href={`/dashboard/bookings/${booking._id}`} className="block">
               <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between gap-4">
@@ -111,9 +105,7 @@ export default function MyBookingsPage() {
                         </span>
                         <StatusBadge value={booking.status} map={STATUS_MAP} />
                       </div>
-                      <h3 className="font-semibold text-sm mb-1">
-                        {booking.service?.name || "Service"}
-                      </h3>
+                      <h3 className="font-semibold text-sm mb-1">{booking.service?.name || "Service"}</h3>
                       {booking.scheduledDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <CalendarDays size={12} />
@@ -123,25 +115,24 @@ export default function MyBookingsPage() {
                             day: "numeric",
                           })}
                           {booking.scheduledTime?.start && (
-                            <> &middot; {booking.scheduledTime.start} - {booking.scheduledTime.end}</>
+                            <>
+                              {" "}
+                              &middot; {booking.scheduledTime.start} - {booking.scheduledTime.end}
+                            </>
                           )}
                         </p>
                       )}
                       {booking.serviceAddress && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                           <MapPin size={12} />
-                          {[
-                            booking.serviceAddress.city,
-                            booking.serviceAddress.state,
-                          ].filter(Boolean).join(", ") || "Address set"}
+                          {[booking.serviceAddress.city, booking.serviceAddress.state].filter(Boolean).join(", ") ||
+                            "Address set"}
                         </p>
                       )}
                     </div>
                     <div className="text-right shrink-0">
                       <p className="font-bold text-sm">৳{booking.total?.toLocaleString()}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5 capitalize">
-                        {booking.paymentStatus}
-                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5 capitalize">{booking.paymentStatus}</p>
                     </div>
                   </div>
                 </CardContent>

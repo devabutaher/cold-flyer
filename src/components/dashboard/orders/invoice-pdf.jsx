@@ -135,9 +135,7 @@ export default function InvoicePDF({ order, user }) {
           </View>
           <View style={{ alignItems: "flex-end" }}>
             <Text style={styles.title}>INVOICE</Text>
-            <Text style={styles.subtitle}>
-              #{order.orderNumber || order._id}
-            </Text>
+            <Text style={styles.subtitle}>#{order.orderNumber || order._id}</Text>
           </View>
         </View>
 
@@ -153,9 +151,7 @@ export default function InvoicePDF({ order, user }) {
           </View>
           <View style={styles.infoSection}>
             <Text style={styles.infoLabel}>Payment</Text>
-            <Text style={styles.infoValue}>
-              {order.paymentStatus?.toUpperCase()}
-            </Text>
+            <Text style={styles.infoValue}>{order.paymentStatus?.toUpperCase()}</Text>
           </View>
         </View>
 
@@ -177,9 +173,7 @@ export default function InvoicePDF({ order, user }) {
           {order.items?.map((item, index) => (
             <View key={index} style={styles.tableRow}>
               <Text style={[styles.tableCell, styles.col1]}>{item.name}</Text>
-              <Text style={[styles.tableCell, styles.col2]}>
-                {item.quantity}
-              </Text>
+              <Text style={[styles.tableCell, styles.col2]}>{item.quantity}</Text>
               <Text style={[styles.tableCell, styles.col3]}>
                 {CURRENCY} {formatPrice(item.price)}
               </Text>
@@ -209,9 +203,7 @@ export default function InvoicePDF({ order, user }) {
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Shipping</Text>
             <Text style={styles.totalValue}>
-              {order.shippingCost > 0
-                ? `${CURRENCY} ${formatPrice(order.shippingCost)}`
-                : "Free"}
+              {order.shippingCost > 0 ? `${CURRENCY} ${formatPrice(order.shippingCost)}` : "Free"}
             </Text>
           </View>
           <View style={styles.totalRow}>
@@ -229,10 +221,7 @@ export default function InvoicePDF({ order, user }) {
         </View>
 
         {/* Footer */}
-        <Text style={styles.footer}>
-          Thank you for your business! | www.coldflyer.com |
-          support@coldflyer.com
-        </Text>
+        <Text style={styles.footer}>Thank you for your business! | www.coldflyer.com | support@coldflyer.com</Text>
       </Page>
     </Document>
   );

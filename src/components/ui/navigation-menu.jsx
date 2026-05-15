@@ -9,10 +9,7 @@ function NavigationMenu({ className, children, viewport = true, ...props }) {
     <NavigationMenuPrimitive.Root
       data-slot="navigation-menu"
       data-viewport={viewport}
-      className={cn(
-        "group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
-        className,
-      )}
+      className={cn("group/navigation-menu relative flex max-w-max flex-1 items-center justify-center", className)}
       {...props}
     >
       {children}
@@ -25,10 +22,7 @@ function NavigationMenuList({ className, ...props }) {
   return (
     <NavigationMenuPrimitive.List
       data-slot="navigation-menu-list"
-      className={cn(
-        "group flex flex-1 list-none items-center justify-center gap-0",
-        className,
-      )}
+      className={cn("group flex flex-1 list-none items-center justify-center gap-0", className)}
       {...props}
     />
   );
@@ -36,11 +30,7 @@ function NavigationMenuList({ className, ...props }) {
 
 function NavigationMenuItem({ className, ...props }) {
   return (
-    <NavigationMenuPrimitive.Item
-      data-slot="navigation-menu-item"
-      className={cn("relative", className)}
-      {...props}
-    />
+    <NavigationMenuPrimitive.Item data-slot="navigation-menu-item" className={cn("relative", className)} {...props} />
   );
 }
 
@@ -79,11 +69,7 @@ function NavigationMenuContent({ className, ...props }) {
 
 function NavigationMenuViewport({ className, ...props }) {
   return (
-    <div
-      className={cn(
-        "absolute top-full left-0 isolate z-50 flex justify-center",
-      )}
-    >
+    <div className={cn("absolute top-full left-0 isolate z-50 flex justify-center")}>
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(

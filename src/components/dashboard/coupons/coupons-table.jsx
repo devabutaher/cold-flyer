@@ -1,13 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { buildCouponColumns } from "./coupons-columns";
 import { Button } from "@/components/ui/button";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -62,34 +70,56 @@ export default function CouponsTable() {
 
   const deleteCoupon = useMutation({
     mutationFn: (id) => fetcher(`/api/admin/coupons/${id}`, { method: "DELETE" }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-coupons"] }); toast.success("Coupon deleted"); },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
+      toast.success("Coupon deleted");
+    },
     onError: (err) => toast.error(err.message),
   });
 
   const createCoupon = useMutation({
     mutationFn: (data) => fetcher("/api/admin/coupons", { method: "POST", body: JSON.stringify(data) }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-coupons"] }); setShowCreate(false); resetForm(); toast.success("Coupon created"); },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
+      setShowCreate(false);
+      resetForm();
+      toast.success("Coupon created");
+    },
     onError: (err) => toast.error(err.message),
   });
 
-  const resetForm = () => { setCode(""); setDiscountType("percentage"); setDiscountValue(""); setMinOrderValue(""); setMaxUsage(""); setValidFrom(""); setValidUntil(""); };
+  const resetForm = () => {
+    setCode("");
+    setDiscountType("percentage");
+    setDiscountValue("");
+    setMinOrderValue("");
+    setMaxUsage("");
+    setValidFrom("");
+    setValidUntil("");
+  };
 
   const handleCreate = async () => {
-    if (!code || !discountValue || !validFrom || !validUntil) { toast.error("Fill required fields"); return; }
+    if (!code || !discountValue || !validFrom || !validUntil) {
+      toast.error("Fill required fields");
+      return;
+    }
     createCoupon.mutate({
-      code: code.toUpperCase(), discountType, discountValue: Number(discountValue),
+      code: code.toUpperCase(),
+      discountType,
+      discountValue: Number(discountValue),
       minOrderValue: minOrderValue ? Number(minOrderValue) : 0,
       maxUsage: maxUsage ? Number(maxUsage) : undefined,
-      validFrom: new Date(validFrom), validUntil: new Date(validUntil),
+      validFrom: new Date(validFrom),
+      validUntil: new Date(validUntil),
     });
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     if (!confirm("Delete this coupon?")) return;
     deleteCoupon.mutate(id);
-  };
+  }, [deleteCoupon]);
 
-  const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete }), []);
+  const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const typeOptions = ["percentage", "fixed", "free_shipping"];
   const statusOptions = ["true", "false"];
@@ -108,26 +138,80 @@ export default function CouponsTable() {
 
       <AlertDialog open={showCreate} onOpenChange={setShowCreate}>
         <AlertDialogContent>
-          <AlertDialogHeader><AlertDialogTitle>Create Coupon</AlertDialogTitle></AlertDialogHeader>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Create Coupon</AlertDialogTitle>
+          </AlertDialogHeader>
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Code *</Label><Input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="SUMMER20" /></div>
-              <div><Label>Type</Label><Select value={discountType} onValueChange={setDiscountType}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="percentage">Percentage</SelectItem><SelectItem value="fixed">Fixed (৳)</SelectItem><SelectItem value="free_shipping">Free Shipping</SelectItem></SelectContent></Select></div>
+              <div>
+                <Label>Code *</Label>
+                <Input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="SUMMER20" />
+              </div>
+              <div>
+                <Label>Type</Label>
+                <Select value={discountType} onValueChange={setDiscountType}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="percentage">Percentage</SelectItem>
+                    <SelectItem value="fixed">Fixed (৳)</SelectItem>
+                    <SelectItem value="free_shipping">Free Shipping</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Value *</Label><Input type="number" value={discountValue} onChange={e => setDiscountValue(e.target.value)} placeholder="20" /></div>
-              <div><Label>Min Order</Label><Input type="number" value={minOrderValue} onChange={e => setMinOrderValue(e.target.value)} placeholder="0" /></div>
+              <div>
+                <Label>Value *</Label>
+                <Input
+                  type="number"
+                  value={discountValue}
+                  onChange={(e) => setDiscountValue(e.target.value)}
+                  placeholder="20"
+                />
+              </div>
+              <div>
+                <Label>Min Order</Label>
+                <Input
+                  type="number"
+                  value={minOrderValue}
+                  onChange={(e) => setMinOrderValue(e.target.value)}
+                  placeholder="0"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Valid From *</Label><Input type="date" value={validFrom} onChange={e => setValidFrom(e.target.value)} /></div>
-              <div><Label>Valid Until *</Label><Input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} /></div>
+              <div>
+                <Label>Valid From *</Label>
+                <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
+              </div>
+              <div>
+                <Label>Valid Until *</Label>
+                <Input type="date" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} />
+              </div>
             </div>
-            <div><Label>Max Usage</Label><Input type="number" value={maxUsage} onChange={e => setMaxUsage(e.target.value)} placeholder="Unlimited" /></div>
+            <div>
+              <Label>Max Usage</Label>
+              <Input
+                type="number"
+                value={maxUsage}
+                onChange={(e) => setMaxUsage(e.target.value)}
+                placeholder="Unlimited"
+              />
+            </div>
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleCreate} disabled={createCoupon.isPending}>
-              {createCoupon.isPending ? <><Loader2 size={14} className="animate-spin mr-2" />Creating...</> : "Create Coupon"}
+              {createCoupon.isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin mr-2" />
+                  Creating...
+                </>
+              ) : (
+                "Create Coupon"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

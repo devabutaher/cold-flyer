@@ -32,13 +32,7 @@ export const acUnits = [
       compressorType: "Twin Rotary Inverter",
       dimensions: "98 × 35 × 22 cm",
     },
-    inBox: [
-      "Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Installation Kit",
-      "User Manual",
-    ],
+    inBox: ["Indoor Unit", "Outdoor Unit", "Remote Control", "Installation Kit", "User Manual"],
   },
   {
     id: "u2",
@@ -73,13 +67,7 @@ export const acUnits = [
       compressorType: "Rotary Inverter",
       dimensions: "88 × 30 × 20 cm",
     },
-    inBox: [
-      "Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Wi-Fi Module",
-      "User Manual",
-    ],
+    inBox: ["Indoor Unit", "Outdoor Unit", "Remote Control", "Wi-Fi Module", "User Manual"],
   },
   {
     id: "u3",
@@ -113,13 +101,7 @@ export const acUnits = [
       weight: "210g",
       appSupport: "iOS 14+ / Android 10+",
     },
-    inBox: [
-      "Thermostat Unit",
-      "Mounting Plate",
-      "Wiring Kit",
-      "Batteries (4x AA)",
-      "User Manual",
-    ],
+    inBox: ["Thermostat Unit", "Mounting Plate", "Wiring Kit", "Batteries (4x AA)", "User Manual"],
   },
   {
     id: "u4",
@@ -154,12 +136,7 @@ export const acUnits = [
       compressorType: "DC Inverter Twin Rotary",
       dimensions: "105 × 38 × 24 cm",
     },
-    inBox: [
-      "2× Indoor Units",
-      "Outdoor Unit",
-      "2× Remote Controls",
-      "Installation Manual",
-    ],
+    inBox: ["2× Indoor Units", "Outdoor Unit", "2× Remote Controls", "Installation Manual"],
   },
   {
     id: "u5",
@@ -194,13 +171,7 @@ export const acUnits = [
       compressorType: "Scroll Inverter",
       dimensions: "57 × 57 × 28 cm",
     },
-    inBox: [
-      "Cassette Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Drain Pump Kit",
-      "User Manual",
-    ],
+    inBox: ["Cassette Indoor Unit", "Outdoor Unit", "Remote Control", "Drain Pump Kit", "User Manual"],
   },
   {
     id: "u6",
@@ -235,13 +206,7 @@ export const acUnits = [
       compressorType: "Rotary",
       dimensions: "66 × 38 × 55 cm",
     },
-    inBox: [
-      "Window Unit",
-      "Side Panels",
-      "Remote Control",
-      "Mounting Hardware",
-      "User Manual",
-    ],
+    inBox: ["Window Unit", "Side Panels", "Remote Control", "Mounting Hardware", "User Manual"],
   },
   {
     id: "u7",
@@ -276,13 +241,7 @@ export const acUnits = [
       compressorType: "Rotary Inverter",
       dimensions: "90 × 32 × 21 cm",
     },
-    inBox: [
-      "Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Ionizer Module",
-      "User Manual",
-    ],
+    inBox: ["Indoor Unit", "Outdoor Unit", "Remote Control", "Ionizer Module", "User Manual"],
   },
   {
     id: "u8",
@@ -317,13 +276,7 @@ export const acUnits = [
       compressorType: "Rotary",
       dimensions: "40 × 37 × 80 cm",
     },
-    inBox: [
-      "Portable Unit",
-      "Exhaust Hose Kit",
-      "Remote Control",
-      "Window Seal Kit",
-      "User Manual",
-    ],
+    inBox: ["Portable Unit", "Exhaust Hose Kit", "Remote Control", "Window Seal Kit", "User Manual"],
   },
   {
     id: "u9",
@@ -358,13 +311,7 @@ export const acUnits = [
       compressorType: "Twin Rotary Inverter",
       dimensions: "100 × 36 × 23 cm",
     },
-    inBox: [
-      "Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Installation Kit",
-      "User Manual",
-    ],
+    inBox: ["Indoor Unit", "Outdoor Unit", "Remote Control", "Installation Kit", "User Manual"],
   },
   {
     id: "u10",
@@ -434,13 +381,7 @@ export const acUnits = [
       compressorType: "Digital Inverter",
       dimensions: "95 × 33 × 21 cm",
     },
-    inBox: [
-      "Indoor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "SmartThings Guide",
-      "User Manual",
-    ],
+    inBox: ["Indoor Unit", "Outdoor Unit", "Remote Control", "SmartThings Guide", "User Manual"],
   },
   {
     id: "u12",
@@ -475,13 +416,7 @@ export const acUnits = [
       compressorType: "Swing Inverter",
       dimensions: "30 × 65 × 185 cm",
     },
-    inBox: [
-      "Floor Unit",
-      "Outdoor Unit",
-      "Remote Control",
-      "Drain Kit",
-      "User Manual",
-    ],
+    inBox: ["Floor Unit", "Outdoor Unit", "Remote Control", "Drain Kit", "User Manual"],
   },
 ];
 
@@ -500,11 +435,7 @@ export const acParts = [
     warranty: "6 Months",
     rating: 4.6,
     reviewCount: 312,
-    compatibility: [
-      "Arctic V2 Condenser",
-      "Mistral-7 Split System",
-      "Arctic Flow Pro",
-    ],
+    compatibility: ["Arctic V2 Condenser", "Mistral-7 Split System", "Arctic Flow Pro"],
     features: [
       "HEPA H13 nano-fiber material",
       "Captures 99.97% of PM2.5 particles",
@@ -568,11 +499,7 @@ export const acParts = [
     warranty: "1 Year",
     rating: 4.3,
     reviewCount: 89,
-    compatibility: [
-      "Mistral-7 Split System",
-      "ColdFlyer Core T-80",
-      "Arctic Flow Pro",
-    ],
+    compatibility: ["Mistral-7 Split System", "ColdFlyer Core T-80", "Arctic Flow Pro"],
     features: [
       "Aerodynamic cross-flow blade design",
       "Reduces noise by up to 30%",
@@ -604,11 +531,7 @@ export const acParts = [
     warranty: "1 Year",
     rating: 4.5,
     reviewCount: 38,
-    compatibility: [
-      "Arctic V2 Condenser",
-      "Polaris V1 Inverter",
-      "Mistral-7 Split System",
-    ],
+    compatibility: ["Arctic V2 Condenser", "Polaris V1 Inverter", "Mistral-7 Split System"],
     features: [
       "Wi-Fi 2.4GHz onboard module",
       "Compatible with ColdFlyer mobile app",
@@ -624,12 +547,7 @@ export const acParts = [
       operatingTemp: "-10°C to 60°C",
       weight: "145g",
     },
-    inBox: [
-      "Control Board",
-      "Wiring Harness",
-      "Mounting Screws",
-      "Setup Manual",
-    ],
+    inBox: ["Control Board", "Wiring Harness", "Mounting Screws", "Setup Manual"],
   },
   {
     id: "p5",
@@ -662,13 +580,7 @@ export const acParts = [
       ipRating: "IP44",
       weight: "1.1 kg",
     },
-    inBox: [
-      "Turbo Fan Motor",
-      "Fan Blade",
-      "Mounting Bracket",
-      "Wiring Connectors",
-      "Manual",
-    ],
+    inBox: ["Turbo Fan Motor", "Fan Blade", "Mounting Bracket", "Wiring Connectors", "Manual"],
   },
   {
     id: "p6",
@@ -766,11 +678,7 @@ export const acParts = [
       pressure: "Up to 4.5 MPa",
       weight: "850g",
     },
-    inBox: [
-      "Liquid Line Pipe (3m)",
-      "Suction Line Pipe (3m)",
-      "Foam Insulation Tape",
-    ],
+    inBox: ["Liquid Line Pipe (3m)", "Suction Line Pipe (3m)", "Foam Insulation Tape"],
   },
   {
     id: "p9",
@@ -787,15 +695,7 @@ export const acParts = [
     warranty: "6 Months",
     rating: 4.0,
     reviewCount: 534,
-    compatibility: [
-      "Samsung",
-      "LG",
-      "Daikin",
-      "Carrier",
-      "Mitsubishi",
-      "ColdFlyer",
-      "Hyundai",
-    ],
+    compatibility: ["Samsung", "LG", "Daikin", "Carrier", "Mitsubishi", "ColdFlyer", "Hyundai"],
     features: [
       "Pre-programmed for 2000+ models",
       "LCD backlit display",
@@ -828,11 +728,7 @@ export const acParts = [
     warranty: "1 Year",
     rating: 4.5,
     reviewCount: 187,
-    compatibility: [
-      "Works with IR-controlled ACs",
-      "Google Home",
-      "Amazon Alexa",
-    ],
+    compatibility: ["Works with IR-controlled ACs", "Google Home", "Amazon Alexa"],
     features: [
       "Converts any AC to smart AC",
       "Schedule & timer control",
@@ -914,11 +810,6 @@ export const acParts = [
       material: "Chrome vanadium steel",
       weight: "4.2 kg",
     },
-    inBox: [
-      "18-Piece Tool Set",
-      "Manifold Gauge",
-      "Carry Case",
-      "Tool Inventory List",
-    ],
+    inBox: ["18-Piece Tool Set", "Manifold Gauge", "Carry Case", "Tool Inventory List"],
   },
 ];

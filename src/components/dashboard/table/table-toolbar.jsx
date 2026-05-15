@@ -3,23 +3,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SearchIcon, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-function FilterSelect({
-  table,
-  columnId,
-  placeholder,
-  allLabel = "All",
-  options = [],
-}) {
+function FilterSelect({ table, columnId, placeholder, allLabel = "All", options = [] }) {
   const col = table.getColumn(columnId);
   const filterValue = col?.getFilterValue();
 
@@ -65,16 +53,8 @@ function FilterSelect({
   );
 }
 
-export function TableToolbar({
-  table,
-  searchPlaceholder = "Search…",
-  filters = [],
-  actions,
-  selectedLabel = "rows",
-}) {
-  const [searchValue, setSearchValue] = useState(
-    table.getState().globalFilter || "",
-  );
+export function TableToolbar({ table, searchPlaceholder = "Search…", filters = [], actions, selectedLabel = "rows" }) {
+  const [searchValue, setSearchValue] = useState(table.getState().globalFilter || "");
 
   // Sync search value with table state
   useEffect(() => {

@@ -15,12 +15,7 @@ export default function OfferBanner() {
           <circle cx="92%" cy="50%" r="80" fill="white" fillOpacity="0.06" />
           <circle cx="80%" cy="-10%" r="55" fill="white" fillOpacity="0.05" />
           <circle cx="5%" cy="80%" r="45" fill="white" fillOpacity="0.05" />
-          <polygon
-            points="0,0 28,0 0,28"
-            fill="white"
-            fillOpacity="0.07"
-            transform="translate(16,16)"
-          />
+          <polygon points="0,0 28,0 0,28" fill="white" fillOpacity="0.07" transform="translate(16,16)" />
         </svg>
       </div>
 
@@ -39,9 +34,7 @@ export default function OfferBanner() {
                   <span className="text-xl font-extrabold tracking-tight text-primary-foreground md:text-2xl">
                     Summer Sale
                   </span>
-                  <span className="text-lg font-black text-primary-foreground/90 md:text-xl">
-                    — 20% OFF
-                  </span>
+                  <span className="text-lg font-black text-primary-foreground/90 md:text-xl">— 20% OFF</span>
                   {/* EXCLUSIVE chip */}
                   <span className="hidden md:inline-flex items-center rounded border-2 border-green-400 bg-green-500 px-1.5 py-px text-[9px] font-bold text-white rotate-2 leading-none">
                     EXCLUSIVE

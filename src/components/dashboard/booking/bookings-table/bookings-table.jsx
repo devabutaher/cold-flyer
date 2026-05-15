@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
@@ -33,19 +33,16 @@ export default function BookingsTable({ isAdmin = false }) {
   const { data: bookings = [], isLoading: loading } = useBookingsQuery();
   const cancelBooking = useCancelBooking();
 
-  const handleCancel = async (id, reason) => {
+  const handleCancel = useCallback(async (id, reason) => {
     try {
       await cancelBooking.mutateAsync({ bookingId: id, reason: reason || "Customer request" });
       toast.success("Booking cancelled successfully");
     } catch (error) {
       toast.error(error.message || "Failed to cancel booking");
     }
-  };
+  }, [cancelBooking]);
 
-  const columns = useMemo(
-    () => buildBookingColumns({ onCancel: handleCancel }),
-    [handleCancel],
-  );
+  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel }), [handleCancel]);
 
   return (
     <DataTable

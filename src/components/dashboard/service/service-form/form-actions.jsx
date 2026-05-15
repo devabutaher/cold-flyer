@@ -10,8 +10,7 @@ export function ServiceFormActions({ onReset, isPending, submitLabel, onCancel, 
       <Separator />
       <div className="flex items-center justify-between pt-4">
         <p className="text-xs text-muted-foreground">
-          Fields marked <span className="text-destructive font-medium">*</span>{" "}
-          are required.
+          Fields marked <span className="text-destructive font-medium">*</span> are required.
         </p>
         <div className="flex items-center gap-2">
           {onCancel && (
@@ -40,12 +39,7 @@ export function ServiceFormActions({ onReset, isPending, submitLabel, onCancel, 
               Reset
             </Button>
           )}
-          <Button
-            type="submit"
-            size="sm"
-            disabled={isPending}
-            className="gap-1.5 min-w-27.5"
-          >
+          <Button type="submit" size="sm" disabled={isPending} className="gap-1.5 min-w-27.5">
             {isPending ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />

@@ -19,16 +19,7 @@ const pdfStyles = StyleSheet.create({
   headerCell: { fontSize: 8, flex: 1, fontWeight: "bold", color: "#111827" },
 });
 
-const PDF_COLS = [
-  "SKU",
-  "Name",
-  "Category",
-  "Brand",
-  "Price",
-  "Stock",
-  "Rating",
-  "Warranty",
-];
+const PDF_COLS = ["SKU", "Name", "Category", "Brand", "Price", "Stock", "Rating", "Warranty"];
 
 export function ProductsPDF({ data }) {
   return (

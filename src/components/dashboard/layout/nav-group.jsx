@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -29,9 +25,7 @@ export function NavGroup({ label, items }) {
       <SidebarMenu>
         {items.map((item) => {
           const isActive = pathname === item.path;
-          const hasActiveChild = item.subItems?.some(
-            (s) => pathname === s.path,
-          );
+          const hasActiveChild = item.subItems?.some((s) => pathname === s.path);
 
           return (
             <Collapsible
@@ -47,10 +41,7 @@ export function NavGroup({ label, items }) {
                       <SidebarMenuButton
                         tooltip={item.title}
                         isActive={hasActiveChild}
-                        className={cn(
-                          hasActiveChild &&
-                            "bg-accent text-accent-foreground font-bold",
-                        )}
+                        className={cn(hasActiveChild && "bg-accent text-accent-foreground font-bold")}
                       >
                         {item.icon}
                         <span>{item.title}</span>

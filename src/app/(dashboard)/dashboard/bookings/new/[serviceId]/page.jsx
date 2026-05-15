@@ -31,16 +31,13 @@ export default async function NewBookingPage({ params }) {
 
   const service = await getServiceByIdServer(serviceId);
 
-  const AddBookingForm = await import(
-    "@/components/dashboard/booking/add-booking/add-booking-form"
-  ).then((mod) => mod.default);
+  const AddBookingForm = await import("@/components/dashboard/booking/add-booking/add-booking-form").then(
+    (mod) => mod.default,
+  );
 
   return (
     <div className="container mx-auto py-8">
-      <AddBookingForm
-        serviceId={serviceId}
-        serviceName={service?.name || undefined}
-      />
+      <AddBookingForm serviceId={serviceId} serviceName={service?.name || undefined} />
     </div>
   );
 }

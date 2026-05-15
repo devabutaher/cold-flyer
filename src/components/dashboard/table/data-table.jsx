@@ -2,26 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import {
   flexRender,
@@ -105,8 +88,7 @@ export function DataTable({
   const table = useReactTable({
     data,
     columns,
-    getRowId:
-      getRowId ?? ((row) => row._id ?? row.id ?? Math.random().toString()),
+    getRowId: getRowId ?? ((row) => row._id ?? row.id ?? Math.random().toString()),
     state: { sorting, columnFilters, rowSelection, pagination, globalFilter },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -133,11 +115,7 @@ export function DataTable({
   return (
     <div className={cn("flex flex-col gap-4 w-full", className)}>
       {/* ── Toolbar slot ─────────────────────────────── */}
-      {toolbar && (
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          {toolbar(table)}
-        </div>
-      )}
+      {toolbar && <div className="flex flex-wrap items-center justify-between gap-3">{toolbar(table)}</div>}
 
       {/* ── Table ────────────────────────────────────── */}
       <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm">
@@ -145,18 +123,12 @@ export function DataTable({
           <Table>
             <TableHeader className={cn(stickyHeader && "sticky top-0 z-10")}>
               {table.getHeaderGroups().map((hg) => (
-                <TableRow
-                  key={hg.id}
-                  className="bg-muted/60 hover:bg-muted/60 border-b border-border"
-                >
+                <TableRow key={hg.id} className="bg-muted/60 hover:bg-muted/60 border-b border-border">
                   {hg.headers.map((header) => (
                     <TableHead
                       key={header.id}
                       style={{
-                        width:
-                          header.getSize() !== 150
-                            ? `${header.getSize()}px`
-                            : undefined,
+                        width: header.getSize() !== 150 ? `${header.getSize()}px` : undefined,
                       }}
                       className="h-11 text-xs font-semibold uppercase tracking-wide text-muted-foreground px-4"
                     >
@@ -165,26 +137,17 @@ export function DataTable({
                           className="flex items-center gap-1.5 cursor-pointer select-none hover:text-foreground transition-colors"
                           onClick={header.column.getToggleSortingHandler()}
                         >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {header.column.getIsSorted() === "asc" && (
-                            <ChevronUpIcon size={13} className="opacity-70" />
-                          )}
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {header.column.getIsSorted() === "asc" && <ChevronUpIcon size={13} className="opacity-70" />}
                           {header.column.getIsSorted() === "desc" && (
                             <ChevronDownIcon size={13} className="opacity-70" />
                           )}
-                          {!header.column.getIsSorted() &&
-                            header.column.getCanSort() && (
-                              <ChevronUpIcon size={13} className="opacity-20" />
-                            )}
+                          {!header.column.getIsSorted() && header.column.getCanSort() && (
+                            <ChevronUpIcon size={13} className="opacity-20" />
+                          )}
                         </button>
                       ) : (
-                        flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )
+                        flexRender(header.column.columnDef.header, header.getContext())
                       )}
                     </TableHead>
                   ))}
@@ -200,9 +163,7 @@ export function DataTable({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={
-                      onRowClick ? () => onRowClick(row.original) : undefined
-                    }
+                    onClick={onRowClick ? () => onRowClick(row.original) : undefined}
                     className={cn(
                       "border-b border-border/60 transition-colors",
                       "hover:bg-muted/30 data-[state=selected]:bg-primary/5",
@@ -211,24 +172,16 @@ export function DataTable({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="px-4 py-3">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-48 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className="h-48 text-center">
                     <div className="flex flex-col items-center gap-3 text-muted-foreground">
-                      {emptyIcon && (
-                        <div className="opacity-40">{emptyIcon}</div>
-                      )}
+                      {emptyIcon && <div className="opacity-40">{emptyIcon}</div>}
                       <p className="text-sm">{emptyMessage}</p>
                       {emptyAction}
                     </div>
@@ -244,16 +197,10 @@ export function DataTable({
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Rows per page */}
         <div className="flex items-center gap-2">
-          <Label
-            htmlFor={id}
-            className="text-xs text-muted-foreground whitespace-nowrap"
-          >
+          <Label htmlFor={id} className="text-xs text-muted-foreground whitespace-nowrap">
             Rows per page
           </Label>
-          <Select
-            value={pageSize.toString()}
-            onValueChange={(v) => table.setPageSize(Number(v))}
-          >
+          <Select value={pageSize.toString()} onValueChange={(v) => table.setPageSize(Number(v))}>
             <SelectTrigger id={id} className="h-8 w-16 text-xs">
               <SelectValue />
             </SelectTrigger>
@@ -272,8 +219,7 @@ export function DataTable({
           <span className="text-foreground font-medium">
             {from}–{to}
           </span>{" "}
-          of <span className="text-foreground font-medium">{totalRows}</span>{" "}
-          {rowCount}
+          of <span className="text-foreground font-medium">{totalRows}</span> {rowCount}
         </p>
 
         {/* Page nav */}

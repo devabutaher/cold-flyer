@@ -54,7 +54,10 @@ export function ProductRowActions({ row, onDelete }) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-destructive focus:text-destructive"
-            onClick={(e) => { e.stopPropagation(); setShowDelete(true); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDelete(true);
+            }}
           >
             <TrashIcon size={13} className="mr-2" />
             Delete
@@ -67,16 +70,18 @@ export function ProductRowActions({ row, onDelete }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete product?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently remove{" "}
-              <strong>{row.original.name}</strong> from the catalog. This
-              action cannot be undone.
+              This will permanently remove <strong>{row.original.name}</strong> from the catalog. This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-              onClick={() => { onDelete?.(id); setShowDelete(false); }}
+              onClick={() => {
+                onDelete?.(id);
+                setShowDelete(false);
+              }}
             >
               Delete
             </AlertDialogAction>

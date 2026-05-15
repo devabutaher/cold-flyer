@@ -10,13 +10,9 @@ export default function ProductsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">
-          {isAdmin ? "All Products" : "Products"}
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">{isAdmin ? "All Products" : "Products"}</h1>
         <p className="text-sm text-muted-foreground mt-0.5">
-          {isAdmin 
-            ? "Manage your product inventory and catalog." 
-            : "Browse available AC products and parts."}
+          {isAdmin ? "Manage your product inventory and catalog." : "Browse available AC products and parts."}
         </p>
       </div>
       <ProductsTable isAdmin={isAdmin} />

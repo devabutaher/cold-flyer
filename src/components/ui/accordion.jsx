@@ -5,13 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDownIcon } from "lucide-react";
 import * as React from "react";
 
-function Accordion({
-  className,
-  children,
-  type = "single",
-  defaultValue,
-  ...props
-}) {
+function Accordion({ className, children, type = "single", defaultValue, ...props }) {
   const [openValue, setOpenValue] = React.useState(defaultValue || null);
 
   const isOpen = (value) => openValue === value;
@@ -28,10 +22,7 @@ function Accordion({
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div
-      data-slot="accordion"
-      className={cn("flex w-full flex-col", className)}
-    >
+    <div data-slot="accordion" className={cn("flex w-full flex-col", className)}>
       {childrenArray.map((child) => {
         if (!React.isValidElement(child)) return null;
         const value = child.props.value;
@@ -44,28 +35,13 @@ function Accordion({
   );
 }
 
-function AccordionItem({
-  className,
-  value,
-  isOpen,
-  onToggle,
-  children,
-  ...props
-}) {
+function AccordionItem({ className, value, isOpen, onToggle, children, ...props }) {
   const childArray = React.Children.toArray(children);
-  const trigger = childArray.find(
-    (c) => React.isValidElement(c) && c.type === AccordionTrigger,
-  );
-  const content = childArray.find(
-    (c) => React.isValidElement(c) && c.type === AccordionContent,
-  );
+  const trigger = childArray.find((c) => React.isValidElement(c) && c.type === AccordionTrigger);
+  const content = childArray.find((c) => React.isValidElement(c) && c.type === AccordionContent);
 
   return (
-    <div
-      data-slot="accordion-item"
-      className={cn("not-last:border-b border-border", className)}
-      {...props}
-    >
+    <div data-slot="accordion-item" className={cn("not-last:border-b border-border", className)} {...props}>
       {trigger && React.cloneElement(trigger, { isOpen, onToggle })}
       <AnimatePresence>
         {isOpen && content && (
@@ -112,10 +88,7 @@ function AccordionContent({ className, children, ...props }) {
   return (
     <div
       data-slot="accordion-content"
-      className={cn(
-        "text-muted-foreground pb-4 pt-1 leading-relaxed",
-        className,
-      )}
+      className={cn("text-muted-foreground pb-4 pt-1 leading-relaxed", className)}
       {...props}
     >
       {children}

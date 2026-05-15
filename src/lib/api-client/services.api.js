@@ -29,8 +29,7 @@ export const serviceEndpoints = {
   featured: () => apiGet("/services/featured"),
   bySlug: (slug) => apiGet(`/services/slug/${slug}`),
   byId: (id) => apiGet(`/services/${id}`),
-  create: (data) =>
-    apiClient("/api/services", { method: "POST", body: JSON.stringify(data) }),
+  create: (data) => apiClient("/api/services", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     apiClient(`/api/services/${id}`, {
       method: "PATCH",

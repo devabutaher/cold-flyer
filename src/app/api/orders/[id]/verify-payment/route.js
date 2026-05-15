@@ -7,10 +7,7 @@ export async function POST(request, { params }) {
   const id = resolvedParams?.id;
 
   if (!id) {
-    return NextResponse.json(
-      { success: false, message: "Order ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Order ID is required" }, { status: 400 });
   }
 
   try {
@@ -35,9 +32,6 @@ export async function POST(request, { params }) {
       headers: setCookie ? { "Set-Cookie": setCookie } : {},
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to verify payment" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to verify payment" }, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const AuthContext = createContext(null);
@@ -9,6 +9,24 @@ export function AuthProvider({ children }) {
   const [backendUser, setBackendUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
+    fetch("/api/auth/me", { credentials: "include" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        setBackendUser(data?.data?.user || null);
+      })
+      .catch(() => {
+        setBackendUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -27,16 +45,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => {
-    let mounted = true;
-
-    refreshUser().then(() => {
-      if (mounted) setLoading(false);
-    });
-
-    return () => { mounted = false; };
-  }, [refreshUser]);
-
   const logOut = useCallback(async () => {
     try {
       await fetch("/api/auth/logout", {
@@ -44,7 +52,6 @@ export function AuthProvider({ children }) {
         credentials: "include",
       });
     } catch {
-      // Proceed even if backend call fails
     }
     setBackendUser(null);
     router.push("/");

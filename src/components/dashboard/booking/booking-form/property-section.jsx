@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Home } from "lucide-react";
 import { Controller } from "react-hook-form";
 
@@ -29,9 +17,7 @@ export function PropertySection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Property Details</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Tell us about the property
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Tell us about the property</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -55,9 +41,7 @@ export function PropertySection({ control }) {
                   <SelectItem value="apartment">Apartment</SelectItem>
                 </SelectContent>
               </Select>
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />

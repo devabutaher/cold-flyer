@@ -1,13 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  Card, CardContent, CardHeader, CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  BarChart, DollarSign, CalendarDays,
-} from "lucide-react";
+import { BarChart, DollarSign, CalendarDays } from "lucide-react";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
 
 async function fetcher(url) {
@@ -32,7 +28,14 @@ function StatCard({ title, value, icon: Icon, loading, prefix }) {
         <Icon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        {loading ? <Skeleton className="h-7 w-20" /> : <div className="text-2xl font-bold">{prefix}{typeof value === "number" ? value.toLocaleString() : value}</div>}
+        {loading ? (
+          <Skeleton className="h-7 w-20" />
+        ) : (
+          <div className="text-2xl font-bold">
+            {prefix}
+            {typeof value === "number" ? value.toLocaleString() : value}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -59,7 +62,9 @@ export default function AnalyticsPage() {
 
       {services && (
         <>
-          <h2 className="text-sm font-semibold flex items-center gap-2"><BarChart size={15} className="text-primary" /> Service Analytics</h2>
+          <h2 className="text-sm font-semibold flex items-center gap-2">
+            <BarChart size={15} className="text-primary" /> Service Analytics
+          </h2>
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
             <StatCard title="Total Bookings" value={services.totalBookings} icon={CalendarDays} loading={isLoading} />
             <StatCard title="Completed" value={services.completedBookings} icon={BarChart} loading={isLoading} />
@@ -68,7 +73,9 @@ export default function AnalyticsPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
-              <CardHeader><CardTitle className="text-sm">Bookings by Status</CardTitle></CardHeader>
+              <CardHeader>
+                <CardTitle className="text-sm">Bookings by Status</CardTitle>
+              </CardHeader>
               <CardContent className="space-y-2">
                 {services.byStatus?.map((s) => (
                   <div key={s._id} className="flex items-center justify-between text-sm">
@@ -80,7 +87,9 @@ export default function AnalyticsPage() {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle className="text-sm">Bookings by Category</CardTitle></CardHeader>
+              <CardHeader>
+                <CardTitle className="text-sm">Bookings by Category</CardTitle>
+              </CardHeader>
               <CardContent className="space-y-2">
                 {services.byCategory?.map((c) => (
                   <div key={c._id} className="flex items-center justify-between text-sm">
@@ -96,16 +105,22 @@ export default function AnalyticsPage() {
 
       {sales && (
         <>
-          <h2 className="text-sm font-semibold flex items-center gap-2 mt-6"><DollarSign size={15} className="text-primary" /> Sales Analytics</h2>
-          
+          <h2 className="text-sm font-semibold flex items-center gap-2 mt-6">
+            <DollarSign size={15} className="text-primary" /> Sales Analytics
+          </h2>
+
           {sales.categorySales?.length > 0 && (
             <Card>
-              <CardHeader><CardTitle className="text-sm">Sales by Category</CardTitle></CardHeader>
+              <CardHeader>
+                <CardTitle className="text-sm">Sales by Category</CardTitle>
+              </CardHeader>
               <CardContent className="space-y-2">
                 {sales.categorySales.map((c) => (
                   <div key={c._id} className="flex items-center justify-between text-sm">
                     <span className="capitalize">{c._id}</span>
-                    <span className="font-medium">৳{c.total?.toLocaleString()} ({c.count} items)</span>
+                    <span className="font-medium">
+                      ৳{c.total?.toLocaleString()} ({c.count} items)
+                    </span>
                   </div>
                 ))}
               </CardContent>
@@ -114,12 +129,16 @@ export default function AnalyticsPage() {
 
           {sales.dailySales?.length > 0 && (
             <Card>
-              <CardHeader><CardTitle className="text-sm">Daily Sales (last 30 days)</CardTitle></CardHeader>
+              <CardHeader>
+                <CardTitle className="text-sm">Daily Sales (last 30 days)</CardTitle>
+              </CardHeader>
               <CardContent className="max-h-64 overflow-y-auto space-y-1">
                 {[...sales.dailySales].reverse().map((d) => (
                   <div key={d._id} className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">{d._id}</span>
-                    <span className="font-medium">৳{d.total?.toLocaleString()} ({d.count} orders)</span>
+                    <span className="font-medium">
+                      ৳{d.total?.toLocaleString()} ({d.count} orders)
+                    </span>
                   </div>
                 ))}
               </CardContent>
@@ -129,7 +148,11 @@ export default function AnalyticsPage() {
       )}
 
       {!isLoading && !services && !sales && (
-        <Card><CardContent className="py-12 text-center text-sm text-muted-foreground">No analytics data available</CardContent></Card>
+        <Card>
+          <CardContent className="py-12 text-center text-sm text-muted-foreground">
+            No analytics data available
+          </CardContent>
+        </Card>
       )}
     </div>
   );

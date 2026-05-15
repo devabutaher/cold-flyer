@@ -21,10 +21,7 @@ export function AppHeader() {
     >
       <div className="flex items-center gap-3">
         <CustomSidebarTrigger />
-        <Separator
-          className="mr-2 h-4 data-[orientation=vertical]:self-center"
-          orientation="vertical"
-        />
+        <Separator className="mr-2 h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
         <AppBreadcrumbs page={activeItem} />
       </div>
       <div className="flex items-center gap-3">
@@ -32,10 +29,7 @@ export function AppHeader() {
           <SendIcon />
         </Button>
         <NotificationDropdown />
-        <Separator
-          className="h-4 data-[orientation=vertical]:self-center"
-          orientation="vertical"
-        />
+        <Separator className="h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
         <UserDropdown />
       </div>
     </header>

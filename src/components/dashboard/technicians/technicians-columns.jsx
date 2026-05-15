@@ -50,7 +50,7 @@ export function buildTechnicianColumns({ onDelete } = {}) {
       accessorKey: "specializations",
       cell: ({ row }) => {
         const specs = row.original.specializations || [];
-        return <span className="text-sm capitalize">{(specs.length ? specs.join(", ") : "—")}</span>;
+        return <span className="text-sm capitalize">{specs.length ? specs.join(", ") : "—"}</span>;
       },
     },
     {
@@ -80,7 +80,10 @@ export function buildTechnicianColumns({ onDelete } = {}) {
           <div className="flex justify-end">
             <button
               className="text-xs text-destructive hover:underline"
-              onClick={(e) => { e.stopPropagation(); onDelete?.(t._id); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(t._id);
+              }}
             >
               Remove
             </button>

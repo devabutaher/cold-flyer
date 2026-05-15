@@ -24,12 +24,7 @@ import { createContext, useContext, useState } from "react";
 // Share open state with CollapsibleContent without prop-drilling
 const CollapsibleContext = createContext(false);
 
-function Collapsible({
-  open: controlledOpen,
-  onOpenChange,
-  defaultOpen = false,
-  ...props
-}) {
+function Collapsible({ open: controlledOpen, onOpenChange, defaultOpen = false, ...props }) {
   // Support both controlled and uncontrolled
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = controlledOpen ?? internalOpen;
@@ -41,23 +36,13 @@ function Collapsible({
 
   return (
     <CollapsibleContext.Provider value={isOpen}>
-      <CollapsiblePrimitive.Root
-        data-slot="collapsible"
-        open={isOpen}
-        onOpenChange={handleChange}
-        {...props}
-      />
+      <CollapsiblePrimitive.Root data-slot="collapsible" open={isOpen} onOpenChange={handleChange} {...props} />
     </CollapsibleContext.Provider>
   );
 }
 
 function CollapsibleTrigger({ ...props }) {
-  return (
-    <CollapsiblePrimitive.CollapsibleTrigger
-      data-slot="collapsible-trigger"
-      {...props}
-    />
-  );
+  return <CollapsiblePrimitive.CollapsibleTrigger data-slot="collapsible-trigger" {...props} />;
 }
 
 /**
@@ -74,22 +59,14 @@ function CollapsibleContent({ children, ...props }) {
   // Reduced-motion: no animation, just show/hide
   if (shouldReduceMotion) {
     return (
-      <CollapsiblePrimitive.CollapsibleContent
-        data-slot="collapsible-content"
-        {...props}
-      >
+      <CollapsiblePrimitive.CollapsibleContent data-slot="collapsible-content" {...props}>
         {children}
       </CollapsiblePrimitive.CollapsibleContent>
     );
   }
 
   return (
-    <CollapsiblePrimitive.CollapsibleContent
-      data-slot="collapsible-content"
-      forceMount
-      asChild
-      {...props}
-    >
+    <CollapsiblePrimitive.CollapsibleContent data-slot="collapsible-content" forceMount asChild {...props}>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div

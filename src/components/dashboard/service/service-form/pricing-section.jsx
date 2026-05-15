@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DollarSign } from "lucide-react";
 import { Controller } from "react-hook-form";
 
@@ -29,9 +17,7 @@ export function ServicePricingSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Pricing & Duration</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Set price and service duration
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Set price and service duration</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -64,10 +50,7 @@ export function ServicePricingSection({ control }) {
           render={({ field }) => (
             <Field>
               <FieldLabel>Price Type</FieldLabel>
-              <Select
-                value={field.value ?? "fixed"}
-                onValueChange={field.onChange}
-              >
+              <Select value={field.value ?? "fixed"} onValueChange={field.onChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select price type" />
                 </SelectTrigger>

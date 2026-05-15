@@ -15,19 +15,19 @@ async function getUser() {
 
 export default async function AddServicePage() {
   const cookieStore = await cookies();
-  
+
   if (!cookieStore.get("accessToken")) {
     redirect("/auth");
   }
-  
+
   const user = await getUser();
-  
+
   if (!user) {
     redirect("/");
   }
-  
+
   const AddServiceForm = await import("@/components/dashboard/service/add-service/add-service-form").then(
-    (mod) => mod.default
+    (mod) => mod.default,
   );
 
   return (

@@ -27,16 +27,10 @@ function BlogCard({ blog, index }) {
         />
       </div>
       <div className="p-5">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-          {blog.cat}
-        </span>
-        <h3 className="font-sans font-bold text-foreground text-base mt-1 mb-3 leading-snug">
-          {blog.title}
-        </h3>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{blog.cat}</span>
+        <h3 className="font-sans font-bold text-foreground text-base mt-1 mb-3 leading-snug">{blog.title}</h3>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground text-xs">
-            {blog.date}
-          </span>
+          <span className="text-muted-foreground text-xs">{blog.date}</span>
           <Link
             href={"/about"}
             className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:gap-2 transition-all duration-200"
@@ -55,9 +49,7 @@ export default function Blogs() {
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Learn & Discover
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Learn & Discover</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               Climate <span className="text-primary">Insights.</span>
             </h2>

@@ -1,8 +1,4 @@
-import {
-  MonoCell,
-  PriceCell,
-  StatusBadge,
-} from "@/components/dashboard/table/table-cells";
+import { MonoCell, PriceCell, StatusBadge } from "@/components/dashboard/table/table-cells";
 import { CalendarDays, Package } from "lucide-react";
 import { OrderRowActions } from "./order-row-actions";
 
@@ -106,9 +102,7 @@ export function buildOrderColumns({ onPay, onCancel, payingOrderId }) {
     {
       header: "Status",
       accessorKey: "status",
-      cell: ({ row }) => (
-        <StatusBadge value={row.getValue("status")} map={ORDER_STATUS_MAP} />
-      ),
+      cell: ({ row }) => <StatusBadge value={row.getValue("status")} map={ORDER_STATUS_MAP} />,
       meta: { filterVariant: "select" },
     },
 
@@ -116,12 +110,7 @@ export function buildOrderColumns({ onPay, onCancel, payingOrderId }) {
     {
       header: "Payment",
       accessorKey: "paymentStatus",
-      cell: ({ row }) => (
-        <StatusBadge
-          value={row.getValue("paymentStatus")}
-          map={PAYMENT_STATUS_MAP}
-        />
-      ),
+      cell: ({ row }) => <StatusBadge value={row.getValue("paymentStatus")} map={PAYMENT_STATUS_MAP} />,
       meta: { filterVariant: "select" },
     },
 
@@ -131,12 +120,7 @@ export function buildOrderColumns({ onPay, onCancel, payingOrderId }) {
       enableSorting: false,
       header: "",
       cell: ({ row }) => (
-        <OrderRowActions
-          order={row.original}
-          onPay={onPay}
-          onCancel={onCancel}
-          payingOrderId={payingOrderId}
-        />
+        <OrderRowActions order={row.original} onPay={onPay} onCancel={onCancel} payingOrderId={payingOrderId} />
       ),
     },
   ];

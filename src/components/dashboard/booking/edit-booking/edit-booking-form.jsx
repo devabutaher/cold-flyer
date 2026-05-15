@@ -7,13 +7,7 @@ import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import {
-  FormHeader,
-  ScheduleSection,
-  PropertySection,
-  AddressSection,
-  NotesSection,
-} from "../booking-form";
+import { FormHeader, ScheduleSection, PropertySection, AddressSection, NotesSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
 

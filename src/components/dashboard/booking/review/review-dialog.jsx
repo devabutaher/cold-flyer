@@ -64,9 +64,7 @@ export function ReviewDialog({ booking, onSuccess }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            {booking.customerRating ? "Update Your Review" : "Rate Your Service"}
-          </AlertDialogTitle>
+          <AlertDialogTitle>{booking.customerRating ? "Update Your Review" : "Rate Your Service"}</AlertDialogTitle>
           <AlertDialogDescription>
             How was your experience with {booking.service?.name || "this service"}?
           </AlertDialogDescription>
@@ -89,9 +87,7 @@ export function ReviewDialog({ booking, onSuccess }) {
                     size={24}
                     className={cn(
                       "transition-colors",
-                      (hover || rating) >= star
-                        ? "fill-yellow-500 text-yellow-500"
-                        : "text-muted-foreground/30"
+                      (hover || rating) >= star ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground/30",
                     )}
                   />
                 </button>
@@ -114,7 +110,10 @@ export function ReviewDialog({ booking, onSuccess }) {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleSubmit} disabled={submitting || rating === 0}>
             {submitting ? (
-              <><Loader2 size={14} className="animate-spin mr-2" />Submitting...</>
+              <>
+                <Loader2 size={14} className="animate-spin mr-2" />
+                Submitting...
+              </>
             ) : (
               "Submit Review"
             )}

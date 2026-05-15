@@ -34,16 +34,13 @@ export default function FAQPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-              Help Center
-            </Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Help Center</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Frequently <br />
               <span className="text-primary">Asked Questions</span>
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Find answers to common questions about our products, services, and
-              policies.
+              Find answers to common questions about our products, services, and policies.
             </p>
           </div>
         </div>
@@ -54,10 +51,7 @@ export default function FAQPage() {
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
             <div className="relative">
-              <Search
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-              />
+              <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search for answers..."
@@ -80,47 +74,26 @@ export default function FAQPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
-                <Calculator
-                  size={24}
-                  className="text-primary group-hover:text-primary-foreground transition-colors"
-                />
+                <Calculator size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">
-                Get a Quote
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Request a customized quote for your project
-              </p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">Get a Quote</h4>
+              <p className="text-sm text-muted-foreground">Request a customized quote for your project</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
-                <Truck
-                  size={24}
-                  className="text-primary group-hover:text-primary-foreground transition-colors"
-                />
+                <Truck size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">
-                Track Order
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Check the status of your shipment
-              </p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">Track Order</h4>
+              <p className="text-sm text-muted-foreground">Check the status of your shipment</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
-                <Wrench
-                  size={24}
-                  className="text-primary group-hover:text-primary-foreground transition-colors"
-                />
+                <Wrench size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">
-                Technical Support
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Get help with installation and maintenance
-              </p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">Technical Support</h4>
+              <p className="text-sm text-muted-foreground">Get help with installation and maintenance</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
@@ -130,12 +103,8 @@ export default function FAQPage() {
                   className="text-primary group-hover:text-primary-foreground transition-colors"
                 />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">
-                Live Chat
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Chat with our support team
-              </p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">Live Chat</h4>
+              <p className="text-sm text-muted-foreground">Chat with our support team</p>
             </div>
           </div>
         </div>
@@ -148,24 +117,17 @@ export default function FAQPage() {
             <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
               Comprehensive Answers
             </span>
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">
-              Browse by Category
-            </h2>
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">Browse by Category</h2>
           </div>
 
           <div className="space-y-12">
             {categories.map((category) => (
-              <div
-                key={category.name}
-                className="bg-card rounded-2xl overflow-hidden"
-              >
+              <div key={category.name} className="bg-card rounded-2xl overflow-hidden">
                 <div className="p-8 bg-card border-b border-border/30 flex items-center gap-4">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <category.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-sans font-extrabold text-2xl">
-                    {category.name}
-                  </h3>
+                  <h3 className="font-sans font-extrabold text-2xl">{category.name}</h3>
                 </div>
 
                 <div className="divide-y divide-border/30">
@@ -179,9 +141,7 @@ export default function FAQPage() {
                         />
                       </summary>
                       <div className="px-8 pb-8">
-                        <p className="text-muted-foreground leading-relaxed">
-                          {faq.a}
-                        </p>
+                        <p className="text-muted-foreground leading-relaxed">{faq.a}</p>
                       </div>
                     </details>
                   ))}
@@ -205,8 +165,8 @@ export default function FAQPage() {
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8">
-                Can&#8217;t find the answer you&#8217;re looking for? Our dedicated support
-                team is ready to assist you with any questions.
+                Can&#8217;t find the answer you&#8217;re looking for? Our dedicated support team is ready to assist you
+                with any questions.
               </p>
 
               <div className="space-y-4">
@@ -216,9 +176,7 @@ export default function FAQPage() {
                   </div>
                   <div>
                     <div className="font-medium">Email Support</div>
-                    <div className="text-sm text-muted">
-                      support@coldflyer.com
-                    </div>
+                    <div className="text-sm text-muted">support@coldflyer.com</div>
                   </div>
                 </div>
 
@@ -238,9 +196,7 @@ export default function FAQPage() {
                   </div>
                   <div>
                     <div className="font-medium">Hours</div>
-                    <div className="text-sm text-muted">
-                      Mon-Fri, 9AM-6PM EST
-                    </div>
+                    <div className="text-sm text-muted">Mon-Fri, 9AM-6PM EST</div>
                   </div>
                 </div>
               </div>
@@ -268,9 +224,7 @@ export default function FAQPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Ready to get started?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">
-              Browse our products or request a quote today.
-            </p>
+            <p className="text-primary-foreground/70 text-sm">Browse our products or request a quote today.</p>
           </div>
           <div className="flex gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">

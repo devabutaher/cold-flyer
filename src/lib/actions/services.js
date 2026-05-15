@@ -32,9 +32,7 @@ async function getAuthHeaders() {
 
 async function serverFetch(endpoint, options = {}) {
   const baseUrl = getBaseUrl();
-  const url = endpoint.startsWith("/api")
-    ? `${baseUrl}${endpoint}`
-    : `${baseUrl}/api${endpoint}`;
+  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
 
   const authHeaders = await getAuthHeaders();
 
@@ -49,11 +47,7 @@ async function serverFetch(endpoint, options = {}) {
 
   const data = await response.json();
   if (!response.ok) {
-    throw new ServerApiError(
-      data.message || "Server action failed",
-      response.status,
-      data,
-    );
+    throw new ServerApiError(data.message || "Server action failed", response.status, data);
   }
   return data;
 }
@@ -73,9 +67,7 @@ export async function getServicesServer(params) {
   }
   if (params?.featured) query.set("featured", "true");
 
-  const endpoint = query.toString()
-    ? `/api/services?${query}`
-    : "/api/services";
+  const endpoint = query.toString() ? `/api/services?${query}` : "/api/services";
 
   try {
     const result = await serverFetch(endpoint);
@@ -172,7 +164,7 @@ export async function createBookingAction(bookingData) {
     });
     return { success: true, data: result };
   } catch (error) {
-    const fieldErrors = error.data?.errors?.map(e => `${e.field}: ${e.message}`).join("; ");
+    const fieldErrors = error.data?.errors?.map((e) => `${e.field}: ${e.message}`).join("; ");
     return {
       success: false,
       message: error.message || "Failed to create booking",

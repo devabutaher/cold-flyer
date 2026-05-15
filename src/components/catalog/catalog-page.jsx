@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { CatalogFilters } from "./catalog-filters";
 import { CatalogGrid } from "./catalog-grid";
 
-export function CatalogPage({ 
+export function CatalogPage({
   type = "product",
   searchComponent: SearchComponent,
   apiFetchFn,
@@ -13,7 +13,7 @@ export function CatalogPage({
   defaultSort = "All Products",
   filterFn,
   sortFn,
-  itemLabel
+  itemLabel,
 }) {
   return (
     <>
@@ -21,9 +21,7 @@ export function CatalogPage({
         fallback={
           <div className="py-4 flex items-center gap-3 overflow-x-auto min-w-0">
             <div className="flex items-center gap-2 text-muted-foreground mr-1 shrink-0">
-              <span className="text-[10px] font-black uppercase tracking-widest">
-                Filters:
-              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest">Filters:</span>
             </div>
             <div className="h-8 w-28 bg-muted animate-pulse rounded" />
             <div className="h-8 w-28 bg-muted animate-pulse rounded" />
@@ -41,13 +39,7 @@ export function CatalogPage({
           defaultSort={defaultSort}
         />
       </Suspense>
-      <CatalogGrid
-        type={type}
-        apiFetchFn={apiFetchFn}
-        filterFn={filterFn}
-        sortFn={sortFn}
-        itemLabel={itemLabel}
-      />
+      <CatalogGrid type={type} apiFetchFn={apiFetchFn} filterFn={filterFn} sortFn={sortFn} itemLabel={itemLabel} />
     </>
   );
 }

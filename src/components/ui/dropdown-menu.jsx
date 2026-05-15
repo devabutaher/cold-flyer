@@ -60,39 +60,21 @@ function DropdownMenu({ open: controlledOpen, onOpenChange, ...props }) {
 
   return (
     <DropdownOpenContext.Provider value={isOpen}>
-      <DropdownMenuPrimitive.Root
-        data-slot="dropdown-menu"
-        open={isOpen}
-        onOpenChange={handleChange}
-        {...props}
-      />
+      <DropdownMenuPrimitive.Root data-slot="dropdown-menu" open={isOpen} onOpenChange={handleChange} {...props} />
     </DropdownOpenContext.Provider>
   );
 }
 
 function DropdownMenuPortal({ ...props }) {
-  return (
-    <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
-  );
+  return <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />;
 }
 
 function DropdownMenuTrigger({ ...props }) {
-  return (
-    <DropdownMenuPrimitive.Trigger
-      data-slot="dropdown-menu-trigger"
-      {...props}
-    />
-  );
+  return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
 // ── Content — AnimatePresence drives open/close ──────────────
-function DropdownMenuContent({
-  className,
-  align = "start",
-  sideOffset = 4,
-  children,
-  ...props
-}) {
+function DropdownMenuContent({ className, align = "start", sideOffset = 4, children, ...props }) {
   const isOpen = useContext(DropdownOpenContext);
   const shouldReduceMotion = useReducedMotion();
 
@@ -130,9 +112,7 @@ function DropdownMenuContent({
 }
 
 function DropdownMenuGroup({ ...props }) {
-  return (
-    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
-  );
+  return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />;
 }
 
 // ── Item — staggered entrance ────────────────────────────────
@@ -157,22 +137,12 @@ function DropdownMenuItem({
         className,
       )}
     >
-      <motion.div
-        custom={index}
-        variants={shouldReduceMotion ? undefined : itemVariants}
-        {...restProps}
-      />
+      <motion.div custom={index} variants={shouldReduceMotion ? undefined : itemVariants} {...restProps} />
     </DropdownMenuPrimitive.Item>
   );
 }
 
-function DropdownMenuCheckboxItem({
-  className,
-  children,
-  checked,
-  inset,
-  ...props
-}) {
+function DropdownMenuCheckboxItem({ className, children, checked, inset, ...props }) {
   const { asChild: _, ...restProps } = props;
   return (
     <DropdownMenuPrimitive.CheckboxItem
@@ -199,12 +169,7 @@ function DropdownMenuCheckboxItem({
 }
 
 function DropdownMenuRadioGroup({ ...props }) {
-  return (
-    <DropdownMenuPrimitive.RadioGroup
-      data-slot="dropdown-menu-radio-group"
-      {...props}
-    />
-  );
+  return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
 }
 
 function DropdownMenuRadioItem({ className, children, inset, ...props }) {
@@ -238,10 +203,7 @@ function DropdownMenuLabel({ className, inset, ...props }) {
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
       data-inset={inset}
-      className={cn(
-        "px-2 py-1.5 text-xs font-medium text-muted-foreground data-inset:pl-8",
-        className,
-      )}
+      className={cn("px-2 py-1.5 text-xs font-medium text-muted-foreground data-inset:pl-8", className)}
       {...restProps}
     />
   );
@@ -296,11 +258,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
 
 function DropdownMenuSubContent({ className, ...props }) {
   return (
-    <DropdownMenuPrimitive.SubContent
-      data-slot="dropdown-menu-sub-content"
-      asChild
-      {...props}
-    >
+    <DropdownMenuPrimitive.SubContent data-slot="dropdown-menu-sub-content" asChild {...props}>
       <motion.div
         className={cn(
           "z-50 min-w-24 overflow-hidden rounded-md bg-popover p-1 text-popover-foreground shadow-lg ring-1 ring-foreground/10",

@@ -24,7 +24,8 @@ export const metadata = {
     default: "Cold Flyer | AC Products & Repair Services in Bangladesh",
     template: "%s | Cold Flyer",
   },
-  description: "Cold Flyer - Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services. Fast delivery, expert technicians.",
+  description:
+    "Cold Flyer - Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services. Fast delivery, expert technicians.",
   keywords: [
     "AC",
     "air conditioner",
@@ -55,7 +56,8 @@ export const metadata = {
     url: "https://coldflyer.com",
     siteName: "Cold Flyer",
     title: "Cold Flyer | AC Products & Repair Services in Bangladesh",
-    description: "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
+    description:
+      "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
     images: [
       {
         url: "/og-image.png",
@@ -68,7 +70,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Cold Flyer | AC Products & Repair Services in Bangladesh",
-    description: "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
+    description:
+      "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
     images: ["/og-image.png"],
     creator: "@coldflyer",
   },
@@ -91,9 +94,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="canonical" href="https://coldflyer.com" />
       </head>
-      <body
-        className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
-      >
+      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

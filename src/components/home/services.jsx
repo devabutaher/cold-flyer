@@ -23,12 +23,8 @@ function ServiceCard({ service, index }) {
       <div className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4">
         <service.icon size={22} className="text-accent-foreground" />
       </div>
-      <h3 className="font-sans font-bold text-lg text-foreground mb-2">
-        {service.title}
-      </h3>
-      <p className="text-muted-foreground text-sm leading-relaxed mb-5">
-        {service.sub}
-      </p>
+      <h3 className="font-sans font-bold text-lg text-foreground mb-2">{service.title}</h3>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-5">{service.sub}</p>
       <Link
         href={"/services"}
         className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all duration-200"
@@ -44,9 +40,7 @@ export default function Services() {
     <AnimatedSection className="py-16 bg-background" id="services">
       <div className="container">
         <div className="mb-9">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-            Our Expertise
-          </span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Our Expertise</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
             World-Class <span className="text-primary">Climate Services.</span>
           </h2>

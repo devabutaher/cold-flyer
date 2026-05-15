@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText } from "lucide-react";
@@ -22,9 +16,7 @@ export function NotesSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Additional Notes</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Anything else we should know?
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Anything else we should know?</CardDescription>
           </div>
         </div>
       </CardHeader>

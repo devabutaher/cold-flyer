@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
@@ -49,16 +49,19 @@ export default function TechniciansTable() {
 
   const deleteTechnician = useMutation({
     mutationFn: (id) => fetcher(`/api/admin/technicians/${id}`, { method: "DELETE" }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-technicians"] }); toast.success("Technician removed"); },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
+      toast.success("Technician removed");
+    },
     onError: (err) => toast.error(err.message),
   });
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     if (!confirm("Remove this technician profile?")) return;
     deleteTechnician.mutate(id);
-  };
+  }, [deleteTechnician]);
 
-  const columns = useMemo(() => buildTechnicianColumns({ onDelete: handleDelete }), []);
+  const columns = useMemo(() => buildTechnicianColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const statusOptions = ["available", "busy", "offline", "on_leave"];
 

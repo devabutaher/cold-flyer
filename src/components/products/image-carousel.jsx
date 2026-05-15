@@ -12,14 +12,7 @@ import {
   DialogTrigger,
 } from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  MinusCircle,
-  Package,
-  PlusCircle,
-  X,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, MinusCircle, Package, PlusCircle, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
@@ -51,12 +44,7 @@ const ImageContainer = ({
   const hasImage = image?.url;
 
   return (
-    <div
-      className={cn(
-        "relative w-full overflow-hidden rounded-lg bg-gray-100",
-        getAspectRatioClass(aspectRatio),
-      )}
-    >
+    <div className={cn("relative w-full overflow-hidden rounded-lg bg-gray-100", getAspectRatioClass(aspectRatio))}>
       <Dialog>
         <DialogTrigger asChild>
           <div className="cursor-pointer relative h-full w-full">
@@ -86,19 +74,11 @@ const ImageContainer = ({
         <DialogPortal>
           <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
           <DialogContent className="bg-background fixed inset-0 z-50 flex flex-col items-center justify-center p-0">
-            <DialogTitle className="sr-only">
-              {image.title || "Image"}
-            </DialogTitle>
-            <DialogDescription className="sr-only">
-              {image.title || "Image"}
-            </DialogDescription>
+            <DialogTitle className="sr-only">{image.title || "Image"}</DialogTitle>
+            <DialogDescription className="sr-only">{image.title || "Image"}</DialogDescription>
 
             <div className="relative flex h-screen w-screen items-center justify-center">
-              <TransformWrapper
-                initialScale={1}
-                initialPositionX={0}
-                initialPositionY={0}
-              >
+              <TransformWrapper initialScale={1} initialPositionX={0} initialPositionY={0}>
                 {({ zoomIn, zoomOut }) => (
                   <>
                     <TransformComponent>
@@ -111,17 +91,11 @@ const ImageContainer = ({
                           quality={95}
                           priority
                           loading="eager"
-                          className={cn(
-                            "max-h-[90vh] max-w-[90vw] object-contain",
-                            classNameImage,
-                          )}
+                          className={cn("max-h-[90vh] max-w-[90vw] object-contain", classNameImage)}
                         />
                       ) : (
                         <div className="flex h-[90vh] w-[90vw] items-center justify-center">
-                          <Package
-                            size={96}
-                            className="text-muted-foreground/30"
-                          />
+                          <Package size={96} className="text-muted-foreground/30" />
                         </div>
                       )}
                     </TransformComponent>
@@ -182,12 +156,7 @@ const Thumb = (props) => {
         className="relative w-full cursor-pointer touch-manipulation appearance-none overflow-hidden rounded-md border-0 bg-transparent p-0"
         type="button"
       >
-        <div
-          className={cn(
-            "relative w-full overflow-hidden rounded-lg bg-gray-100",
-            getAspectRatioClass("square"),
-          )}
-        >
+        <div className={cn("relative w-full overflow-hidden rounded-lg bg-gray-100", getAspectRatioClass("square"))}>
           {hasImage ? (
             <Image
               src={imgUrl}
@@ -234,8 +203,7 @@ const ImageCarousel = ({
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel(
     showThumbs
       ? {
-          axis:
-            thumbPosition === "left" || thumbPosition === "right" ? "y" : "x",
+          axis: thumbPosition === "left" || thumbPosition === "right" ? "y" : "x",
           containScroll: "keepSnaps",
           dragFree: true,
         }
@@ -310,22 +278,11 @@ const ImageCarousel = ({
     if (showThumbs && emblaThumbsApi) {
       emblaThumbsApi.scrollTo(selectedSlideIndex);
     }
-  }, [
-    emblaApi,
-    emblaThumbsApi,
-    showThumbs,
-    isControlled,
-    onSlideChange,
-    controlledIndex,
-  ]);
+  }, [emblaApi, emblaThumbsApi, showThumbs, isControlled, onSlideChange, controlledIndex]);
 
   // Effect for controlled mode to update carousel position
   useEffect(() => {
-    if (
-      isControlled &&
-      emblaApi &&
-      emblaApi.selectedScrollSnap() !== controlledIndex
-    ) {
+    if (isControlled && emblaApi && emblaApi.selectedScrollSnap() !== controlledIndex) {
       emblaApi.scrollTo(controlledIndex);
       if (showThumbs && emblaThumbsApi) {
         emblaThumbsApi.scrollTo(controlledIndex);
@@ -353,9 +310,7 @@ const ImageCarousel = ({
         "relative w-full max-w-3xl",
         {
           "flex-row-reverse": showThumbs && thumbPosition === "left",
-          "flex gap-4":
-            showThumbs &&
-            (thumbPosition === "left" || thumbPosition === "right"),
+          "flex gap-4": showThumbs && (thumbPosition === "left" || thumbPosition === "right"),
         },
         className,
       )}
@@ -385,9 +340,7 @@ const ImageCarousel = ({
       <div
         className={cn(
           "relative",
-          showThumbs &&
-            (thumbPosition === "left" || thumbPosition === "right") &&
-            "flex-[1_1_75%]",
+          showThumbs && (thumbPosition === "left" || thumbPosition === "right") && "flex-[1_1_75%]",
         )}
         aria-label="Image carousel controls"
       >
@@ -440,46 +393,36 @@ const ImageCarousel = ({
           </>
         )}
       </div>
-      {showThumbs &&
-        (thumbPosition === "bottom" ||
-          thumbPosition === "left" ||
-          thumbPosition === "right") && (
+      {showThumbs && (thumbPosition === "bottom" || thumbPosition === "left" || thumbPosition === "right") && (
+        <div className={cn(thumbPosition === "left" || thumbPosition === "right" ? "relative flex-[0_0_20%]" : "mt-4")}>
           <div
             className={cn(
-              thumbPosition === "left" || thumbPosition === "right"
-                ? "relative flex-[0_0_20%]"
-                : "mt-4",
+              "overflow-hidden",
+              (thumbPosition === "left" || thumbPosition === "right") && "absolute inset-0",
             )}
+            ref={emblaThumbsRef}
           >
             <div
               className={cn(
-                "overflow-hidden",
-                (thumbPosition === "left" || thumbPosition === "right") &&
-                  "absolute inset-0",
+                thumbPosition === "bottom"
+                  ? "thumbs-horizontal group -ml-3 flex"
+                  : "thumbs-vertical group -mt-3 flex h-full flex-col",
               )}
-              ref={emblaThumbsRef}
             >
-              <div
-                className={cn(
-                  thumbPosition === "bottom"
-                    ? "thumbs-horizontal group -ml-3 flex"
-                    : "thumbs-vertical group -mt-3 flex h-full flex-col",
-                )}
-              >
-                {images?.map((image, index) => (
-                  <Thumb
-                    key={index}
-                    onClick={() => onThumbClick(index)}
-                    selected={index === currentIndex}
-                    index={index}
-                    imgUrl={image.url}
-                    title={image.title}
-                  />
-                ))}
-              </div>
+              {images?.map((image, index) => (
+                <Thumb
+                  key={index}
+                  onClick={() => onThumbClick(index)}
+                  selected={index === currentIndex}
+                  index={index}
+                  imgUrl={image.url}
+                  title={image.title}
+                />
+              ))}
             </div>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };

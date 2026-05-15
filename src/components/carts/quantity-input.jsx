@@ -11,9 +11,7 @@ export function QuantityInput({ quantity, min = 1, onChange }) {
       >
         <Minus size={13} />
       </button>
-      <span className="w-8 text-center text-sm font-semibold tabular-nums text-foreground">
-        {quantity}
-      </span>
+      <span className="w-8 text-center text-sm font-semibold tabular-nums text-foreground">{quantity}</span>
       <button
         onClick={() => onChange(quantity + 1)}
         className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-background hover:text-foreground"

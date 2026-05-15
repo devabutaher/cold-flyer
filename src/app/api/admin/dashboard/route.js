@@ -18,8 +18,11 @@ export async function GET(request) {
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     return NextResponse.json(
-      { success: false, data: { revenue: 0, totalOrders: 0, totalProducts: 0, totalUsers: 0, recentOrders: [], topProducts: [] } },
-      { status: 500 }
+      {
+        success: false,
+        data: { revenue: 0, totalOrders: 0, totalProducts: 0, totalUsers: 0, recentOrders: [], topProducts: [] },
+      },
+      { status: 500 },
     );
   }
 }

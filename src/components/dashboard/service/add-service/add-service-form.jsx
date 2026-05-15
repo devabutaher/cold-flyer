@@ -66,14 +66,12 @@ export default function AddServiceForm({ isAdmin = false }) {
 
   async function onSubmit(values) {
     if (!checkAdminAccess()) return;
-    
+
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await Promise.all(
-        images.map((img) => uploadImageAction(img, "images")),
-      );
+      const uploadedImages = await Promise.all(images.map((img) => uploadImageAction(img, "images")));
 
       const includes = parseListInput(values.includes);
       const exclusions = parseListInput(values.exclusions);
@@ -83,8 +81,7 @@ export default function AddServiceForm({ isAdmin = false }) {
       const payload = {
         name: values.name,
         slug: generateSlug(values.name),
-        description:
-          values.description || `${values.name} - Professional service`,
+        description: values.description || `${values.name} - Professional service`,
         category: values.category,
         serviceType: values.serviceType,
         priceType: values.priceType || "fixed",
@@ -116,10 +113,7 @@ export default function AddServiceForm({ isAdmin = false }) {
         <ServiceBasicInfoSection control={form.control} />
         <ServicePricingSection control={form.control} />
         <ServiceDetailsSection control={form.control} />
-        <ServiceFormActions
-          onReset={handleReset}
-          isPending={createService.isPending || isUploading}
-        />
+        <ServiceFormActions onReset={handleReset} isPending={createService.isPending || isUploading} />
       </form>
     </div>
   );

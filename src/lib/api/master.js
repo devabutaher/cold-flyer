@@ -19,9 +19,7 @@ async function getAuthHeader() {
 }
 
 export async function apiClient(endpoint, options = {}) {
-  const url = endpoint.startsWith("/api")
-    ? `${BASE_URL}${endpoint}`
-    : `${BASE_URL}/api${endpoint}`;
+  const url = endpoint.startsWith("/api") ? `${BASE_URL}${endpoint}` : `${BASE_URL}/api${endpoint}`;
 
   const headers = await getAuthHeader();
 
@@ -48,14 +46,10 @@ export async function apiClient(endpoint, options = {}) {
 
 // Convenience methods
 export const apiGet = (endpoint) => apiClient(endpoint, { method: "GET" });
-export const apiPost = (endpoint, body) =>
-  apiClient(endpoint, { method: "POST", body: JSON.stringify(body) });
-export const apiPut = (endpoint, body) =>
-  apiClient(endpoint, { method: "PUT", body: JSON.stringify(body) });
-export const apiPatch = (endpoint, body) =>
-  apiClient(endpoint, { method: "PATCH", body: JSON.stringify(body) });
-export const apiDelete = (endpoint) =>
-  apiClient(endpoint, { method: "DELETE" });
+export const apiPost = (endpoint, body) => apiClient(endpoint, { method: "POST", body: JSON.stringify(body) });
+export const apiPut = (endpoint, body) => apiClient(endpoint, { method: "PUT", body: JSON.stringify(body) });
+export const apiPatch = (endpoint, body) => apiClient(endpoint, { method: "PATCH", body: JSON.stringify(body) });
+export const apiDelete = (endpoint) => apiClient(endpoint, { method: "DELETE" });
 
 // Server-side user fetching
 export async function getCurrentUser() {
@@ -74,7 +68,7 @@ export async function getCurrentUser() {
   }
 }
 
-export default {
+const api = {
   apiClient,
   apiGet,
   apiPost,
@@ -84,3 +78,5 @@ export default {
   getCurrentUser,
   BASE_URL,
 };
+
+export default api;

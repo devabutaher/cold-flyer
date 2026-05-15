@@ -20,14 +20,8 @@ function useTilt(enabled) {
   const y = useMotionValue(0);
 
   const springConfig = { stiffness: 300, damping: 30, mass: 0.5 };
-  const rotateX = useSpring(
-    useTransform(y, [-0.5, 0.5], [4, -4]),
-    springConfig,
-  );
-  const rotateY = useSpring(
-    useTransform(x, [-0.5, 0.5], [-4, 4]),
-    springConfig,
-  );
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [4, -4]), springConfig);
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-4, 4]), springConfig);
 
   const onMouseMove = enabled
     ? (e) => {
@@ -74,8 +68,7 @@ function useShimmer(enabled) {
 
   const background = useTransform(
     [mouseX, mouseY],
-    ([mx, my]) =>
-      `radial-gradient(200px circle at ${mx}px ${my}px, oklch(1 0 0 / 0.05), transparent 80%)`,
+    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, oklch(1 0 0 / 0.05), transparent 80%)`,
   );
 
   return {
@@ -127,14 +120,7 @@ function Card({
   };
 
   if (!animate) {
-    return (
-      <div
-        data-slot="card"
-        data-size={size}
-        className={baseStyles}
-        {...props}
-      />
-    );
+    return <div data-slot="card" data-size={size} className={baseStyles} {...props} />;
   }
 
   return (
@@ -201,46 +187,28 @@ function CardTitle({ className, ...props }) {
   return (
     <div
       data-slot="card-title"
-      className={cn(
-        "text-base leading-normal font-medium group-data-[size=sm]/card:text-sm",
-        className,
-      )}
+      className={cn("text-base leading-normal font-medium group-data-[size=sm]/card:text-sm", className)}
       {...props}
     />
   );
 }
 
 function CardDescription({ className, ...props }) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="card-description" className={cn("text-sm text-muted-foreground", className)} {...props} />;
 }
 
 function CardAction({ className, ...props }) {
   return (
     <div
       data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className,
-      )}
+      className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
       {...props}
     />
   );
 }
 
 function CardContent({ className, ...props }) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-6 group-data-[size=sm]/card:px-4", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="card-content" className={cn("px-6 group-data-[size=sm]/card:px-4", className)} {...props} />;
 }
 
 function CardFooter({ className, ...props }) {
@@ -257,12 +225,4 @@ function CardFooter({ className, ...props }) {
   );
 }
 
-export {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-};
+export { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

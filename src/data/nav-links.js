@@ -1,13 +1,4 @@
-import {
-  AirVent,
-  FileText,
-  HelpCircle,
-  Layers,
-  LayoutGrid,
-  Settings,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import { AirVent, FileText, HelpCircle, Layers, LayoutGrid, Settings, ShieldCheck, Users } from "lucide-react";
 
 export const productLinks = [
   {

@@ -18,20 +18,6 @@ export const PART_CATEGORIES = [
   "Other",
 ];
 
-export const UNIT_CATEGORIES = [
-  "Split AC",
-  "Window AC",
-  "Portable AC",
-  "Cassette AC",
-  "Ducted AC",
-  "Multi-Split AC",
-];
+export const UNIT_CATEGORIES = ["Split AC", "Window AC", "Portable AC", "Cassette AC", "Ducted AC", "Multi-Split AC"];
 
-export const WARRANTIES = [
-  "3 Months",
-  "6 Months",
-  "1 Year",
-  "2 Years",
-  "3 Years",
-  "5 Years",
-];
+export const WARRANTIES = ["3 Months", "6 Months", "1 Year", "2 Years", "3 Years", "5 Years"];

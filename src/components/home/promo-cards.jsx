@@ -41,27 +41,18 @@ function PromoCard({ card, index }) {
           card.accent ? "bg-white/20" : "bg-primary/10"
         }`}
       >
-        <card.icon
-          size={20}
-          className={card.accent ? "text-white" : "text-primary"}
-        />
+        <card.icon size={20} className={card.accent ? "text-white" : "text-primary"} />
       </div>
 
       <span
-        className={`text-[10px] font-bold uppercase tracking-widest ${
-          card.accent ? "text-white/70" : "text-primary"
-        }`}
+        className={`text-[10px] font-bold uppercase tracking-widest ${card.accent ? "text-white/70" : "text-primary"}`}
       >
         {card.tag}
       </span>
 
       <h3 className="mt-1 mb-2 font-sans text-lg font-bold">{card.title}</h3>
 
-      <p
-        className={`mb-4 text-sm leading-relaxed ${
-          card.accent ? "text-white/80" : "text-muted-foreground"
-        }`}
-      >
+      <p className={`mb-4 text-sm leading-relaxed ${card.accent ? "text-white/80" : "text-muted-foreground"}`}>
         {card.sub}
       </p>
 

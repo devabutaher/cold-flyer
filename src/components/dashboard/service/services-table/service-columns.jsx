@@ -1,10 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  AvatarCell,
-  PriceCell,
-  RatingCell,
-  StatusBadge,
-} from "../../table/table-cells";
+import { AvatarCell, PriceCell, RatingCell, StatusBadge } from "../../table/table-cells";
 import { Wrench } from "lucide-react";
 import { ServiceRowActions } from "./service-row-actions";
 
@@ -16,10 +11,7 @@ export function buildServiceColumns({ onDelete, onEdit } = {}) {
       enableSorting: false,
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
           aria-label="Select all"
         />
@@ -40,7 +32,7 @@ export function buildServiceColumns({ onDelete, onEdit } = {}) {
       cell: ({ row }) => {
         const s = row.original;
         const img = s.images?.[0];
-        const src = typeof img === 'string' ? img : img?.url;
+        const src = typeof img === "string" ? img : img?.url;
         return (
           <div className="flex items-center gap-3 min-w-48">
             {src ? (
@@ -59,9 +51,7 @@ export function buildServiceColumns({ onDelete, onEdit } = {}) {
     {
       header: "Category",
       accessorKey: "category",
-      cell: ({ row }) => (
-        <span className="text-sm capitalize">{row.getValue("category")}</span>
-      ),
+      cell: ({ row }) => <span className="text-sm capitalize">{row.getValue("category")}</span>,
     },
 
     {
@@ -86,11 +76,7 @@ export function buildServiceColumns({ onDelete, onEdit } = {}) {
     {
       header: "Bookings",
       accessorKey: "bookingCount",
-      cell: ({ row }) => (
-        <span className="text-sm font-medium">
-          {row.getValue("bookingCount") || 0}
-        </span>
-      ),
+      cell: ({ row }) => <span className="text-sm font-medium">{row.getValue("bookingCount") || 0}</span>,
     },
 
     {

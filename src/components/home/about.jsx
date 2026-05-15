@@ -17,17 +17,10 @@ function AboutPoint({ point, index }) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
     >
-      <CheckCircle
-        size={20}
-        className="text-primary shrink-0 mt-0.5"
-      />
+      <CheckCircle size={20} className="text-primary shrink-0 mt-0.5" />
       <div>
-        <h4 className="font-sans font-bold text-foreground text-sm">
-          {point.label}
-        </h4>
-        <p className="text-muted-foreground text-sm mt-0.5 leading-relaxed">
-          {point.sub}
-        </p>
+        <h4 className="font-sans font-bold text-foreground text-sm">{point.label}</h4>
+        <p className="text-muted-foreground text-sm mt-0.5 leading-relaxed">{point.sub}</p>
       </div>
     </motion.div>
   );
@@ -55,12 +48,9 @@ export default function About() {
             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
           </motion.div>
           <div className="order-1 md:order-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Why Choose Us
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Why Choose Us</span>
             <h2 className="font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl text-foreground leading-tight mt-2 mb-6">
-              Engineering Comfort with{" "}
-              <span className="text-primary">Uncompromising Precision.</span>
+              Engineering Comfort with <span className="text-primary">Uncompromising Precision.</span>
             </h2>
             <div className="space-y-5 mb-8">
               {aboutData.map((p, i) => (

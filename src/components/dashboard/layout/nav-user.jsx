@@ -43,8 +43,7 @@ export function NavUser() {
               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <span className="font-medium text-foreground">{user.name}</span>{" "}
-              <br />
+              <span className="font-medium text-foreground">{user.name}</span> <br />
               <div className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground text-xs">
                 {user.email}
               </div>
@@ -89,10 +88,7 @@ export function NavUser() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            className="w-full cursor-pointer"
-            variant="destructive"
-          >
+          <DropdownMenuItem className="w-full cursor-pointer" variant="destructive">
             <LogOutIcon />
             Log out
           </DropdownMenuItem>

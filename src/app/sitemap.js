@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
@@ -51,30 +51,18 @@ export default async function GET() {
     console.warn("Could not fetch services for sitemap");
   }
 
-  const staticPages = [
-    "",
-    "/items",
-    "/services",
-    "/about",
-    "/contact",
-    "/faq",
-    "/terms",
-    "/shipping",
-    "/cart",
-  ];
+  const staticPages = ["", "/items", "/services", "/about", "/contact", "/faq", "/terms", "/shipping", "/cart"];
 
   const productPages = products.map((product) => ({
     url: `${siteUrl}/items/${product.slug || product._id}`,
-    lastModified:
-      product.updatedAt || product.createdAt || new Date().toISOString(),
+    lastModified: product.updatedAt || product.createdAt || new Date().toISOString(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
   const servicePages = services.map((service) => ({
     url: `${siteUrl}/services/${service.slug || service._id}`,
-    lastModified:
-      service.updatedAt || service.createdAt || new Date().toISOString(),
+    lastModified: service.updatedAt || service.createdAt || new Date().toISOString(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));

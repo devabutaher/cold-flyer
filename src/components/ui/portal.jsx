@@ -12,8 +12,7 @@ function Portal({ className, ...props }) {
     setMounted(true);
 
     const originalStyle = window.getComputedStyle(document.body).overflow;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     const originalPaddingRight = document.body.style.paddingRight;
 
     document.body.style.overflow = "hidden";
@@ -32,24 +31,13 @@ function Portal({ className, ...props }) {
   }
 
   return createPortal(
-    <div
-      className={cn("fixed inset-0 isolate z-40 flex flex-col", className)}
-      {...props}
-    />,
+    <div className={cn("fixed inset-0 isolate z-40 flex flex-col", className)} {...props} />,
     document.body,
   );
 }
 
 function PortalBackdrop({ className, ...props }) {
-  return (
-    <div
-      className={cn(
-        "fixed inset-0 -z-1 bg-background/95 backdrop-blur-sm",
-        className,
-      )}
-      {...props}
-    />
-  );
+  return <div className={cn("fixed inset-0 -z-1 bg-background/95 backdrop-blur-sm", className)} {...props} />;
 }
 
 export { Portal, PortalBackdrop };

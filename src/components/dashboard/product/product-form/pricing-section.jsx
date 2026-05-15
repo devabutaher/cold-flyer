@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -96,9 +90,7 @@ export function PricingSection({ control }) {
                   onChange={(e) => field.onChange(e.target.value)}
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -110,9 +102,7 @@ export function PricingSection({ control }) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Original Price (৳)</FieldLabel>
                 <Input {...field} type="number" min={0} placeholder="2999" />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -124,9 +114,7 @@ export function PricingSection({ control }) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Stock Qty</FieldLabel>
                 <Input {...field} type="number" min={0} placeholder="50" />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -143,30 +131,20 @@ export function PricingSection({ control }) {
           <div className="rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground flex flex-wrap gap-x-6 gap-y-1">
             {originalPrice && (
               <span>
-                MRP:{" "}
-                <strong className="text-foreground">
-                  ৳{Number(originalPrice).toLocaleString()}
-                </strong>
+                MRP: <strong className="text-foreground">৳{Number(originalPrice).toLocaleString()}</strong>
               </span>
             )}
             {price && (
               <span>
-                Selling:{" "}
-                <strong className="text-foreground">
-                  ৳{Number(price).toLocaleString()}
-                </strong>
+                Selling: <strong className="text-foreground">৳{Number(price).toLocaleString()}</strong>
               </span>
             )}
-            {price &&
-              originalPrice &&
-              Number(originalPrice) > Number(price) && (
-                <span>
-                  Savings:{" "}
-                  <strong className="text-green-600">
-                    ৳{(Number(originalPrice) - Number(price)).toLocaleString()}
-                  </strong>
-                </span>
-              )}
+            {price && originalPrice && Number(originalPrice) > Number(price) && (
+              <span>
+                Savings:{" "}
+                <strong className="text-green-600">৳{(Number(originalPrice) - Number(price)).toLocaleString()}</strong>
+              </span>
+            )}
           </div>
         )}
       </CardContent>

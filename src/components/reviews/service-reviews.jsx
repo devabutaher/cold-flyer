@@ -59,17 +59,13 @@ export function ServiceReviews({ serviceId }) {
                     key={star}
                     size={12}
                     className={cn(
-                      star <= review.rating
-                        ? "fill-yellow-500 text-yellow-500"
-                        : "text-muted-foreground/20"
+                      star <= review.rating ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground/20",
                     )}
                   />
                 ))}
               </div>
             </div>
-            {review.comment && (
-              <p className="text-sm text-muted-foreground pl-9">{review.comment}</p>
-            )}
+            {review.comment && <p className="text-sm text-muted-foreground pl-9">{review.comment}</p>}
             <p className="text-[10px] text-muted-foreground pl-9 mt-1">
               {new Date(review.createdAt).toLocaleDateString("en-US", {
                 month: "short",

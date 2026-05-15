@@ -27,8 +27,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
   const [isCancelling, setIsCancelling] = useState(false);
 
   const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
-  const canCancel =
-    order.paymentStatus !== "paid" && order.status !== "cancelled";
+  const canCancel = order.paymentStatus !== "paid" && order.status !== "cancelled";
   const isPaying = payingOrderId === order._id;
 
   const handleConfirmCancel = async (e) => {
@@ -118,11 +117,8 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
             <AlertDialogDescription>
-              Order{" "}
-              <strong>
-                {order.orderNumber || `#${order._id?.slice(-8).toUpperCase()}`}
-              </strong>{" "}
-              will be cancelled. This cannot be undone.
+              Order <strong>{order.orderNumber || `#${order._id?.slice(-8).toUpperCase()}`}</strong> will be cancelled.
+              This cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

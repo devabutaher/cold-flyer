@@ -1,10 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  PriceCell,
-  StatusBadge,
-} from "../../table/table-cells";
+import { PriceCell, StatusBadge } from "../../table/table-cells";
 import { CalendarDays, ClipboardList } from "lucide-react";
 import { BookingRowActions } from "./booking-row-actions";
 
@@ -26,10 +23,7 @@ export function buildBookingColumns({ onCancel } = {}) {
       enableSorting: false,
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
           aria-label="Select all"
         />
@@ -65,11 +59,7 @@ export function buildBookingColumns({ onCancel } = {}) {
       accessorKey: "service",
       cell: ({ row }) => {
         const b = row.original;
-        return (
-          <span className="text-sm min-w-40 block">
-            {b.service?.name || "—"}
-          </span>
-        );
+        return <span className="text-sm min-w-40 block">{b.service?.name || "—"}</span>;
       },
     },
 
@@ -78,11 +68,7 @@ export function buildBookingColumns({ onCancel } = {}) {
       accessorKey: "user",
       cell: ({ row }) => {
         const b = row.original;
-        return (
-          <span className="text-sm min-w-32 block">
-            {b.user?.name || "—"}
-          </span>
-        );
+        return <span className="text-sm min-w-32 block">{b.user?.name || "—"}</span>;
       },
     },
 
@@ -119,12 +105,7 @@ export function buildBookingColumns({ onCancel } = {}) {
       accessorKey: "status",
       cell: ({ row }) => {
         const status = row.getValue("status");
-        return (
-          <StatusBadge
-            value={status}
-            map={BOOKING_STATUS_MAP}
-          />
-        );
+        return <StatusBadge value={status} map={BOOKING_STATUS_MAP} />;
       },
     },
 

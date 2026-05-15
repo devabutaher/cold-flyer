@@ -72,8 +72,7 @@ export default function CartPage() {
       if (errorMsg.includes("payment_method_types")) {
         toast.error("Payment system unavailable. Please try again later.");
       } else if (errData?.errors) {
-        const firstError =
-          errData.errors[0]?.message || "Failed to create checkout";
+        const firstError = errData.errors[0]?.message || "Failed to create checkout";
         toast.error(firstError);
       } else if (error.status === 400) {
         toast.error(errorMsg || "Unable to process order. Please check your cart items.");

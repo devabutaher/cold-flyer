@@ -19,10 +19,7 @@ export default function Hero() {
       <div className="embla h-full" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
-            <div
-              key={i}
-              className="embla__slide relative h-full min-w-0 flex-[0_0_100%]"
-            >
+            <div key={i} className="embla__slide relative h-full min-w-0 flex-[0_0_100%]">
               <Image
                 src={slide.img}
                 alt={slide.headline}

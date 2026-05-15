@@ -1,28 +1,11 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  BRANDS,
-  CATEGORIES,
-  TAGS,
-  WARRANTIES,
-} from "@/data/product-form-constants";
+import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "@/data/product-form-constants";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
@@ -37,9 +20,7 @@ export function BasicInfoSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Basic Information</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Core product details
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Core product details</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -62,9 +43,7 @@ export function BasicInfoSection({ control }) {
                   onChange={(e) => field.onChange(e.target.value)}
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -85,9 +64,7 @@ export function BasicInfoSection({ control }) {
                   onChange={(e) => field.onChange(e.target.value)}
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -101,10 +78,7 @@ export function BasicInfoSection({ control }) {
                 <FieldLabel>
                   Brand <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select brand" />
                   </SelectTrigger>
@@ -116,9 +90,7 @@ export function BasicInfoSection({ control }) {
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -132,10 +104,7 @@ export function BasicInfoSection({ control }) {
                 <FieldLabel>
                   Category <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -147,9 +116,7 @@ export function BasicInfoSection({ control }) {
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -161,10 +128,7 @@ export function BasicInfoSection({ control }) {
             render={({ field }) => (
               <Field>
                 <FieldLabel>Warranty</FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select warranty" />
                   </SelectTrigger>
@@ -228,10 +192,7 @@ export function BasicInfoSection({ control }) {
           control={control}
           defaultValue={[]}
           render={({ field }) => (
-            <ImageUploadField
-              value={field.value || []}
-              onChange={(newValue) => field.onChange(newValue ?? [])}
-            />
+            <ImageUploadField value={field.value || []} onChange={(newValue) => field.onChange(newValue ?? [])} />
           )}
         />
       </CardContent>

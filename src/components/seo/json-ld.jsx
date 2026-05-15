@@ -2,13 +2,8 @@
 
 export function JsonLd({ data }) {
   if (!data) return null;
-  
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
+
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }
 
 export function OrganizationSchema() {
@@ -19,10 +14,7 @@ export function OrganizationSchema() {
     url: "https://coldflyer.com",
     logo: "https://coldflyer.com/logo.png",
     description: "Leading AC supplier and service provider in Bangladesh",
-    sameAs: [
-      "https://facebook.com/coldflyer",
-      "https://instagram.com/coldflyer",
-    ],
+    sameAs: ["https://facebook.com/coldflyer", "https://instagram.com/coldflyer"],
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+8801XXXXXXXXX",

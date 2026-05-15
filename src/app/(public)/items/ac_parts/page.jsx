@@ -59,7 +59,9 @@ export default function ACPartsPage() {
       <div className="space-y-4">
         <div className="h-12 bg-muted animate-pulse rounded" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {[...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)}
+          {[...Array(8)].map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );
@@ -83,9 +85,7 @@ export default function ACPartsPage() {
       {brands.length > 0 && (
         <CatalogFilters
           type="items"
-          filterOptions={[
-            { key: "Brand", defaultValue: "All Brands", options: ["All Brands", ...brands] },
-          ]}
+          filterOptions={[{ key: "Brand", defaultValue: "All Brands", options: ["All Brands", ...brands] }]}
         />
       )}
       {products.length === 0 ? (

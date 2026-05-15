@@ -89,14 +89,8 @@ function ValueCard({ value, index }) {
 
   return (
     <motion.div
-      className={`group rounded-xl bg-card p-10 transition-all duration-500 ${
-        value.wide ? "md:col-span-2" : ""
-      } ${
-        isPrimaryHover
-          ? "hover:bg-primary"
-          : isForegroundHover
-            ? "hover:bg-foreground"
-            : "hover:shadow-lg"
+      className={`group rounded-xl bg-card p-10 transition-all duration-500 ${value.wide ? "md:col-span-2" : ""} ${
+        isPrimaryHover ? "hover:bg-primary" : isForegroundHover ? "hover:bg-foreground" : "hover:shadow-lg"
       }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -108,15 +102,17 @@ function ValueCard({ value, index }) {
         <div className="flex flex-col items-center gap-10 md:flex-row">
           <div className="flex-1">
             <Icon size={44} className="mb-7 text-primary" />
-            <h3 className="mb-3 font-sans text-2xl font-extrabold text-foreground">
-              {value.title}
-            </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {value.desc}
-            </p>
+            <h3 className="mb-3 font-sans text-2xl font-extrabold text-foreground">{value.title}</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">{value.desc}</p>
           </div>
           <div className="h-44 w-full shrink-0 overflow-hidden rounded-lg transition-all duration-700 group-hover:grayscale-0 md:w-56 grayscale relative">
-            <Image src={value.img} alt={value.title} fill sizes="(max-width: 768px) 100vw, 200px" className="object-cover" />
+            <Image
+              src={value.img}
+              alt={value.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 200px"
+              className="object-cover"
+            />
           </div>
         </div>
       ) : (
@@ -131,22 +127,26 @@ function ValueCard({ value, index }) {
                   : "text-primary"
             }`}
           />
-          <h3 className={`mb-3 font-sans text-2xl font-extrabold transition-colors ${
-            isPrimaryHover
-              ? "text-foreground group-hover:text-primary-foreground"
-              : isForegroundHover
-                ? "text-foreground group-hover:text-background"
-                : "text-foreground"
-          }`}>
+          <h3
+            className={`mb-3 font-sans text-2xl font-extrabold transition-colors ${
+              isPrimaryHover
+                ? "text-foreground group-hover:text-primary-foreground"
+                : isForegroundHover
+                  ? "text-foreground group-hover:text-background"
+                  : "text-foreground"
+            }`}
+          >
             {value.title}
           </h3>
-          <p className={`text-sm leading-relaxed transition-colors ${
-            isPrimaryHover
-              ? "text-muted-foreground group-hover:text-primary-foreground/80"
-              : isForegroundHover
-                ? "text-muted-foreground group-hover:text-background/70"
-                : "text-muted-foreground"
-          }`}>
+          <p
+            className={`text-sm leading-relaxed transition-colors ${
+              isPrimaryHover
+                ? "text-muted-foreground group-hover:text-primary-foreground/80"
+                : isForegroundHover
+                  ? "text-muted-foreground group-hover:text-background/70"
+                  : "text-muted-foreground"
+            }`}
+          >
             {value.desc}
           </p>
         </>
@@ -174,12 +174,8 @@ function TeamCard({ member, index }) {
         />
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
-      <h4 className="font-sans font-extrabold text-xl text-foreground">
-        {member.name}
-      </h4>
-      <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">
-        {member.role}
-      </p>
+      <h4 className="font-sans font-extrabold text-xl text-foreground">{member.name}</h4>
+      <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">{member.role}</p>
     </motion.div>
   );
 }
@@ -193,12 +189,8 @@ function StatItem({ stat, index }) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
-      <div className="font-sans font-extrabold text-4xl mb-1.5">
-        {stat.value}
-      </div>
-      <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">
-        {stat.label}
-      </div>
+      <div className="font-sans font-extrabold text-4xl mb-1.5">{stat.value}</div>
+      <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">{stat.label}</div>
     </motion.div>
   );
 }
@@ -218,14 +210,8 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-                Precision Engineering
-              </Badge>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Precision Engineering</Badge>
             </motion.div>
             <motion.h1
               className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8"
@@ -243,8 +229,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Redefining thermal efficiency through kinetic innovation and
-              architectural integration.
+              Redefining thermal efficiency through kinetic innovation and architectural integration.
             </motion.p>
           </div>
         </div>
@@ -267,9 +252,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
               >
-                <div className="font-sans font-extrabold text-6xl text-primary leading-none">
-                  26
-                </div>
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">26</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   Years of <br /> Excellence
                 </div>
@@ -280,15 +263,13 @@ export default function AboutPage() {
             </div>
             <div className="md:col-span-7 space-y-6">
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Cold Flyer Industrial began with a singular focus: to solve the
-                most complex climate challenges in high-stakes environments.
-                What started as a small engineering firm in 1998 has evolved
-                into a global leader in sustainable climate solutions.
+                Cold Flyer Industrial began with a singular focus: to solve the most complex climate challenges in
+                high-stakes environments. What started as a small engineering firm in 1998 has evolved into a global
+                leader in sustainable climate solutions.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Our journey has been defined by a relentless pursuit of &#34;Kinetic
-                Efficiency&#34;&#8212;the belief that climate control systems should not
-                just respond to environments, but anticipate and adapt to them
+                Our journey has been defined by a relentless pursuit of &#34;Kinetic Efficiency&#34;&#8212;the belief
+                that climate control systems should not just respond to environments, but anticipate and adapt to them
                 with minimal energy footprint.
               </p>
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
@@ -328,8 +309,8 @@ export default function AboutPage() {
               </h2>
             </div>
             <p className="max-w-md font-medium text-muted-foreground">
-              Guided by precision, fueled by innovation, and committed to a
-              sustainable legacy for the built environment.
+              Guided by precision, fueled by innovation, and committed to a sustainable legacy for the built
+              environment.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -400,9 +381,7 @@ export default function AboutPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Ready to engineer your comfort?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">
-              Talk to our team about your next project.
-            </p>
+            <p className="text-primary-foreground/70 text-sm">Talk to our team about your next project.</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
             Get a Quote <ArrowRight size={16} />

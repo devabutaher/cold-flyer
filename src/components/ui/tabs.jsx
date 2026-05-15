@@ -58,10 +58,7 @@ function Tabs({
       <TabsPrimitive.Root
         data-slot="tabs"
         data-orientation={orientation}
-        className={cn(
-          "group/tabs flex gap-2 data-horizontal:flex-col",
-          className,
-        )}
+        className={cn("group/tabs flex gap-2 data-horizontal:flex-col", className)}
         value={activeTab}
         onValueChange={handleChange}
         {...props}
@@ -149,9 +146,7 @@ function TabsTrigger({ className, value, children, ...props }) {
         />
       )}
       {/* Content sits above the pill */}
-      <span className="relative z-10 inline-flex items-center gap-1.5">
-        {children}
-      </span>
+      <span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
     </TabsPrimitive.Trigger>
   );
 }

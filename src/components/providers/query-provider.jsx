@@ -5,11 +5,10 @@
 
 "use client";
 
+import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 let clientQueryClientInstance;
-
-export let queryClient;
 
 function getQueryClient() {
   if (typeof window === "undefined") {
@@ -48,11 +47,7 @@ function getQueryClient() {
 }
 
 export function QueryProvider({ children }) {
-  queryClient = getQueryClient();
+  const [queryClient] = useState(getQueryClient);
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

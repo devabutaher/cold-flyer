@@ -7,13 +7,7 @@ import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import {
-  FormHeader,
-  ScheduleSection,
-  PropertySection,
-  AddressSection,
-  NotesSection,
-} from "../booking-form";
+import { FormHeader, ScheduleSection, PropertySection, AddressSection, NotesSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
 
@@ -102,8 +96,7 @@ export default function AddBookingForm({ serviceId, serviceName }) {
       <FormHeader completedSections={completedSections} />
       {serviceName && (
         <p className="text-sm text-muted-foreground mb-4 -mt-4">
-          Booking:{" "}
-          <span className="font-medium text-foreground">{serviceName}</span>
+          Booking: <span className="font-medium text-foreground">{serviceName}</span>
         </p>
       )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
@@ -111,11 +104,7 @@ export default function AddBookingForm({ serviceId, serviceName }) {
         <PropertySection control={form.control} />
         <AddressSection control={form.control} />
         <NotesSection control={form.control} />
-        <FormActions
-          onReset={handleReset}
-          isPending={createBooking.isPending}
-          submitLabel="Confirm Booking"
-        />
+        <FormActions onReset={handleReset} isPending={createBooking.isPending} submitLabel="Confirm Booking" />
       </form>
     </div>
   );

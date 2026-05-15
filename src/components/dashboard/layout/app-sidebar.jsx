@@ -55,11 +55,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {navGroups.map((group, index) => (
-          <NavGroup
-            key={`sidebar-group-${index}`}
-            {...group}
-            pathname={pathname}
-          />
+          <NavGroup key={`sidebar-group-${index}`} {...group} pathname={pathname} />
         ))}
       </SidebarContent>
 
@@ -72,11 +68,7 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   asChild
                   size="sm"
-                  className={
-                    isActive
-                      ? "bg-accent text-accent-foreground font-bold"
-                      : "text-muted-foreground"
-                  }
+                  className={isActive ? "bg-accent text-accent-foreground font-bold" : "text-muted-foreground"}
                 >
                   <Link href={item.path}>
                     {item.icon}

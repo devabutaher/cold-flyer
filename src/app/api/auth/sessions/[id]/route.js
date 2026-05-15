@@ -27,9 +27,6 @@ export async function DELETE(request, { params }) {
 
     return NextResponse.json(data, { status: response.status, headers });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to revoke session" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to revoke session" }, { status: 500 });
   }
 }

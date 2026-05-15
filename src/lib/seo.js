@@ -6,9 +6,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export async function fetchAPI(endpoint) {
   const baseUrl = API_BASE_URL;
-  const url = endpoint.startsWith("/api")
-    ? `${baseUrl}${endpoint}`
-    : `${baseUrl}/api${endpoint}`;
+  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
 
   try {
     const res = await fetch(url, {
@@ -27,18 +25,13 @@ export function getProductSchema(product) {
   if (!product) return null;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
-  const imageUrl =
-    product.images?.[0]?.url ||
-    product.images?.[0] ||
-    "/placeholder-product.jpg";
+  const imageUrl = product.images?.[0]?.url || product.images?.[0] || "/placeholder-product.jpg";
 
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    description:
-      product.description ||
-      `Buy ${product.name} at Cold Flyer - Best price in Bangladesh`,
+    description: product.description || `Buy ${product.name} at Cold Flyer - Best price in Bangladesh`,
     image: imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`,
     sku: product.sku || product._id,
     offers: {
@@ -46,10 +39,7 @@ export function getProductSchema(product) {
       url: `${baseUrl}/items/${product.slug || product._id}`,
       priceCurrency: "BDT",
       price: product.price || product.basePrice,
-      availability:
-        product.stock > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       seller: {
         "@type": "Organization",
         name: "Cold Flyer",
@@ -69,18 +59,13 @@ export function getServiceSchema(service) {
   if (!service) return null;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
-  const imageUrl =
-    service.images?.[0]?.url ||
-    service.images?.[0] ||
-    "/placeholder-service.jpg";
+  const imageUrl = service.images?.[0]?.url || service.images?.[0] || "/placeholder-service.jpg";
 
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: service.name,
-    description:
-      service.description ||
-      `Professional ${service.name} service by Cold Flyer`,
+    description: service.description || `Professional ${service.name} service by Cold Flyer`,
     image: imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`,
     url: `${baseUrl}/services/${service.slug || service._id}`,
     priceRange: "$$$",
@@ -143,11 +128,7 @@ export function getOrganizationSchema() {
     url: "https://coldflyer.com",
     logo: "https://coldflyer.com/logo.png",
     description: "Leading AC supplier and service provider in Bangladesh",
-    sameAs: [
-      "https://facebook.com/coldflyer",
-      "https://instagram.com/coldflyer",
-      "https://twitter.com/coldflyer",
-    ],
+    sameAs: ["https://facebook.com/coldflyer", "https://instagram.com/coldflyer", "https://twitter.com/coldflyer"],
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+8801XXXXXXXXX",

@@ -33,9 +33,7 @@ async function getAuthHeaders() {
 
 async function serverFetch(endpoint, options = {}) {
   const baseUrl = getBaseUrl();
-  const url = endpoint.startsWith("/api")
-    ? `${baseUrl}${endpoint}`
-    : `${baseUrl}/api${endpoint}`;
+  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
 
   const authHeaders = await getAuthHeaders();
 
@@ -50,11 +48,7 @@ async function serverFetch(endpoint, options = {}) {
 
   const data = await response.json();
   if (!response.ok) {
-    throw new ServerApiError(
-      data.message || "Server action failed",
-      response.status,
-      data,
-    );
+    throw new ServerApiError(data.message || "Server action failed", response.status, data);
   }
   return data;
 }
@@ -81,9 +75,7 @@ export async function getProductsServer(params) {
     query.set("limit", String(params.limit));
   }
 
-  const endpoint = query.toString()
-    ? `/api/products?${query}`
-    : "/api/products";
+  const endpoint = query.toString() ? `/api/products?${query}` : "/api/products";
 
   const result = await serverFetch(endpoint);
   return result;

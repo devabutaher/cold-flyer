@@ -34,16 +34,13 @@ export default function ShippingPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">
-              Delivery & Returns
-            </Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Delivery & Returns</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
               Shipping <br />
               <span className="text-primary">& Returns</span>
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Reliable delivery solutions and flexible return options for your
-              peace of mind.
+              Reliable delivery solutions and flexible return options for your peace of mind.
             </p>
           </div>
         </div>
@@ -63,8 +60,8 @@ export default function ShippingPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              Choose the delivery method that best fits your timeline and budget.
-              Free shipping available for qualifying orders.
+              Choose the delivery method that best fits your timeline and budget. Free shipping available for qualifying
+              orders.
             </p>
           </div>
 
@@ -80,22 +77,14 @@ export default function ShippingPage() {
                   <div className="flex items-start justify-between mb-6">
                     <Icon size={44} className="text-primary" />
                     <div className="text-right">
-                      <div className="text-sm font-extrabold text-primary">
-                        {option.price}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {option.time}
-                      </div>
+                      <div className="text-sm font-extrabold text-primary">{option.price}</div>
+                      <div className="text-xs text-muted-foreground">{option.time}</div>
                     </div>
                   </div>
 
-                  <h3 className="font-sans text-2xl font-extrabold text-foreground mb-3">
-                    {option.title}
-                  </h3>
+                  <h3 className="font-sans text-2xl font-extrabold text-foreground mb-3">{option.title}</h3>
 
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {option.description}
-                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{option.description}</p>
                 </div>
               );
             })}
@@ -116,14 +105,11 @@ export default function ShippingPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Our streamlined delivery process ensures your equipment arrives
-                safely and on time, every time.
+                Our streamlined delivery process ensures your equipment arrives safely and on time, every time.
               </p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
-                <div className="font-sans font-extrabold text-6xl text-primary leading-none">
-                  24/7
-                </div>
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">24/7</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   Order <br />
                   Support
@@ -139,12 +125,8 @@ export default function ShippingPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {process.map((p) => (
                   <div key={p.step} className="bg-card rounded-xl p-6">
-                    <div className="font-sans font-extrabold text-3xl text-primary/30 mb-3">
-                      {p.step}
-                    </div>
-                    <h4 className="font-sans font-extrabold text-lg mb-2">
-                      {p.title}
-                    </h4>
+                    <div className="font-sans font-extrabold text-3xl text-primary/30 mb-3">{p.step}</div>
+                    <h4 className="font-sans font-extrabold text-lg mb-2">{p.title}</h4>
                     <p className="text-sm text-muted-foreground">{p.desc}</p>
                   </div>
                 ))}
@@ -173,10 +155,7 @@ export default function ShippingPage() {
                   key={item.title}
                   className="group rounded-xl bg-card p-10 hover:bg-card/80 transition-all duration-500"
                 >
-                  <Icon
-                    size={44}
-                    className="mb-7 text-primary group-hover:text-primary transition-colors"
-                  />
+                  <Icon size={44} className="mb-7 text-primary group-hover:text-primary transition-colors" />
 
                   <h3 className="font-sans text-2xl font-extrabold text-foreground mb-3 group-hover:text-background transition-colors">
                     {item.title}
@@ -240,9 +219,7 @@ export default function ShippingPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Still have questions?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">
-              Our shipping team is here to help with any inquiries.
-            </p>
+            <p className="text-primary-foreground/70 text-sm">Our shipping team is here to help with any inquiries.</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
             <Clock size={16} /> Contact Shipping Team

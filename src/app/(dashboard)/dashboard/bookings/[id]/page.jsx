@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  PriceCell,
-  StatusBadge,
-} from "@/components/dashboard/table/table-cells";
+import { PriceCell, StatusBadge } from "@/components/dashboard/table/table-cells";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,10 +110,7 @@ export default function BookingDetailPage() {
   if (!booking) {
     return (
       <div className="py-16 text-center">
-        <ClipboardList
-          size={48}
-          className="mx-auto mb-4 text-muted-foreground/30"
-        />
+        <ClipboardList size={48} className="mx-auto mb-4 text-muted-foreground/30" />
         <p className="text-sm text-muted-foreground mb-4">Booking not found.</p>
         <Button asChild size="sm">
           <Link href="/dashboard/bookings">Back to Bookings</Link>
@@ -125,9 +119,7 @@ export default function BookingDetailPage() {
     );
   }
 
-  const canCancel = ["pending", "confirmed", "scheduled", "in_progress"].includes(
-    booking.status,
-  );
+  const canCancel = ["pending", "confirmed", "scheduled", "in_progress"].includes(booking.status);
 
   const handleCancel = async () => {
     try {
@@ -146,24 +138,15 @@ export default function BookingDetailPage() {
   return (
     <div className="max-w-3xl">
       <div className="mb-6 flex items-center gap-3">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-9 w-9 shrink-0 rounded-lg"
-          asChild
-        >
+        <Button variant="outline" size="icon" className="h-9 w-9 shrink-0 rounded-lg" asChild>
           <Link href="/dashboard/bookings">
             <ArrowLeft size={16} />
             <span className="sr-only">Back</span>
           </Link>
         </Button>
         <div className="min-w-0">
-          <h1 className="text-lg font-semibold tracking-tight truncate">
-            Booking {booking.bookingNumber}
-          </h1>
-          <p className="text-xs text-muted-foreground">
-            {booking.service?.name}
-          </p>
+          <h1 className="text-lg font-semibold tracking-tight truncate">Booking {booking.bookingNumber}</h1>
+          <p className="text-xs text-muted-foreground">{booking.service?.name}</p>
         </div>
         <StatusBadge value={booking.status} map={BOOKING_STATUS_MAP} />
       </div>
@@ -181,15 +164,12 @@ export default function BookingDetailPage() {
               <CalendarDays size={14} className="text-muted-foreground" />
               <span>
                 {booking.scheduledDate
-                  ? new Date(booking.scheduledDate).toLocaleDateString(
-                      "en-US",
-                      {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      },
-                    )
+                  ? new Date(booking.scheduledDate).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                   : "Not scheduled"}
               </span>
             </div>
@@ -219,14 +199,12 @@ export default function BookingDetailPage() {
           <CardContent className="pt-0 text-sm space-y-1.5">
             {booking.propertyDetails?.propertyType && (
               <p>
-                <span className="font-medium">Type:</span>{" "}
-                {booking.propertyDetails.propertyType}
+                <span className="font-medium">Type:</span> {booking.propertyDetails.propertyType}
               </p>
             )}
             {booking.propertyDetails?.size && (
               <p>
-                <span className="font-medium">Size:</span>{" "}
-                {booking.propertyDetails.size} sq ft
+                <span className="font-medium">Size:</span> {booking.propertyDetails.size} sq ft
               </p>
             )}
             {booking.propertyDetails?.issues?.length > 0 && (
@@ -297,17 +275,13 @@ export default function BookingDetailPage() {
             <CardContent className="pt-0 text-sm space-y-3">
               {booking.diagnosis && (
                 <div>
-                  <p className="font-medium text-xs uppercase tracking-widest text-muted-foreground mb-1">
-                    Diagnosis
-                  </p>
+                  <p className="font-medium text-xs uppercase tracking-widest text-muted-foreground mb-1">Diagnosis</p>
                   <p>{booking.diagnosis}</p>
                 </div>
               )}
               {booking.workDone && (
                 <div>
-                  <p className="font-medium text-xs uppercase tracking-widest text-muted-foreground mb-1">
-                    Work Done
-                  </p>
+                  <p className="font-medium text-xs uppercase tracking-widest text-muted-foreground mb-1">Work Done</p>
                   <p>{booking.workDone}</p>
                 </div>
               )}
@@ -344,10 +318,7 @@ export default function BookingDetailPage() {
             {booking.discount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
-                <PriceCell
-                  price={-booking.discount}
-                  className="text-green-600"
-                />
+                <PriceCell price={-booking.discount} className="text-green-600" />
               </div>
             )}
             <Separator className="my-1" />
@@ -382,7 +353,18 @@ export default function BookingDetailPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-primary"
+                >
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
                 Customer Review
@@ -392,7 +374,19 @@ export default function BookingDetailPage() {
               {booking.customerRating && (
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <svg key={star} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill={star <= booking.customerRating ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" className={star <= booking.customerRating ? "text-yellow-500" : "text-muted-foreground/30"}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                    <svg
+                      key={star}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill={star <= booking.customerRating ? "currentColor" : "none"}
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className={star <= booking.customerRating ? "text-yellow-500" : "text-muted-foreground/30"}
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
                   ))}
                 </div>
               )}
@@ -406,23 +400,15 @@ export default function BookingDetailPage() {
         <div className="flex gap-3 flex-wrap">
           {isAdmin && booking.status !== "cancelled" && (
             <>
-              {booking.status === "pending" && (
-                <ConfirmBookingDialog booking={booking} onSuccess={refetch} />
-              )}
+              {booking.status === "pending" && <ConfirmBookingDialog booking={booking} onSuccess={refetch} />}
               {booking.status === "confirmed" && (
                 <ScheduleBookingDialog booking={booking} onSuccess={refetch} technicians={technicians} />
               )}
-              {booking.status === "scheduled" && (
-                <StartServiceDialog booking={booking} onSuccess={refetch} />
-              )}
-              {booking.status === "in_progress" && (
-                <CompleteBookingDialog booking={booking} onSuccess={refetch} />
-              )}
+              {booking.status === "scheduled" && <StartServiceDialog booking={booking} onSuccess={refetch} />}
+              {booking.status === "in_progress" && <CompleteBookingDialog booking={booking} onSuccess={refetch} />}
             </>
           )}
-          {booking.status === "completed" && (
-            <ReviewDialog booking={booking} onSuccess={refetch} />
-          )}
+          {booking.status === "completed" && <ReviewDialog booking={booking} onSuccess={refetch} />}
           <Button variant="outline" size="sm" asChild>
             <Link href={`/dashboard/bookings/edit/${booking._id}`}>
               <PencilLine size={14} className="mr-2" />
@@ -433,10 +419,7 @@ export default function BookingDetailPage() {
           {canCancel && (
             <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
               <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="text-destructive hover:text-destructive"
-                >
+                <Button variant="outline" className="text-destructive hover:text-destructive">
                   <XCircle size={14} className="mr-2" />
                   Cancel Booking
                 </Button>
@@ -445,8 +428,8 @@ export default function BookingDetailPage() {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Cancel this booking?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Booking <strong>{booking.bookingNumber}</strong> for{" "}
-                    {booking.service?.name} will be permanently cancelled.
+                    Booking <strong>{booking.bookingNumber}</strong> for {booking.service?.name} will be permanently
+                    cancelled.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="py-2">

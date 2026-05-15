@@ -50,10 +50,7 @@ export function buildUserColumns({ onRoleChange } = {}) {
         return (
           <div className="flex items-center gap-2">
             <StatusBadge value={u.role} map={ROLE_MAP} />
-            <Select
-              value={u.role}
-              onValueChange={(role) => onRoleChange?.(u._id, role)}
-            >
+            <Select value={u.role} onValueChange={(role) => onRoleChange?.(u._id, role)}>
               <SelectTrigger className="h-7 w-24 text-xs">
                 <SelectValue />
               </SelectTrigger>
@@ -72,7 +69,9 @@ export function buildUserColumns({ onRoleChange } = {}) {
       accessorKey: "createdAt",
       cell: ({ row }) => {
         const date = row.getValue("createdAt");
-        return <span className="text-sm text-muted-foreground">{date ? new Date(date).toLocaleDateString() : "—"}</span>;
+        return (
+          <span className="text-sm text-muted-foreground">{date ? new Date(date).toLocaleDateString() : "—"}</span>
+        );
       },
     },
   ];

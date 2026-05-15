@@ -32,9 +32,8 @@ export default function EditProductForm({ product, isAdmin = false }) {
     mode: "onTouched",
   });
 
-  const completedSections = form
-    .watch(["name", "price", "stock"])
-    .filter(Boolean).length;
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const completedSections = form.watch(["name", "price", "stock"]).filter(Boolean).length;
 
   const checkAdminAccess = () => {
     if (!isAdmin) {
@@ -51,23 +50,19 @@ export default function EditProductForm({ product, isAdmin = false }) {
 
   async function onSubmit(values) {
     if (!checkAdminAccess()) return;
-    
+
     setIsUploading(true);
 
     try {
       const images = form.getValues("images") || [];
 
       const newFiles = images.filter((img) => img.file);
-      const existingImages = images
-        .filter((img) => img.url && !img.file)
-        .map((img) => ({ url: img.url }));
+      const existingImages = images.filter((img) => img.url && !img.file).map((img) => ({ url: img.url }));
 
       let uploadedImages = existingImages;
 
       if (newFiles.length > 0) {
-        const newUploaded = await Promise.all(
-          newFiles.map((img) => uploadImageAction(img, "images")),
-        );
+        const newUploaded = await Promise.all(newFiles.map((img) => uploadImageAction(img, "images")));
         uploadedImages = [...uploadedImages, ...newUploaded];
       }
 
@@ -79,12 +74,9 @@ export default function EditProductForm({ product, isAdmin = false }) {
         name: values.name,
         slug: generateSlug(values.name),
         sku: values.sku,
-        description:
-          values.description || `${values.name} - High quality product`,
+        description: values.description || `${values.name} - High quality product`,
         price: Number(values.price),
-        originalPrice: values.originalPrice
-          ? Number(values.originalPrice)
-          : undefined,
+        originalPrice: values.originalPrice ? Number(values.originalPrice) : undefined,
         stock: Number(values.stock) || 0,
         productType: values.productType || productType,
         category: values.category,
@@ -114,10 +106,7 @@ export default function EditProductForm({ product, isAdmin = false }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <BasicInfoSection control={form.control} />
         <PricingSection control={form.control} />
-        <SpecificationsSection
-          control={form.control}
-          productType={productType}
-        />
+        <SpecificationsSection control={form.control} productType={productType} />
         <FeaturesSection control={form.control} />
         <FormActions
           onCancel={() => router.push("/dashboard/items")}

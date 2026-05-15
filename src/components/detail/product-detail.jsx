@@ -68,13 +68,7 @@ export default function ProductDetail({ productSlug }) {
         <div className="relative">
           {(product.tag || product.onSale) && (
             <div className="absolute top-2 left-2 z-20">
-              <Badge
-                variant={
-                  product.tag === "Sale" || product.onSale
-                    ? "destructive"
-                    : "default"
-                }
-              >
+              <Badge variant={product.tag === "Sale" || product.onSale ? "destructive" : "default"}>
                 {product.tag || "Sale"}
               </Badge>
             </div>
@@ -90,12 +84,8 @@ export default function ProductDetail({ productSlug }) {
 
         <div className="flex flex-col">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              {product.category}
-            </span>
-            <span className="text-xs font-medium text-muted-foreground">
-              SKU: {product.sku}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">{product.category}</span>
+            <span className="text-xs font-medium text-muted-foreground">SKU: {product.sku}</span>
           </div>
 
           <div className="mb-4">
@@ -103,11 +93,7 @@ export default function ProductDetail({ productSlug }) {
               {product.name}
             </h1>
 
-            {product.description && (
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                {product.description}
-              </p>
-            )}
+            {product.description && <p className="text-muted-foreground leading-relaxed mb-4">{product.description}</p>}
           </div>
 
           <DetailPrice
@@ -121,36 +107,22 @@ export default function ProductDetail({ productSlug }) {
             <span
               className={cn(
                 "w-2 h-2 rounded-full shrink-0",
-                isOutOfStock
-                  ? "bg-destructive"
-                  : isLowStock
-                    ? "bg-amber-500 animate-pulse"
-                    : "bg-green-500",
+                isOutOfStock ? "bg-destructive" : isLowStock ? "bg-amber-500 animate-pulse" : "bg-green-500",
               )}
             />
             <span
               className={cn(
                 "text-xs font-bold",
-                isOutOfStock
-                  ? "text-destructive"
-                  : isLowStock
-                    ? "text-amber-600"
-                    : "text-green-600",
+                isOutOfStock ? "text-destructive" : isLowStock ? "text-amber-600" : "text-green-600",
               )}
             >
-              {isOutOfStock
-                ? "Out of Stock"
-                : isLowStock
-                  ? `Only ${product.stock} units left`
-                  : "In Stock"}
+              {isOutOfStock ? "Out of Stock" : isLowStock ? `Only ${product.stock} units left` : "In Stock"}
             </span>
           </div>
 
           <div className="flex flex-wrap items-end gap-6 mb-6">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
-                Quantity
-              </p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Quantity</p>
               <QuantityInput
                 quantity={quantity}
                 onChange={setQuantity}
@@ -160,9 +132,7 @@ export default function ProductDetail({ productSlug }) {
               />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
-                Total
-              </p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Total</p>
               <p className="font-bold text-2xl text-foreground">
                 <span className="font-black">৳</span>
                 {total.toLocaleString()}
@@ -171,21 +141,10 @@ export default function ProductDetail({ productSlug }) {
           </div>
 
           <div className="flex gap-3 mb-6">
-            <Button
-              variant="outline"
-              size="lg"
-              className="flex-1"
-              disabled={isOutOfStock}
-              onClick={handleAddToCart}
-            >
+            <Button variant="outline" size="lg" className="flex-1" disabled={isOutOfStock} onClick={handleAddToCart}>
               Add to Cart
             </Button>
-            <Button
-              size="lg"
-              className="flex-1"
-              disabled={isOutOfStock}
-              onClick={handleBuyNow}
-            >
+            <Button size="lg" className="flex-1" disabled={isOutOfStock} onClick={handleBuyNow}>
               Buy Now
             </Button>
           </div>
@@ -201,9 +160,7 @@ export default function ProductDetail({ productSlug }) {
           <DetailMetaInfo
             fields={[
               { label: "Brand", value: product.brand },
-              ...(product.warranty
-                ? [{ label: "Warranty", value: product.warranty }]
-                : []),
+              ...(product.warranty ? [{ label: "Warranty", value: product.warranty }] : []),
               ...(product.tag ? [{ label: "Tag", value: product.tag }] : []),
             ]}
           />

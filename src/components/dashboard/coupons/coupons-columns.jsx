@@ -66,7 +66,12 @@ export function buildCouponColumns({ onDelete } = {}) {
       id: "usage",
       cell: ({ row }) => {
         const c = row.original;
-        return <span className="text-sm tabular-nums">{c.usedCount || 0}{c.maxUsage ? ` / ${c.maxUsage}` : ""}</span>;
+        return (
+          <span className="text-sm tabular-nums">
+            {c.usedCount || 0}
+            {c.maxUsage ? ` / ${c.maxUsage}` : ""}
+          </span>
+        );
       },
     },
     {
@@ -76,7 +81,11 @@ export function buildCouponColumns({ onDelete } = {}) {
         const c = row.original;
         const from = c.validFrom ? new Date(c.validFrom).toLocaleDateString() : "—";
         const until = c.validUntil ? new Date(c.validUntil).toLocaleDateString() : "—";
-        return <span className="text-sm text-muted-foreground">{from} – {until}</span>;
+        return (
+          <span className="text-sm text-muted-foreground">
+            {from} – {until}
+          </span>
+        );
       },
     },
     {
@@ -95,7 +104,10 @@ export function buildCouponColumns({ onDelete } = {}) {
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={(e) => { e.stopPropagation(); onDelete?.(row.original._id); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.(row.original._id);
+            }}
           >
             <Trash2 size={14} className="text-destructive" />
           </Button>

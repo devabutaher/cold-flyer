@@ -7,8 +7,10 @@ export async function PATCH(request, { params }) {
     const body = await request.json();
     const cookieHeader = request.headers.get("cookie") || "";
     const response = await fetch(`${API_BASE_URL}/api/admin/users/${id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json", Cookie: cookieHeader },
-      body: JSON.stringify(body), credentials: "include",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Cookie: cookieHeader },
+      body: JSON.stringify(body),
+      credentials: "include",
     });
     return NextResponse.json(await response.json(), { status: response.status });
   } catch {

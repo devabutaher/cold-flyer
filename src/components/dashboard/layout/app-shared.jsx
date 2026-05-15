@@ -98,9 +98,7 @@ export const footerNavLinks = [
 
 export const navLinks = [
   ...navGroups.flatMap((group) =>
-    group.items.flatMap((item) =>
-      item.subItems?.length ? [item, ...item.subItems] : [item],
-    ),
+    group.items.flatMap((item) => (item.subItems?.length ? [item, ...item.subItems] : [item])),
   ),
   ...footerNavLinks,
 ];

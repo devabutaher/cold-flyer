@@ -39,13 +39,9 @@ function createCartStore() {
   return {
     getItems: () => items,
     getItemCount: () => items.reduce((sum, item) => sum + item.quantity, 0),
-    getSubtotal: () =>
-      items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    getSubtotal: () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
     getTotal: (shippingCost = 60, vatRate = 0.05) => {
-      const subtotal = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0,
-      );
+      const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const shipping = shippingCost;
       const vat = subtotal * vatRate;
       return { subtotal, shipping, vat, total: subtotal + shipping + vat };

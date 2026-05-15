@@ -7,10 +7,7 @@ export async function GET(request, { params }) {
   const id = resolvedParams?.id;
 
   if (!id) {
-    return NextResponse.json(
-      { success: false, message: "Service ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Service ID is required" }, { status: 400 });
   }
 
   try {
@@ -25,10 +22,7 @@ export async function GET(request, { params }) {
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to fetch service" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to fetch service" }, { status: 500 });
   }
 }
 
@@ -37,10 +31,7 @@ export async function PATCH(request, { params }) {
   const id = resolvedParams?.id;
 
   if (!id) {
-    return NextResponse.json(
-      { success: false, message: "Service ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Service ID is required" }, { status: 400 });
   }
 
   try {
@@ -65,9 +56,6 @@ export async function PATCH(request, { params }) {
       headers: setCookie ? { "Set-Cookie": setCookie } : {},
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Failed to update service" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Failed to update service" }, { status: 500 });
   }
 }

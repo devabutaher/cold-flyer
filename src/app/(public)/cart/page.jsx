@@ -22,9 +22,7 @@ function CartEmpty() {
         <ShoppingCart size={36} className="text-muted-foreground" />
       </div>
       <h2 className="mb-2 text-xl font-bold text-foreground">Your cart is empty</h2>
-      <p className="mb-7 text-sm text-muted-foreground">
-        Looks like you haven&apos;t added anything yet.
-      </p>
+      <p className="mb-7 text-sm text-muted-foreground">Looks like you haven&apos;t added anything yet.</p>
       <Button asChild>
         <Link href="/items">Start Shopping</Link>
       </Button>
@@ -56,10 +54,7 @@ function CartContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
 
-  const subtotal = items.reduce(
-    (total, p) => total + p.price * p.quantity,
-    0,
-  );
+  const subtotal = items.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * 0.05;
   const totalAmount = subtotal + 60 + vatAmount;
 
@@ -94,10 +89,10 @@ function CartContent() {
 
       if (response.success && response.data?.order?._id) {
         const orderId = response.data.order._id;
-        
+
         // Create checkout session
         const sessionResponse = await api.apiPost(`/orders/${orderId}/checkout`, {});
-        
+
         if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
           clearCart();
           window.location.href = sessionResponse.data.checkoutUrl;
@@ -129,13 +124,7 @@ function CartContent() {
                 className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
               >
                 {product.imageUrl ? (
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    fill
-                    sizes="100px"
-                    className="object-cover"
-                  />
+                  <Image src={product.imageUrl} alt={product.name} fill sizes="100px" className="object-cover" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center">
                     <Package size={24} className="text-muted-foreground/40" />
@@ -167,17 +156,12 @@ function CartContent() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <QuantityInput
-                    quantity={product.quantity}
-                    onChange={(qty) => updateQuantity(product.id, qty)}
-                  />
+                  <QuantityInput quantity={product.quantity} onChange={(qty) => updateQuantity(product.id, qty)} />
                   <div className="text-right">
                     <p className="text-sm font-bold text-foreground">
                       ৳{(product.price * product.quantity).toLocaleString()}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      ৳{product.price.toLocaleString()} each
-                    </p>
+                    <p className="text-xs text-muted-foreground">৳{product.price.toLocaleString()} each</p>
                   </div>
                 </div>
               </div>
@@ -186,12 +170,7 @@ function CartContent() {
         })}
 
         <div className="pt-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-muted-foreground"
-            asChild
-          >
+          <Button variant="outline" size="sm" className="text-muted-foreground" asChild>
             <Link href="/items">Continue Shopping</Link>
           </Button>
         </div>
@@ -203,9 +182,7 @@ function CartContent() {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-muted-foreground">
             <span>Subtotal ({items.reduce((s, p) => s + p.quantity, 0)} items)</span>
-            <span className="font-medium text-foreground">
-              ৳{subtotal.toLocaleString()}
-            </span>
+            <span className="font-medium text-foreground">৳{subtotal.toLocaleString()}</span>
           </div>
 
           <div className="flex justify-between text-muted-foreground">
@@ -215,9 +192,7 @@ function CartContent() {
 
           <div className="flex justify-between text-muted-foreground">
             <span>VAT (5%)</span>
-            <span className="font-medium text-foreground">
-              ৳{vatAmount.toFixed(0)}
-            </span>
+            <span className="font-medium text-foreground">৳{vatAmount.toFixed(0)}</span>
           </div>
         </div>
 
@@ -235,10 +210,7 @@ function CartContent() {
             />
           </div>
           {couponCode && (
-            <button
-              onClick={() => setCouponCode("")}
-              className="text-xs text-muted-foreground hover:text-foreground"
-            >
+            <button onClick={() => setCouponCode("")} className="text-xs text-muted-foreground hover:text-foreground">
               <X size={14} />
             </button>
           )}
@@ -285,17 +257,11 @@ export default function CartPage() {
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-            My Cart
-          </span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">
-            Shopping Cart
-          </h1>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">My Cart</span>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">Shopping Cart</h1>
         </div>
 
-        <Suspense fallback={<CartLoading />}>
-          {isHydrated ? <CartContent /> : <CartLoading />}
-        </Suspense>
+        <Suspense fallback={<CartLoading />}>{isHydrated ? <CartContent /> : <CartLoading />}</Suspense>
       </div>
     </div>
   );

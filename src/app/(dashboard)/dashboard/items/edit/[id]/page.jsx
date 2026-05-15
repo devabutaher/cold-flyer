@@ -20,9 +20,7 @@ export async function generateMetadata({ params }) {
   try {
     const product = await getProductBySlugServer(id);
     return {
-      title: product
-        ? `Edit ${product.name} | ColdFlyer`
-        : "Edit Product | ColdFlyer",
+      title: product ? `Edit ${product.name} | ColdFlyer` : "Edit Product | ColdFlyer",
     };
   } catch {
     return { title: "Edit Product | ColdFlyer" };
@@ -31,13 +29,13 @@ export async function generateMetadata({ params }) {
 
 export default async function EditProductPage({ params }) {
   const cookieStore = await cookies();
-  
+
   if (!cookieStore.get("accessToken")) {
     redirect("/auth");
   }
-  
+
   const user = await getUser();
-  
+
   if (!user) {
     redirect("/");
   }

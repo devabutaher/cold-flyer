@@ -9,19 +9,11 @@ export function AvatarCell({ src, name, sub, avatarShape = "rounded-md" }) {
     <div className="flex items-center gap-3 min-w-0">
       <Avatar className={cn("h-9 w-9 shrink-0", avatarShape)}>
         <AvatarImage src={src} alt={name} />
-        <AvatarFallback
-          className={cn("text-xs font-medium bg-muted", avatarShape)}
-        >
-          {initials}
-        </AvatarFallback>
+        <AvatarFallback className={cn("text-xs font-medium bg-muted", avatarShape)}>{initials}</AvatarFallback>
       </Avatar>
       <div className="min-w-0">
-        <p className="text-sm font-medium text-foreground truncate leading-tight">
-          {name}
-        </p>
-        {sub && (
-          <p className="text-xs text-muted-foreground truncate mt-0.5">{sub}</p>
-        )}
+        <p className="text-sm font-medium text-foreground truncate leading-tight">{name}</p>
+        {sub && <p className="text-xs text-muted-foreground truncate mt-0.5">{sub}</p>}
       </div>
     </div>
   );
@@ -61,11 +53,7 @@ export function StockCell({ stock }) {
       <span
         className={cn(
           "text-sm font-medium tabular-nums",
-          isOut
-            ? "text-destructive"
-            : isLow
-              ? "text-amber-600"
-              : "text-foreground",
+          isOut ? "text-destructive" : isLow ? "text-amber-600" : "text-foreground",
         )}
       >
         {isOut ? "Out" : stock}
@@ -93,12 +81,7 @@ export function StatusBadge({ value, map = {} }) {
   };
   if (!value) return <span className="text-muted-foreground text-xs">—</span>;
   return (
-    <Badge
-      className={cn(
-        "border-none text-[10px] font-semibold tracking-wide",
-        cfg.className,
-      )}
-    >
+    <Badge className={cn("border-none text-[10px] font-semibold tracking-wide", cfg.className)}>
       {cfg.label ?? value}
     </Badge>
   );
@@ -106,9 +89,6 @@ export function StatusBadge({ value, map = {} }) {
 
 /* ── Mono label (SKU, ID, etc.) ──────────────────────── */
 export function MonoCell({ value, fallback = "—" }) {
-  if (!value)
-    return <span className="text-muted-foreground text-xs">{fallback}</span>;
-  return (
-    <span className="text-xs text-muted-foreground font-mono">{value}</span>
-  );
+  if (!value) return <span className="text-muted-foreground text-xs">{fallback}</span>;
+  return <span className="text-xs text-muted-foreground font-mono">{value}</span>;
 }

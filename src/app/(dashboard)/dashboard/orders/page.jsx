@@ -28,10 +28,7 @@ export default async function OrdersPage() {
 
   const isAdmin = user.role === "admin";
 
-  const OrdersPage =
-    await import("@/components/dashboard/orders/orders-page").then(
-      (mod) => mod.default,
-    );
+  const OrdersPage = await import("@/components/dashboard/orders/orders-page").then((mod) => mod.default);
 
   return (
     <div className="container mx-auto py-8">

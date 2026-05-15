@@ -79,8 +79,7 @@ export default function AuthPage() {
         credentials: "include",
       });
       const data = await res.json();
-      if (!data.success)
-        throw new Error(data.message || "Google sign-in failed");
+      if (!data.success) throw new Error(data.message || "Google sign-in failed");
       await refreshUser();
       toast.success("Signed in with Google!");
       router.push(redirectTo);
@@ -122,8 +121,7 @@ export default function AuthPage() {
       });
 
       const result = await res.json();
-      if (!result.success)
-        throw new Error(result.message || "Something went wrong");
+      if (!result.success) throw new Error(result.message || "Something went wrong");
 
       await refreshUser();
 
@@ -161,20 +159,16 @@ export default function AuthPage() {
             Kinetic <br /> Comfort.
           </h1>
           <p className="text-white/70 text-sm leading-relaxed max-w-md">
-            Experience industrial-grade HVAC management with ColdFlyer&#8217;s
-            proprietary fleet telemetry and thermal precision engineering.
+            Experience industrial-grade HVAC management with ColdFlyer&#8217;s proprietary fleet telemetry and thermal
+            precision engineering.
           </p>
         </div>
       </div>
 
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 bg-background">
         <div className="w-full max-w-sm">
-          <h2 className="font-sans font-bold text-2xl text-foreground mb-1">
-            Welcome Back.
-          </h2>
-          <p className="text-muted-foreground text-sm mb-7">
-            Access your fleet dashboard or create a new account.
-          </p>
+          <h2 className="font-sans font-bold text-2xl text-foreground mb-1">Welcome Back.</h2>
+          <p className="text-muted-foreground text-sm mb-7">Access your fleet dashboard or create a new account.</p>
 
           <div className="flex bg-secondary rounded-lg p-1 mb-6">
             {[
@@ -214,8 +208,7 @@ export default function AuthPage() {
                   Admin Access
                 </p>
                 <p className="text-muted-foreground text-xs mt-1">
-                  To access admin dashboard. Contact administrator to add your
-                  email.
+                  To access admin dashboard. Contact administrator to add your email.
                 </p>
               </div>
             )}
@@ -230,16 +223,9 @@ export default function AuthPage() {
                 <Input
                   {...register("name")}
                   placeholder="John Doe"
-                  className={cn(
-                    errors.name &&
-                      "border-destructive focus-visible:ring-destructive",
-                  )}
+                  className={cn(errors.name && "border-destructive focus-visible:ring-destructive")}
                 />
-                {errors.name && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.name.message}
-                  </p>
-                )}
+                {errors.name && <p className="text-destructive text-xs mt-1">{errors.name.message}</p>}
               </div>
             )}
 
@@ -252,16 +238,9 @@ export default function AuthPage() {
                   {...register("phone")}
                   type="tel"
                   placeholder="01700000000"
-                  className={cn(
-                    errors.phone &&
-                      "border-destructive focus-visible:ring-destructive",
-                  )}
+                  className={cn(errors.phone && "border-destructive focus-visible:ring-destructive")}
                 />
-                {errors.phone && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.phone.message}
-                  </p>
-                )}
+                {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone.message}</p>}
               </div>
             )}
 
@@ -273,16 +252,9 @@ export default function AuthPage() {
                 {...register("email")}
                 type="email"
                 placeholder="name@mail.com"
-                className={cn(
-                  errors.email &&
-                    "border-destructive focus-visible:ring-destructive",
-                )}
+                className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
               />
-              {errors.email && (
-                <p className="text-destructive text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="text-destructive text-xs mt-1">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -297,11 +269,7 @@ export default function AuthPage() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="off"
                   placeholder="••••••••"
-                  className={cn(
-                    "pr-10",
-                    errors.password &&
-                      "border-destructive focus-visible:ring-destructive",
-                  )}
+                  className={cn("pr-10", errors.password && "border-destructive focus-visible:ring-destructive")}
                 />
                 <button
                   type="button"
@@ -311,23 +279,13 @@ export default function AuthPage() {
                   {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-destructive text-xs mt-1">
-                  {errors.password.message}
-                </p>
-              )}
+              {errors.password && <p className="text-destructive text-xs mt-1">{errors.password.message}</p>}
             </div>
 
-            {authError && (
-              <p className="text-destructive text-sm">{authError}</p>
-            )}
+            {authError && <p className="text-destructive text-sm">{authError}</p>}
 
             <Button type="submit" disabled={loading} className="w-full">
-              {loading
-                ? "Please wait..."
-                : isSignIn
-                  ? "Enter Workspace \u2192"
-                  : "Create Account \u2192"}
+              {loading ? "Please wait..." : isSignIn ? "Enter Workspace \u2192" : "Create Account \u2192"}
             </Button>
           </form>
 
@@ -339,21 +297,8 @@ export default function AuthPage() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogle}
-            disabled={loading}
-            className="w-full"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              width="100"
-              height="100"
-              viewBox="0 0 48 48"
-            >
+          <Button type="button" variant="outline" onClick={handleGoogle} disabled={loading} className="w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
               <path
                 fill="#FFC107"
                 d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"

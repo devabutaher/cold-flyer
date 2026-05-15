@@ -74,10 +74,7 @@ export function ReportPDF({ title, columns, data }) {
           {/* Column headers */}
           <View style={s.headerRow}>
             {columns.map((col) => (
-              <Text
-                key={col.accessorKey}
-                style={[s.headerCell, { flex: col.width ?? 1 }]}
-              >
+              <Text key={col.accessorKey} style={[s.headerCell, { flex: col.width ?? 1 }]}>
                 {col.header}
               </Text>
             ))}
@@ -85,22 +82,12 @@ export function ReportPDF({ title, columns, data }) {
 
           {/* Data rows */}
           {data.map((row, ri) => (
-            <View
-              key={ri}
-              style={[
-                s.row,
-                ri % 2 === 0 ? s.rowEven : {},
-                ri === data.length - 1 ? s.rowLast : {},
-              ]}
-            >
+            <View key={ri} style={[s.row, ri % 2 === 0 ? s.rowEven : {}, ri === data.length - 1 ? s.rowLast : {}]}>
               {columns.map((col) => {
                 const raw = row[col.accessorKey];
                 const value = raw != null ? String(raw) : "—";
                 return (
-                  <Text
-                    key={col.accessorKey}
-                    style={[s.cell, { flex: col.width ?? 1 }]}
-                  >
+                  <Text key={col.accessorKey} style={[s.cell, { flex: col.width ?? 1 }]}>
                     {value}
                   </Text>
                 );
@@ -112,12 +99,7 @@ export function ReportPDF({ title, columns, data }) {
         {/* Footer */}
         <View style={s.footer} fixed>
           <Text style={s.footerText}>ColdFlyer</Text>
-          <Text
-            style={s.footerText}
-            render={({ pageNumber, totalPages }) =>
-              `Page ${pageNumber} / ${totalPages}`
-            }
-          />
+          <Text style={s.footerText} render={({ pageNumber, totalPages }) => `Page ${pageNumber} / ${totalPages}`} />
         </View>
       </Page>
     </Document>

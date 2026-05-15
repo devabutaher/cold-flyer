@@ -24,20 +24,10 @@ export function MobileNav() {
         size="icon"
         variant="outline"
       >
-        <div
-          className={cn(
-            "transition-all",
-            open ? "scale-100 opacity-100" : "scale-0 opacity-0",
-          )}
-        >
+        <div className={cn("transition-all", open ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
           <XIcon />
         </div>
-        <div
-          className={cn(
-            "absolute transition-all",
-            open ? "scale-0 opacity-0" : "scale-100 opacity-100",
-          )}
-        >
+        <div className={cn("absolute transition-all", open ? "scale-0 opacity-0" : "scale-100 opacity-100")}>
           <MenuIcon />
         </div>
       </Button>
@@ -54,11 +44,7 @@ export function MobileNav() {
             <div className="flex w-full flex-col gap-y-6">
               {/* Search & User */}
               <div className="flex items-center gap-2 w-full mt-6 lg:mt-0">
-                <Suspense
-                  fallback={
-                    <div className="w-48 h-8 bg-muted animate-pulse rounded" />
-                  }
-                >
+                <Suspense fallback={<div className="w-48 h-8 bg-muted animate-pulse rounded" />}>
                   <div className="flex-1 lg:w-auto h-12 grid place-items-center">
                     <NavSearch />
                   </div>
@@ -87,9 +73,7 @@ export function MobileNav() {
                   </div>
                 ))}
                 <div className="space-y-2">
-                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Pages
-                  </span>
+                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Pages</span>
                   <div className="grid gap-1">
                     {staticLinks.map((link) => (
                       <LinkItem

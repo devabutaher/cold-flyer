@@ -11,13 +11,7 @@ function Select({ ...props }) {
 }
 
 function SelectGroup({ className, ...props }) {
-  return (
-    <SelectPrimitive.Group
-      data-slot="select-group"
-      className={cn("scroll-my-1 p-1", className)}
-      {...props}
-    />
-  );
+  return <SelectPrimitive.Group data-slot="select-group" className={cn("scroll-my-1 p-1", className)} {...props} />;
 }
 
 function SelectValue({ ...props }) {
@@ -44,13 +38,7 @@ function SelectTrigger({ className, size = "default", children, ...props }) {
   );
 }
 
-function SelectContent({
-  className,
-  children,
-  position = "item-aligned",
-  align = "center",
-  ...props
-}) {
+function SelectContent({ className, children, position = "item-aligned", align = "center", ...props }) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content

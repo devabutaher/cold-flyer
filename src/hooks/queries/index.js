@@ -5,16 +5,8 @@
 
 "use client";
 
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import {
-  createBookingAction,
-  cancelBookingAction,
-  updateBookingAction,
-} from "@/lib/actions/services";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { createBookingAction, cancelBookingAction, updateBookingAction } from "@/lib/actions/services";
 
 const API_BASE_URL = "/api";
 
@@ -72,18 +64,14 @@ export function useProductsQuery(params) {
     queryFn: async () => {
       const query = new URLSearchParams();
       if (params?.q) query.set("search", params.q);
-      if (params?.category && params.category !== "All Categories")
-        query.set("category", params.category);
-      if (params?.brand && params.brand !== "All Brands")
-        query.set("brand", params.brand);
+      if (params?.category && params.category !== "All Categories") query.set("category", params.category);
+      if (params?.brand && params.brand !== "All Brands") query.set("brand", params.brand);
       if (params?.productType) query.set("productType", params.productType);
       if (params?.sort) query.set("sortBy", params.sort);
       if (params?.page) query.set("page", String(params.page));
       if (params?.limit) query.set("limit", String(params.limit));
 
-      const endpoint = query.toString()
-        ? `/products?${query}`
-        : "/products";
+      const endpoint = query.toString() ? `/products?${query}` : "/products";
       const data = await fetcher(endpoint);
       return data?.data?.products || data?.products || [];
     },
@@ -96,9 +84,10 @@ export function useProductQuery(idOrSlug) {
     queryKey: ["product", idOrSlug],
     queryFn: async () => {
       if (!idOrSlug) return null;
-      const endpoint = idOrSlug.includes("-") && !idOrSlug.match(/^[0-9a-f]{24}$/)
-        ? `/products/slug/${idOrSlug}`
-        : `/products/${idOrSlug}`;
+      const endpoint =
+        idOrSlug.includes("-") && !idOrSlug.match(/^[0-9a-f]{24}$/)
+          ? `/products/slug/${idOrSlug}`
+          : `/products/${idOrSlug}`;
       const data = await fetcher(endpoint);
       return data?.data?.product || data?.product || null;
     },
@@ -119,8 +108,7 @@ export function useCreateProduct(options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -138,8 +126,7 @@ export function useUpdateProduct(options) {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: productKeys.detail(variables.id) });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -155,8 +142,7 @@ export function useDeleteProduct(options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -168,8 +154,7 @@ export function useUploadImage(options) {
         if (!res.success) throw new Error(res.message || "Failed to upload image");
         return res.data;
       }),
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -209,8 +194,7 @@ export function useCreateOrder(options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -227,8 +211,7 @@ export function useCancelOrder(options) {
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
       queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.orderId) });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -268,9 +251,7 @@ export function useServicesQuery(params) {
       if (params?.page) query.set("page", String(params.page));
       if (params?.limit) query.set("limit", String(params.limit));
 
-      const endpoint = query.toString()
-        ? `/services?${query}`
-        : "/services";
+      const endpoint = query.toString() ? `/services?${query}` : "/services";
       const data = await fetcher(endpoint);
       return data?.data?.services || data?.services || [];
     },
@@ -313,8 +294,7 @@ export function useCreateService(options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -332,8 +312,7 @@ export function useUpdateService(options) {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
       queryClient.invalidateQueries({ queryKey: serviceKeys.detail(variables.id) });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -349,8 +328,7 @@ export function useDeleteService(options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -426,14 +404,14 @@ export function useCreateBooking(options) {
   return useMutation({
     mutationFn: (data) =>
       createBookingAction(data).then((res) => {
-        if (!res.success) throw new Error(res.details ? `${res.message}: ${res.details}` : res.message || "Failed to create booking");
+        if (!res.success)
+          throw new Error(res.details ? `${res.message}: ${res.details}` : res.message || "Failed to create booking");
         return res.data;
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -447,11 +425,10 @@ export function useCancelBooking(options) {
         if (!res.success) throw new Error(res.message || "Failed to cancel booking");
       }),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.bookingId), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.bookingId), refetchType: "all" });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -466,11 +443,10 @@ export function useUpdateBooking(options) {
         return res.data;
       }),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: "all" });
     },
-    onError: () => {
-    },
+    onError: () => {},
     ...options,
   });
 }
@@ -485,8 +461,8 @@ export function useScheduleBooking(options) {
         body: JSON.stringify(data),
       }),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: "all" });
     },
     ...options,
   });
@@ -502,8 +478,8 @@ export function useCompleteBooking(options) {
         body: JSON.stringify(data),
       }),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: "all" });
     },
     ...options,
   });
@@ -513,11 +489,10 @@ export function useConfirmBooking(options) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) =>
-      fetcher(`/services/bookings/${id}/confirm`, { method: "PATCH" }),
+    mutationFn: (id) => fetcher(`/services/bookings/${id}/confirm`, { method: "PATCH" }),
     onSuccess: (id) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: "all" });
     },
     ...options,
   });
@@ -527,11 +502,10 @@ export function useStartService(options) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) =>
-      fetcher(`/services/bookings/${id}/start`, { method: "PATCH" }),
+    mutationFn: (id) => fetcher(`/services/bookings/${id}/start`, { method: "PATCH" }),
     onSuccess: (id) => {
-      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
-      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: "all" });
     },
     ...options,
   });
@@ -571,8 +545,7 @@ export function useMarkNotificationRead(options) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) =>
-      fetcher(`/users/notifications/${id}/read`, { method: "PATCH" }),
+    mutationFn: (id) => fetcher(`/users/notifications/${id}/read`, { method: "PATCH" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
@@ -584,8 +557,7 @@ export function useMarkAllNotificationsRead(options) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () =>
-      fetcher("/users/notifications/read-all", { method: "PATCH" }),
+    mutationFn: () => fetcher("/users/notifications/read-all", { method: "PATCH" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },

@@ -36,7 +36,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
   const handleAction = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (isProduct) {
       const isOutOfStock = item.stock === 0 || !item.stock;
       if (isOutOfStock) return;
@@ -49,23 +49,12 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
 
   const cardContent = (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
-      <Link
-        href={href}
-        className="relative block h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50"
-      >
+      <Link href={href} className="relative block h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50">
         {isProduct && item.tag && item.tag !== "none" && (
-          <Badge
-            className={`absolute left-2 top-2 z-10 ${
-              TAG_STYLES[item.tag] || "bg-primary"
-            }`}
-          >
-            {item.tag}
-          </Badge>
+          <Badge className={`absolute left-2 top-2 z-10 ${TAG_STYLES[item.tag] || "bg-primary"}`}>{item.tag}</Badge>
         )}
         {!isProduct && item.isFeatured && (
-          <Badge className="absolute left-2 top-2 z-10 bg-primary text-primary-foreground">
-            Featured
-          </Badge>
+          <Badge className="absolute left-2 top-2 z-10 bg-primary text-primary-foreground">Featured</Badge>
         )}
         {image ? (
           <Image
@@ -86,24 +75,16 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
       <div className="flex flex-1 flex-col justify-between gap-2 p-4">
         <div className="space-y-1">
           <Link href={href}>
-            <h4 className="truncate font-bold text-foreground hover:text-primary transition-colors">
-              {name}
-            </h4>
+            <h4 className="truncate font-bold text-foreground hover:text-primary transition-colors">{name}</h4>
           </Link>
 
-          {description && (
-            <p className="line-clamp-2 text-sm text-muted-foreground">
-              {description}
-            </p>
-          )}
+          {description && <p className="line-clamp-2 text-sm text-muted-foreground">{description}</p>}
 
           {item.rating > 0 && (
             <div className="flex items-center gap-1">
               <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />
               <span className="text-xs font-medium">{item.rating.toFixed(1)}</span>
-              <span className="text-xs text-muted-foreground">
-                ({item.reviewCount || 0})
-              </span>
+              <span className="text-xs text-muted-foreground">({item.reviewCount || 0})</span>
             </div>
           )}
         </div>
@@ -116,9 +97,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
               classNameSalePrice="text-lg text-primary"
             />
           ) : (
-            <span className="text-lg font-bold text-primary">
-              {formatPrice(item.basePrice, item.priceType)}
-            </span>
+            <span className="text-lg font-bold text-primary">{formatPrice(item.basePrice, item.priceType)}</span>
           )}
 
           <Button

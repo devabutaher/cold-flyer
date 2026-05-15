@@ -23,26 +23,33 @@ async function getService(slug) {
 export async function generateMetadata({ params }) {
   const { id: slug } = await params;
   if (!slug) return {};
-  
+
   const service = await getService(slug);
-  
+
   if (!service) {
     return {
       title: "Service Not Found",
       description: "The requested service could not be found.",
     };
   }
-  
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
   const imageUrl = service.images?.[0]?.url || service.images?.[0] || "/placeholder-service.jpg";
   const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${siteUrl}${imageUrl}`;
-  
+
   return {
     title: `${service.name} | Cold Flyer AC Services`,
-    description: service.description?.slice(0, 160) || `Professional ${service.name} by Cold Flyer. ${service.category || ''} services in Bangladesh. Expert technicians, best service.`.slice(0, 160),
+    description:
+      service.description?.slice(0, 160) ||
+      `Professional ${service.name} by Cold Flyer. ${service.category || ""} services in Bangladesh. Expert technicians, best service.`.slice(
+        0,
+        160,
+      ),
     openGraph: {
       title: `${service.name} | Cold Flyer AC Services`,
-      description: service.description?.slice(0, 160) || `Professional ${service.name} by Cold Flyer. Expert technicians in Bangladesh.`,
+      description:
+        service.description?.slice(0, 160) ||
+        `Professional ${service.name} by Cold Flyer. Expert technicians in Bangladesh.`,
       url: `${siteUrl}/services/${service.slug || slug}`,
       siteName: "Cold Flyer",
       images: [
@@ -80,36 +87,33 @@ function sanitizeService(service) {
 export default async function ServicePage({ params }) {
   const { id: slug } = await params;
   if (!slug) notFound();
-  
+
   const rawService = await getService(slug);
-  
+
   if (!rawService) {
     notFound();
   }
-  
+
   const service = sanitizeService(rawService);
-  
+
   const serviceSchema = getServiceSchema(service);
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "https://coldflyer.com" },
     { name: "Services", url: "https://coldflyer.com/services" },
-    { name: service.category || "Services", url: `https://coldflyer.com/services?category=${encodeURIComponent(service.category || '')}` },
+    {
+      name: service.category || "Services",
+      url: `https://coldflyer.com/services?category=${encodeURIComponent(service.category || "")}`,
+    },
     { name: service.name, url: `https://coldflyer.com/services/${slug}` },
   ]);
-  
+
   return (
     <>
       {serviceSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       )}
       {breadcrumbSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       )}
       <ServiceDetailClient service={service} />
     </>

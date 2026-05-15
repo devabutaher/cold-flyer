@@ -5,7 +5,7 @@ import PriceFormat from "../ui/price-format";
 export function DetailPrice({ mode = "product", ...props }) {
   if (mode === "service") {
     const { basePrice, priceType, showLabel } = props;
-    
+
     const formatPrice = (price, priceType) => {
       if (priceType === "quote") return "Quote Based";
       if (priceType === "hourly") return `৳${price}/hr`;
@@ -15,15 +15,11 @@ export function DetailPrice({ mode = "product", ...props }) {
     return (
       <div className="mb-4">
         <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-bold text-foreground">
-            {formatPrice(basePrice, priceType)}
-          </span>
+          <span className="text-3xl font-bold text-foreground">{formatPrice(basePrice, priceType)}</span>
           {showLabel && priceType !== "quote" && priceType !== "hourly" && (
             <span className="text-sm text-muted-foreground">Starting Price</span>
           )}
-          {priceType === "hourly" && (
-            <span className="text-sm text-muted-foreground">Hourly Rate</span>
-          )}
+          {priceType === "hourly" && <span className="text-sm text-muted-foreground">Hourly Rate</span>}
         </div>
       </div>
     );

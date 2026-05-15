@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
@@ -43,9 +31,7 @@ export function ServiceBasicInfoSection({ control }) {
           </div>
           <div>
             <CardTitle className="text-base">Service Details</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Basic service information
-            </CardDescription>
+            <CardDescription className="text-xs mt-0.5">Basic service information</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -67,9 +53,7 @@ export function ServiceBasicInfoSection({ control }) {
                   onChange={(e) => field.onChange(e.target.value)}
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -82,10 +66,7 @@ export function ServiceBasicInfoSection({ control }) {
                 <FieldLabel>
                   Category <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -97,9 +78,7 @@ export function ServiceBasicInfoSection({ control }) {
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -112,26 +91,19 @@ export function ServiceBasicInfoSection({ control }) {
                 <FieldLabel>
                   Service Type <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
                     {SERVICE_TYPES.map((t) => (
                       <SelectItem key={t} value={t}>
-                        {t
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        {t.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -158,10 +130,7 @@ export function ServiceBasicInfoSection({ control }) {
           name="images"
           control={control}
           render={({ field }) => (
-            <ImageUploadField
-              value={field.value || []}
-              onChange={(newValue) => field.onChange(newValue ?? [])}
-            />
+            <ImageUploadField value={field.value || []} onChange={(newValue) => field.onChange(newValue ?? [])} />
           )}
         />
       </CardContent>
