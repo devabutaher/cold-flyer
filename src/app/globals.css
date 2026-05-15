@@ -159,3 +159,13 @@
     min-width: 0;
     flex-shrink: 0;
 }
+
+input[type="time"],
+input[type="date"] {
+    accent-color: var(--color-primary);
+    color-scheme: light;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: var(--time-picker-filter, none);
+}

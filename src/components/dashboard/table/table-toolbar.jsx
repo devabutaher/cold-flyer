@@ -35,9 +35,10 @@ function FilterSelect({
   // Handle string options - keep original value
   const displayOptions = options.map((opt) => {
     const str = String(opt);
+    const label = str.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     return {
       value: str,
-      label: str.charAt(0).toUpperCase() + str.slice(1),
+      label,
     };
   });
 

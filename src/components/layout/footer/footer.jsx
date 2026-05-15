@@ -1,7 +1,6 @@
+import { footerColumns, footerLinks } from "@/data/footer-links";
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-import { footerColumns, footerLinks } from "@/data/footer-links";
 
 export default function Footer() {
   return (
@@ -13,7 +12,7 @@ export default function Footer() {
             <Link href={"/"} className="flex items-center gap-2 mb-4">
               <div className="bg-primary p-2 rounded-md">
                 <Image
-                  src="/vercel.svg"
+                  src="/logo.png"
                   width={200}
                   height={200}
                   alt="logo"
@@ -30,13 +29,62 @@ export default function Footer() {
               sustainable HVAC solutions since 1998.
             </p>
             <div className="flex gap-3">
-              {[FaXTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
+              {[
+                {
+                  href: "https://x.com",
+                  svg: (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M18.244 2.25h3.308l-10.299 6.162a5.25 5.25 0 00-1.586-1.788l-6.457-6.457a5.25 5.25 0 00-6.44 6.44L18.244 2.25zm-1.133 10.5l-7.167-7.167a5.25 5.25 0 00-6.44 6.44L17.111 12.75z" />
+                    </svg>
+                  ),
+                },
+                {
+                  href: "https://instagram.com",
+                  svg: (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" x2="17.5" y1="6.5" y2="6.5" />
+                    </svg>
+                  ),
+                },
+                {
+                  href: "https://linkedin.com",
+                  svg: (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M20 0h-7a4 4 0 00-4.44 5h-1.11V19H0v-4a2 2 0 011.8-2h7.34V4.6a5.86 5.86 0 01-2.9-1.8C12 0 14.4 0 16 0z" />
+                    </svg>
+                  ),
+                },
+              ].map((item, i) => (
                 <Link
                   key={i}
-                  href="/"
+                  href={item.href}
                   className="w-9 h-9 rounded-md bg-background/10 hover:bg-primary flex items-center justify-center transition-colors"
                 >
-                  <Icon size={15} />
+                  {item.svg}
                 </Link>
               ))}
             </div>

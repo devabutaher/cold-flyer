@@ -12,22 +12,19 @@ import {
   Star,
   ThumbsUp,
 } from "lucide-react";
-import { toast } from "sonner";
 import { DetailBackButton } from "./detail-back-button";
 import { DetailMetaInfo } from "./detail-meta-info";
 import { DetailPrice } from "./detail-price";
 import { DetailTabs } from "./detail-tabs";
 import { DetailTrustBadges } from "./detail-trust-badges";
+import { ServiceReviews } from "@/components/reviews/service-reviews";
+import Link from "next/link";
 
 export default function ServiceDetailClient({ service }) {
   if (!service) return null;
 
-  const handleBookNow = () => {
-    toast.success(`${service.name} - Booking initiated`);
-  };
-
   const handleContact = () => {
-    toast.info(`Contacting about ${service.name}`);
+    window.location.href = "mailto:support@coldflyer.com";
   };
 
   const images =
@@ -59,6 +56,7 @@ export default function ServiceDetailClient({ service }) {
     { icon: ThumbsUp, text: "Satisfaction Guaranteed" },
     { icon: Clock, text: "Timely Response" },
   ];
+  const bookingUrl = `/dashboard/bookings/new/${service._id}`;
 
   return (
     <div className="bg-background min-h-screen pb-10">
@@ -143,8 +141,8 @@ export default function ServiceDetailClient({ service }) {
           )}
 
           <div className="flex gap-3 mb-6">
-            <Button size="lg" className="flex-1" onClick={handleBookNow}>
-              Book Now
+            <Button size="lg" className="flex-1" asChild>
+              <Link href={bookingUrl}>Book Now</Link>
             </Button>
             <Button
               variant="outline"
@@ -174,6 +172,10 @@ export default function ServiceDetailClient({ service }) {
 
           <DetailTabs tabs={defaultTabsData} />
         </div>
+      </div>
+
+      <div className="mt-10">
+        <ServiceReviews serviceId={service._id} />
       </div>
     </div>
   );

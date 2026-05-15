@@ -1,10 +1,13 @@
 import {
+  BarChart,
   ClipboardList,
   HelpCircle,
   LayoutDashboard,
   Package,
+  Percent,
   ShoppingCart,
   User,
+  Users,
   Wrench,
 } from "lucide-react";
 
@@ -43,8 +46,33 @@ export const navGroups = [
       },
       {
         title: "Service Bookings",
-        path: "",
+        path: "/dashboard/bookings",
         icon: <ClipboardList />,
+      },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      {
+        title: "Analytics",
+        path: "/dashboard/analytics",
+        icon: <BarChart />,
+      },
+      {
+        title: "Coupons",
+        path: "/dashboard/coupons",
+        icon: <Percent />,
+      },
+      {
+        title: "Users",
+        path: "/dashboard/users",
+        icon: <Users />,
+      },
+      {
+        title: "Technicians",
+        path: "/dashboard/technicians",
+        icon: <Wrench />,
       },
     ],
   },
@@ -56,15 +84,6 @@ export const navGroups = [
         path: "/dashboard/profile",
         icon: <User />,
       },
-      // {
-      //   title: "Settings",
-      //   icon: <Settings />,
-      //   subItems: [
-      //     { title: "General", path: "" },
-      //     { title: "Notifications", path: "" },
-      //     { title: "Security", path: "" },
-      //   ],
-      // },
     ],
   },
 ];

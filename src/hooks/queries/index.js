@@ -11,21 +11,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
-  createProductAction,
-  updateProductAction,
-  deleteProductAction,
-  uploadImageAction,
-} from "@/lib/actions/products";
-import {
-  createOrderAction,
-  createQuickCheckoutAction,
-  cancelOrderAction,
-  verifyPaymentAction,
-} from "@/lib/actions/orders";
-import {
-  createServiceAction,
-  updateServiceAction,
-  deleteServiceAction,
+  createBookingAction,
+  cancelBookingAction,
+  updateBookingAction,
 } from "@/lib/actions/services";
 
 const API_BASE_URL = "/api";
@@ -44,7 +32,14 @@ async function fetcher(endpoint, options = {}) {
     credentials: "include",
   });
 
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    const text = await response.text();
+    throw new Error(`Server returned ${response.status}: ${text.slice(0, 100)}`);
+  }
+
   if (!response.ok) {
     const error = new Error(data.message || "Request failed");
     error.status = response.status;
@@ -397,6 +392,203 @@ export function useServiceMutation() {
   return useCreateService();
 }
 
+export const bookingKeys = {
+  all: ["bookings"],
+  detail: (id) => ["booking", id],
+};
+
+export function useBookingsQuery() {
+  return useQuery({
+    queryKey: bookingKeys.all,
+    queryFn: async () => {
+      const data = await fetcher("/services/bookings");
+      return data?.data?.bookings || data?.bookings || [];
+    },
+    refetchOnMount: true,
+  });
+}
+
+export function useBookingQuery(id) {
+  return useQuery({
+    queryKey: bookingKeys.detail(id),
+    queryFn: async () => {
+      if (!id) return null;
+      const data = await fetcher(`/services/bookings/${id}`);
+      return data?.data?.booking || data?.booking || null;
+    },
+    enabled: !!id,
+  });
+}
+
+export function useCreateBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) =>
+      createBookingAction(data).then((res) => {
+        if (!res.success) throw new Error(res.details ? `${res.message}: ${res.details}` : res.message || "Failed to create booking");
+        return res.data;
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+    },
+    onError: () => {
+    },
+    ...options,
+  });
+}
+
+export function useCancelBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ bookingId, reason }) =>
+      cancelBookingAction(bookingId, reason).then((res) => {
+        if (!res.success) throw new Error(res.message || "Failed to cancel booking");
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.bookingId), refetchType: 'all' });
+    },
+    onError: () => {
+    },
+    ...options,
+  });
+}
+
+export function useUpdateBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }) =>
+      updateBookingAction(id, data).then((res) => {
+        if (!res.success) throw new Error(res.message || "Failed to update booking");
+        return res.data;
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+    },
+    onError: () => {
+    },
+    ...options,
+  });
+}
+
+export function useScheduleBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }) =>
+      fetcher(`/services/bookings/${id}/schedule`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+    },
+    ...options,
+  });
+}
+
+export function useCompleteBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }) =>
+      fetcher(`/services/bookings/${id}/complete`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: 'all' });
+    },
+    ...options,
+  });
+}
+
+export function useConfirmBooking(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) =>
+      fetcher(`/services/bookings/${id}/confirm`, { method: "PATCH" }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: 'all' });
+    },
+    ...options,
+  });
+}
+
+export function useStartService(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) =>
+      fetcher(`/services/bookings/${id}/start`, { method: "PATCH" }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id), refetchType: 'all' });
+    },
+    ...options,
+  });
+}
+
 export function useUploadImageMutation() {
   return useUploadImage();
+}
+
+// --- Notification Hooks ---
+
+export function useNotificationsQuery() {
+  return useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const data = await fetcher("/users/notifications?limit=10");
+      return data?.data?.notifications || [];
+    },
+    refetchInterval: 30000,
+    placeholderData: (previousData) => previousData,
+  });
+}
+
+export function useUnreadCountQuery() {
+  return useQuery({
+    queryKey: ["notifications", "unread-count"],
+    queryFn: async () => {
+      const data = await fetcher("/users/notifications?limit=1");
+      const meta = data?.data?.meta;
+      return meta?.totalUnread ?? 0;
+    },
+    refetchInterval: 30000,
+  });
+}
+
+export function useMarkNotificationRead(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) =>
+      fetcher(`/users/notifications/${id}/read`, { method: "PATCH" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    ...options,
+  });
+}
+
+export function useMarkAllNotificationsRead(options) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () =>
+      fetcher("/users/notifications/read-all", { method: "PATCH" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    ...options,
+  });
 }

@@ -161,3 +161,72 @@ export async function deleteServiceAction(id) {
     };
   }
 }
+
+// --- Booking Actions ---
+
+export async function createBookingAction(bookingData) {
+  try {
+    const result = await serverFetch("/api/services/bookings", {
+      method: "POST",
+      body: JSON.stringify(bookingData),
+    });
+    return { success: true, data: result };
+  } catch (error) {
+    const fieldErrors = error.data?.errors?.map(e => `${e.field}: ${e.message}`).join("; ");
+    return {
+      success: false,
+      message: error.message || "Failed to create booking",
+      ...(fieldErrors && { details: fieldErrors }),
+    };
+  }
+}
+
+export async function getBookingsServer() {
+  try {
+    const result = await serverFetch("/api/services/bookings");
+    if (result?.data?.bookings) return result.data.bookings;
+    return result;
+  } catch {
+    return [];
+  }
+}
+
+export async function getBookingByIdServer(id) {
+  try {
+    const result = await serverFetch(`/api/services/bookings/${id}`);
+    if (result?.data?.booking) return result.data.booking;
+    return result;
+  } catch {
+    return null;
+  }
+}
+
+export async function cancelBookingAction(bookingId, reason) {
+  try {
+    await serverFetch(`/api/services/bookings/${bookingId}/cancel`, {
+      method: "PATCH",
+      body: JSON.stringify({ reason }),
+    });
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "Failed to cancel booking",
+    };
+  }
+}
+
+export async function updateBookingAction(bookingId, bookingData) {
+  try {
+    const result = await serverFetch(`/api/services/bookings/${bookingId}`, {
+      method: "PATCH",
+      body: JSON.stringify(bookingData),
+    });
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "Failed to update booking",
+    };
+  }
+}

@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href={"/"} className="flex items-center gap-2">
-      <div className="min-w-8 bg-primary p-2 rounded-md">
+    <Link href={"/"} className="flex items-center">
+      <div className="min-w-8 p-2 rounded-md">
         <Image
-          src="/vercel.svg"
-          width={200}
-          height={200}
+          src="/logo.png"
+          width={400}
+          height={400}
           alt="logo"
-          className="w-4 h-4"
+          className="w-10 h-10"
         />
       </div>
 

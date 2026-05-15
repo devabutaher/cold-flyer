@@ -1,10 +1,11 @@
 "use client";
 
 import { UserDropdown } from "@/components/auth/user-dropdown";
+import { NotificationDropdown } from "@/components/notifications/notification-dropdown";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { BellIcon, SendIcon } from "lucide-react";
+import { SendIcon } from "lucide-react";
 import { AppBreadcrumbs } from "./app-breadcrumbs";
 import { navLinks } from "./app-shared";
 import { CustomSidebarTrigger } from "./custom-sidebar-trigger";
@@ -30,9 +31,7 @@ export function AppHeader() {
         <Button size="icon-sm" variant="outline">
           <SendIcon />
         </Button>
-        <Button aria-label="Notifications" size="icon-sm" variant="outline">
-          <BellIcon />
-        </Button>
+        <NotificationDropdown />
         <Separator
           className="h-4 data-[orientation=vertical]:self-center"
           orientation="vertical"

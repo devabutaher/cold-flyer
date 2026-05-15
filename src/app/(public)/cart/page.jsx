@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ShoppingCart, Package, X, Loader2 } from "lucide-react";
+import { ShoppingCart, Package, X, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,6 +52,7 @@ function CartContent() {
   const router = useRouter();
   const { items, updateQuantity, removeItem, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
 
   const subtotal = items.reduce(
     (total, p) => total + p.price * p.quantity,
@@ -85,6 +86,7 @@ function CartContent() {
         })),
         paymentMethod: "card",
         isPickup: false,
+        ...(couponCode && { couponCode }),
       };
 
       // Create order first, then get checkout URL
@@ -220,6 +222,27 @@ function CartContent() {
         </div>
 
         <Separator className="my-4" />
+
+        <div className="flex items-center gap-2 mb-4">
+          <div className="relative flex-1">
+            <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+              placeholder="Coupon code"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            />
+          </div>
+          {couponCode && (
+            <button
+              onClick={() => setCouponCode("")}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
 
         <div className="flex items-center justify-between">
           <span className="font-bold text-foreground">Total</span>

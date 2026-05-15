@@ -17,8 +17,8 @@ export default function Home() {
     <>
       <Hero />
       <PromoCards />
-      <ShopSection />
       <ServicesCarousel />
+      <ShopSection />
       <Services />
       <About />
       <StatsStrip />

@@ -54,7 +54,13 @@ async function apiClient(endpoint, options = {}) {
     credentials: "include",
   });
 
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    const text = await response.text();
+    throw new Error(`Server returned ${response.status}: ${text.slice(0, 100)}`);
+  }
 
   if (!response.ok) {
     const errorMessage = data.message || "Something went wrong";

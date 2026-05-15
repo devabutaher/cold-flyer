@@ -57,6 +57,9 @@ export function NavButtons({ onAuthenticated } = {}) {
           <Link href={"/dashboard"} className="w-full lg:w-auto">
             <Button className="w-full lg:w-auto">Dashboard</Button>
           </Link>
+          <Link href={"/my-bookings"} className="w-full lg:w-auto">
+            <Button variant="outline" className="w-full lg:w-auto">My Bookings</Button>
+          </Link>
           <div className="hidden lg:block">
             <UserDropdown user={user} />
           </div>

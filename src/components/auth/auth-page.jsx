@@ -23,7 +23,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
 
 export default function AuthPage() {
@@ -382,16 +381,38 @@ export default function AuthPage() {
           </div>
 
           {/* Google */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogle}
-            disabled={loading}
-            className="w-full"
-          >
-            <FaGoogle size={15} />
-            Google
-          </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleGoogle}
+              disabled={loading}
+              className="w-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                width="15"
+                height="15"
+              >
+                <path
+                  fill="#EA4335"
+                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13L11.5 22.5c.64-.78 1.26-1.48 1.97-2.1L11.5 22.5z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M46.93 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.78c-.55 2.96-2.28 5.48-4.78 7.18l7.08 5.11-7.15-2.84C33.18 34.38 24 37 24 37v-12h12.93z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M10.53 28.59L24 28v-5.02l-13.47-5.02V28z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M24 28v12h12.78l-7.08-5.11c-2.1 1.41-4.62 2.31-7.78 2.31-S24 38.5 24 28z"
+                />
+              </svg>
+              Google
+            </Button>
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             Protected by reCAPTCHA.{" "}
