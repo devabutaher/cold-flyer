@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useNotificationsQuery, useMarkNotificationRead, useMarkAllNotificationsRead } from "@/hooks/queries";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ const TYPE_ICONS = {
 };
 
 export function NotificationDropdown() {
+  const t = useTranslations("common");
   const { data: notifications = [], isLoading } = useNotificationsQuery();
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
@@ -50,7 +52,7 @@ export function NotificationDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button aria-label="Notifications" size="icon-sm" variant="outline" className="relative">
+        <Button aria-label={t("notifications")} size="icon-sm" variant="outline" className="relative">
           <BellIcon />
           {unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground px-1">
@@ -62,7 +64,7 @@ export function NotificationDropdown() {
 
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span>Notifications</span>
+          <span>{t("notifications")}</span>
           {unreadCount > 0 && (
             <Button
               variant="ghost"
@@ -72,7 +74,7 @@ export function NotificationDropdown() {
               disabled={markAllRead.isPending}
             >
               {markAllRead.isPending ? <Loader2 size={12} className="animate-spin" /> : <CheckCheck size={12} />}
-              Mark all read
+              {t("markAllRead")}
             </Button>
           )}
         </DropdownMenuLabel>
@@ -84,7 +86,7 @@ export function NotificationDropdown() {
             <Loader2 size={20} className="animate-spin text-muted-foreground" />
           </div>
         ) : notifications.length === 0 ? (
-          <div className="py-8 text-center text-sm text-muted-foreground">No notifications yet</div>
+          <div className="py-8 text-center text-sm text-muted-foreground">{t("noNotificationsYet")}</div>
         ) : (
           <div className="max-h-72 overflow-y-auto">
             {notifications.map((n) => (
@@ -125,7 +127,7 @@ export function NotificationDropdown() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild className="justify-center text-sm font-medium">
-          <Link href="/dashboard">View all notifications</Link>
+          <Link href="/dashboard">{t("viewAllNotifications")}</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

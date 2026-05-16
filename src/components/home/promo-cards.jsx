@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { promoCardData } from "@/data/promo-card-data";
-import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ArrowRight, Shield, Truck, Zap } from "lucide-react";
 import Link from "next/link";
 import { animations, staggerItem } from "@/lib/animation";
 
@@ -53,6 +53,35 @@ function PromoCard({ card, index }) {
 }
 
 export default function PromoCards() {
+  const t = useTranslations("home");
+
+  const cards = [
+    {
+      icon: Zap,
+      tag: t("limitedOffer"),
+      title: t("twentyOffServicing"),
+      sub: t("promoMaintenance"),
+      cta: t("learnMore"),
+      accent: false,
+    },
+    {
+      icon: Truck,
+      tag: t("nextDayInstall"),
+      title: t("sameWeekFitting"),
+      sub: t("promoOrder"),
+      cta: t("bookNow"),
+      accent: true,
+    },
+    {
+      icon: Shield,
+      tag: t("partsWarranty"),
+      title: t("tenYearGuarantee"),
+      sub: t("promoGuarantee"),
+      cta: t("learnMore"),
+      accent: false,
+    },
+  ];
+
   return (
     <motion.div
       className="container relative z-20 -mt-14 mb-12 sm:-mt-16 sm:mb-16"
@@ -61,7 +90,7 @@ export default function PromoCards() {
       animate="visible"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
-        {promoCardData.map((card, index) => (
+        {cards.map((card, index) => (
           <PromoCard key={card.title} card={card} index={index} />
         ))}
       </div>

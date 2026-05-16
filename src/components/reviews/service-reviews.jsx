@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { Star, User as UserIcon, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +14,7 @@ async function fetcher(url) {
 }
 
 export function ServiceReviews({ serviceId }) {
+  const t = useTranslations("common");
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["service-reviews", serviceId],
     queryFn: () => fetcher(`/api/reviews?service=${serviceId}`),
@@ -37,7 +39,7 @@ export function ServiceReviews({ serviceId }) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Customer Reviews</CardTitle>
+          <CardTitle className="text-base">{t("customerReviews")}</CardTitle>
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
             <span className="font-bold">{avgRating.toFixed(1)}</span>
@@ -52,7 +54,7 @@ export function ServiceReviews({ serviceId }) {
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10">
                 <UserIcon className="h-3.5 w-3.5 text-primary" />
               </div>
-              <span className="text-sm font-medium">{review.user?.name || "Anonymous"}</span>
+              <span className="text-sm font-medium">{review.user?.name || t("anonymous")}</span>
               <div className="flex gap-0.5 ml-auto">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star

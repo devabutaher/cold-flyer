@@ -115,8 +115,8 @@ export function OrderDetails({ orderId }) {
     }
   };
 
-  const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
-  const canCancel = canPay;
+  const canPay = order.paymentMethod !== "cod" && order.paymentStatus !== "paid" && order.status !== "cancelled";
+  const canCancel = canPay || order.paymentMethod === "cod";
   const orderRef = order.orderNumber ?? `#${order._id?.slice(-8).toUpperCase()}`;
 
   return (
@@ -261,6 +261,12 @@ export function OrderDetails({ orderId }) {
               <Download size={14} />
               Download Invoice
             </Button>
+
+            {order.paymentMethod === "cod" && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-center text-sm text-amber-700">
+                Cash on Delivery — pay when you receive your order
+              </div>
+            )}
 
             {canPay && (
               <div className="space-y-2">

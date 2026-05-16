@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 
 export function ServiceSearch() {
+  const t = useTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
@@ -37,7 +39,7 @@ export function ServiceSearch() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               id="input-button-group"
-              placeholder="Type to search..."
+              placeholder={t("placeholderSearch")}
               className="pr-7 w-full"
             />
             {query && (

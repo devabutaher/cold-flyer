@@ -3,9 +3,12 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
-import { sections, lastUpdated, version } from "@/data/terms-data";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 
 export default function TermsPage() {
+  const locale = useLocale();
+  const { sections, lastUpdated, version } = { sections: getData("sections", locale), lastUpdated: getData("lastUpdated", locale), version: getData("version", locale) };
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}

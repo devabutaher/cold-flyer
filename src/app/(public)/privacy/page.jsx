@@ -4,9 +4,14 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, ShieldCheck, User } from "lucide-react";
-import { principles, dataTypes, timeline } from "@/data/privacy-data";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 
 export default function PrivacyPage() {
+  const locale = useLocale();
+  const principles = getData("principles", locale);
+  const dataTypes = getData("dataTypes", locale);
+  const timeline = getData("timeline", locale);
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}

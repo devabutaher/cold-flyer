@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Package, ShoppingCart, X, Loader2, Check, ShoppingBag } from "lucide-react";
@@ -12,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { QuantityInput } from "./quantity-input";
 
 function CartItem({ product, currencyPrefix, onUpdateQuantity, onRemoveProduct }) {
+  const t = useTranslations("cart");
   const slug = product.slug || product.productId;
   return (
     <motion.div
@@ -75,7 +77,7 @@ function CartItem({ product, currencyPrefix, onUpdateQuantity, onRemoveProduct }
             </p>
             <p className="text-xs text-muted-foreground">
               {currencyPrefix}
-              {product.price.toLocaleString()} each
+              {product.price.toLocaleString()} {t("each")}
             </p>
           </motion.div>
         </div>
@@ -101,6 +103,7 @@ export function Cart({
   onPaymentProviderChange = () => {},
   paymentProviders = [],
 }) {
+  const t = useTranslations("cart");
   const subtotal = products.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * vatRate;
   const totalAmount = subtotal + shippingCost + vatAmount;
@@ -120,8 +123,8 @@ export function Cart({
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">My Cart</span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">Shopping Cart</h1>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("myCart")}</span>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">{t("pageTitle")}</h1>
         </div>
 
         {isLoading && loadingSkeleton ? (
@@ -165,10 +168,10 @@ export function Cart({
             >
               <ShoppingBag size={36} className="text-muted-foreground" />
             </motion.div>
-            <h2 className="mb-2 text-xl font-bold text-foreground">Your cart is empty</h2>
-            <p className="mb-7 text-sm text-muted-foreground">Looks like you haven&apos;t added anything yet.</p>
+            <h2 className="mb-2 text-xl font-bold text-foreground">{t("emptyTitle")}</h2>
+            <p className="mb-7 text-sm text-muted-foreground">{t("emptyDesc")}</p>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Button onClick={() => onContinueShopping(checkoutPayload)}>Start Shopping</Button>
+              <Button onClick={() => onContinueShopping(checkoutPayload)}>{t("startShopping")}</Button>
             </motion.div>
           </motion.div>
         )}
@@ -201,7 +204,7 @@ export function Cart({
                     className="text-muted-foreground"
                     onClick={() => onContinueShopping(checkoutPayload)}
                   >
-                    ← Continue Shopping
+                    {t("continueShoppingBack")}
                   </Button>
                 </motion.div>
               </motion.div>
@@ -213,7 +216,7 @@ export function Cart({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
             >
-              <h2 className="mb-5 text-lg font-bold text-foreground">Order Summary</h2>
+              <h2 className="mb-5 text-lg font-bold text-foreground">{t("orderSummary")}</h2>
 
               <div className="space-y-3 text-sm">
                 <motion.div
@@ -222,7 +225,7 @@ export function Cart({
                   initial={{ opacity: 0.5 }}
                   animate={{ opacity: 1 }}
                 >
-                  <span>Subtotal ({products.reduce((s, p) => s + p.quantity, 0)} items)</span>
+                  <span>{t("subtotal")} ({t("itemCount", { count: products.reduce((s, p) => s + p.quantity, 0) })})</span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {subtotal.toLocaleString()}
@@ -230,7 +233,7 @@ export function Cart({
                 </motion.div>
 
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Shipping</span>
+                  <span>{t("shipping")}</span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {shippingCost.toLocaleString()}
@@ -238,7 +241,7 @@ export function Cart({
                 </div>
 
                 <div className="flex justify-between text-muted-foreground">
-                  <span>VAT ({(vatRate * 100).toFixed(0)}%)</span>
+                  <span>{t("vat")} ({(vatRate * 100).toFixed(0)}%)</span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {vatAmount.toFixed(0)}
@@ -255,7 +258,7 @@ export function Cart({
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <span className="font-bold text-foreground">Total</span>
+                <span className="font-bold text-foreground">{t("total")}</span>
                 <span className="text-xl font-extrabold text-primary">
                   {currencyPrefix}
                   {totalAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -264,7 +267,7 @@ export function Cart({
 
               {paymentProviders.length > 0 && (
                 <div className="mt-4 space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Payment Method</p>
+                  <p className="text-xs font-medium text-muted-foreground">{t("paymentMethod")}</p>
                   <div className="grid gap-1.5">
                     {paymentProviders.map((p) => {
                       const Icon = p.icon;
@@ -312,15 +315,15 @@ export function Cart({
                     {isProcessing ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
+                        {t("processing")}
                       </>
                     ) : (
-                      `Pay with ${paymentProviders.find(p => p.value === paymentProvider)?.label || "Card"}`
+                      t("payWith", { provider: paymentProviders.find(p => p.value === paymentProvider)?.label || "Card" })
                     )}
                   </Button>
                 </motion.div>
                 <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>
-                  Continue Shopping
+                  {t("continueShopping")}
                 </Button>
               </div>
             </motion.div>

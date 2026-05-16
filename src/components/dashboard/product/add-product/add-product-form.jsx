@@ -9,7 +9,8 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { DEFAULT_FORM_VALUES } from "@/data/product-form-constants";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 import {
   BasicInfoSection,
   FeaturesSection,
@@ -33,24 +34,25 @@ function useCompletedSections(control) {
   return count;
 }
 
-const initialValues = {
-  ...DEFAULT_FORM_VALUES,
-  name: "",
-  sku: "",
-  brand: "",
-  category: "",
-  price: "",
-  originalPrice: "",
-  stock: "",
-  description: "",
-  warranty: "",
-  tag: "None",
-  features: "",
-  inBox: "",
-  images: [],
-};
-
 export default function AddProductForm({ isAdmin = false }) {
+  const locale = useLocale();
+  const DEFAULT_FORM_VALUES = getData("DEFAULT_FORM_VALUES", locale);
+  const initialValues = {
+    ...DEFAULT_FORM_VALUES,
+    name: "",
+    sku: "",
+    brand: "",
+    category: "",
+    price: "",
+    originalPrice: "",
+    stock: "",
+    description: "",
+    warranty: "",
+    tag: "None",
+    features: "",
+    inBox: "",
+    images: [],
+  };
   const [productType, setProductType] = useState("unit");
   const [isUploading, setIsUploading] = useState(false);
   const createProduct = useCreateProduct();

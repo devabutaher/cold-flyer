@@ -1,7 +1,11 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function OfferBanner() {
+  const t = useTranslations("common");
   return (
     <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-accent-foreground -mt-8">
       {/* Decorative background shapes */}
@@ -26,22 +30,22 @@ export default function OfferBanner() {
           <div className="flex flex-col items-center gap-1.5 md:flex-row md:items-start md:gap-3 text-center md:text-left">
             <div>
               <Badge className="shrink-0 bg-background/20 text-primary-foreground uppercase text-[10px] font-bold tracking-widest px-2.5 py-0.5">
-                Limited Time
+                {t("limitedTime")}
               </Badge>
 
               <div>
                 <div className="flex items-baseline gap-2 justify-center md:justify-start">
                   <span className="text-xl font-extrabold tracking-tight text-primary-foreground md:text-2xl">
-                    Summer Sale
+                    {t("summerSale")}
                   </span>
-                  <span className="text-lg font-black text-primary-foreground/90 md:text-xl">— 20% OFF</span>
+                  <span className="text-lg font-black text-primary-foreground/90 md:text-xl">{t("twentyOff")}</span>
                   {/* EXCLUSIVE chip */}
                   <span className="hidden md:inline-flex items-center rounded border-2 border-green-400 bg-green-500 px-1.5 py-px text-[9px] font-bold text-white rotate-2 leading-none">
-                    EXCLUSIVE
+                    {t("exclusive")}
                   </span>
                 </div>
                 <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug max-w-md">
-                  All premium AC units & HVAC systems. Valid until Aug 31st.
+                  {t("saleDesc")}
                 </p>
               </div>
             </div>
@@ -53,14 +57,14 @@ export default function OfferBanner() {
               size="md"
               className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4"
             >
-              Shop Now
+              {t("shopNow")}
             </Button>
             <Button
               size="md"
               variant="outline"
               className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground font-bold text-xs h-8 px-4"
             >
-              All Deals
+              {t("allDeals")}
             </Button>
           </div>
         </div>

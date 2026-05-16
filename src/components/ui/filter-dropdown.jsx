@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
-function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
+function FilterDropdown({ options, value, onChange, placeholder }) {
+  const t = useTranslations("common");
   const normalizedOptions = options.map((opt) => (typeof opt === "string" ? { value: opt, label: opt } : opt));
 
   return (
@@ -14,7 +16,7 @@ function FilterDropdown({ options, value, onChange, placeholder = "Filter" }) {
           "flex items-center justify-between gap-1.5 rounded-md border border-input bg-transparent py-1.5 px-3 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50",
         )}
       >
-        <SelectPrimitive.Value placeholder={placeholder} />
+        <SelectPrimitive.Value placeholder={placeholder || t("filter") || "Filter"} />
         <SelectPrimitive.Icon asChild>
           <ChevronDownIcon className="size-4 text-muted-foreground" />
         </SelectPrimitive.Icon>

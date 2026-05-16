@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Award, Briefcase, Building, Clock, GraduationCap, Mail, MapPin, Phone, Users, Video } from "lucide-react";
-import { benefits, departments, culture } from "@/data/careers-data";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 
 const process = [
   { step: "01", title: "Apply Online", desc: "Submit your resume and application through our careers portal." },
@@ -14,6 +15,10 @@ const process = [
 ];
 
 export default function CareersPage() {
+  const locale = useLocale();
+  const benefits = getData("benefits", locale);
+  const departments = getData("departments", locale);
+  const culture = getData("culture", locale);
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}

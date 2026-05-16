@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { servicesData } from "@/data/services-data";
+import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { animations } from "@/lib/animation";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
 
-function ServiceCard({ service, index }) {
+function ServiceCard({ service, index, t }) {
   return (
     <motion.div
       className="bg-muted rounded-xl p-6 sm:p-7 group hover:bg-secondary hover:shadow-lg transition-all duration-300 relative overflow-hidden"
@@ -34,25 +35,28 @@ function ServiceCard({ service, index }) {
         href={"/services"}
         className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all duration-200"
       >
-        Learn More <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+        {t("common.learnMore")} <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
       </Link>
     </motion.div>
   );
 }
 
 export default function Services() {
+  const t = useTranslations();
+  const locale = useLocale();
+  const servicesData = getData("servicesData", locale);
   return (
     <AnimatedSection className="py-16 bg-background" id="services">
       <div className="container">
         <div className="mb-9">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Our Expertise</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("home.ourExpertise")}</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-            World-Class <span className="text-primary">Climate Services.</span>
+            {t("home.worldClassServices")}
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {servicesData.map((s, i) => (
-            <ServiceCard key={s.title} service={s} index={i} />
+            <ServiceCard key={s.title} service={s} index={i} t={t} />
           ))}
         </div>
       </div>

@@ -13,10 +13,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
 export default function AuthPage() {
+  const t = useTranslations("auth");
   const [tab, setTab] = useState("signin");
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -33,7 +35,6 @@ export default function AuthPage() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
     reset,
   } = useForm({
@@ -53,7 +54,7 @@ export default function AuthPage() {
 
   const handleGoogle = async () => {
     if (!GOOGLE_CLIENT_ID) {
-      setAuthError("Google sign-in is not configured");
+      setAuthError(t("googleSignInFailed"));
       return;
     }
 
@@ -66,7 +67,7 @@ export default function AuthPage() {
           client_id: GOOGLE_CLIENT_ID,
           callback: (response) => {
             if (response?.credential) resolve(response.credential);
-            else reject(new Error("No credential received"));
+            else reject(new Error(t("noCredential")));
           },
         });
         window.google.accounts.id.prompt();
@@ -79,13 +80,13 @@ export default function AuthPage() {
         credentials: "include",
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Google sign-in failed");
+      if (!data.success) throw new Error(data.message || t("googleSignInFailedFallback"));
       await refreshUser();
-      toast.success("Signed in with Google!");
+      toast.success(t("signedInGoogle"));
       router.push(redirectTo);
     } catch (err) {
-      if (err.message !== "No credential received") {
-        setAuthError(err.message || "Google sign-in failed");
+      if (err.message !== t("noCredential")) {
+        setAuthError(err.message || t("googleSignInFailedFallback"));
       }
     } finally {
       setLoading(false);
@@ -121,18 +122,18 @@ export default function AuthPage() {
       });
 
       const result = await res.json();
-      if (!result.success) throw new Error(result.message || "Something went wrong");
+      if (!result.success) throw new Error(result.message || t("somethingWentWrong"));
 
       await refreshUser();
 
       if (isSignIn) {
         if (result.data?.user?.role === "admin") {
-          toast.success("Welcome back, Admin! Redirecting to dashboard...");
+          toast.success(t("welcomeAdmin"));
         } else {
-          toast.success("Welcome back! Redirecting...");
+          toast.success(t("welcomeBack"));
         }
       } else {
-        toast.success("Account created! Welcome to ColdFlyer");
+        toast.success(t("welcomeNew"));
       }
       router.push(redirectTo);
     } catch (err) {
@@ -154,39 +155,38 @@ export default function AuthPage() {
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/20" />
         <div className="relative z-10">
-          <Badge>Precision Thermal Systems</Badge>
+          <Badge>{t("badge")}</Badge>
           <h1 className="font-sans font-bold text-5xl text-white leading-tight mt-2 mb-4">
-            Kinetic <br /> Comfort.
+            {t("heroTitle")}
           </h1>
           <p className="text-white/70 text-sm leading-relaxed max-w-md">
-            Experience industrial-grade HVAC management with ColdFlyer&#8217;s proprietary fleet telemetry and thermal
-            precision engineering.
+            {t("heroDesc")}
           </p>
         </div>
       </div>
 
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 bg-background">
         <div className="w-full max-w-sm">
-          <h2 className="font-sans font-bold text-2xl text-foreground mb-1">Welcome Back.</h2>
-          <p className="text-muted-foreground text-sm mb-7">Access your fleet dashboard or create a new account.</p>
+          <h2 className="font-sans font-bold text-2xl text-foreground mb-1">{t("signInTitle")}</h2>
+          <p className="text-muted-foreground text-sm mb-7">{t("signInSub")}</p>
 
           <div className="flex bg-secondary rounded-lg p-1 mb-6">
             {[
-              { value: "signin", label: "Sign In" },
-              { value: "create", label: "Create Account" },
-            ].map((t) => (
+              { value: "signin", label: t("signInTab") },
+              { value: "create", label: t("createAccountTab") },
+            ].map((tabItem) => (
               <button
-                key={t.value}
+                key={tabItem.value}
                 type="button"
-                onClick={() => handleTabSwitch(t.value)}
+                onClick={() => handleTabSwitch(tabItem.value)}
                 className={cn(
                   "flex-1 py-2 text-sm font-bold rounded-md transition-all duration-200",
-                  tab === t.value
+                  tab === tabItem.value
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                {t.label}
+                {tabItem.label}
               </button>
             ))}
           </div>
@@ -198,17 +198,17 @@ export default function AuthPage() {
               className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1"
             >
               <Shield size={12} />
-              {showAdminHint ? "Hide admin info" : "Are you an admin?"}
+              {showAdminHint ? t("hideAdminInfo") : t("areYouAdmin")}
             </button>
 
             {showAdminHint && (
               <div className="mt-2 p-3 rounded-md bg-amber-500/10 border border-amber-500/30 text-sm">
                 <p className="text-amber-600 font-medium flex items-center gap-1">
                   <Crown size={14} />
-                  Admin Access
+                  {t("adminAccessTitle")}
                 </p>
                 <p className="text-muted-foreground text-xs mt-1">
-                  To access admin dashboard. Contact administrator to add your email.
+                  {t("adminAccessDesc")}
                 </p>
               </div>
             )}
@@ -218,11 +218,11 @@ export default function AuthPage() {
             {!isSignIn && (
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
-                  Full Name
+                  {t("name")}
                 </label>
                 <Input
                   {...register("name")}
-                  placeholder="John Doe"
+                  placeholder={t("namePlaceholder")}
                   className={cn(errors.name && "border-destructive focus-visible:ring-destructive")}
                 />
                 {errors.name && <p className="text-destructive text-xs mt-1">{errors.name.message}</p>}
@@ -232,12 +232,12 @@ export default function AuthPage() {
             {!isSignIn && (
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
-                  Phone Number (<span className="font-medium">optional</span>)
+                  {t("phone")} (<span className="font-medium">{t("phoneOptional")}</span>)
                 </label>
                 <Input
                   {...register("phone")}
                   type="tel"
-                  placeholder="01700000000"
+                  placeholder={t("phonePlaceholder")}
                   className={cn(errors.phone && "border-destructive focus-visible:ring-destructive")}
                 />
                 {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone.message}</p>}
@@ -246,12 +246,12 @@ export default function AuthPage() {
 
             <div>
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
-                Email Address
+                {t("emailLabel")}
               </label>
               <Input
                 {...register("email")}
                 type="email"
-                placeholder="name@mail.com"
+                placeholder={t("emailPlaceholder")}
                 className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.email && <p className="text-destructive text-xs mt-1">{errors.email.message}</p>}
@@ -260,7 +260,7 @@ export default function AuthPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Password
+                  {t("password")}
                 </label>
               </div>
               <div className="relative">
@@ -268,7 +268,7 @@ export default function AuthPage() {
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
                   autoComplete="off"
-                  placeholder="••••••••"
+                  placeholder={t("passwordPlaceholder")}
                   className={cn("pr-10", errors.password && "border-destructive focus-visible:ring-destructive")}
                 />
                 <button
@@ -285,14 +285,14 @@ export default function AuthPage() {
             {authError && <p className="text-destructive text-sm">{authError}</p>}
 
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Please wait..." : isSignIn ? "Enter Workspace \u2192" : "Create Account \u2192"}
+              {loading ? t("loadingButton") : isSignIn ? t("signInButton") : t("createAccountButton")}
             </Button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-border" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              Or continue with
+              {t("orContinueWith")}
             </span>
             <div className="flex-1 h-px bg-border" />
           </div>
@@ -316,11 +316,11 @@ export default function AuthPage() {
                 d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
               ></path>
             </svg>
-            Google
+            {t("googleSignIn")}
           </Button>
 
           <p className="text-muted-foreground text-xs text-center mt-6">
-            Protected by reCAPTCHA.{" "}
+            {t("protectedBy")}{" "}
             <a href="#" className="text-primary underline underline-offset-2">
               Privacy Policy
             </a>{" "}

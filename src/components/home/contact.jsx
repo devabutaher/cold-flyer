@@ -9,29 +9,7 @@ import { motion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const contactInfo = [
-  {
-    title: "Email",
-    icon: Mail,
-    description: "We respond within 24 hours.\nsupport@climatepro.com",
-  },
-  {
-    title: "Office",
-    icon: MapPin,
-    description: "Drop by for a consultation.\n1 Eagle St, Brisbane, QLD 4000",
-  },
-  {
-    title: "Phone",
-    icon: Phone,
-    description: "Mon-Fri, 9am-5pm AEST.\n(07) 1234 5678",
-  },
-  {
-    title: "Live Chat",
-    icon: MessageCircle,
-    description: "Get instant support online.\nStart Chat",
-  },
-];
+import { useTranslations } from "next-intl";
 
 function ContactCard({ info, index }) {
   return (
@@ -70,13 +48,38 @@ function ContactCard({ info, index }) {
 }
 
 export default function Contact() {
+  const t = useTranslations("home");
+
+  const contactInfo = [
+    {
+      title: t("contactEmail"),
+      icon: Mail,
+      description: t("contactEmailDesc"),
+    },
+    {
+      title: t("contactOffice"),
+      icon: MapPin,
+      description: t("contactOfficeDesc"),
+    },
+    {
+      title: t("contactPhone"),
+      icon: Phone,
+      description: t("contactPhoneDesc"),
+    },
+    {
+      title: t("contactChat"),
+      icon: MessageCircle,
+      description: t("contactChatDesc"),
+    },
+  ];
+
   return (
     <AnimatedSection className="bg-muted py-10 sm:py-16" id="contact">
       <div className="container">
         <div className="mb-6">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Get In Touch</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("contactSectionTitle")}</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-            Contact <span className="text-primary">Our Team.</span>
+            {t("contactHeading")}
           </h2>
         </div>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-stretch">
@@ -91,7 +94,7 @@ export default function Contact() {
             >
               <Image
                 src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=900&q=80"
-                alt="Contact our team"
+                alt={t("contactSectionTitle")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-[1.02]"
@@ -115,7 +118,7 @@ export default function Contact() {
             >
               <Link href="/">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                  <Button size="lg">Send Us a Message</Button>
+                  <Button size="lg">{t("contactButton")}</Button>
                 </motion.div>
               </Link>
             </motion.div>

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import { animations } from "@/lib/animation";
+import { useTranslations } from "next-intl";
 
 const faqItems = [
   {
@@ -24,25 +25,25 @@ const faqItems = [
     id: "faq-3",
     question: "Do you offer emergency AC repair services?",
     answer:
-      "Yes, we provide emergency repair services for urgent AC issues. Our team is available to handle breakdowns and restore your comfort as quickly as possible.",
+      "Yes, we provide emergency repair services for urgent AC issues across Bangladesh. Our team is available for same-day service in Dhaka and surrounding areas.",
   },
   {
     id: "faq-4",
     question: "What brands of AC units do you service?",
     answer:
-      "We service all major brands of air conditioning units including Daikin, Carrier, LG, Samsung, Mitsubishi, and more. Our technicians are trained to work with a wide range of systems.",
+      "We service all major brands including Samsung, LG, Daikin, Gree, Carrier, Mitsubishi, General, Walton, and Vision. Our technicians are trained to handle a wide range of systems.",
   },
   {
     id: "faq-5",
     question: "How long does a typical AC installation take?",
     answer:
-      "A standard AC installation typically takes 4–8 hours depending on the complexity of the job, the type of unit, and any necessary modifications to your existing ductwork or electrical systems.",
+      "A standard split AC installation typically takes 3-5 hours. Window AC installation takes 1-2 hours. Complex installations involving ductwork or electrical upgrades may take longer.",
   },
   {
     id: "faq-6",
-    question: "Are your technicians certified and insured?",
+    question: "Are your technicians certified?",
     answer:
-      "Yes, all our technicians are fully certified, licensed, and insured. They undergo regular training to stay updated with the latest industry standards and technologies.",
+      "Yes, all our technicians are fully certified and undergo regular training to stay updated with the latest HVAC technologies and industry standards.",
   },
 ];
 
@@ -140,6 +141,7 @@ function FaqImage() {
 }
 
 export default function Faq() {
+  const t = useTranslations("home");
   const [openValue, setOpenValue] = useState(faqItems[0].id);
 
   return (
@@ -148,7 +150,7 @@ export default function Faq() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
           <div className="flex flex-col justify-center">
             <div className="mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Common Questions</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("commonQuestions")}</span>
               <h2 className="mt-1 font-sans text-2xl font-extrabold text-foreground md:text-3xl">
                 Frequently Asked <span className="text-primary">Questions.</span>
               </h2>

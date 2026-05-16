@@ -1,0 +1,17 @@
+{
+  "services": {
+    "pageTitle": "Our Services",
+    "pageDescription": "Professional AC installation, repair, maintenance, and duct cleaning services across Bangladesh.",
+    "heroTitle": "Premium HVAC Services",
+    "heroSub": "Expert installation, repair, and maintenance by certified technicians across Bangladesh.",
+    "bookService": "Book a Service",
+    "learnMore": "Learn More",
+    "allServices": "All Services",
+    "noServices": "No services found",
+    "resultCount": "{count} services available",
+    "bookNow": "Book Now",
+    "contactUs": "Contact Us",
+    "bookingsCompleted": "{count} bookings completed",
+    "reviewsCount": "({count} reviews)"
+  }
+}

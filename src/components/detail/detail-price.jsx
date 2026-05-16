@@ -1,13 +1,15 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import PriceFormat from "../ui/price-format";
 
 export function DetailPrice({ mode = "product", ...props }) {
+  const t = useTranslations("common");
   if (mode === "service") {
     const { basePrice, priceType, showLabel } = props;
 
     const formatPrice = (price, priceType) => {
-      if (priceType === "quote") return "Quote Based";
+      if (priceType === "quote") return t("quoteBased");
       if (priceType === "hourly") return `৳${price}/hr`;
       return `৳${price?.toLocaleString()}`;
     };
@@ -17,9 +19,9 @@ export function DetailPrice({ mode = "product", ...props }) {
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-bold text-foreground">{formatPrice(basePrice, priceType)}</span>
           {showLabel && priceType !== "quote" && priceType !== "hourly" && (
-            <span className="text-sm text-muted-foreground">Starting Price</span>
+            <span className="text-sm text-muted-foreground">{t("startingPrice")}</span>
           )}
-          {priceType === "hourly" && <span className="text-sm text-muted-foreground">Hourly Rate</span>}
+          {priceType === "hourly" && <span className="text-sm text-muted-foreground">{t("hourlyRate")}</span>}
         </div>
       </div>
     );

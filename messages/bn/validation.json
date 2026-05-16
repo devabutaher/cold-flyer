@@ -1,0 +1,17 @@
+{
+  "validation": {
+    "required": "এই ক্ষেত্রটি প্রয়োজনীয়",
+    "invalidEmail": "অবৈধ ইমেইল ঠিকানা",
+    "invalidPhone": "অবৈধ ফোন নম্বর",
+    "passwordMin": "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে",
+    "passwordMax": "পাসওয়ার্ড ৬৪ অক্ষরের বেশি হতে পারবে না",
+    "passwordMatch": "পাসওয়ার্ড মিলছে না",
+    "invalidUrl": "অবৈধ URL",
+    "invalidNumber": "একটি বৈধ নম্বর দিন",
+    "minValue": "মান কমপক্ষে {min} হতে হবে",
+    "maxValue": "মান {max} এর বেশি হতে পারবে না",
+    "invalidPrice": "একটি বৈধ মূল্য দিন",
+    "invalidSku": "অবৈধ SKU ফরম্যাট",
+    "requiredField": "{field} প্রয়োজনীয়"
+  }
+}

@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
-import { projects } from "@/data/projects-data";
+import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { animations, staggerItem } from "@/lib/animation";
 import { ArrowRight } from "lucide-react";
@@ -49,21 +50,28 @@ function PortfolioItem({ project, index, isLarge = false }) {
 }
 
 export default function Portfolio() {
+  const t = useTranslations("home");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const projects = getData("projects", locale);
+
+  if (!projects?.length) return null;
+
   return (
     <AnimatedSection className="py-16 bg-card" id="portfolio">
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Precision Portfolio</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("precisionPortfolio")}</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-              Recent <span className="text-primary">Works.</span>
+              {t("recent")} <span className="text-primary">{t("works")}</span>
             </h2>
           </div>
           <Link
             href={"/services"}
             className="inline-flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all duration-200"
           >
-            Learn More <ArrowRight size={14} className="transition-transform hover:translate-x-1" />
+            {tc("learnMore")} <ArrowRight size={14} className="transition-transform hover:translate-x-1" />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

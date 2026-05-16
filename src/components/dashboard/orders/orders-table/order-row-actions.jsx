@@ -26,8 +26,8 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
   const [showCancel, setShowCancel] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
 
-  const canPay = order.paymentStatus !== "paid" && order.status !== "cancelled";
-  const canCancel = order.paymentStatus !== "paid" && order.status !== "cancelled";
+  const canPay = order.paymentMethod !== "cod" && order.paymentStatus !== "paid" && order.status !== "cancelled";
+  const canCancel = order.paymentMethod !== "cod" && order.paymentStatus !== "paid" && order.status !== "cancelled";
   const isPaying = payingOrderId === order._id;
 
   const handleConfirmCancel = async (e) => {

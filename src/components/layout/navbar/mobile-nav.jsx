@@ -1,11 +1,12 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import { UserDropdown } from "@/components/auth/user-dropdown";
 import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
 import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
-import { mainNavLinks, staticLinks } from "@/data/nav-links";
+import { getData } from "@/data";
 import { cn } from "@/lib/utils";
 import { animations } from "@/lib/animation";
 import { MenuIcon, XIcon } from "lucide-react";
@@ -14,6 +15,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NavSearch } from "./nav-search";
 
 export function MobileNav() {
+  const t = useTranslations("common");
+  const locale = useLocale();
+  const mainNavLinks = getData("mainNavLinks", locale);
+  const staticLinks = getData("staticLinks", locale);
   const [open, setOpen] = useState(false);
   const { backendUser } = useAuth();
 
@@ -26,7 +31,7 @@ export function MobileNav() {
         <Button
           aria-controls="mobile-menu"
           aria-expanded={open}
-          aria-label="Toggle menu"
+          aria-label={t("toggleMenu")}
           className="lg:hidden"
           onClick={() => setOpen(!open)}
           size="icon"
@@ -110,7 +115,7 @@ export function MobileNav() {
                     </motion.div>
                   ))}
                   <motion.div className="space-y-2" variants={animations.entrance.fadeUp}>
-                    <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Pages</span>
+                    <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{t("pages")}</span>
                     <div className="grid gap-1">
                       {staticLinks.map((link) => (
                         <LinkItem

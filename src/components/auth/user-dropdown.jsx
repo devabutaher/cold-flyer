@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { BadgeCheckIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -17,6 +18,8 @@ import { useAuth } from "@/components/providers";
 import { useRouter } from "next/navigation";
 
 export function UserDropdown() {
+  const t = useTranslations("common");
+  const tn = useTranslations("nav");
   const { backendUser, logOut } = useAuth();
   const router = useRouter();
 
@@ -45,13 +48,13 @@ export function UserDropdown() {
           <Link href="/dashboard/profile" passHref>
             <DropdownMenuItem className="cursor-pointer">
               <BadgeCheckIcon className="mr-2" />
-              Profile
+              {t("profile")}
             </DropdownMenuItem>
           </Link>
           <Link href="/dashboard/orders" passHref>
             <DropdownMenuItem className="cursor-pointer">
               <CreditCardIcon className="mr-2" />
-              Orders
+              {t("orders")}
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
@@ -59,7 +62,7 @@ export function UserDropdown() {
         <button className="w-full" onClick={handleLogOut}>
           <DropdownMenuItem>
             <LogOutIcon className="mr-2" />
-            Sign Out
+            {tn("signOut")}
           </DropdownMenuItem>
         </button>
       </DropdownMenuContent>

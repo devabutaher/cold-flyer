@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "notFoundTitle": "Whoops! Something went wrong",
+    "notFoundDesc": "The page you're looking for doesn't exist or has been moved.",
+    "serverError": "Server Error",
+    "serverErrorDesc": "Something went wrong on our end. Please try again later.",
+    "loadFailed": "Failed to load data",
+    "loadFailedDesc": "Could not load the requested information. Please try again.",
+    "productsLoadFailed": "Failed to load products",
+    "servicesLoadFailed": "Failed to load services",
+    "retry": "Try Again",
+    "goHome": "Go Home"
+  }
+}

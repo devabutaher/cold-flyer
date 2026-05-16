@@ -72,7 +72,7 @@ export default function ProductCarousel({ title, tag, items, catalogLabel, catal
           </div>
         </div>
 
-        <div className="embla" ref={emblaRef}>
+        <div className="embla relative" ref={emblaRef}>
           <div className="embla__container">
             {items.map((item, index) => (
               <div key={item._id ?? item.id} className="embla__slide basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">

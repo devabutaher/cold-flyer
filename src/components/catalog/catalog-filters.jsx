@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 import FilterDropdown from "@/components/ui/filter-dropdown";
-import { sortOptions as defaultSortOptions } from "@/data/filtering-options";
 import { ListFilter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { NavSearch } from "../layout/navbar/nav-search";
@@ -13,6 +13,8 @@ const snakeCase = (str) =>
     .replace(/[\s-]+/g, "_")
     .replace(/_+/g, "_");
 
+const defaultSortOptions = ["All Products", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular", "Newest"];
+
 export function CatalogFilters({
   type = "items",
   searchComponent: SearchComponent,
@@ -21,6 +23,7 @@ export function CatalogFilters({
   defaultSort = "",
   filterOptions = [],
 }) {
+  const t = useTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -62,9 +65,9 @@ export function CatalogFilters({
     const paramKey = key.toLowerCase();
 
     let defaultValue = defaultSort;
-    if (key === "Category") defaultValue = "All Categories";
-    if (key === "Brand") defaultValue = "All Brands";
-    if (key === "ServiceType") defaultValue = "All Types";
+    if (key === "Category") defaultValue = t("allCategories");
+    if (key === "Brand") defaultValue = t("allBrands");
+    if (key === "ServiceType") defaultValue = t("allTypes");
     if (key === "Sort") defaultValue = defaultSort || sortOptions[0] || "";
 
     const filter = filterOptions.find((f) => f.key === key);
@@ -76,11 +79,11 @@ export function CatalogFilters({
 
     if (
       value === defaultValue ||
-      value === "All" ||
-      value === "All Products" ||
-      value === "All Categories" ||
-      value === "All Brands" ||
-      value === "All Types"
+      value === t("all") ||
+      value === t("allProducts") ||
+      value === t("allCategories") ||
+      value === t("allBrands") ||
+      value === t("allTypes")
     ) {
       params.delete(paramKey);
     } else {
@@ -98,7 +101,7 @@ export function CatalogFilters({
     <div className="py-3 flex flex-col lg:flex-row items-start lg:items-center gap-3">
       <div className="flex items-center gap-2 text-muted-foreground">
         <ListFilter size={15} strokeWidth={2.5} />
-        <span className="text-[10px] font-black uppercase tracking-widest">Filters:</span>
+        <span className="text-[10px] font-black uppercase tracking-widest">{t("filters")}</span>
       </div>
 
       <div className="w-full lg:w-max lg:order-2 lg:ml-auto shrink-0">
@@ -111,7 +114,7 @@ export function CatalogFilters({
         {filterOptions.map((filter) => (
           <FilterDropdown
             key={filter.key}
-            value={getCurrentValue(filter) || filter.defaultValue || `All ${filter.key}s`}
+            value={getCurrentValue(filter) || filter.defaultValue || `${t("all")} ${filter.key}s`}
             options={filter.options}
             onChange={(val) => handleFilterChange(filter.key, val)}
           />

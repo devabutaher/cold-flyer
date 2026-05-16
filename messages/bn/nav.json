@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "allProducts": "সব পণ্য",
+    "acUnits": "এসি ইউনিট",
+    "acParts": "এসি যন্ত্রাংশ",
+    "installation": "ইনস্টলেশন",
+    "maintenance": "মেইনটেন্যান্স",
+    "support": "সাপোর্ট",
+    "services": "সেবা",
+    "about": "আমাদের সম্পর্কে",
+    "terms": "শর্তাবলী",
+    "products": "পণ্য",
+    "cart": "কার্ট",
+    "signIn": "সাইন ইন",
+    "signUp": "নিবন্ধন",
+    "myAccount": "আমার অ্যাকাউন্ট",
+    "myOrders": "আমার অর্ডার",
+    "myBookings": "আমার বুকিং",
+    "dashboard": "ড্যাশবোর্ড",
+    "signOut": "সাইন আউট",
+    "adminPanel": "অ্যাডমিন প্যানেল"
+  }
+}

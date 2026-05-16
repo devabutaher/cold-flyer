@@ -16,9 +16,15 @@ import {
   Truck,
   Warehouse,
 } from "lucide-react";
-import { shippingOptions, process, returns, restrictions } from "@/data/shipping-data";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 
 export default function ShippingPage() {
+  const locale = useLocale();
+  const shippingOptions = getData("shippingOptions", locale);
+  const process = getData("process", locale);
+  const returns = getData("returns", locale);
+  const restrictions = getData("restrictions", locale);
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}

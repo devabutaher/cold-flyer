@@ -1,22 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCounter } from "@/hooks/use-counter";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { animations } from "@/lib/animation";
-
-const stats = [
-  {
-    end: 15000,
-    suffix: "+",
-    label: "Units Installed",
-    format: (n) => (n >= 1000 ? Math.floor(n / 1000) + "k" : n),
-  },
-  { end: 99, suffix: "%", label: "Uptime Guarantee", format: (n) => n },
-  { end: 24, suffix: "h", label: "Response Time", format: (n) => n },
-  { end: 10, suffix: "yr", label: "Standard Warranty", format: (n) => n },
-];
 
 function Counter({ end, suffix, label, format, started, index }) {
   const val = useCounter({ end, started });
@@ -46,8 +35,16 @@ function Counter({ end, suffix, label, format, started, index }) {
 }
 
 export default function StatsStrip() {
+  const t = useTranslations("home");
   const ref = useRef(null);
   const [started, setStarted] = useState(false);
+
+  const stats = [
+    { end: 15000, suffix: "+", label: t("unitsInstalled"), format: (n) => (n >= 1000 ? Math.floor(n / 1000) + "k" : n) },
+    { end: 99, suffix: "%", label: t("uptimeGuarantee"), format: (n) => n },
+    { end: 24, suffix: "h", label: t("responseTime"), format: (n) => n },
+    { end: 10, suffix: "yr", label: t("standardWarranty"), format: (n) => n },
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(

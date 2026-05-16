@@ -1,6 +1,6 @@
 "use client";
 
-import { reviews } from "@/data/reviews-data";
+import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
@@ -8,6 +8,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { animations, staggerItem } from "@/lib/animation";
+import { useTranslations, useLocale } from "next-intl";
 
 function Stars({ count }) {
   return (
@@ -53,6 +54,9 @@ function TestimonialCard({ review, index }) {
 }
 
 export default function Testimonials() {
+  const t = useTranslations("home");
+  const locale = useLocale();
+  const reviews = getData("reviews", locale);
   const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ align: "start" }, [
     Autoplay({ delay: 4500, stopOnInteraction: true }),
   ]);
@@ -64,69 +68,43 @@ export default function Testimonials() {
       <div className="container">
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Client Stories</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("whatCustomersSay")}</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-              Words of <span className="text-primary">Satisfaction.</span>
+              {t("testimonialsTitle")}
             </h2>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="secondary" onClick={() => emblaApi?.scrollPrev()}>
-                <ChevronLeft size={16} />
-              </Button>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="secondary" onClick={() => emblaApi?.scrollNext()}>
-                <ChevronRight size={16} />
-              </Button>
-            </motion.div>
           </div>
         </div>
 
-        <div className="embla" ref={emblaRef}>
-          <div className="embla__container gap-4 px-4" style={{ minHeight: "240px" }}>
-            {reviews.map((r, i) => (
-              <div key={r.name} className="embla__slide flex-[0_0_90%] sm:flex-[0_0_48%] lg:flex-[0_0_31%] shrink-0">
-                <TestimonialCard review={r} index={i} />
+        <div className="overflow-hidden relative" ref={emblaRef}>
+          <div className="flex gap-5">
+            {reviews.map((review, i) => (
+              <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%]">
+                <TestimonialCard review={review} index={i} />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Progress bar indicator */}
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <div className="flex items-center gap-3 w-full max-w-md">
-            <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
-              {String(selectedIndex + 1).padStart(2, "0")}
-            </span>
-            <div className="relative flex-1 h-1 rounded-full bg-border overflow-hidden">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-primary rounded-full"
-                initial={{ width: `${progress}%` }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              />
-            </div>
-            <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
-              {String(reviews.length).padStart(2, "0")}
-            </span>
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => emblaApi?.scrollPrev()}
+            aria-label="Previous review"
+          >
+            <ChevronLeft size={18} />
+          </Button>
+          <div className="h-1.5 w-40 bg-secondary rounded-full overflow-hidden">
+            <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
           </div>
-
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-2">
-            {reviews.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => emblaApi?.scrollTo(i)}
-                className={`rounded-full transition-all duration-300 ${
-                  i === selectedIndex ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-border hover:bg-muted-foreground"
-                }`}
-                aria-label={`Go to review ${i + 1}`}
-              />
-            ))}
-          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => emblaApi?.scrollNext()}
+            aria-label="Next review"
+          >
+            <ChevronRight size={18} />
+          </Button>
         </div>
       </div>
     </AnimatedSection>

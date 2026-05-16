@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { NavSearch } from "./nav-search";
 import { NavButtons } from "./shared";
+import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 
 function CartIcon() {
   const { itemCount } = useCart();
@@ -70,6 +71,7 @@ export default function Navbar() {
           <Suspense fallback={<div className="w-48 h-8 bg-muted animate-pulse rounded" />}>
             <NavSearch />
           </Suspense>
+          <LocaleSwitcher />
           <CartIcon />
           <NavButtons />
         </div>

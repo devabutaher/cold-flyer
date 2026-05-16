@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { apiGet } from "@/lib/api-client";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CheckCircle, Wrench } from "lucide-react";
@@ -11,6 +12,7 @@ import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
 
 export default function ServicesCarousel() {
+  const t = useTranslations("home");
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,10 +41,10 @@ export default function ServicesCarousel() {
   return (
     <AnimatedSection className="container pb-10">
       <ProductCarousel
-        title="Our Best Services"
-        tag="Professional Solutions"
+        title={t("ourBestServices")}
+        tag={t("professionalSolutions")}
         items={services}
-        catalogLabel="View All Services"
+        catalogLabel={t("viewAllServices")}
         catalogLink="/services"
         renderCard={(service, index) => <ServiceCard service={service} index={index} />}
       />
@@ -51,6 +53,7 @@ export default function ServicesCarousel() {
 }
 
 function ServiceCard({ service, index }) {
+  const tc = useTranslations("common");
   const src = service.image || service.images?.[0]?.url;
 
   return (
@@ -106,7 +109,7 @@ function ServiceCard({ service, index }) {
             </motion.div>
           ))}
         </div>
-        <Button className="w-full">Book Now</Button>
+        <Button className="w-full">{tc("bookNow")}</Button>
       </div>
     </motion.div>
   );

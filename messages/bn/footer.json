@@ -1,0 +1,21 @@
+{
+  "footer": {
+    "services": "সেবা",
+    "company": "কোম্পানি",
+    "legal": "আইনি",
+    "newsletter": "নিউজলেটার",
+    "residentialCooling": "রেসিডেনশিয়াল কুলিং",
+    "commercialHvac": "কমার্শিয়াল HVAC",
+    "ductCleaning": "ডাক্ট ক্লিনিং",
+    "smartThermostats": "স্মার্ট থার্মোস্ট্যাট",
+    "aboutUs": "আমাদের সম্পর্কে",
+    "careers": "ক্যারিয়ার",
+    "faq": "সাধারণ জিজ্ঞাসা",
+    "contact": "যোগাযোগ",
+    "privacyPolicy": "প্রাইভেসি পলিসি",
+    "termsConditions": "শর্তাবলী",
+    "shippingReturns": "শিপিং ও রিটার্ন",
+    "emailPlaceholder": "ইমেইল ঠিকানা",
+    "followUs": "আমাদের অনুসরণ করুন"
+  }
+}

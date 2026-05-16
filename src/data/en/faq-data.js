@@ -25,8 +25,8 @@ export const quickHelpItems = [
 
 export const contactInfo = {
   email: "support@coldflyer.com",
-  phone: "1-800-COLD-FLYER",
-  hours: "Mon-Fri, 9AM-6PM EST",
+  phone: "09612-345678",
+  hours: "Sat-Thu, 9AM-8PM",
 };
 
 export const categories = [
@@ -40,11 +40,11 @@ export const categories = [
       },
       {
         q: "Do you provide installation services?",
-        a: "Yes, we provide professional installation services through our certified network of HVAC technicians. Our team handles projects of all sizes, from small commercial setups to large industrial installations. Request a quote for installation assistance.",
+        a: "Yes, we provide professional installation services through our certified network of HVAC technicians across Bangladesh. Our team handles projects of all sizes, from small residential setups to large commercial installations in Dhaka, Chattogram, and beyond. Request a quote for installation assistance.",
       },
       {
         q: "What brands do you work with?",
-        a: "We partner with industry-leading manufacturers including Carrier, Trane, LG, Samsung, Daikin, and Mitsubishi. Our product selection ensures you find the perfect solution for any requirement and budget.",
+        a: "We partner with industry-leading manufacturers including Daikin, LG, Samsung, Carrier, Mitsubishi, General, Walton, and Minister. Our product selection ensures you find the perfect solution for any requirement and budget.",
       },
       {
         q: "Can I get a custom HVAC solution?",
@@ -58,15 +58,15 @@ export const categories = [
     questions: [
       {
         q: "What payment methods do you accept?",
-        a: "We accept major credit cards (Visa, MasterCard, American Express), bank wire transfers, and corporate purchase orders for verified businesses. All transactions are secured with industry-standard encryption.",
+        a: "We accept major credit cards (Visa, MasterCard, American Express), bKash, Nagad, bank wire transfers, and corporate purchase orders for verified businesses. All transactions are secured with industry-standard encryption.",
       },
       {
         q: "Do you offer financing options?",
-        a: "Yes, we offer flexible financing options through our lending partners. Payment plans are available for qualified businesses with competitive rates. Contact our sales team for more information.",
+        a: "Yes, we offer flexible EMI financing options through our partner banks in Bangladesh. Payment plans are available for qualified customers with competitive rates. Contact our sales team for more information.",
       },
       {
         q: "How do I place a bulk order?",
-        a: "For bulk orders, please contact our B2B sales team directly at b2b@coldflyer.com or call 1-800-COLD-FLYER. We offer volume discounts and dedicated account managers for large orders.",
+        a: "For bulk orders, please contact our B2B sales team directly at b2b@coldflyer.com or call 09612-345678. We offer volume discounts and dedicated account managers for large orders.",
       },
       {
         q: "Can I get a quote before ordering?",
@@ -80,19 +80,19 @@ export const categories = [
     questions: [
       {
         q: "How long does shipping take?",
-        a: "Shipping times vary by product and location. Standard shipping takes 7-14 business days, express shipping 3-5 business days. Heavy equipment may require additional time. Track your order for real-time updates.",
+        a: "Shipping times vary by product and location. Standard shipping takes 7-14 business days within Bangladesh, express shipping 2-4 business days. Heavy equipment may require additional time. Track your order for real-time updates.",
       },
       {
-        q: "Do you ship internationally?",
-        a: "Yes, we ship globally. International orders may require additional documentation and are subject to customs regulations. Contact us for specific international shipping quotes and requirements.",
+        q: "Do you deliver outside Dhaka?",
+        a: "Yes, we deliver to all 64 districts of Bangladesh. International shipping is also available for bulk orders. Contact us for specific shipping quotes for your location.",
       },
       {
         q: "How much is shipping?",
-        a: "Shipping costs are calculated at checkout based on weight, dimensions, and destination. Orders over $500 qualify for free standard shipping. Freight shipping is available for large equipment.",
+        a: "Shipping costs are calculated at checkout based on weight, dimensions, and destination. Orders over BDT 25,000 qualify for free standard shipping within Bangladesh. Freight shipping is available for large equipment.",
       },
       {
         q: "Can I track my order?",
-        a: "Yes, all orders include tracking information. You'll receive tracking details via email once your order ships. Track your package through our website or the carrier's portal.",
+        a: "Yes, all orders include tracking information. You'll receive tracking details via SMS and email once your order ships. Track your package through our website or the carrier's portal.",
       },
     ],
   },
@@ -102,7 +102,7 @@ export const categories = [
     questions: [
       {
         q: "What is your return policy?",
-        a: "We offer a 30-day return policy for unused items in original packaging. Custom orders and installed items are not returnable. Contact our support team to initiate a return.",
+        a: "We offer a 30-day return policy for unused items in original packaging. Custom orders and installed items are not returnable. Contact our support team to initiate a return. Refunds are processed within 7 business days.",
       },
       {
         q: "How do warranties work?",
@@ -110,11 +110,11 @@ export const categories = [
       },
       {
         q: "How do I file a warranty claim?",
-        a: "To file a warranty claim, gather your purchase receipt and product serial number, then contact our support team. We'll guide you through the claims process and arrange repairs or replacements.",
+        a: "To file a warranty claim, gather your purchase receipt and product serial number, then contact our support team. We'll guide you through the claims process and arrange repairs or replacements through our nationwide service network.",
       },
       {
         q: "Who handles repairs?",
-        a: "Repairs are handled by our certified service network. Create a support ticket through your account or contact our service department directly for assistance with repairs.",
+        a: "Repairs are handled by our certified service network covering Dhaka, Chattogram, Sylhet, Khulna, Rajshahi, and other major cities. Create a support ticket through your account or contact our service department directly.",
       },
     ],
   },
@@ -132,7 +132,7 @@ export const categories = [
       },
       {
         q: "How can I contact support?",
-        a: "Reach our support team via email at support@coldflyer.com, call 1-800-COLD-FLYER, or use the live chat feature. We're available Monday-Friday, 9AM-6PM.",
+        a: "Reach our support team via email at support@coldflyer.com, call 09612-345678, or use the live chat feature. We're available Saturday-Thursday, 9AM-8PM. Our support team speaks both English and Bengali.",
       },
       {
         q: "Is there a loyalty program?",

@@ -48,7 +48,7 @@ export const dataTypes = [
     items: [
       { name: "Order History", description: "For purchase records" },
       { name: "Payment Information", description: "For processing transactions" },
-      { name: "Shipping Details", description: "For delivery coordination" },
+      { name: "Shipping Details", description: "For delivery coordination across Bangladesh" },
       { name: "Communication History", description: "For customer support" },
     ],
   },

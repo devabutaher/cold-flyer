@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { apiGet } from "@/lib/api-client";
 import { PackageSearch } from "lucide-react";
 import { CatalogCard } from "@/components/catalog/catalog-card";
@@ -25,6 +26,7 @@ function ServiceCardSkeleton() {
 }
 
 export default function ServicesPageContent() {
+  const t = useTranslations("common");
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,7 +66,7 @@ export default function ServicesPageContent() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <PackageSearch size={48} className="text-muted-foreground mb-4" />
-        <h3 className="font-sans font-bold text-lg">No services found</h3>
+        <h3 className="font-sans font-bold text-lg">{t("noServicesFound")}</h3>
       </div>
     );
   }
@@ -72,7 +74,7 @@ export default function ServicesPageContent() {
   return (
     <div>
       <p className="text-xs text-muted-foreground mb-4 font-medium">
-        {services.length} service{services.length !== 1 ? "s" : ""} found
+        {t("serviceCount", { count: services.length })}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {services.map((service) => (

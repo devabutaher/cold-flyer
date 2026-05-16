@@ -1,11 +1,12 @@
 "use client";
 
-import { footerColumns, footerLinks } from "@/data/footer-links";
+import { getData } from "@/data";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 function SocialLink({ href, children }) {
   return (
@@ -50,6 +51,7 @@ function FooterLink({ href, children }) {
 }
 
 function NewsletterForm() {
+  const t = useTranslations("home");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -73,7 +75,7 @@ function NewsletterForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email address"
+          placeholder={t("subscribePlaceholder")}
           required
           className="flex-1 min-w-0 bg-white/10 border-none outline-none text-sm text-white placeholder:text-neutral-500 px-3 py-2.5 transition-all duration-200 focus:bg-white/15"
         />
@@ -101,6 +103,11 @@ function NewsletterForm() {
 }
 
 export default function Footer() {
+  const t = useTranslations();
+  const locale = useLocale();
+  const footerColumns = getData("footerColumns", locale);
+  const footerLinks = getData("footerLinks", locale);
+
   return (
     <footer className="bg-neutral-900 text-neutral-100">
       <div className="container py-14">
@@ -127,7 +134,7 @@ export default function Footer() {
               </h1>
             </Link>
             <p className="text-neutral-400 text-sm leading-relaxed mb-5">
-              Leading the industry in precision climate engineering and sustainable HVAC solutions since 1998.
+              {t("home.brandTagline")}
             </p>
             <div className="flex gap-3">
               {[
@@ -182,9 +189,9 @@ export default function Footer() {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, delay: 0.25 }}
           >
-            <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">Newsletter</h4>
+            <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">{t("footer.newsletter")}</h4>
             <p className="text-muted-foreground text-sm mb-4">
-              Stay cool with our latest efficiency tips and product releases.
+              {t("home.newsletterDescription")}
             </p>
             <NewsletterForm />
           </motion.div>
@@ -197,7 +204,7 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <span>© 2025 ColdFlyer Precision Climate. All rights reserved.</span>
+          <span>{t("common.copyright")}</span>
           <div className="flex gap-4">
             {footerLinks.quickLinks.map((link) => (
               <Link key={link.label} href={link.href} className="hover:text-white transition-colors relative group">

@@ -9,6 +9,7 @@ import { Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   return (
@@ -54,6 +55,7 @@ function ThemeToggle() {
 }
 
 export function NavButtons({ onAuthenticated } = {}) {
+  const t = useTranslations("nav");
   const { backendUser, loading } = useAuth();
 
   if (loading) {
@@ -70,11 +72,11 @@ export function NavButtons({ onAuthenticated } = {}) {
       {backendUser ? (
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Link href={"/dashboard"} className="w-full lg:w-auto">
-            <Button className="w-full lg:w-auto">Dashboard</Button>
+            <Button className="w-full lg:w-auto">{t("dashboard")}</Button>
           </Link>
           <Link href={"/my-bookings"} className="w-full lg:w-auto">
             <Button variant="outline" className="w-full lg:w-auto">
-              My Bookings
+              {t("myBookings")}
             </Button>
           </Link>
           <ThemeToggle />
@@ -87,12 +89,12 @@ export function NavButtons({ onAuthenticated } = {}) {
           <ThemeToggle />
           <Link href={"/auth"} className="w-full lg:w-auto">
             <Button variant="destructive" className="w-full lg:w-auto" onClick={onAuthenticated}>
-              Sign In
+              {t("signIn")}
             </Button>
           </Link>
           <Link href={"/auth"} className="w-full lg:w-auto">
             <Button className="w-full lg:w-auto" onClick={onAuthenticated}>
-              Register
+              {t("signUp")}
             </Button>
           </Link>
         </div>

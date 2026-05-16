@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -41,6 +42,7 @@ const ImageContainer = ({
   image,
   showImageControls,
 }) => {
+  const t = useTranslations("common");
   const hasImage = image?.url;
 
   return (
@@ -74,8 +76,8 @@ const ImageContainer = ({
         <DialogPortal>
           <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
           <DialogContent className="bg-background fixed inset-0 z-50 flex flex-col items-center justify-center p-0">
-            <DialogTitle className="sr-only">{image.title || "Image"}</DialogTitle>
-            <DialogDescription className="sr-only">{image.title || "Image"}</DialogDescription>
+            <DialogTitle className="sr-only">{image.title || t("image")}</DialogTitle>
+            <DialogDescription className="sr-only">{image.title || t("image")}</DialogDescription>
 
             <div className="relative flex h-screen w-screen items-center justify-center">
               <TransformWrapper initialScale={1} initialPositionX={0} initialPositionY={0}>
@@ -85,7 +87,7 @@ const ImageContainer = ({
                       {hasImage && image?.url ? (
                         <Image
                           src={image.url}
-                          alt={image.title || "Full size"}
+                          alt={image.title || t("fullSize")}
                           width={1920}
                           height={1920}
                           quality={95}
@@ -104,14 +106,14 @@ const ImageContainer = ({
                         <button
                           onClick={() => zoomOut()}
                           className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                          aria-label="Zoom out"
+                          aria-label={t("zoomOut")}
                         >
                           <MinusCircle className="size-6" />
                         </button>
                         <button
                           onClick={() => zoomIn()}
                           className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                          aria-label="Zoom in"
+                          aria-label={t("zoomIn")}
                         >
                           <PlusCircle className="size-6" />
                         </button>
@@ -123,7 +125,7 @@ const ImageContainer = ({
               <DialogClose asChild>
                 <button
                   className="absolute top-4 right-4 z-10 cursor-pointer rounded-full border bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                  aria-label="Close"
+                  aria-label={t("close")}
                 >
                   <X className="size-6" />
                 </button>
@@ -137,6 +139,7 @@ const ImageContainer = ({
 };
 
 const Thumb = (props) => {
+  const t = useTranslations("common");
   const { imgUrl, index, onClick, selected, title } = props;
   const hasImage = imgUrl;
 
@@ -160,7 +163,7 @@ const Thumb = (props) => {
           {hasImage ? (
             <Image
               src={imgUrl}
-              alt={title || `Thumbnail ${index + 1}`}
+              alt={title || t("thumbnailN", { n: index + 1 })}
               fill
               sizes="100px"
               className={cn("h-full w-full object-cover")}
@@ -193,6 +196,7 @@ const ImageCarousel = ({
   thumbPosition = "bottom",
   ...props
 }) => {
+  const t = useTranslations("common");
   const isControlled = controlledIndex !== undefined;
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -321,7 +325,7 @@ const ImageCarousel = ({
     >
       {showThumbs && thumbPosition === "top" && (
         <div className="mb-4">
-          <div className="overflow-hidden" ref={emblaThumbsRef}>
+          <div className="overflow-hidden relative" ref={emblaThumbsRef}>
             <div className="thumbs-horizontal group -ml-3 flex">
               {images?.map((image, index) => (
                 <Thumb
@@ -344,7 +348,7 @@ const ImageCarousel = ({
         )}
         aria-label="Image carousel controls"
       >
-        <div ref={emblaRef} className="overflow-hidden rounded-lg">
+        <div ref={emblaRef} className="overflow-hidden rounded-lg relative">
           <div className="-ml-4 flex">
             {images?.map((image, index) => (
               <div
@@ -355,7 +359,7 @@ const ImageCarousel = ({
               >
                 <ImageContainer
                   image={image}
-                  alt={`Slide ${index + 1}`}
+                  alt={t("slideN", { n: index + 1 })}
                   fit={imageFit}
                   aspectRatio={aspectRatio}
                   showImageControls={showImageControls}
@@ -377,7 +381,7 @@ const ImageCarousel = ({
               onClick={scrollPrev}
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Previous slide</span>
+              <span className="sr-only">{t("previousSlide")}</span>
             </Button>
 
             <Button
@@ -388,7 +392,7 @@ const ImageCarousel = ({
               onClick={scrollNext}
             >
               <ArrowRight className="h-4 w-4" />
-              <span className="sr-only">Next slide</span>
+              <span className="sr-only">{t("nextSlide")}</span>
             </Button>
           </>
         )}
@@ -397,7 +401,7 @@ const ImageCarousel = ({
         <div className={cn(thumbPosition === "left" || thumbPosition === "right" ? "relative flex-[0_0_20%]" : "mt-4")}>
           <div
             className={cn(
-              "overflow-hidden",
+              "overflow-hidden relative",
               (thumbPosition === "left" || thumbPosition === "right") && "absolute inset-0",
             )}
             ref={emblaThumbsRef}

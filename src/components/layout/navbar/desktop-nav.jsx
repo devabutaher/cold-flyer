@@ -1,3 +1,5 @@
+"use client";
+
 import { LinkItem } from "@/components/layout/navbar/shared";
 import {
   NavigationMenu,
@@ -7,10 +9,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { mainNavLinks, staticLinks } from "@/data/nav-links";
+import { useLocale } from "next-intl";
+import { getData } from "@/data";
 import Link from "next/link";
 
 export function DesktopNav() {
+  const locale = useLocale();
+  const { mainNavLinks, staticLinks } = { mainNavLinks: getData("mainNavLinks", locale), staticLinks: getData("staticLinks", locale) };
   return (
     <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList>

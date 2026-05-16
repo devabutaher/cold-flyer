@@ -5,12 +5,18 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { BRANDS, CATEGORIES, TAGS, WARRANTIES } from "@/data/product-form-constants";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
 
 export function BasicInfoSection({ control }) {
+  const locale = useLocale();
+  const BRANDS = getData("BRANDS", locale);
+  const CATEGORIES = getData("CATEGORIES", locale);
+  const TAGS = getData("TAGS", locale);
+  const WARRANTIES = getData("WARRANTIES", locale);
   return (
     <Card>
       <CardHeader>

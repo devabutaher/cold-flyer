@@ -1,18 +1,17 @@
 "use client";
 
-// https://motion-primitives.com/docs/infinite-slider
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
-
-const announcements = [
-  "🔥 Free AC Checkup for First-Time Customers",
-  "❄️ Up to 25% OFF on AC Installation Services",
-  "🚚 Free Delivery on Orders Over ৳5000",
-  "🛠️ 24/7 Emergency AC Repair Support",
-  "💨 Fast Same-Day AC Servicing Available",
-  "🎉 Summer Offer: Save Big on Split ACs",
-];
+import { useTranslations } from "next-intl";
 
 export function TextSlider() {
+  const t = useTranslations("home.announcements");
+
+  const announcements = [
+    t("freeCheckup"),
+    t("summerDiscount"),
+    t("freeDelivery"),
+  ];
+
   return (
     <div className="border-b border-primary/20 bg-primary py-2 text-white relative z-50">
       <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">

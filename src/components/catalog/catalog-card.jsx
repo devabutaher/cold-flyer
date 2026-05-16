@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/store/cart";
 import { animations, staggerItem, transitionTokens } from "@/lib/animation";
@@ -21,6 +22,7 @@ const TAG_STYLES = {
 };
 
 export function CatalogCard({ item, type = "product", animate = true, index = 0 }) {
+  const t = useTranslations("common");
   const isProduct = type === "product";
   const { addItem } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -33,7 +35,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
   const description = item.description || item.shortDescription;
 
   const formatPrice = (price, priceType) => {
-    if (priceType === "quote") return "Quote Based";
+    if (priceType === "quote") return t("quoteBased");
     if (priceType === "hourly") return `৳${price}/hr`;
     return `৳${price?.toLocaleString()}`;
   };
@@ -46,9 +48,9 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
       const isOutOfStock = item.stock === 0 || !item.stock;
       if (isOutOfStock) return;
       addItem(item, 1);
-      toast.success(`${name} added to cart`);
+      toast.success(t("addedToCart", { name }));
     } else {
-      toast.success(`Booking initiated for ${name}`);
+      toast.success(t("bookingInitiated", { name }));
     }
   };
 
@@ -56,7 +58,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
     e.preventDefault();
     e.stopPropagation();
     setIsWishlisted((prev) => !prev);
-    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+    toast.success(isWishlisted ? t("removedFromWishlist") : t("addedToWishlist"));
   };
 
   const cardContent = (
@@ -66,7 +68,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
           <Badge className={`absolute left-2 top-2 z-10 ${TAG_STYLES[item.tag] || "bg-primary"}`}>{item.tag}</Badge>
         )}
         {!isProduct && item.isFeatured && (
-          <Badge className="absolute left-2 top-2 z-10 bg-primary text-primary-foreground">Featured</Badge>
+          <Badge className="absolute left-2 top-2 z-10 bg-primary text-primary-foreground">{t("featured")}</Badge>
         )}
 
         {/* Wishlist button */}
@@ -75,7 +77,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
           className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
         >
           <motion.div
             animate={isWishlisted ? { scale: [1, 1.3, 1] } : { scale: 1 }}
@@ -152,7 +154,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
               onClick={handleAction}
               disabled={isProduct && (item.stock === 0 || !item.stock)}
             >
-              {isProduct ? <ShoppingCart size={16} /> : "Book"}
+              {isProduct ? <ShoppingCart size={16} /> : t("book")}
             </Button>
           </motion.div>
         </div>

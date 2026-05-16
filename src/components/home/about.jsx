@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { aboutData } from "@/data/about-data";
+import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { animations } from "@/lib/animation";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useTranslations, useLocale } from "next-intl";
 
 function AboutPoint({ point, index }) {
   return (
@@ -36,6 +37,9 @@ function AboutPoint({ point, index }) {
 }
 
 export default function About() {
+  const t = useTranslations("home");
+  const locale = useLocale();
+  const aboutData = getData("aboutData", locale);
   return (
     <AnimatedSection className="py-16 bg-background">
       <div className="container">
@@ -58,7 +62,7 @@ export default function About() {
             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
           </motion.div>
           <div className="order-1 md:order-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Why Choose Us</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("whyChooseUs")}</span>
             <h2 className="font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl text-foreground leading-tight mt-2 mb-6">
               Engineering Comfort with <span className="text-primary">Uncompromising Precision.</span>
             </h2>
@@ -69,7 +73,7 @@ export default function About() {
             </div>
             <Link href={"/about"}>
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Button size="lg">More About Us</Button>
+                <Button size="lg">{t("moreAboutUs")}</Button>
               </motion.div>
             </Link>
           </div>

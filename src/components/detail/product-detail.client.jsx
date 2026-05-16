@@ -5,6 +5,7 @@ import ImageCarousel from "@/components/products/image-carousel";
 import InfoTabs from "@/components/products/info-tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { animations } from "@/lib/animation";
 import { useCart } from "@/store/cart";
@@ -18,6 +19,7 @@ import { DetailPrice } from "./detail-price";
 import { DetailTrustBadges } from "./detail-trust-badges";
 
 export function ProductDetailClient({ product }) {
+  const t = useTranslations("common");
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
@@ -28,7 +30,7 @@ export function ProductDetailClient({ product }) {
   const handleAddToCart = () => {
     if (product && !isOutOfStock) {
       addItem(product, quantity);
-      toast.success(`${quantity} × ${product.name} added to cart`);
+      toast.success(t("addedToCart", { name: `${quantity} × ${product.name}` }));
     }
   };
 
@@ -43,21 +45,21 @@ export function ProductDetailClient({ product }) {
     product.images?.length > 0
       ? product.images.map((img, idx) => ({
           url: img.url,
-          title: `${product.name} - view ${idx + 1}`,
+          title: t("productView", { name: product.name, n: idx + 1 }),
         }))
       : [{ url: "", title: product.name }];
 
   const iconMap = { ShieldCheck, Truck, Tag };
 
   const trustBadges = [
-    { icon: ShieldCheck, text: product.warranty ? `${product.warranty} Warranty` : "Genuine Product" },
-    { icon: Truck, text: "Free Delivery" },
-    { icon: Tag, text: "Best Price" },
+    { icon: ShieldCheck, text: product.warranty ? `${product.warranty} Warranty` : t("genuineProduct") },
+    { icon: Truck, text: t("freeDelivery") },
+    { icon: Tag, text: t("bestPrice") },
   ];
 
   return (
     <div className="bg-background min-h-screen pb-10">
-      <DetailBackButton href="/items" label="Products" />
+      <DetailBackButton href="/items" label={t("products")} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
         <motion.div
@@ -70,7 +72,7 @@ export function ProductDetailClient({ product }) {
           {(product.tag || product.onSale) && (
             <div className="absolute top-2 left-2 z-20">
               <Badge variant={product.tag === "Sale" || product.onSale ? "destructive" : "default"}>
-                {product.tag || "Sale"}
+                {product.tag || t("sale")}
               </Badge>
             </div>
           )}
@@ -92,7 +94,7 @@ export function ProductDetailClient({ product }) {
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">{product.category}</span>
-            <span className="text-xs font-medium text-muted-foreground">SKU: {product.sku}</span>
+            <span className="text-xs font-medium text-muted-foreground">{t("sku")}: {product.sku}</span>
           </div>
 
           <div className="mb-4">
@@ -130,7 +132,7 @@ export function ProductDetailClient({ product }) {
                 isOutOfStock ? "text-destructive" : isLowStock ? "text-amber-600" : "text-green-600",
               )}
             >
-              {isOutOfStock ? "Out of Stock" : isLowStock ? `Only ${product.stock} units left` : "In Stock"}
+              {isOutOfStock ? t("outOfStock") : isLowStock ? t("onlyUnitsLeft", { stock: product.stock }) : t("inStock")}
             </span>
           </motion.div>
 
@@ -141,7 +143,7 @@ export function ProductDetailClient({ product }) {
             transition={{ delay: 0.25 }}
           >
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Quantity</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">{t("quantity")}</p>
               <QuantityInput
                 quantity={quantity}
                 onChange={setQuantity}
@@ -151,7 +153,7 @@ export function ProductDetailClient({ product }) {
               />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Total</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">{t("total")}</p>
               <motion.p
                 className="font-bold text-2xl text-foreground"
                 key={`total-${total}`}
@@ -173,12 +175,12 @@ export function ProductDetailClient({ product }) {
           >
             <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button variant="outline" size="lg" className="w-full" disabled={isOutOfStock} onClick={handleAddToCart}>
-                Add to Cart
+                {t("addToCart")}
               </Button>
             </motion.div>
             <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button size="lg" className="w-full" disabled={isOutOfStock} onClick={handleBuyNow}>
-                Buy Now
+                {t("buyNow")}
               </Button>
             </motion.div>
           </motion.div>
@@ -187,9 +189,9 @@ export function ProductDetailClient({ product }) {
 
           <DetailMetaInfo
             fields={[
-              { label: "Brand", value: product.brand },
-              ...(product.warranty ? [{ label: "Warranty", value: product.warranty }] : []),
-              ...(product.tag ? [{ label: "Tag", value: product.tag }] : []),
+              { label: t("brand"), value: product.brand },
+              ...(product.warranty ? [{ label: t("warranty"), value: product.warranty }] : []),
+              ...(product.tag ? [{ label: t("tag"), value: product.tag }] : []),
             ]}
           />
 

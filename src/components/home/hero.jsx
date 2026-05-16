@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { heroSliderData } from "@/data/hero-slider-data";
+import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight } from "lucide-react";
@@ -10,8 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useTranslations, useLocale } from "next-intl";
 
-function SlideContent({ slide, index }) {
+function SlideContent({ slide, index, t }) {
   return (
     <motion.div
       initial="hidden"
@@ -67,14 +68,14 @@ function SlideContent({ slide, index }) {
         <Link href="/items">
           <Button size="xl" className="group relative overflow-hidden">
             <span className="relative z-10 inline-flex items-center gap-2">
-              Shop Collection <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
+              {t("common.shopCollection")} <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </span>
           </Button>
         </Link>
 
         <Link href="/services">
           <Button size="xl" variant="secondary">
-            Our Services
+            {t("common.ourServices")}
           </Button>
         </Link>
       </motion.div>
@@ -83,6 +84,9 @@ function SlideContent({ slide, index }) {
 }
 
 export default function Hero() {
+  const t = useTranslations();
+  const locale = useLocale();
+  const heroSliderData = getData("heroSliderData", locale);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -102,7 +106,7 @@ export default function Hero() {
       ref={sectionRef}
       className="relative h-[90vh] min-h-175 w-full overflow-hidden bg-neutral-900"
     >
-      <motion.div className="embla h-full" ref={emblaRef} style={{ opacity, scale }}>
+      <motion.div className="embla h-full relative" ref={emblaRef} style={{ opacity, scale }}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
             <div key={i} className="embla__slide relative h-full min-w-0 flex-[0_0_100%]">
@@ -120,7 +124,7 @@ export default function Hero() {
 
               <div className="absolute inset-0 bg-linear-to-r from-neutral-900/60 via-neutral-900/30 to-transparent" />
 
-              <SlideContent slide={slide} index={i} />
+              <SlideContent slide={slide} index={i} t={t} />
             </div>
           ))}
         </div>

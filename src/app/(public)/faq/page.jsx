@@ -16,9 +16,13 @@ import {
   Truck,
   Wrench,
 } from "lucide-react";
-import { categories, contactInfo } from "@/data/faq-data";
+import { getData } from "@/data";
+import { useLocale } from "next-intl";
 
 export default function FAQPage() {
+  const locale = useLocale();
+  const categories = getData("categories", locale);
+  const contactInfo = getData("contactInfo", locale);
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}

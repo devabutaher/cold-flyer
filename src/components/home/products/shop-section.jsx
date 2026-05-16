@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiGet } from "@/lib/api-client";
@@ -49,6 +50,7 @@ function CarouselSkeleton() {
 }
 
 export default function ShopSection() {
+  const t = useTranslations("home");
   const [acUnits, setAcUnits] = useState([]);
   const [acParts, setAcParts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,10 +94,10 @@ export default function ShopSection() {
           <CarouselSkeleton />
         ) : acUnits.length > 0 ? (
           <ProductCarousel
-            title="Premium AC Units"
-            tag="Our Store"
+            title={t("premiumAcUnits")}
+            tag={t("ourStore")}
             items={acUnits}
-            catalogLabel="View Full Catalog"
+            catalogLabel={t("viewFullCatalog")}
             catalogLink="/items?productType=unit"
           />
         ) : null}
@@ -104,10 +106,10 @@ export default function ShopSection() {
           <CarouselSkeleton />
         ) : acParts.length > 0 ? (
           <ProductCarousel
-            title="Precision AC Parts"
-            tag="Replacements"
+            title={t("precisionAcParts")}
+            tag={t("replacements")}
             items={acParts}
-            catalogLabel="Explore Parts"
+            catalogLabel={t("exploreParts")}
             catalogLink="/items?productType=part"
           />
         ) : null}

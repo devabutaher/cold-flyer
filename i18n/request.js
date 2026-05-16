@@ -3,6 +3,32 @@ import { routing } from "./routing";
 
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
+
+  if (!locale || !routing.locales.includes(locale)) {
+    try {
+      const { cookies } = await import("next/headers");
+      const cookieStore = await cookies();
+      const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
+      if (cookieLocale && routing.locales.includes(cookieLocale)) {
+        locale = cookieLocale;
+      }
+    } catch {}
+  }
+
+  if (!locale || !routing.locales.includes(locale)) {
+    try {
+      const { headers } = await import("next/headers");
+      const headersList = await headers();
+      const acceptLang = headersList.get("accept-language");
+      if (acceptLang) {
+        const preferred = acceptLang.split(",")[0]?.split("-")[0]?.trim();
+        if (preferred && routing.locales.includes(preferred)) {
+          locale = preferred;
+        }
+      }
+    } catch {}
+  }
+
   if (!locale || !routing.locales.includes(locale)) {
     locale = routing.defaultLocale;
   }
@@ -21,7 +47,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
       ...(await import(`../messages/${locale}/cart.json`)).default,
       ...(await import(`../messages/${locale}/errors.json`)).default,
       ...(await import(`../messages/${locale}/validation.json`)).default,
-      ...(await import(`../messages/${locale}/dashboard.json`)).default,
     },
   };
 });

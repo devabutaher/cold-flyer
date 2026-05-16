@@ -1,7 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Box, Check, Wrench, Zap } from "lucide-react";
 
 export default function InfoTabs({ product }) {
+  const t = useTranslations("common");
   if (!product) return null;
 
   const features = product.features || [];
@@ -20,17 +24,17 @@ export default function InfoTabs({ product }) {
         <TabsList className="w-full justify-start rounded-t-lg p-0 h-auto shrink-0">
           {hasFeatures && (
             <TabsTrigger value="features" className="gap-1 rounded-t-md px-4 py-3">
-              <Zap size={13} /> Features
+              <Zap size={13} /> {t("features")}
             </TabsTrigger>
           )}
           {hasSpecs && (
             <TabsTrigger value="specs" className="gap-1 rounded-t-md px-4 py-3">
-              <Wrench size={13} /> Specifications
+              <Wrench size={13} /> {t("specifications")}
             </TabsTrigger>
           )}
           {hasInBox && (
             <TabsTrigger value="inbox" className="gap-1 rounded-t-md px-4 py-3">
-              <Box size={13} /> In the Box
+              <Box size={13} /> {t("whatsInTheBox")}
             </TabsTrigger>
           )}
         </TabsList>

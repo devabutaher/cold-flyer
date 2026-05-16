@@ -142,3 +142,9 @@ export async function validateSchema(schema, data) {
 
   return { success: false, errors };
 }
+
+export function setCookie(name, value, days = 365) {
+  if (typeof document === "undefined") return;
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
