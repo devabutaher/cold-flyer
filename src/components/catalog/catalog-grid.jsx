@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PackageSearch } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { CatalogCard } from "./catalog-card";
+import { animations } from "@/lib/animation";
+import { motion } from "framer-motion";
 
 export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, sortFn, itemLabel = "item" }) {
   const {
@@ -34,11 +36,15 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center py-24 text-center"
+      >
         <PackageSearch size={48} className="text-destructive mb-4" />
         <h3 className="font-sans font-bold text-lg text-destructive mb-1">Failed to load {type}s</h3>
         <p className="text-muted-foreground text-sm">Please try again later.</p>
-      </div>
+      </motion.div>
     );
   }
 
@@ -46,11 +52,15 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center py-24 text-center"
+      >
         <PackageSearch size={48} className="text-muted-foreground mb-4" />
         <h3 className="font-sans font-bold text-lg text-foreground mb-1">No {type}s found</h3>
         <p className="text-muted-foreground text-sm">Try a different search term or clear your filters.</p>
-      </div>
+      </motion.div>
     );
   }
 
@@ -60,11 +70,16 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
         {items.length} {itemLabel}
         {items.length !== 1 ? "s" : ""} found
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        variants={animations.stagger.fast}
+        initial="hidden"
+        animate="visible"
+      >
         {items.map((item) => (
           <CatalogCard key={item._id ?? item.id} item={item} type={type} />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

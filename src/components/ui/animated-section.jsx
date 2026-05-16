@@ -1,27 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const sectionVariants = {
-  fadeUp: {
-    initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0 },
-  },
-  fadeIn: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-  },
-  scaleUp: {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
-  },
-};
-
-const transitionConfig = {
-  fast: { duration: 0.25, ease: "easeOut" },
-  normal: { duration: 0.4, ease: "easeOut" },
-  slow: { duration: 0.6, ease: "easeInOut" },
-};
+import { animations, transitionTokens } from "@/lib/animation";
 
 export function AnimatedSection({
   children,
@@ -30,7 +10,7 @@ export function AnimatedSection({
   transition = "normal",
   delay = 0,
   once = true,
-  margin = "-50px",
+  margin = "-60px",
   as = "section",
   id,
   ...props
@@ -41,14 +21,15 @@ export function AnimatedSection({
     <Component
       id={id}
       className={className}
-      initial={sectionVariants[variant].initial}
-      whileInView={sectionVariants[variant].animate}
+      variants={animations.entrance[variant] || animations.entrance.fadeUp}
+      initial="hidden"
+      whileInView="visible"
       viewport={{
         once,
         margin,
       }}
       transition={{
-        ...transitionConfig[transition],
+        ...transitionTokens[transition],
         delay,
       }}
       {...props}

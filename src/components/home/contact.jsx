@@ -4,6 +4,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { animations } from "@/lib/animation";
 import { motion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
@@ -35,18 +36,25 @@ const contactInfo = [
 function ContactCard({ info, index }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
+      variants={animations.entrance.fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
+      transition={{ duration: 0.3, delay: index * 0.08, ease: "easeOut" }}
+      whileHover={{ y: -3 }}
     >
       <Card className="border-none shadow-none bg-transparent hover:bg-secondary/50 rounded-xl transition-colors duration-200">
         <CardContent className="flex flex-col items-center gap-3 text-center p-4">
-          <Avatar className="size-10 border bg-accent">
-            <AvatarFallback className="bg-transparent [&>svg]:size-5 text-accent-foreground">
-              <info.icon />
-            </AvatarFallback>
-          </Avatar>
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          >
+            <Avatar className="size-10 border bg-accent">
+              <AvatarFallback className="bg-transparent [&>svg]:size-5 text-accent-foreground">
+                <info.icon />
+              </AvatarFallback>
+            </Avatar>
+          </motion.div>
           <div className="space-y-1">
             <h4 className="text-base font-bold">{info.title}</h4>
             <div className="text-muted-foreground text-sm font-medium">
@@ -74,10 +82,11 @@ export default function Contact() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-stretch">
           <div className="flex flex-col h-full">
             <motion.div
-              className="relative flex-1 min-h-62.5 lg:min-h-0"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              className="relative flex-1 min-h-62.5 lg:min-h-0 group"
+              variants={animations.entrance.fadeLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={animations.inView.once}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <Image
@@ -85,7 +94,7 @@ export default function Contact() {
                 alt="Contact our team"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover rounded-xl shadow-lg hover:scale-[1.02] transition-transform duration-500"
+                className="object-cover rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-[1.02]"
               />
             </motion.div>
           </div>
@@ -97,11 +106,19 @@ export default function Contact() {
               ))}
             </div>
 
-            <div className="mt-8 text-center sm:text-left">
+            <motion.div
+              className="mt-8 text-center sm:text-left"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
               <Link href="/">
-                <Button size="lg">Send Us a Message</Button>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Button size="lg">Send Us a Message</Button>
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

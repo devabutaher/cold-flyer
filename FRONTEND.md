@@ -13,123 +13,179 @@ This documentation is designed for AI models to understand the project structure
 
 - **Frontend**: Next.js 16.2.4, React 19.2.4, React DOM 19.2.4
 - **Styling**: Tailwind CSS 4, class-variance-authority, tailwind-merge
-- **UI Components**: Radix UI primitives, shadcn/ui components
-- **Animations**: Motion 12.38.0, Embla Carousel 8.6.0
-- **Icons**: Lucide React 1.11.0, React Icons 5.6.0
+- **UI Components**: Radix UI primitives, shadcn/ui components (radix-vega style)
+- **Animations**: Motion (Framer Motion), Embla Carousel 8.6.0
+- **Icons**: Lucide React 1.11.0
 - **Forms**: React Hook Form 7.74.0, Zod 4.3.6, @hookform/resolvers
 - **Backend**: Firebase 12.12.1 (Auth, Firestore)
-- **Fonts**: Google Fonts - Inter (sans), Lora (serif), Geist Mono (mono)
-- **Utilities**: clsx, twMerge, papaparse, xlsx, react-zoom-pan-pinch
+- **State**: Zustand 5 (Cart), React Query 5 (Data fetching)
+- **Fonts**: Google Fonts - DM Sans (headings), Outfit (body), Lora (serif), Geist Mono (mono)
+- **Utilities**: clsx, twMerge, papaparse, xlsx, react-zoom-pan-pinch, date-fns
 
-## Color Theme
+## Color Theme — Nova White + Orange
 
-All colors are defined in `src/app/globals.css` using OKLCH color space.
+All colors are defined in `src/app/globals.css` using OKLCH color space. Supports both light and dark modes via `.dark` class (managed by `next-themes`).
 
-### Primary Colors
+### Light Mode (`:root`)
 
 | Color Variable | Value | Usage |
 |----------------|-------|-------|
-| `--background` | oklch(0.994 0 0) | Page background (off-white) |
-| `--foreground` | oklch(0 0 0) | Primary text (black) |
-| `--primary` | oklch(0.6404 0.2153 35.9003) | Primary actions, CTAs (blue) |
+| `--background` | oklch(0.99 0 0) | Page background (near-white) |
+| `--foreground` | oklch(0 0 0) | Primary text (pure black) |
+| `--primary` | oklch(0.646 0.222 41.116) | Primary actions, CTAs |
 | `--primary-foreground` | oklch(1 0 0) | Text on primary (white) |
+| `--secondary` | oklch(0.954 0.038 75.164) | Secondary elements (pale warm) |
+| `--secondary-foreground` | oklch(0.646 0.222 41.116) | Text on secondary (matches primary) |
+| `--accent` | oklch(0.94 0 0) | Accent backgrounds (light grey) |
+| `--accent-foreground` | oklch(0 0 0) | Text on accent (black) |
+| `--muted` | oklch(0.97 0 0) | Muted backgrounds |
+| `--muted-foreground` | oklch(0.44 0 0) | Muted text |
+| `--border` | oklch(0.92 0 0) | Border color |
+| `--ring` | oklch(0 0 0) | Focus ring (black) |
+| `--destructive` | oklch(0.63 0.19 23.03) | Error/delete actions |
 
-### Secondary Colors
-
-| Color Variable | Value | Usage |
-|----------------|-------|-------|
-| `--secondary` | oklch(0.954 0.0063 255.4755) | Secondary backgrounds |
-| `--secondary-foreground` | oklch(0.1344 0 0) | Secondary text |
-| `--accent` | oklch(0.9656 0.0176 39.4009) | Accent elements |
-| `--accent-foreground` | oklch(0.5581 0.1911 35.3377) | Text on accent |
-
-### Neutral & UI Colors
-
-| Color Variable | Value | Usage |
-|----------------|-------|-------|
-| `--muted` | oklch(0.9702 0 0) | Muted backgrounds |
-| `--muted-foreground` | oklch(0.4386 0 0) | Muted text |
-| `--card` | oklch(0.994 0 0) | Card backgrounds |
-| `--card-foreground` | oklch(0 0 0) | Card text |
-| `--popover` | oklch(0.9911 0 0) | Popover backgrounds |
-| `--popover-foreground` | oklch(0 0 0) | Popover text |
-| `--border` | oklch(0.93 0.0094 286.2156) | Border color (light gray) |
-| `--input` | oklch(0.9401 0 0) | Input backgrounds |
-| `--ring` | oklch(0.6404 0.2153 35.9003) | Focus ring |
-
-### Semantic Colors
+### Dark Mode (`.dark` class)
 
 | Color Variable | Value | Usage |
 |----------------|-------|-------|
-| `--destructive` | oklch(0.629 0.1902 23.0704) | Error/delete actions |
-| `--destructive-foreground` | oklch(1 0 0) | Text on destructive |
-
-### Sidebar Colors
-
-| Color Variable | Value |
-|----------------|-------|
-| `--sidebar` | oklch(0.99 0 0) |
-| `--sidebar-foreground` | oklch(0 0 0) |
-| `--sidebar-primary` | oklch(0 0 0) |
-| `--sidebar-primary-foreground` | oklch(1 0 0) |
-| `--sidebar-accent` | oklch(0.94 0 0) |
-| `--sidebar-accent-foreground` | oklch(0 0 0) |
-| `--sidebar-border` | oklch(0.94 0 0) |
-| `--sidebar-ring` | oklch(0 0 0) |
+| `--background` | oklch(0 0 0) | Pure black background |
+| `--foreground` | oklch(1 0 0) | White text |
+| `--primary` | oklch(0.646 0.222 41.116) | Primary orange (same as light) |
+| `--primary-foreground` | oklch(1 0 0) | White text on primary |
+| `--secondary` | oklch(0.266 0.079 36.259) | Dark warm secondary |
+| `--secondary-foreground` | oklch(0.901 0.076 70.697) | Warm light text on secondary |
+| `--accent` | oklch(0.32 0 0) | Dark grey accent |
+| `--accent-foreground` | oklch(1 0 0) | White text on accent |
+| `--muted` | oklch(0.23 0 0) | Dark muted bg |
+| `--muted-foreground` | oklch(0.72 0 0) | Lighter muted text |
+| `--border` | oklch(0.26 0 0) | Subtle dark border |
+| `--ring` | oklch(0.72 0 0) | Focus ring (light grey) |
 
 ### Chart Colors
 
-| Color Variable | Value |
-|----------------|-------|
-| `--chart-1` | oklch(0.6404 0.2153 35.9003) |
-| `--chart-2` | oklch(0.8231 0.0995 30.7543) |
-| `--chart-3` | oklch(0.7336 0.1758 50.5517) |
-| `--chart-4` | oklch(0.5828 0.1809 259.7276) |
-| `--chart-5` | oklch(0.886 0.123 84.7452) |
+| Color Variable | Light | Dark |
+|----------------|-------|------|
+| `--chart-1` | oklch(0.81 0.17 75.35) | oklch(0.81 0.17 75.35) |
+| `--chart-2` | oklch(0.55 0.22 264.53) | oklch(0.58 0.21 260.84) |
+| `--chart-3` | oklch(0.72 0 0) | oklch(0.56 0 0) |
+| `--chart-4` | oklch(0.92 0 0) | oklch(0.44 0 0) |
+| `--chart-5` | oklch(0.56 0 0) | oklch(0.92 0 0) |
 
 ## Typography
 
 Fonts are loaded via `next/font/google` in `src/app/layout.jsx`:
 
-| Font Variable | Font Name | Usage |
-|---------------|-----------|-------|
-| `--font-sans` | Inter | Default body text |
-| `--font-serif` | Lora | Serif headings/accent |
+| CSS Variable | Font | Usage |
+|--------------|------|-------|
+| `--font-heading` | DM Sans | All headings (h1-h6) — bold, modern |
+| `--font-sans` | Outfit | Body text — soft, cool |
+| `--font-serif` | Lora | Pull quotes, accent text |
 | `--font-mono` | Geist Mono | Code/monospace |
 
-### Font CSS Variables
+### CSS Note
 
 ```css
---font-sans: Inter, ui-sans-serif, sans-serif, system-ui;
---font-serif: Lora, serif;
---font-mono: Geist Mono, monospace;
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+body { font-family: var(--font-sans); }
 ```
+
+## Animation System
+
+All animation presets are defined in `src/lib/animation.js`. Use these instead of inline variants.
+
+### Import Pattern
+
+```javascript
+import { animations, staggerItem, transitionTokens, pageVariants } from "@/lib/animation";
+```
+
+### Entrance Variants
+
+| Variant | Usage |
+|---------|-------|
+| `animations.entrance.fadeUp` | Elements enter from below with blur |
+| `animations.entrance.fadeIn` | Simple opacity fade |
+| `animations.entrance.fadeLeft` | Slide in from left |
+| `animations.entrance.fadeRight` | Slide in from right |
+| `animations.entrance.scaleUp` | Scale + opacity |
+
+### Hover Variants
+
+| Variant | Description |
+|---------|-------------|
+| `animations.hover.lift` | Element lifts up |
+| `animations.hover.glow` | Glow effect |
+| `animations.hover.scale` | Scale up slightly |
+| `animations.hover.underline` | Underline animation |
+
+### Stagger Presets
+
+| Preset | Use |
+|--------|-----|
+| `animations.stagger.fast` | Grids, lists — 50ms stagger |
+| `animations.stagger.normal` | Sections — 80ms stagger |
+| `animations.stagger.slow` | Hero, featured — 120ms stagger |
+
+### Scroll Reveal Helper
+
+```javascript
+// Single element
+<motion.div
+  variants={animations.entrance.fadeUp}
+  initial="hidden"
+  whileInView="visible"
+  viewport={animations.inView.once}
+>
+```
+
+### Staggered Grid Pattern
+
+```javascript
+<motion.div
+  variants={animations.stagger.normal}
+  initial="hidden"
+  whileInView="visible"
+  viewport={animations.inView.once}
+>
+  {items.map((item) => (
+    <motion.div key={item.id} variants={staggerItem}>
+      {item.content}
+    </motion.div>
+  ))}
+</motion.div>
+```
+
+### Page Transitions
+
+Page transitions are handled by `src/components/layout/page-transition.jsx`. Each main layout wraps children in:
+
+```javascript
+<PageTransition>{children}</PageTransition>
+```
+
+The root `Providers` wraps with `AnimatePresence mode="wait"` for cross-page animations.
 
 ## Spacing & Sizing
 
 ```css
---radius: 0.5rem;
---spacing: 0.27rem;
+--radius: 0.75rem;
+--spacing: 0.25rem;
 ```
 
 ## Shadows
 
-Shadows are defined with OKLCH color support:
+Defined in OKLCH with soft opacity — used via `shadow-sm`, `shadow-md`, etc.
 
-```css
---shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
---shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
---shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
---shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
---shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
---shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
---shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
---shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-```
+## Custom Animations (globals.css)
+
+| Animation | Purpose |
+|-----------|---------|
+| `shimmer` | Skeleton loading shimmer sweep |
+| `pulse-soft` | Gentle pulsing effect |
+| `float` | Subtle floating (empty states) |
+| `scale-in` | Scale entrance |
 
 ## Utility Function
-
-The project uses a `cn()` utility for combining classes:
 
 ```javascript
 // src/lib/utils.js
@@ -139,6 +195,14 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
+```
+
+## Skeleton Component
+
+The skeleton component (`src/components/ui/skeleton.jsx`) includes a shimmer overlay:
+
+```jsx
+<Skeleton className="h-4 w-3/4" />
 ```
 
 ## Component System
@@ -157,52 +221,54 @@ This project uses **shadcn/ui** style components:
 - Home Components: `src/components/home/`
 - Auth Components: `src/components/auth/`
 - Services Components: `src/components/services/`
+- Catalog Components: `src/components/catalog/`
+- Cart Components: `src/components/carts/`
+- Dashboard Components: `src/components/dashboard/`
 
 ### Available UI Components
 
 Located in `src/components/ui/`:
 
-| Component | File | Description |
-|-----------|------|-------------|
-| Button | button.jsx | Primary action button with variants (default, outline, secondary, ghost, destructive, link) and sizes (xs, sm, default, lg, xl, icon) |
-| Card | card.jsx | Card container |
-| Input | input.jsx | Text input field |
-| Badge | badge.jsx | Label/tag component |
-| Avatar | avatar.jsx | User avatar |
-| Checkbox | checkbox.jsx | Checkbox input |
-| Select | select.jsx | Dropdown select |
-| Tabs | tabs.jsx | Tab navigation |
-| Table | table.jsx | Data table |
-| Dialog | sheet.jsx | Modal/drawer (using Sheet from Radix) |
-| Dropdown Menu | dropdown-menu.jsx | Dropdown menu |
-| Tooltip | tooltip.jsx | Tooltip popup |
-| Accordion | accordion.jsx | Collapsible accordion |
-| Separator | separator.jsx | Horizontal divider |
-| Skeleton | skeleton.jsx | Loading placeholder |
-| Pagination | pagination.jsx | Pagination controls |
-| Textarea | textarea.jsx | Multi-line text input |
-| Label | label.jsx | Form label |
-| Radio Group | radio-group.jsx | Radio button group |
-| Breadcrumb | breadcrumb.jsx | Breadcrumb navigation |
-| Button Group | button-group.jsx | Grouped buttons |
-| Alert Dialog | alert-dialog.jsx | Confirmation dialog |
-| Infinite Slider | infinite-slider.jsx | Infinite scrolling slider |
-| Text Slider | text-slider.jsx | Text animation slider |
-| Filter Dropdown | filter-dropdown.jsx | Filter control |
-| File Upload | file-upload.jsx | File upload component |
-| Quantity Input | quantity-input.jsx | Quantity selector |
-| Price Format | price-format.jsx | Price display formatter |
-| Decor Icon | decor-icon.jsx | Decorative icon |
-| Collapsible | collapsible.jsx | Collapsible content |
-| Kbd | kbd.jsx | Keyboard key display |
-| Input Group | input-group.jsx | Input group container |
-| Field | field.jsx | Form field wrapper |
-| Auth Divider | auth-divider.jsx | Auth page divider |
-| Pagination | pagination.jsx | Pagination UI |
-| Sidebar | sidebar.jsx | Dashboard sidebar |
-| Logo | logo.jsx | Logo component |
-| Navigation Menu | navigation-menu.jsx | Navigation menu |
-| Pagination | pagination.jsx | Pagination component |
+| Component | Description |
+|-----------|-------------|
+| Button | Animated with shimmer, spring hover/tap, variants: default, outline, secondary, ghost, destructive, link |
+| Card | Animated entrance with blur, tilt support, cursor shimmer, hover lift |
+| Input | Text input field |
+| Badge | Label/tag component |
+| Avatar | User avatar |
+| Checkbox | Checkbox input |
+| Select | Dropdown select |
+| Tabs | Tab navigation |
+| Table | Data table |
+| Sheet | Modal/drawer |
+| Dropdown Menu | Dropdown menu |
+| Tooltip | Tooltip popup |
+| Accordion | Collapsible accordion with Radix |
+| Separator | Horizontal divider |
+| Skeleton | Shimmer loading placeholder |
+| Pagination | Pagination controls |
+| Textarea | Multi-line text input |
+| Label | Form label |
+| Radio Group | Radio button group |
+| Breadcrumb | Breadcrumb navigation |
+| Button Group | Grouped buttons |
+| Alert Dialog | Confirmation dialog |
+| Infinite Slider | Infinite scrolling slider |
+| Text Slider | Text animation slider |
+| Filter Dropdown | Filter control |
+| File Upload | File upload component |
+| Quantity Input | Quantity selector |
+| Price Format | Price display formatter |
+| Sidebar | Dashboard sidebar |
+| Navigation Menu | Navigation menu |
+
+## Dark Mode
+
+Enabled via `next-themes` with `attribute="class"`. Toggle button included in navbar (`ThemeToggle` in `shared.jsx`).
+
+- Respects system preference by default
+- Toggle: `Sun`/`Moon` icon button
+- All CSS variables have dark mode values in `.dark` block
 
 ## Folder Structure
 
@@ -211,29 +277,22 @@ cold-flyer/
 ├── src/
 │   ├── app/                    # Next.js App Router pages
 │   │   ├── (public)/           # Public routes
-│   │   │   ├── page.jsx        # Home page
-│   │   │   ├── items/          # Products pages
-│   │   │   │   ├── page.jsx    # All products
-│   │   │   │   ├── ac_units/   # AC units
-│   │   │   │   └── [id]/       # Product detail
-│   │   │   ├── services/       # Services pages
-│   │   │   └── terms/          # Terms page
-│   │   ├── (dashboard)/       # Dashboard routes
+│   │   ├── (dashboard)/        # Dashboard routes
 │   │   ├── layout.jsx          # Root layout
-│   │   ├── globals.css        # Global styles
+│   │   ├── globals.css         # Global styles + theme
 │   │   └── not-found.jsx       # 404 page
 │   ├── components/
 │   │   ├── ui/                 # shadcn UI components
-│   │   ├── layout/
-│   │   │   └── navbar/        # Navigation components
-│   │   ├── products/          # Product components
-│   │   ├── home/              # Home page components
-│   │   ├── auth/              # Auth components
-│   │   └── common/            # Shared components
-│   ├── data/                  # Static data files
-│   ├── hooks/                 # Custom React hooks
-│   ├── lib/                   # Utility libraries
-│   ├── context/               # React context
+│   │   ├── layout/             # Layout (navbar, footer)
+│   │   ├── products/           # Product components
+│   │   ├── home/               # Home page components
+│   │   ├── auth/               # Auth components
+│   │   └── common/             # Shared components
+│   ├── data/                   # Static data files
+│   ├── hooks/                  # Custom React hooks
+│   ├── lib/                    # Utilities + animation.js
+│   ├── context/                # React context
+│   ├── store/                  # Zustand stores
 │   └── styles/
 ├── components.json            # shadcn configuration
 ├── package.json
@@ -244,154 +303,99 @@ cold-flyer/
 
 ### Public Routes (`(public)`)
 
-| Route | Page | Description |
-|-------|------|-------------|
-| `/` | page.jsx | Home/Landing page |
-| `/items` | items/page.jsx | All products listing |
-| `/items/ac_units` | items/ac_units/page.jsx | AC units products |
-| `/items/[id]` | items/[id]/page.jsx | Product detail page |
-| `/services` | services/page.jsx | Services listing |
-| `/terms` | terms/page.jsx | Terms & conditions |
+| Route | Description |
+|-------|-------------|
+| `/` | Home/Landing page |
+| `/items` | All products listing |
+| `/items/ac_units` | AC units products |
+| `/items/[id]` | Product detail page |
+| `/services` | Services listing |
+| `/terms` | Terms & conditions |
+| `/cart` | Shopping cart |
+| `/auth` | Authentication |
+| `/about` | About us |
+| `/faq` | FAQ |
+| `/my-bookings` | User bookings |
 
 ### Dashboard Routes (`(dashboard)`)
 
-| Route | Page | Description |
-|-------|------|-------------|
-| `/dashboard` | dashboard/page.jsx | Dashboard home |
-| `/dashboard/items` | dashboard/items/page.jsx | Manage products |
-| `/dashboard/items/add` | dashboard/items/add/page.jsx | Add new product |
+| Route | Description |
+|-------|-------------|
+| `/dashboard` | Dashboard home |
+| `/dashboard/items` | Manage products |
+| `/dashboard/items/add` | Add new product |
+| `/dashboard/orders` | Manage orders |
+| `/dashboard/services` | Manage services |
+| `/dashboard/bookings` | Manage bookings |
+| `/dashboard/users` | User management |
+| `/dashboard/analytics` | Analytics |
+| `/dashboard/coupons` | Coupon management |
+| `/dashboard/technicians` | Technician management |
 
-## Data Schemas
+## Component Patterns
 
-### Product Schema
+### Animation Consistency
 
-Products are stored in `src/data/products-data.js`:
-
-```javascript
-{
-  id: string,           // Unique identifier (e.g., "u1")
-  tag: string | null,   // Badge tag (e.g., "Best Seller")
-  name: string,        // Product name
-  sub: string,         // Short description
-  price: number,       // Current price
-  originalPrice: number, // Original/marked price
-  img: string,         // Image URL
-  stock: number,       // Stock count
-  sku: string,         // SKU code
-  brand: string,       // Brand name
-  category: string,    // Category (e.g., "Split AC")
-  warranty: string,   // Warranty period
-  rating: number,     // Rating (e.g., 4.8)
-  reviewCount: number, // Number of reviews
-  features: string[], // Feature list
-  specs: {             // Specifications object
-    capacity: string,
-    voltage: string,
-    powerInput: string,
-    coverageArea: string,
-    noiseLevel: string,
-    refrigerant: string,
-    starRating: string,
-    compressorType: string,
-    dimensions: string
-  },
-  inBox: string[]      // Items included in box
-}
-```
-
-### Nav Links
-
-From `src/data/nav-links.js`:
-
-```javascript
-productLinks = [
-  { label: string, href: string, icon: ReactNode },
-  // e.g., { label: "All Products", href: "/items", icon: <LayoutGrid /> }
-]
-
-serviceLinks = [
-  { label: string, href: string, icon: ReactNode },
-  // e.g., { label: "Installation", href: "/services/installation", icon: <Settings /> }
-]
-```
-
-## Custom Hooks
-
-Located in `src/hooks/`:
-
-| Hook | File | Description |
-|------|------|-------------|
-| useScroll | use-scroll.js | Scroll position tracking |
-| useMobile | use-mobile.js | Mobile detection |
-| useProductSearch | use-product-search.js | Product search functionality |
-| useLazyRef | use-lazy-ref.js | Lazy ref management |
-| useIsomorphicLayoutEffect | use-isomorphic-layout-effect.js | SSR-safe layout effect |
-| useEmblaSlider | use-embla-slider.js | Embla carousel integration |
-| useCounter | use-counter.js | Counter state |
-| useAsRef | use-as-ref.js | Ref conversion |
-
-## Button Variants Reference
-
-When creating or modifying buttons, use these variants:
-
-```
-variant: "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
-size: "xs" | "sm" | "default" | "lg" | "xl" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"
-```
-
-## Tailwind CSS v4 Usage
-
-This project uses Tailwind CSS v4 with the new `@import "tailwindcss"` syntax in `globals.css`. Theme variables are defined using `@theme inline` block.
-
-## How to Make Changes
-
-### Adding a New Component
-
-1. Create component in appropriate folder (e.g., `src/components/products/`)
-2. Use `cn()` utility from `@/lib/utils` for class merging
-3. Import icons from `lucide-react`
-4. Follow existing component patterns
-
-### Styling Guidelines
-
-1. Use CSS variables for colors (e.g., `bg-primary`, `text-foreground`)
-2. Use Tailwind utility classes with CSS variables
-3. Follow shadcn/ui style conventions
-
-### Adding New Pages
-
-1. Create folder under `src/app/` using route naming convention
-2. Use `(route-group)` syntax for route groups
-3. Export `metadata` object for page title/description
-
-### Modifying Colors/Theme
-
-Edit `src/app/globals.css` - modify OKLCH values in `:root` and `@theme inline` blocks.
-
-## Example: Creating a New Product Card
+All scroll-reveal animations should use the `animations` preset:
 
 ```jsx
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// Preferred pattern
+import { animations, staggerItem } from "@/lib/animation";
 
-export function ProductCard({ product }) {
-  return (
-    <div className="border border-border rounded-lg p-4">
-      {product.tag && (
-        <Badge variant="secondary">{product.tag}</Badge>
-      )}
-      <img src={product.img} alt={product.name} />
-      <h3 className="text-lg font-medium">{product.name}</h3>
-      <p className="text-muted-foreground">{product.sub}</p>
-      <div className="flex items-center gap-2">
-        <span className="text-primary font-bold">${product.price}</span>
-        <span className="text-muted-foreground line-through">${product.originalPrice}</span>
-      </div>
-      <Button>Add to Cart</Button>
-    </div>
-  );
-}
+<motion.div
+  variants={animations.entrance.fadeUp}
+  initial="hidden"
+  whileInView="visible"
+  viewport={animations.inView.once}
+>
+```
+
+### Staggered Grids
+
+```jsx
+<motion.div variants={animations.stagger.fast} initial="hidden" whileInView="visible">
+  {items.map(item => (
+    <motion.div key={item.id} variants={staggerItem}>
+      <Card>{item.content}</Card>
+    </motion.div>
+  ))}
+</motion.div>
+```
+
+### Card Component
+
+```jsx
+<Card animate tilt shimmer>
+  <CardHeader>...</CardHeader>
+  <CardContent>...</CardContent>
+</Card>
+```
+
+### Button Component
+
+```jsx
+<Button variant="default" size="lg">
+  Click Me
+</Button>
+```
+
+Buttons include: spring hover/tap, shimmer effect (default variant), variants for all states.
+
+### Skeleton Loading
+
+```jsx
+<Skeleton className="h-4 w-3/4" />
+```
+
+Includes automatic shimmer animation sweep.
+
+### Dark Mode Toggle
+
+```jsx
+import { useTheme } from "next-themes";
+
+const { theme, setTheme } = useTheme();
+<button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} />
 ```
 
 ## Available Scripts
@@ -401,13 +405,20 @@ npm run dev      # Start development server
 npm run build    # Build for production
 npm run start    # Start production server
 npm run lint     # Run ESLint
+npm run format   # Format code with Prettier
 ```
 
 ## Notes for AI Models
 
 1. Always use `cn()` from `@/lib/utils` for combining Tailwind classes
-2. Use OKLCH color values defined in CSS variables - don't use arbitrary hex/HSL colors
-3. Follow the existing component patterns and file organization
-4. Use Radix UI primitives for complex interactive components
-5. Import icons from `lucide-react` (primary) or `react-icons` (additional)
-6. Use the shadcn/ui component structure for consistency
+2. Use OKLCH color values defined in CSS variables — never use arbitrary hex/HSL colors
+3. Animation presets MUST be imported from `@/lib/animation` — do not create inline variants
+4. Use `variants={animations.entrance.*}` pattern for all scroll-reveal animations
+5. Use `variants={animations.stagger.*}` with `staggerItem` for lists and grids
+6. Use Radix UI primitives for complex interactive components
+7. Import icons from `lucide-react` only
+8. Follow the existing component patterns and file organization
+9. All new sections should be `"use client"` unless purely static
+10. Heavy libraries (xlsx, papaparse, @react-pdf) should use dynamic `import()` instead of top-level imports
+11. Available via browser console: `next-themes` for dark mode debugging
+12. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props

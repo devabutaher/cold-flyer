@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "../ui/button";
+import { animations, staggerItem } from "@/lib/animation";
 
 function Stars({ count }) {
   return (
@@ -25,11 +26,11 @@ function Stars({ count }) {
 function TestimonialCard({ review, index }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.35, delay: index * 0.1, ease: "easeOut" }}
-      whileHover={{ y: -2 }}
+      variants={staggerItem}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
+      whileHover={{ y: -3 }}
     >
       <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-[220px] sm:min-h-[200px]">
         <Quote size={28} className="text-primary/20 absolute top-4 right-4" />
@@ -56,6 +57,8 @@ export default function Testimonials() {
     Autoplay({ delay: 4500, stopOnInteraction: true }),
   ]);
 
+  const progress = ((selectedIndex + 1) / reviews.length) * 100;
+
   return (
     <AnimatedSection className="py-16 bg-background">
       <div className="container">
@@ -68,13 +71,17 @@ export default function Testimonials() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="secondary" onClick={() => emblaApi?.scrollPrev()}>
-              <ChevronLeft size={16} />
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="secondary" onClick={() => emblaApi?.scrollPrev()}>
+                <ChevronLeft size={16} />
+              </Button>
+            </motion.div>
 
-            <Button variant="secondary" onClick={() => emblaApi?.scrollNext()}>
-              <ChevronRight size={16} />
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="secondary" onClick={() => emblaApi?.scrollNext()}>
+                <ChevronRight size={16} />
+              </Button>
+            </motion.div>
           </div>
         </div>
 
@@ -88,16 +95,38 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <div className="flex justify-center gap-2 mt-6">
-          {reviews.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => emblaApi?.scrollTo(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === selectedIndex ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-border hover:bg-muted-foreground"
-              }`}
-            />
-          ))}
+        {/* Progress bar indicator */}
+        <div className="mt-6 flex flex-col items-center gap-3">
+          <div className="flex items-center gap-3 w-full max-w-md">
+            <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
+              {String(selectedIndex + 1).padStart(2, "0")}
+            </span>
+            <div className="relative flex-1 h-1 rounded-full bg-border overflow-hidden">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-primary rounded-full"
+                initial={{ width: `${progress}%` }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              />
+            </div>
+            <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
+              {String(reviews.length).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-2">
+            {reviews.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                className={`rounded-full transition-all duration-300 ${
+                  i === selectedIndex ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-border hover:bg-muted-foreground"
+                }`}
+                aria-label={`Go to review ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </AnimatedSection>

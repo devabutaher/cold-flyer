@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { aboutData } from "@/data/about-data";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { animations } from "@/lib/animation";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -12,12 +13,20 @@ function AboutPoint({ point, index }) {
   return (
     <motion.div
       className="flex gap-3"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
+      variants={animations.entrance.fadeLeft}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
+      transition={{ duration: 0.3, delay: index * 0.08, ease: "easeOut" }}
     >
-      <CheckCircle size={20} className="text-primary shrink-0 mt-0.5" />
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 400, damping: 15, delay: index * 0.08 }}
+      >
+        <CheckCircle size={20} className="text-primary shrink-0 mt-0.5" />
+      </motion.div>
       <div>
         <h4 className="font-sans font-bold text-foreground text-sm">{point.label}</h4>
         <p className="text-muted-foreground text-sm mt-0.5 leading-relaxed">{point.sub}</p>
@@ -32,10 +41,11 @@ export default function About() {
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
           <motion.div
-            className="relative rounded-xl overflow-hidden h-72 md:h-105 order-2 md:order-1"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            className="relative rounded-xl overflow-hidden h-72 md:h-105 order-2 md:order-1 group"
+            variants={animations.entrance.fadeLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={animations.inView.once}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <Image
@@ -43,7 +53,7 @@ export default function About() {
               alt="Technician"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover hover:scale-105 transition-transform duration-500"
+              className="object-cover transition-all duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
           </motion.div>
@@ -58,7 +68,9 @@ export default function About() {
               ))}
             </div>
             <Link href={"/about"}>
-              <Button size="lg">More About Us</Button>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Button size="lg">More About Us</Button>
+              </motion.div>
             </Link>
           </div>
         </div>

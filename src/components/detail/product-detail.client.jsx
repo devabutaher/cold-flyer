@@ -1,9 +1,3 @@
-/**
- * Product Detail - Client Component
- * Renders product detail UI with interactivity (cart, quantity, etc.)
- * This is the client-side hydration layer for server-rendered product data
- */
-
 "use client";
 
 import { QuantityInput } from "@/components/carts/quantity-input";
@@ -12,7 +6,9 @@ import InfoTabs from "@/components/products/info-tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { animations } from "@/lib/animation";
 import { useCart } from "@/store/cart";
+import { motion } from "framer-motion";
 import { ShieldCheck, Tag, Truck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -64,7 +60,13 @@ export function ProductDetailClient({ product }) {
       <DetailBackButton href="/items" label="Products" />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
-        <div className="relative">
+        <motion.div
+          className="relative"
+          variants={animations.entrance.fadeLeft}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.5 }}
+        >
           {(product.tag || product.onSale) && (
             <div className="absolute top-2 left-2 z-20">
               <Badge variant={product.tag === "Sale" || product.onSale ? "destructive" : "default"}>
@@ -79,9 +81,15 @@ export function ProductDetailClient({ product }) {
             thumbPosition="bottom"
             className="mx-auto max-w-full"
           />
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col">
+        <motion.div
+          className="flex flex-col"
+          variants={animations.entrance.fadeRight}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">{product.category}</span>
             <span className="text-xs font-medium text-muted-foreground">SKU: {product.sku}</span>
@@ -102,12 +110,19 @@ export function ProductDetailClient({ product }) {
             showSavePercentage
           />
 
-          <div className="flex items-center gap-2 mb-6">
-            <span
+          <motion.div
+            className="flex items-center gap-2 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <motion.span
               className={cn(
                 "w-2 h-2 rounded-full shrink-0",
-                isOutOfStock ? "bg-destructive" : isLowStock ? "bg-amber-500 animate-pulse" : "bg-green-500",
+                isOutOfStock ? "bg-destructive" : isLowStock ? "bg-amber-500" : "bg-green-500",
               )}
+              animate={isLowStock ? { opacity: [1, 0.5, 1] } : {}}
+              transition={isLowStock ? { duration: 1.5, repeat: Infinity } : {}}
             />
             <span
               className={cn(
@@ -117,9 +132,14 @@ export function ProductDetailClient({ product }) {
             >
               {isOutOfStock ? "Out of Stock" : isLowStock ? `Only ${product.stock} units left` : "In Stock"}
             </span>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-wrap items-end gap-6 mb-6">
+          <motion.div
+            className="flex flex-wrap items-end gap-6 mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Quantity</p>
               <QuantityInput
@@ -132,21 +152,36 @@ export function ProductDetailClient({ product }) {
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Total</p>
-              <p className="font-bold text-2xl text-foreground">
+              <motion.p
+                className="font-bold text-2xl text-foreground"
+                key={`total-${total}`}
+                initial={{ scale: 1.1, opacity: 0.7 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
                 <span className="font-black">৳</span>
                 {total.toLocaleString()}
-              </p>
+              </motion.p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="flex gap-3 mb-6">
-            <Button variant="outline" size="lg" className="flex-1" disabled={isOutOfStock} onClick={handleAddToCart}>
-              Add to Cart
-            </Button>
-            <Button size="lg" className="flex-1" disabled={isOutOfStock} onClick={handleBuyNow}>
-              Buy Now
-            </Button>
-          </div>
+          <motion.div
+            className="flex gap-3 mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button variant="outline" size="lg" className="w-full" disabled={isOutOfStock} onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
+            </motion.div>
+            <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button size="lg" className="w-full" disabled={isOutOfStock} onClick={handleBuyNow}>
+                Buy Now
+              </Button>
+            </motion.div>
+          </motion.div>
 
           <DetailTrustBadges items={trustBadges} />
 
@@ -159,7 +194,7 @@ export function ProductDetailClient({ product }) {
           />
 
           <InfoTabs product={product} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

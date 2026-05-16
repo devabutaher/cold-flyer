@@ -9,12 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { pdf } from "@react-pdf/renderer";
 import { DownloadIcon, FileJsonIcon, FileSpreadsheetIcon, FileTextIcon, Loader2 } from "lucide-react";
-import Papa from "papaparse";
 import { useState } from "react";
-import * as XLSX from "xlsx";
-import { ReportPDF } from "./report-pdf";
 
 function triggerDownload(blob, filename) {
   const url = URL.createObjectURL(blob);
@@ -27,7 +23,6 @@ function triggerDownload(blob, filename) {
 
 const identity = (r) => r;
 
-// Keys that should never appear in auto-derived PDF columns
 const INTERNAL_KEYS = new Set(["_id", "__v", "id", "createdAt", "updatedAt", "passwordResetToken", "refreshTokens"]);
 
 function deriveColumns(row) {
@@ -41,6 +36,8 @@ function deriveColumns(row) {
 
 export function ExportMenu({ table, filename = "export", mapRow = identity, pdfTitle = "Report", pdfColumns }) {
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [csvLoading, setCsvLoading] = useState(false);
+  const [excelLoading, setExcelLoading] = useState(false);
 
   const getRows = () => {
     const selected = table.getSelectedRowModel().rows;
@@ -48,15 +45,27 @@ export function ExportMenu({ table, filename = "export", mapRow = identity, pdfT
     return source.map((r) => mapRow(r.original));
   };
 
-  const exportCSV = () => {
-    triggerDownload(new Blob([Papa.unparse(getRows())], { type: "text/csv" }), `${filename}.csv`);
+  const exportCSV = async () => {
+    setCsvLoading(true);
+    try {
+      const Papa = await import("papaparse");
+      triggerDownload(new Blob([Papa.default.unparse(getRows())], { type: "text/csv" }), `${filename}.csv`);
+    } finally {
+      setCsvLoading(false);
+    }
   };
 
-  const exportExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(getRows());
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, `${filename}.xlsx`);
+  const exportExcel = async () => {
+    setExcelLoading(true);
+    try {
+      const XLSX = await import("xlsx");
+      const ws = XLSX.utils.json_to_sheet(getRows());
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, `${filename}.xlsx`);
+    } finally {
+      setExcelLoading(false);
+    }
   };
 
   const exportJSON = () => {
@@ -72,12 +81,13 @@ export function ExportMenu({ table, filename = "export", mapRow = identity, pdfT
     const rows = getRows();
     if (!rows.length) return;
 
-    // Use passed pdfColumns, or auto-derive from the first row's keys
     const cols = pdfColumns ?? deriveColumns(rows[0]);
 
     setPdfLoading(true);
     try {
-      const blob = await pdf(<ReportPDF title={pdfTitle} columns={cols} data={rows} />).toBlob();
+      const pdfModule = await import("@react-pdf/renderer");
+      const { default: ReportPDF } = await import("./report-pdf");
+      const blob = await pdfModule.pdf(<ReportPDF title={pdfTitle} columns={cols} data={rows} />).toBlob();
       triggerDownload(blob, `${filename}.pdf`);
     } finally {
       setPdfLoading(false);
@@ -85,25 +95,26 @@ export function ExportMenu({ table, filename = "export", mapRow = identity, pdfT
   };
 
   const selectedCount = table.getSelectedRowModel().rows.length;
+  const isLoading = pdfLoading || csvLoading || excelLoading;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-9 gap-2" disabled={pdfLoading}>
-          {pdfLoading ? <Loader2 size={14} className="animate-spin" /> : <DownloadIcon size={14} />}
+        <Button variant="outline" size="sm" className="h-9 gap-2" disabled={isLoading}>
+          {isLoading ? <Loader2 size={14} className="animate-spin" /> : <DownloadIcon size={14} />}
           Export
           {selectedCount > 0 && <Badge className="ml-0.5 h-4 min-w-4 px-1 text-[10px]">{selectedCount}</Badge>}
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onClick={exportCSV}>
+        <DropdownMenuItem onClick={exportCSV} disabled={csvLoading}>
           <FileTextIcon size={13} className="mr-2" />
-          Export CSV
+          {csvLoading ? "Loading..." : "Export CSV"}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={exportExcel}>
+        <DropdownMenuItem onClick={exportExcel} disabled={excelLoading}>
           <FileSpreadsheetIcon size={13} className="mr-2" />
-          Export Excel
+          {excelLoading ? "Loading..." : "Export Excel"}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={exportJSON}>
           <FileJsonIcon size={13} className="mr-2" />

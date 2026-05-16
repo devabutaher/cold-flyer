@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "allProducts": "All Products",
+    "acUnits": "AC Units",
+    "acParts": "AC Parts",
+    "installation": "Installation",
+    "maintenance": "Maintenance",
+    "support": "Support",
+    "services": "Services",
+    "about": "About",
+    "terms": "Terms",
+    "products": "Products",
+    "cart": "Cart",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "myAccount": "My Account",
+    "myOrders": "My Orders",
+    "myBookings": "My Bookings",
+    "dashboard": "Dashboard",
+    "signOut": "Sign Out",
+    "adminPanel": "Admin Panel"
+  }
+}

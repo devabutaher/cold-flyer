@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { servicesData } from "@/data/services-data";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { animations } from "@/lib/animation";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -10,19 +11,23 @@ function ServiceCard({ service, index }) {
   return (
     <motion.div
       className="bg-muted rounded-xl p-6 sm:p-7 group hover:bg-secondary hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.35, delay: index * 0.1, ease: "easeOut" }}
-      whileHover={{ y: -2 }}
+      variants={animations.entrance.fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
+      transition={{ duration: 0.35, delay: index * 0.08, ease: "easeOut" }}
+      whileHover={{ y: -3 }}
     >
       <service.icon
         size={72}
         className="absolute right-4 bottom-3 text-primary opacity-[0.05] group-hover:opacity-[0.08] transition-opacity"
       />
-      <div className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4">
+      <motion.div
+        className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4"
+        whileHover={{ scale: 1.1, rotate: -5 }}
+      >
         <service.icon size={22} className="text-accent-foreground" />
-      </div>
+      </motion.div>
       <h3 className="font-sans font-bold text-lg text-foreground mb-2">{service.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed mb-5">{service.sub}</p>
       <Link

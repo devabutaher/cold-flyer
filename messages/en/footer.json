@@ -1,0 +1,21 @@
+{
+  "footer": {
+    "services": "Services",
+    "company": "Company",
+    "legal": "Legal",
+    "newsletter": "Newsletter",
+    "residentialCooling": "Residential Cooling",
+    "commercialHvac": "Commercial HVAC",
+    "ductCleaning": "Duct Cleaning",
+    "smartThermostats": "Smart Thermostats",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions",
+    "shippingReturns": "Shipping & Returns",
+    "emailPlaceholder": "Email address",
+    "followUs": "Follow Us"
+  }
+}

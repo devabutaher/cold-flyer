@@ -4,45 +4,28 @@ import { motion } from "framer-motion";
 import { promoCardData } from "@/data/promo-card-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.35, ease: "easeOut" },
-  },
-};
+import { animations, staggerItem } from "@/lib/animation";
 
 function PromoCard({ card, index }) {
   return (
     <motion.div
+      variants={staggerItem}
       className={`rounded-md p-6 sm:p-7 shadow-xl border transition-colors duration-200 ${
         card.accent
           ? "bg-primary text-primary-foreground border-primary"
           : "bg-card text-foreground border-border hover:border-primary/30"
       }`}
-      variants={itemVariants}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -3, boxShadow: "0 16px 40px -8px oklch(0 0 0 / 0.15)" }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      <div
+      <motion.div
         className={`mb-4 flex h-10 w-10 items-center justify-center rounded-md ${
           card.accent ? "bg-white/20" : "bg-primary/10"
         }`}
+        whileHover={{ rotate: -5 }}
       >
         <card.icon size={20} className={card.accent ? "text-white" : "text-primary"} />
-      </div>
+      </motion.div>
 
       <span
         className={`text-[10px] font-bold uppercase tracking-widest ${card.accent ? "text-white/70" : "text-primary"}`}
@@ -63,7 +46,7 @@ function PromoCard({ card, index }) {
         }`}
       >
         {card.cta}
-        <ArrowRight size={14} className="transition-transform duration-200" />
+        <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
       </Link>
     </motion.div>
   );
@@ -73,9 +56,9 @@ export default function PromoCards() {
   return (
     <motion.div
       className="container relative z-20 -mt-14 mb-12 sm:-mt-16 sm:mb-16"
+      variants={animations.stagger.normal}
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
         {promoCardData.map((card, index) => (

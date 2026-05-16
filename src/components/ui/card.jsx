@@ -1,20 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { animations, staggerItem, transitionTokens } from "@/lib/animation";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
-// ── Shared entrance variants ─────────────────────────────────
-const entranceVariants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
-// ── Subtle tilt on hover (opt-in via tilt prop) ──────────────
 function useTilt(enabled) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -46,7 +35,6 @@ function useTilt(enabled) {
   };
 }
 
-// ── Shimmer highlight that follows the cursor (opt-in) ───────
 function useShimmer(enabled) {
   const mouseX = useMotionValue(-200);
   const mouseY = useMotionValue(-200);
@@ -68,7 +56,7 @@ function useShimmer(enabled) {
 
   const background = useTransform(
     [mouseX, mouseY],
-    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, oklch(1 0 0 / 0.05), transparent 80%)`,
+    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, oklch(1 0 0 / 0.06), transparent 80%)`,
   );
 
   return {
@@ -78,17 +66,6 @@ function useShimmer(enabled) {
   };
 }
 
-/**
- * Card
- *
- * Props (beyond standard div props):
- *   animate?    boolean   Entrance animation (default true)
- *   whileInView? boolean  Trigger on scroll vs mount (default true)
- *   tilt?       boolean   3D tilt on hover (default false)
- *   shimmer?    boolean   Cursor-following glow (default false)
- *   delay?      number    Stagger delay in seconds (default 0)
- *   size?       "sm" | "default"
- */
 function Card({
   className,
   size = "default",
@@ -109,7 +86,6 @@ function Card({
   const tiltProps = useTilt(tilt);
   const shimmerProps = useShimmer(shimmer);
 
-  // Merge mouse handlers from both hooks
   const mergedMouseMove = (e) => {
     tiltProps.onMouseMove?.(e);
     shimmerProps.onMouseMove?.(e);
@@ -128,21 +104,13 @@ function Card({
       data-slot="card"
       data-size={size}
       className={baseStyles}
-      // ── Entrance ──────────────────────────────────
-      variants={entranceVariants}
+      variants={animations.entrance.fadeUp}
       initial="hidden"
       {...(whileInView
-        ? { whileInView: "visible", viewport: { once: true, margin: "-60px" } }
+        ? { whileInView: "visible", viewport: animations.inView.once }
         : { animate: "visible" })}
-      // ── Transition with optional delay ────────────
-      transition={{
-        duration: 0.45,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay,
-      }}
-      // ── Hover lift ────────────────────────────────
+      transition={{ ...transitionTokens.normal, delay }}
       whileHover={{ y: -3, boxShadow: "0 12px 32px -4px oklch(0 0 0 / 0.12)" }}
-      // ── 3-D tilt (opt-in) ─────────────────────────
       style={{
         rotateX: tiltProps.rotateX,
         rotateY: tiltProps.rotateY,
@@ -153,7 +121,6 @@ function Card({
       onMouseLeave={mergedMouseLeave}
       {...props}
     >
-      {/* Cursor shimmer overlay (opt-in) */}
       {shimmer && (
         <motion.div
           className="pointer-events-none absolute inset-0 z-10 rounded-xl"

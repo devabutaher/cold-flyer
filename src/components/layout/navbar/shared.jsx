@@ -5,7 +5,10 @@ import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { Moon, Sun } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   return (
@@ -22,6 +25,31 @@ export function LinkItem({ label, description, icon, className, href, onClick, .
         <span className="font-medium">{label}</span>
       </div>
     </a>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button
+        size="icon"
+        variant="outline"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        aria-label="Toggle theme"
+      >
+        <motion.div
+          key={theme}
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Sun size={16} className="hidden dark:block" />
+          <Moon size={16} className="block dark:hidden" />
+        </motion.div>
+      </Button>
+    </motion.div>
   );
 }
 
@@ -49,12 +77,14 @@ export function NavButtons({ onAuthenticated } = {}) {
               My Bookings
             </Button>
           </Link>
+          <ThemeToggle />
           <div className="hidden lg:block">
             <UserDropdown />
           </div>
         </div>
       ) : (
-        <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+        <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto items-center">
+          <ThemeToggle />
           <Link href={"/auth"} className="w-full lg:w-auto">
             <Button variant="destructive" className="w-full lg:w-auto" onClick={onAuthenticated}>
               Sign In

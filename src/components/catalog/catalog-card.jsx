@@ -4,11 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/store/cart";
-import { motion } from "framer-motion";
-import { Package, ShoppingCart, Star } from "lucide-react";
+import { animations, staggerItem, transitionTokens } from "@/lib/animation";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, Package, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const TAG_STYLES = {
   Sale: "bg-destructive text-destructive-foreground",
@@ -20,6 +23,8 @@ const TAG_STYLES = {
 export function CatalogCard({ item, type = "product", animate = true, index = 0 }) {
   const isProduct = type === "product";
   const { addItem } = useCart();
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const slug = item.slug || item._id;
   const href = `/${isProduct ? "items" : "services"}/${slug}`;
@@ -47,6 +52,13 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
     }
   };
 
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsWishlisted((prev) => !prev);
+    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+  };
+
   const cardContent = (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
       <Link href={href} className="relative block h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50">
@@ -56,16 +68,50 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
         {!isProduct && item.isFeatured && (
           <Badge className="absolute left-2 top-2 z-10 bg-primary text-primary-foreground">Featured</Badge>
         )}
-        {image ? (
-          <Image
-            src={image}
-            alt={name}
-            fill
-            priority={index < 3}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
+
+        {/* Wishlist button */}
+        <motion.button
+          onClick={toggleWishlist}
+          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <motion.div
+            animate={isWishlisted ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Heart
+              size={16}
+              className={cn(
+                "transition-colors duration-200",
+                isWishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"
+              )}
+            />
+          </motion.div>
+        </motion.button>
+
+        {/* Image with loading shimmer */}
+        {image && (
+          <>
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-linear-to-r from-muted via-muted/50 to-muted bg-[length:200%_100%] animate-pulse" />
+            )}
+            <Image
+              src={image}
+              alt={name}
+              fill
+              priority={index < 3}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={cn(
+                "object-cover transition-all duration-500 group-hover:scale-105",
+                imageLoaded ? "opacity-100" : "opacity-0"
+              )}
+              onLoad={() => setImageLoaded(true)}
+            />
+          </>
+        )}
+        {!image && (
           <div className="flex h-full items-center justify-center">
             <Package size={48} className="text-muted-foreground/30" />
           </div>
@@ -100,13 +146,15 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             <span className="text-lg font-bold text-primary">{formatPrice(item.basePrice, item.priceType)}</span>
           )}
 
-          <Button
-            size={isProduct ? "icon" : "sm"}
-            onClick={handleAction}
-            disabled={isProduct && (item.stock === 0 || !item.stock)}
-          >
-            {isProduct ? <ShoppingCart size={16} /> : "Book"}
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              size={isProduct ? "icon" : "sm"}
+              onClick={handleAction}
+              disabled={isProduct && (item.stock === 0 || !item.stock)}
+            >
+              {isProduct ? <ShoppingCart size={16} /> : "Book"}
+            </Button>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -116,11 +164,12 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      variants={staggerItem}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
       whileHover={{ y: -4 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
+      transition={{ duration: 0.35, ease: "easeOut", delay: index * 0.05 }}
     >
       {cardContent}
     </motion.div>

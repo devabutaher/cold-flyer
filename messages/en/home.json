@@ -1,0 +1,24 @@
+{
+  "home": {
+    "whyChooseUs": "Why Choose Us",
+    "worldClassServices": "World-Class Climate Services",
+    "getInTouch": "Get In Touch",
+    "commonQuestions": "Common Questions",
+    "ourExpertise": "Our Expertise",
+    "ourProducts": "Our Products",
+    "whatCustomersSay": "What Our Customers Say",
+    "latestInsights": "Latest Insights",
+    "subscribeTitle": "Stay Updated",
+    "subscribeText": "Get the latest HVAC tips, product launches, and exclusive offers.",
+    "subscribePlaceholder": "Your email address",
+    "subscribeButton": "Subscribe",
+    "subscribedSuccess": "Thank you for subscribing!",
+    "newsletterDescription": "Stay cool with our latest efficiency tips and product releases.",
+    "brandTagline": "Leading the industry in precision climate engineering and sustainable HVAC solutions since 1998.",
+    "announcements": {
+      "freeCheckup": "Free AC Checkup for First-Time Customers",
+      "summerDiscount": "Up to 25% OFF on AC Installation Services",
+      "freeDelivery": "Free Delivery on Orders Over ৫০,০০০ BDT"
+    }
+  }
+}

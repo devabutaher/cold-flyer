@@ -5,6 +5,7 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { animations } from "@/lib/animation";
 
 const faqItems = [
   {
@@ -45,7 +46,6 @@ const faqItems = [
   },
 ];
 
-// ── Animated chevron icon ────────────────────────────────────
 function AnimatedChevron({ isOpen }) {
   return (
     <motion.svg
@@ -60,37 +60,32 @@ function AnimatedChevron({ isOpen }) {
       strokeLinejoin="round"
       className="shrink-0 text-primary"
       animate={{ rotate: isOpen ? 180 : 0 }}
-      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <path d="m6 9 6 6 6-6" />
     </motion.svg>
   );
 }
 
-// ── Single FAQ item — built directly on Radix primitives ─────
-// This is the correct pattern: motion lives INSIDE Radix items,
-// never wrapping them, so Radix compound-component wiring stays intact.
 function FaqItem({ item, index, openValue }) {
   const isOpen = openValue === item.id;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.35, delay: index * 0.07, ease: "easeOut" }}
+      variants={animations.entrance.fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
+      transition={{ duration: 0.35, delay: index * 0.07 }}
     >
       <AccordionPrimitive.Item value={item.id} className="border-b border-border last:border-0">
-        {/* Trigger — Radix handles open/close; motion only animates the chevron */}
         <AccordionPrimitive.Header asChild>
           <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none">
-            <span>{item.question}</span>
+            <span className="transition-colors group-hover:text-primary">{item.question}</span>
             <AnimatedChevron isOpen={isOpen} />
           </AccordionPrimitive.Trigger>
         </AccordionPrimitive.Header>
 
-        {/* Content — AnimatePresence drives the height + fade,
-            bypassing Radix's built-in CSS animation entirely */}
         <AnimatePresence initial={false}>
           {isOpen && (
             <AccordionPrimitive.Content forceMount asChild>
@@ -99,7 +94,7 @@ function FaqItem({ item, index, openValue }) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
                 style={{ overflow: "hidden" }}
               >
                 <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
@@ -112,15 +107,14 @@ function FaqItem({ item, index, openValue }) {
   );
 }
 
-// ── Side image ───────────────────────────────────────────────
 function FaqImage() {
   return (
     <motion.div
       className="relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-130"
-      initial={{ opacity: 0, x: 24 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      variants={animations.entrance.fadeLeft}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
     >
       <Image
         src="https://plus.unsplash.com/premium_photo-1661911309991-cc81afcce97d?q=80&w=1170&auto=format&fit=crop"
@@ -131,16 +125,20 @@ function FaqImage() {
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-        <div className="inline-block rounded-lg border border-white/10 bg-background/10 p-4 backdrop-blur-md">
+        <motion.div 
+          className="inline-block rounded-lg border border-white/10 bg-background/10 p-4 backdrop-blur-md"
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
           <p className="text-base font-bold text-white md:text-lg">Expert Support When You Need It</p>
           <p className="mt-1 text-sm text-white/90">Our team is ready to help with all your climate control needs</p>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );
 }
 
-// ── Main component ───────────────────────────────────────────
 export default function Faq() {
   const [openValue, setOpenValue] = useState(faqItems[0].id);
 
@@ -148,7 +146,6 @@ export default function Faq() {
     <AnimatedSection className="bg-background py-16" id="faq">
       <div className="container">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
-          {/* Left column */}
           <div className="flex flex-col justify-center">
             <div className="mb-8">
               <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Common Questions</span>
@@ -157,12 +154,6 @@ export default function Faq() {
               </h2>
             </div>
 
-            {/*
-              Use Radix directly so we can track openValue in state.
-              shadcn's <Accordion> is just a thin wrapper around this —
-              using the primitive gives us the same behaviour plus
-              the ability to read which item is open for our chevron animation.
-            */}
             <AccordionPrimitive.Root
               type="single"
               value={openValue}
@@ -176,7 +167,6 @@ export default function Faq() {
             </AccordionPrimitive.Root>
           </div>
 
-          {/* Right column */}
           <FaqImage />
         </div>
       </div>

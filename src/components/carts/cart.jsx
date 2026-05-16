@@ -3,12 +3,86 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Package, ShoppingCart, X, Loader2, Check } from "lucide-react";
+import { Package, ShoppingCart, X, Loader2, Check, ShoppingBag } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { QuantityInput } from "./quantity-input";
+
+function CartItem({ product, currencyPrefix, onUpdateQuantity, onRemoveProduct }) {
+  const slug = product.slug || product.productId;
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: -20, height: 0 }}
+      animate={{ opacity: 1, x: 0, height: "auto" }}
+      exit={{ opacity: 0, x: 20, height: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="flex gap-4 rounded-2xl border border-border bg-card p-4 transition-shadow hover:shadow-sm sm:gap-5 sm:p-5"
+    >
+      <Link
+        href={`/items/${slug}`}
+        className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
+      >
+        {product.imageUrl ? (
+          <Image src={product.imageUrl} alt={product.name} fill sizes="100px" className="object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Package size={24} className="text-muted-foreground/40" />
+          </div>
+        )}
+      </Link>
+
+      <div className="flex flex-1 flex-col justify-between gap-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="w-full">
+            <Link
+              href={`/items/${slug}`}
+              className="font-semibold leading-tight text-foreground hover:text-primary"
+            >
+              {product.name}
+            </Link>
+            {product.description && (
+              <p className="mt-0.5 line-clamp-1 md:line-clamp-2 text-xs text-muted-foreground md:w-1/2">
+                {product.description}
+              </p>
+            )}
+          </div>
+          <motion.button
+            onClick={() => onRemoveProduct(product.id)}
+            className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <X size={15} />
+          </motion.button>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <QuantityInput quantity={product.quantity} onChange={(q) => onUpdateQuantity(product.id, q)} />
+          <motion.div
+            className="text-right"
+            key={`${product.id}-${product.quantity}`}
+            initial={{ scale: 1.1, opacity: 0.7 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <p className="text-sm font-bold text-foreground">
+              {currencyPrefix}
+              {(product.price * product.quantity).toLocaleString()}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {currencyPrefix}
+              {product.price.toLocaleString()} each
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function Cart({
   currencyPrefix = "৳",
@@ -68,109 +142,92 @@ export function Cart({
         ) : null}
 
         {!isLoading && errorMessage && (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive"
+          >
             {errorMessage}
-          </div>
+          </motion.div>
         )}
 
         {!isLoading && !errorMessage && isCartEmpty && (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-muted">
-              <ShoppingCart size={36} className="text-muted-foreground" />
-            </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="flex flex-col items-center justify-center py-24 text-center"
+          >
+            <motion.div
+              className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-muted"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ShoppingBag size={36} className="text-muted-foreground" />
+            </motion.div>
             <h2 className="mb-2 text-xl font-bold text-foreground">Your cart is empty</h2>
             <p className="mb-7 text-sm text-muted-foreground">Looks like you haven&apos;t added anything yet.</p>
-            <Button onClick={() => onContinueShopping(checkoutPayload)}>Start Shopping</Button>
-          </div>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Button onClick={() => onContinueShopping(checkoutPayload)}>Start Shopping</Button>
+            </motion.div>
+          </motion.div>
         )}
 
         {!isLoading && !errorMessage && !isCartEmpty && (
           <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
             <div className="space-y-3">
-              {products.map((product) => {
-                const slug = product.slug || product.productId;
-                return (
-                  <div
+              <AnimatePresence mode="popLayout">
+                {products.map((product) => (
+                  <CartItem
                     key={product.id}
-                    className="flex gap-4 rounded-2xl border border-border bg-card p-4 transition-shadow hover:shadow-sm sm:gap-5 sm:p-5"
+                    product={product}
+                    currencyPrefix={currencyPrefix}
+                    onUpdateQuantity={onUpdateQuantity}
+                    onRemoveProduct={onRemoveProduct}
+                  />
+                ))}
+              </AnimatePresence>
+
+              <motion.div
+                className="pt-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <motion.div whileHover={{ x: -3 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-muted-foreground"
+                    onClick={() => onContinueShopping(checkoutPayload)}
                   >
-                    <Link
-                      href={`/items/${slug}`}
-                      className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted sm:h-28 sm:w-28"
-                    >
-                      {product.imageUrl ? (
-                        <Image src={product.imageUrl} alt={product.name} fill sizes="100px" className="object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center">
-                          <Package size={24} className="text-muted-foreground/40" />
-                        </div>
-                      )}
-                    </Link>
-
-                    <div className="flex flex-1 flex-col justify-between gap-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="w-full">
-                          <Link
-                            href={`/items/${slug}`}
-                            className="font-semibold leading-tight text-foreground hover:text-primary"
-                          >
-                            {product.name}
-                          </Link>
-                          {product.description && (
-                            <p className="mt-0.5 line-clamp-1 md:line-clamp-2 text-xs text-muted-foreground md:w-1/2">
-                              {product.description}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => onRemoveProduct(product.id)}
-                          className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          <X size={15} />
-                        </button>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <QuantityInput quantity={product.quantity} onChange={(q) => onUpdateQuantity(product.id, q)} />
-                        <div className="text-right">
-                          <p className="text-sm font-bold text-foreground">
-                            {currencyPrefix}
-                            {(product.price * product.quantity).toLocaleString()}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {currencyPrefix}
-                            {product.price.toLocaleString()} each
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-
-              <div className="pt-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-muted-foreground"
-                  onClick={() => onContinueShopping(checkoutPayload)}
-                >
-                  ← Continue Shopping
-                </Button>
-              </div>
+                    ← Continue Shopping
+                  </Button>
+                </motion.div>
+              </motion.div>
             </div>
 
-            <div className="h-fit rounded-2xl border border-border bg-card p-6">
+            <motion.div
+              className="h-fit rounded-2xl border border-border bg-card p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
               <h2 className="mb-5 text-lg font-bold text-foreground">Order Summary</h2>
 
               <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-muted-foreground">
+                <motion.div
+                  className="flex justify-between text-muted-foreground"
+                  key={`subtotal-${subtotal}`}
+                  initial={{ opacity: 0.5 }}
+                  animate={{ opacity: 1 }}
+                >
                   <span>Subtotal ({products.reduce((s, p) => s + p.quantity, 0)} items)</span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {subtotal.toLocaleString()}
                   </span>
-                </div>
+                </motion.div>
 
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
@@ -191,15 +248,19 @@ export function Cart({
 
               <Separator className="my-4" />
 
-              <div className="flex items-center justify-between">
+              <motion.div
+                className="flex items-center justify-between"
+                key={`total-${totalAmount}`}
+                initial={{ scale: 1.05 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
                 <span className="font-bold text-foreground">Total</span>
                 <span className="text-xl font-extrabold text-primary">
                   {currencyPrefix}
-                  {totalAmount.toLocaleString(undefined, {
-                    maximumFractionDigits: 0,
-                  })}
+                  {totalAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </span>
-              </div>
+              </motion.div>
 
               {paymentProviders.length > 0 && (
                 <div className="mt-4 space-y-2">
@@ -209,7 +270,7 @@ export function Cart({
                       const Icon = p.icon;
                       const selected = paymentProvider === p.value;
                       return (
-                        <button
+                        <motion.button
                           key={p.value}
                           type="button"
                           onClick={() => onPaymentProviderChange(p.value)}
@@ -219,11 +280,21 @@ export function Cart({
                               ? "border-primary bg-primary/5 text-foreground"
                               : "border-border text-muted-foreground hover:border-muted-foreground/30"
                           )}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.98 }}
                         >
                           <Icon size={14} />
                           <span className="flex-1">{p.label}</span>
-                          {selected && <Check size={12} className="text-primary" />}
-                        </button>
+                          {selected && (
+                            <motion.span
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                            >
+                              <Check size={12} className="text-primary" />
+                            </motion.span>
+                          )}
+                        </motion.button>
                       );
                     })}
                   </div>
@@ -231,26 +302,28 @@ export function Cart({
               )}
 
               <div className="mt-4 space-y-3">
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={() => onCheckout(checkoutPayload)}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    `Pay with ${paymentProviders.find(p => p.value === paymentProvider)?.label || "Card"}`
-                  )}
-                </Button>
+                <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    onClick={() => onCheckout(checkoutPayload)}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      `Pay with ${paymentProviders.find(p => p.value === paymentProvider)?.label || "Card"}`
+                    )}
+                  </Button>
+                </motion.div>
                 <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>
                   Continue Shopping
                 </Button>
               </div>
-            </div>
+            </motion.div>
           </div>
         )}
       </div>

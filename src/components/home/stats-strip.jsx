@@ -4,6 +4,7 @@ import { useCounter } from "@/hooks/use-counter";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { animations } from "@/lib/animation";
 
 const stats = [
   {
@@ -23,15 +24,22 @@ function Counter({ end, suffix, label, format, started, index }) {
   return (
     <motion.div
       className="text-center"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      variants={animations.entrance.fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={animations.inView.once}
       transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
     >
-      <div className="font-sans font-bold text-4xl sm:text-5xl text-primary mb-1 tabular-nums">
+      <motion.div
+        className="font-sans font-bold text-4xl sm:text-5xl text-primary mb-1 tabular-nums"
+        key={val}
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      >
         {format(val)}
         {suffix}
-      </div>
+      </motion.div>
       <div className="text-muted-foreground text-xs sm:text-sm uppercase tracking-widest font-semibold">{label}</div>
     </motion.div>
   );
@@ -56,7 +64,7 @@ export default function StatsStrip() {
   }, []);
 
   return (
-    <AnimatedSection ref={ref} className="bg-foreground/90 py-14 sm:py-16">
+    <AnimatedSection ref={ref} className="bg-neutral-900 py-14 sm:py-16">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
           {stats.map((s, i) => (

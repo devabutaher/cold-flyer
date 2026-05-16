@@ -9,7 +9,7 @@ export default function BrandsStrip() {
   const repeated = [...brands, ...brands, ...brands];
 
   return (
-    <AnimatedSection className="py-10 bg-background border-y border-border">
+    <AnimatedSection className="py-10 bg-background border-y border-border" variant="fadeIn">
       <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-6">
         Trusted by Industry Leaders
       </p>
