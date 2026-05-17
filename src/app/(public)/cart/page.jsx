@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/store/cart";
 import { useAuth } from "@/components/providers";
-import api from "@/lib/api-client";
+import { getClient } from "@/lib/http-client";
 import { QuantityInput } from "@/components/carts/quantity-input";
 
 function CartEmpty() {
@@ -85,13 +85,13 @@ function CartContent() {
       };
 
       // Create order first, then get checkout URL
-      const response = await api.apiPost("/orders", orderData);
+      const response = await getClient().post("/orders", orderData).then((r) => r.data);
 
       if (response.success && response.data?.order?._id) {
         const orderId = response.data.order._id;
 
         // Create checkout session
-        const sessionResponse = await api.apiPost(`/orders/${orderId}/checkout`, {});
+        const sessionResponse = await getClient().post(`/orders/${orderId}/checkout`, {}).then((r) => r.data);
 
         if (sessionResponse.success && sessionResponse.data?.checkoutUrl) {
           clearCart();

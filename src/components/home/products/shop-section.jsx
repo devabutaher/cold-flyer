@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { apiGet } from "@/lib/api-client";
+import { useProductsQuery } from "@/hooks/queries/products";
+import { useFeaturedServicesQuery } from "@/hooks/queries/services";
 import { motion } from "framer-motion";
 import { CheckCircle, Wrench } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -103,10 +104,15 @@ function ServiceCard({ service, index }) {
 export default function ShopSection() {
   const t = useTranslations("home");
 
+  const { data: featuredServices = [], isLoading: loadingServices } = useFeaturedServicesQuery();
+  const { data: acUnits = [], isLoading: loadingUnits } = useProductsQuery({ productType: "unit", limit: 10 });
+  const { data: parts = [], isLoading: loadingParts } = useProductsQuery({ productType: "part", limit: 10 });
+
   return (
-    <div className="space-y-10">
+    <div>
       <DataCarousel
-        fetchFn={() => apiGet("/services/featured")}
+        items={featuredServices}
+        loading={loadingServices}
         title={t("ourBestServices")}
         tag={t("professionalSolutions")}
         catalogLabel={t("viewAllServices")}
@@ -116,7 +122,8 @@ export default function ShopSection() {
       />
 
       <DataCarousel
-        fetchFn={() => apiGet("/products?productType=unit&limit=10")}
+        items={acUnits}
+        loading={loadingUnits}
         title={t("premiumAcUnits")}
         tag={t("ourStore")}
         catalogLabel={t("viewFullCatalog")}
@@ -124,7 +131,8 @@ export default function ShopSection() {
       />
 
       <DataCarousel
-        fetchFn={() => apiGet("/products?productType=part&limit=10")}
+        items={parts}
+        loading={loadingParts}
         title={t("precisionAcParts")}
         tag={t("replacements")}
         catalogLabel={t("exploreParts")}

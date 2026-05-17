@@ -9,7 +9,7 @@ import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
+import { getClient } from "@/lib/http-client";
 
 const POLL_INTERVAL = 2000;
 const POLL_TIMEOUT = 20000;
@@ -38,15 +38,10 @@ export default function OrderSuccessPage() {
 
     const fetchOrder = async (isPoll = false) => {
       try {
-        const response = await fetch(`/api/orders/${orderId}`, {
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await getClient().get(`/orders/${orderId}`);
+        if (!mounted) return;
 
-        if (!response.ok || !mounted) return;
-
-        const data = await response.json();
-        const fetchedOrder = data.data?.order || data.order;
+        const fetchedOrder = res.data?.data?.order || res.data?.order;
         if (!mounted) return;
 
         setOrder(fetchedOrder);

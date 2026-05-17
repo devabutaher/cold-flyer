@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useConfirmBooking, useScheduleBooking, useStartService, useCompleteBooking } from "@/hooks/queries";
+import { useConfirmBooking, useScheduleBooking, useStartService, useCompleteBooking } from "@/hooks/queries/bookings";
 import { CalendarDays, CheckCircle2, Loader2, PlayCircle, ThumbsUp } from "lucide-react";
 import { toast } from "sonner";
 
@@ -28,12 +28,9 @@ export function ConfirmBookingDialog({ booking, onSuccess }) {
   const handleSubmit = async () => {
     try {
       await confirmBooking.mutateAsync(booking._id);
-      toast.success("Booking confirmed");
       setOpen(false);
       onSuccess?.();
-    } catch {
-      toast.error("Failed to confirm booking");
-    }
+    } catch {}
   };
 
   return (
@@ -89,12 +86,9 @@ export function ScheduleBookingDialog({ booking, onSuccess, technicians = [] }) 
         id: booking._id,
         data: { scheduledDate, scheduledTime: { start: timeStart, end: timeEnd }, ...(technician && { technician }) },
       });
-      toast.success("Booking scheduled");
       setOpen(false);
       onSuccess?.();
-    } catch {
-      toast.error("Failed to schedule booking");
-    }
+    } catch {}
   };
 
   return (
@@ -174,12 +168,9 @@ export function StartServiceDialog({ booking, onSuccess }) {
   const handleSubmit = async () => {
     try {
       await startService.mutateAsync(booking._id);
-      toast.success("Service started");
       setOpen(false);
       onSuccess?.();
-    } catch {
-      toast.error("Failed to start service");
-    }
+    } catch {}
   };
 
   return (
@@ -224,12 +215,9 @@ export function CompleteBookingDialog({ booking, onSuccess }) {
   const handleSubmit = async () => {
     try {
       await completeBooking.mutateAsync({ id: booking._id, data: { diagnosis, workDone } });
-      toast.success("Booking completed");
       setOpen(false);
       onSuccess?.();
-    } catch {
-      toast.error("Failed to complete booking");
-    }
+    } catch {}
   };
 
   return (

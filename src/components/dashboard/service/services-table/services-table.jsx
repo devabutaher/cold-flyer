@@ -5,7 +5,7 @@ import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { buildServiceColumns } from "./service-columns";
-import { useServicesQuery, useDeleteService } from "@/hooks/queries";
+import { useServicesQuery, useDeleteService } from "@/hooks/queries/services";
 import { Package } from "lucide-react";
 import { toast } from "sonner";
 
@@ -49,10 +49,7 @@ export default function ServicesTable({ isAdmin = false }) {
     if (!checkAdminAccess()) return;
     try {
       await deleteService.mutateAsync(id);
-      toast.success("Service deleted successfully");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch {}
   }, [deleteService, checkAdminAccess]);
 
   const columns = useMemo(() => buildServiceColumns({ onDelete: handleDelete }), [handleDelete]);

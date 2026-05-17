@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { useBookingQuery, useCancelBooking } from "@/hooks/queries";
+import { useBookingQuery, useCancelBooking } from "@/hooks/queries/bookings";
 import { useQuery } from "@tanstack/react-query";
 import {
   ConfirmBookingDialog,
@@ -44,6 +44,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getClient } from "@/lib/http-client";
 
 const BOOKING_STATUS_MAP = {
   pending: {
@@ -90,9 +91,8 @@ export default function BookingDetailPage() {
   const { data: technicians = [] } = useQuery({
     queryKey: ["admin-technicians"],
     queryFn: async () => {
-      const res = await fetch("/api/admin/technicians?limit=100", { credentials: "include" });
-      const data = await res.json();
-      return data?.data?.technicians || [];
+      const res = await getClient().get("/admin/technicians?limit=100");
+      return res.data?.data?.technicians || [];
     },
     enabled: isAdmin,
   });
@@ -127,12 +127,9 @@ export default function BookingDetailPage() {
         bookingId: booking._id,
         reason: cancelReason || "Customer request",
       });
-      toast.success("Booking cancelled");
       setCancelOpen(false);
       setCancelReason("");
-    } catch {
-      toast.error("Failed to cancel booking");
-    }
+    } catch {}
   };
 
   return (

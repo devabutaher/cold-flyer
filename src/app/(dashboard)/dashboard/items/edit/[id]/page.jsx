@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import api from "@/lib/api/master";
+import { getCurrentUser } from "@/lib/auth-server";
 import EditProductForm from "@/components/dashboard/product/edit-product/edit-product-form";
 import { getProductBySlugServer } from "@/lib/actions/products";
 
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 async function getUser() {
   try {
-    const data = await api.getCurrentUser();
+    const data = await getCurrentUser();
     return data;
   } catch {
     return null;

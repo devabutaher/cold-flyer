@@ -14,8 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { apiGet, apiPost, apiPatch } from "@/lib/api-client";
-import { useOrderQuery, useCancelOrder } from "@/hooks/queries";
+import { getClient } from "@/lib/http-client";
+import { useOrderQuery, useCancelOrder } from "@/hooks/queries/orders";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -77,7 +77,7 @@ export function OrderDetails({ orderId }) {
   const handlePayment = async (provider = "stripe") => {
     setPaying(true);
     try {
-      const res = await apiPost(`/orders/${orderId}/checkout`, { provider });
+      const res = await getClient().post(`/orders/${orderId}/checkout`, { provider }).then((r) => r.data);
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }

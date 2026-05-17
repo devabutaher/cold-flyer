@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import api from "@/lib/api/master";
+import { getCurrentUser } from "@/lib/auth-server";
 import EditServiceForm from "@/components/dashboard/service/edit-service/edit-service-form";
 import { getServiceBySlugServer } from "@/lib/actions/services";
 
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 async function getUser() {
   try {
-    const data = await api.getCurrentUser();
+    const data = await getCurrentUser();
     return data;
   } catch {
     return null;

@@ -18,6 +18,7 @@ import {
 import { Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { getClient } from "@/lib/http-client";
 
 export function ReviewDialog({ booking, onSuccess }) {
   const [open, setOpen] = useState(false);
@@ -33,17 +34,11 @@ export function ReviewDialog({ booking, onSuccess }) {
     }
     setSubmitting(true);
     try {
-      const res = await fetch(`/api/services/bookings/${booking._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          customerRating: rating,
-          customerReview: review,
-        }),
+      const res = await getClient().patch(`/services/bookings/${booking._id}`, {
+        customerRating: rating,
+        customerReview: review,
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message);
+      if (!res.data.success) throw new Error(res.data.message);
       toast.success("Review submitted! Thank you.");
       setOpen(false);
       onSuccess?.();

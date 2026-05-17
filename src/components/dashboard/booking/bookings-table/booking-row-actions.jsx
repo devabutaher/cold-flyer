@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, XCircle, PencilLine } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 import { useState } from "react";
 
 export function BookingRowActions({ row, onCancel }) {
@@ -34,12 +33,9 @@ export function BookingRowActions({ row, onCancel }) {
   const handleCancel = async () => {
     try {
       await onCancel(booking._id, cancelReason || "Customer request");
-      toast.success("Booking cancelled");
       setOpen(false);
       setCancelReason("");
-    } catch {
-      toast.error("Failed to cancel booking");
-    }
+    } catch {}
   };
 
   return (

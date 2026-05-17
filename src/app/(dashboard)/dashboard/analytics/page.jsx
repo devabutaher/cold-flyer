@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart, DollarSign, CalendarDays } from "lucide-react";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
+import { getClient } from "@/lib/http-client";
 
 async function fetcher(url) {
-  const res = await fetch(url, { credentials: "include" });
-  return res.json();
+  const res = await getClient().get(url);
+  return res.data;
 }
 
 const STATUS_MAP = {

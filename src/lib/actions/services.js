@@ -1,77 +1,28 @@
-/**
- * Server Actions for Service CRUD operations
- */
-
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-
-class ServerApiError extends Error {
-  constructor(message, status, data) {
-    super(message);
-    this.status = status;
-    this.data = data;
-    this.name = "ServerApiError";
-  }
-}
-
-function getBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-}
-
-async function getAuthHeaders() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
-
-  return {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
-}
-
-async function serverFetch(endpoint, options = {}) {
-  const baseUrl = getBaseUrl();
-  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
-
-  const authHeaders = await getAuthHeaders();
-
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...authHeaders,
-      ...options.headers,
-    },
-    credentials: "include",
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new ServerApiError(data.message || "Server action failed", response.status, data);
-  }
-  return data;
-}
+import { createServerClient } from "@/lib/http-client";
 
 export async function getServicesServer(params) {
-  const query = new URLSearchParams();
-  if (params?.category) query.set("category", params.category);
-  if (params?.serviceType) query.set("serviceType", params.serviceType);
-  if (params?.sort) {
-    const sortMap = {
-      "Price: Low to High": "price_asc",
-      "Price: High to Low": "price_desc",
-      Rating: "rating",
-      Popular: "popular",
-    };
-    query.set("sortBy", sortMap[params.sort] || "rating");
-  }
-  if (params?.featured) query.set("featured", "true");
-
-  const endpoint = query.toString() ? `/api/services?${query}` : "/api/services";
-
   try {
-    const result = await serverFetch(endpoint);
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const query = new URLSearchParams();
+    if (params?.category) query.set("category", params.category);
+    if (params?.serviceType) query.set("serviceType", params.serviceType);
+    if (params?.sort) {
+      const sortMap = {
+        "Price: Low to High": "price_asc",
+        "Price: High to Low": "price_desc",
+        Rating: "rating",
+        Popular: "popular",
+      };
+      query.set("sortBy", sortMap[params.sort] || "rating");
+    }
+    if (params?.featured) query.set("featured", "true");
+    const qs = query.toString();
+    const res = await client.get(`/api/services${qs ? `?${qs}` : ""}`);
+    return res.data;
   } catch {
     return { data: { services: [] }, success: false };
   }
@@ -79,9 +30,10 @@ export async function getServicesServer(params) {
 
 export async function getServiceByIdServer(id) {
   try {
-    const result = await serverFetch(`/api/services/${id}`);
-    if (result?.data?.service) return result.data.service;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get(`/api/services/${id}`);
+    return res.data?.data?.service || res.data;
   } catch {
     return null;
   }
@@ -89,9 +41,10 @@ export async function getServiceByIdServer(id) {
 
 export async function getServiceBySlugServer(slug) {
   try {
-    const result = await serverFetch(`/api/services/slug/${slug}`);
-    if (result?.data?.service) return result.data.service;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get(`/api/services/slug/${slug}`);
+    return res.data?.data?.service || res.data;
   } catch {
     return null;
   }
@@ -99,9 +52,10 @@ export async function getServiceBySlugServer(slug) {
 
 export async function getFeaturedServicesServer() {
   try {
-    const result = await serverFetch("/api/services/featured");
-    if (result?.data?.services) return result.data.services;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get("/api/services/featured");
+    return res.data?.data?.services || res.data;
   } catch {
     return [];
   }
@@ -109,65 +63,59 @@ export async function getFeaturedServicesServer() {
 
 export async function createServiceAction(serviceData) {
   try {
-    const result = await serverFetch("/api/services", {
-      method: "POST",
-      body: JSON.stringify(serviceData),
-    });
-    revalidateTag("services");
-    return { success: true, data: result };
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/services", serviceData);
+    return { success: true, data: res.data };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to create service",
-      error: error.data,
+      message: error.response?.data?.message || error.message || "Failed to create service",
+      error: error.response?.data,
     };
   }
 }
 
 export async function updateServiceAction(id, serviceData) {
   try {
-    const result = await serverFetch(`/api/services/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(serviceData),
-    });
-    revalidateTag("services");
-    return { success: true, data: result };
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.patch(`/api/services/${id}`, serviceData);
+    return { success: true, data: res.data };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to update service",
-      error: error.data,
+      message: error.response?.data?.message || error.message || "Failed to update service",
+      error: error.response?.data,
     };
   }
 }
 
 export async function deleteServiceAction(id) {
   try {
-    await serverFetch(`/api/services/${id}`, { method: "DELETE" });
-    revalidateTag("services");
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    await client.delete(`/api/services/${id}`);
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to delete service",
+      message: error.response?.data?.message || error.message || "Failed to delete service",
     };
   }
 }
 
-// --- Booking Actions ---
-
 export async function createBookingAction(bookingData) {
   try {
-    const result = await serverFetch("/api/services/bookings", {
-      method: "POST",
-      body: JSON.stringify(bookingData),
-    });
-    return { success: true, data: result };
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/services/bookings", bookingData);
+    return { success: true, data: res.data };
   } catch (error) {
-    const fieldErrors = error.data?.errors?.map((e) => `${e.field}: ${e.message}`).join("; ");
+    const fieldErrors = error.response?.data?.errors?.map((e) => `${e.field}: ${e.message}`).join("; ");
     return {
       success: false,
-      message: error.message || "Failed to create booking",
+      message: error.response?.data?.message || error.message || "Failed to create booking",
       ...(fieldErrors && { details: fieldErrors }),
     };
   }
@@ -175,9 +123,10 @@ export async function createBookingAction(bookingData) {
 
 export async function getBookingsServer() {
   try {
-    const result = await serverFetch("/api/services/bookings");
-    if (result?.data?.bookings) return result.data.bookings;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get("/api/services/bookings");
+    return res.data?.data?.bookings || res.data;
   } catch {
     return [];
   }
@@ -185,9 +134,10 @@ export async function getBookingsServer() {
 
 export async function getBookingByIdServer(id) {
   try {
-    const result = await serverFetch(`/api/services/bookings/${id}`);
-    if (result?.data?.booking) return result.data.booking;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get(`/api/services/bookings/${id}`);
+    return res.data?.data?.booking || res.data;
   } catch {
     return null;
   }
@@ -195,30 +145,28 @@ export async function getBookingByIdServer(id) {
 
 export async function cancelBookingAction(bookingId, reason) {
   try {
-    await serverFetch(`/api/services/bookings/${bookingId}/cancel`, {
-      method: "PATCH",
-      body: JSON.stringify({ reason }),
-    });
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    await client.patch(`/api/services/bookings/${bookingId}/cancel`, { reason });
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to cancel booking",
+      message: error.response?.data?.message || error.message || "Failed to cancel booking",
     };
   }
 }
 
 export async function updateBookingAction(bookingId, bookingData) {
   try {
-    const result = await serverFetch(`/api/services/bookings/${bookingId}`, {
-      method: "PATCH",
-      body: JSON.stringify(bookingData),
-    });
-    return { success: true, data: result };
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.patch(`/api/services/bookings/${bookingId}`, bookingData);
+    return { success: true, data: res.data };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to update booking",
+      message: error.response?.data?.message || error.message || "Failed to update booking",
     };
   }
 }

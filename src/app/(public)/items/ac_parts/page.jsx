@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiGet, extractDataArray } from "@/lib/api-client";
+import { getClient, extractList } from "@/lib/http-client";
 import { PackageSearch } from "lucide-react";
 import { CatalogCard } from "@/components/catalog/catalog-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
@@ -35,8 +35,8 @@ export default function ACPartsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await apiGet("/products?productType=part&limit=200");
-        const data = extractDataArray(res, "products");
+        const res = await getClient().get("/products?productType=part&limit=200");
+        const data = extractList(res, "products");
 
         setProducts(data);
         const brds = [...new Set(data.map((p) => p.brand).filter(Boolean))].sort();

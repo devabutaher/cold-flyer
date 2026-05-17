@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import api from "@/lib/api/master";
+import { getCurrentUser } from "@/lib/auth-server";
 import { getServiceByIdServer } from "@/lib/actions/services";
 
 export const dynamic = "force-dynamic";
 
 async function getUser() {
   try {
-    const data = await api.getCurrentUser();
+    const data = await getCurrentUser();
     return data;
   } catch {
     return null;

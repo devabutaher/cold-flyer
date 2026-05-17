@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { getCurrentUser } from "@/lib/api/master";
+import { getCurrentUser } from "@/lib/auth-server";
 import DashboardClient from "@/components/dashboard/stats/dashboard-client";
 
 export const dynamic = "force-dynamic";

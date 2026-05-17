@@ -1,63 +1,14 @@
-/**
- * Server Actions for Order operations
- * These run on the server and can be called from client components
- */
-
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-
-class ServerApiError extends Error {
-  constructor(message, status, data) {
-    super(message);
-    this.status = status;
-    this.data = data;
-    this.name = "ServerApiError";
-  }
-}
-
-function getBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-}
-
-async function getAuthHeaders() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
-
-  return {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
-}
-
-async function serverFetch(endpoint, options = {}) {
-  const baseUrl = getBaseUrl();
-  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
-
-  const authHeaders = await getAuthHeaders();
-
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...authHeaders,
-      ...options.headers,
-    },
-    credentials: "include",
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new ServerApiError(data.message || "Server action failed", response.status, data);
-  }
-  return data;
-}
+import { createServerClient } from "@/lib/http-client";
 
 export async function getOrdersServer() {
   try {
-    const result = await serverFetch("/api/orders");
-    if (result?.data?.orders) return result.data.orders;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get("/api/orders");
+    return res.data?.data?.orders || res.data;
   } catch {
     return [];
   }
@@ -65,9 +16,10 @@ export async function getOrdersServer() {
 
 export async function getOrderByIdServer(id) {
   try {
-    const result = await serverFetch(`/api/orders/${id}`);
-    if (result?.data?.order) return result.data.order;
-    return result;
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.get(`/api/orders/${id}`);
+    return res.data?.data?.order || res.data;
   } catch {
     return null;
   }
@@ -75,49 +27,43 @@ export async function getOrderByIdServer(id) {
 
 export async function createOrderAction(orderData) {
   try {
-    const result = await serverFetch("/api/orders", {
-      method: "POST",
-      body: JSON.stringify(orderData),
-    });
-    revalidateTag("orders");
-    return { success: true, data: result };
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/orders", orderData);
+    return { success: true, data: res.data };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to create order",
-      error: error.data,
+      message: error.response?.data?.message || error.message || "Failed to create order",
+      error: error.response?.data,
     };
   }
 }
 
 export async function cancelOrderAction(orderId, reason) {
   try {
-    await serverFetch(`/api/orders/${orderId}/cancel`, {
-      method: "PATCH",
-      body: JSON.stringify({ reason }),
-    });
-    revalidateTag("orders");
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    await client.patch(`/api/orders/${orderId}/cancel`, { reason });
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Failed to cancel order",
+      message: error.response?.data?.message || error.message || "Failed to cancel order",
     };
   }
 }
 
 export async function verifyPaymentAction(orderId, sessionId) {
   try {
-    await serverFetch(`/api/orders/${orderId}/verify-payment`, {
-      method: "POST",
-      body: JSON.stringify({ sessionId }),
-    });
-    revalidateTag("orders");
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    await client.post(`/api/orders/${orderId}/verify-payment`, { sessionId });
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      message: error.message || "Payment verification failed",
+      message: error.response?.data?.message || error.message || "Payment verification failed",
     };
   }
 }

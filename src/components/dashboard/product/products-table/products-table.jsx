@@ -5,7 +5,7 @@ import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { buildProductColumns } from "./product-columns";
-import { useProductsQuery, useDeleteProduct } from "@/hooks/queries";
+import { useProductsQuery, useDeleteProduct } from "@/hooks/queries/products";
 import { Package } from "lucide-react";
 import { toast } from "sonner";
 
@@ -49,10 +49,7 @@ export default function ProductsTable({ isAdmin = false }) {
     if (!checkAdminAccess()) return;
     try {
       await deleteProduct.mutateAsync(id);
-      toast.success("Product deleted successfully");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch {}
   }, [deleteProduct, checkAdminAccess]);
 
   const columns = useMemo(() => buildProductColumns({ onDelete: handleDelete }), [handleDelete]);

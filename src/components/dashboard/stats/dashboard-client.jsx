@@ -4,17 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { StatsCards } from "@/components/dashboard/stats/stats-cards";
 import { RecentOrders, TopProducts } from "@/components/dashboard/stats/dashboard-cards";
 import { Skeleton } from "@/components/ui/skeleton";
-
-async function fetchDashboard() {
-  const res = await fetch("/api/admin/dashboard", { credentials: "include" });
-  const data = await res.json();
-  return data?.data || {};
-}
+import { getClient } from "@/lib/http-client";
 
 export default function DashboardClient({ userName }) {
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
-    queryFn: fetchDashboard,
+    queryFn: async () => {
+      const res = await getClient().get("/admin/dashboard");
+      return res.data?.data || {};
+    },
     refetchInterval: 60000,
   });
 

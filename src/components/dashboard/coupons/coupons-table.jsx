@@ -19,15 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getClient } from "@/lib/http-client";
 import { Percent, PlusIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-async function fetcher(url, options) {
-  const res = await fetch(url, { credentials: "include", ...options });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Request failed");
-  return data;
-}
 
 const mapRow = (c) => ({
   code: c.code,
@@ -63,29 +57,29 @@ export default function CouponsTable() {
   const { data: coupons = [], isLoading } = useQuery({
     queryKey: ["admin-coupons"],
     queryFn: async () => {
-      const res = await fetcher("/api/admin/coupons");
-      return res?.data?.coupons || res?.coupons || [];
+      const res = await getClient().get("/admin/coupons");
+      return res.data?.data?.coupons || res.data?.coupons || [];
     },
   });
 
   const deleteCoupon = useMutation({
-    mutationFn: (id) => fetcher(`/api/admin/coupons/${id}`, { method: "DELETE" }),
+    mutationFn: (id) => getClient().delete(`/admin/coupons/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
       toast.success("Coupon deleted");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
   const createCoupon = useMutation({
-    mutationFn: (data) => fetcher("/api/admin/coupons", { method: "POST", body: JSON.stringify(data) }),
+    mutationFn: (data) => getClient().post("/admin/coupons", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
       setShowCreate(false);
       resetForm();
       toast.success("Coupon created");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
   const resetForm = () => {

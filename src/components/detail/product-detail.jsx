@@ -4,7 +4,7 @@ import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { useProduct } from "@/hooks/queries";
+import { useProduct } from "@/hooks/queries/products";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
 import { ShieldCheck, Tag, Truck } from "lucide-react";

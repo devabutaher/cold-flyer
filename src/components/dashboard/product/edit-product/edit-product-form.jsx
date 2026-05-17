@@ -1,6 +1,6 @@
 "use client";
 
-import { useUpdateProduct } from "@/hooks/queries";
+import { useUpdateProduct } from "@/hooks/queries/products";
 import { uploadImageAction } from "@/lib/actions/products";
 import { getProductInitialValues, productFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";

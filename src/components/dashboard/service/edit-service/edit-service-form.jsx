@@ -1,6 +1,6 @@
 "use client";
 
-import { useCreateService, useUpdateService } from "@/hooks/queries";
+import { useCreateService, useUpdateService } from "@/hooks/queries/services";
 import { uploadImageAction } from "@/lib/actions/products";
 import { serviceFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput } from "@/lib/utils";

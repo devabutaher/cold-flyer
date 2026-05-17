@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useNotificationsQuery, useMarkNotificationRead, useMarkAllNotificationsRead } from "@/hooks/queries";
+import { useNotificationsQuery, useMarkNotificationRead, useMarkAllNotificationsRead } from "@/hooks/queries/notifications";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

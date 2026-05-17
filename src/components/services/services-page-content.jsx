@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { apiGet } from "@/lib/api-client";
+import { useServicesQuery } from "@/hooks/queries/services";
 import { PackageSearch } from "lucide-react";
 import { CatalogCard } from "@/components/catalog/catalog-card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,32 +26,9 @@ function ServiceCardSkeleton() {
 
 export default function ServicesPageContent() {
   const t = useTranslations("common");
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: services = [], isLoading, error } = useServicesQuery({ limit: 50 });
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const res = await apiGet("/services?limit=50");
-        let data = [];
-        if (Array.isArray(res)) data = res;
-        else if (Array.isArray(res?.data)) data = res.data;
-        else if (Array.isArray(res?.data?.services)) data = res.data.services;
-        else if (Array.isArray(res?.services)) data = res.services;
-        setServices(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {[...Array(8)].map((_, i) => (

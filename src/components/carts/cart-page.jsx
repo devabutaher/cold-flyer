@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { useCart } from "@/store/cart";
 import { useAuth } from "@/components/providers";
-import { apiPost } from "@/lib/api-client";
+import { getClient } from "@/lib/http-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Cart } from "./cart";
@@ -59,11 +59,11 @@ export default function CartPage() {
         isPickup: false,
       };
 
-      const response = await apiPost("/orders", orderData);
+      const response = await getClient().post("/orders", orderData).then((r) => r.data);
 
       if (response.data?.order?._id) {
         const orderId = response.data.order._id;
-        const sessionResponse = await apiPost(`/orders/${orderId}/checkout`, { provider: paymentProvider });
+        const sessionResponse = await getClient().post(`/orders/${orderId}/checkout`, { provider: paymentProvider }).then((r) => r.data);
 
         if (sessionResponse.success) {
           clearCart();

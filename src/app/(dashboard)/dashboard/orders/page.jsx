@@ -1,12 +1,12 @@
-import api from "@/lib/api/master";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth-server";
 
 export const dynamic = "force-dynamic";
 
 async function getUser() {
   try {
-    const data = await api.getCurrentUser();
+    const data = await getCurrentUser();
     return data;
   } catch {
     return null;

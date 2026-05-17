@@ -2,8 +2,6 @@
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Skeleton } from "@/components/ui/skeleton";
-import { extractDataArray } from "@/lib/api-client";
-import { useEffect, useState } from "react";
 import ProductCarousel from "./product-carousel";
 
 function ProductCardSkeleton() {
@@ -49,7 +47,8 @@ function CarouselSkeleton() {
 }
 
 export function DataCarousel({
-  fetchFn,
+  items: externalItems,
+  loading: externalLoading,
   title,
   tag,
   catalogLabel,
@@ -59,48 +58,37 @@ export function DataCarousel({
   enabled = true,
   className = "container py-10",
 }) {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    (async () => {
-      try {
-        const res = await fetchFn();
-        setItems(extractDataArray(res));
-      } catch {
-        setItems([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [fetchFn, enabled]);
-
   if (!enabled) return null;
+
+  const loading = externalLoading ?? false;
+  const items = externalItems ?? [];
 
   return (
     <AnimatedSection className={className}>
       {loading ? (
-        <div>
-          <div className="mb-5 flex items-end justify-between gap-3">
-            <div>
-              <Skeleton className="h-3 w-12 mb-1" />
-              <Skeleton className="h-7 w-40" />
-            </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-9 w-9 rounded-md" />
-              <Skeleton className="h-9 w-9 rounded-md" />
-            </div>
-          </div>
-          <div className="flex gap-4 overflow-hidden">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">
-                {renderSkeleton ? renderSkeleton(i) : <ProductCardSkeleton />}
+        renderSkeleton ? (
+          <div>
+            <div className="mb-5 flex items-end justify-between gap-3">
+              <div>
+                <Skeleton className="h-3 w-12 mb-1" />
+                <Skeleton className="h-7 w-40" />
               </div>
-            ))}
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-9 w-9 rounded-md" />
+                <Skeleton className="h-9 w-9 rounded-md" />
+              </div>
+            </div>
+            <div className="flex gap-4 overflow-hidden">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">
+                  {renderSkeleton(i)}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <CarouselSkeleton />
+        )
       ) : items.length > 0 ? (
         <ProductCarousel
           title={title}

@@ -1,8 +1,3 @@
-/**
- * Query Provider - Configures TanStack Query for the application
- * Uses React 19+ QueryClient pattern with proper SSR support
- */
-
 "use client";
 
 import { useState } from "react";
@@ -15,9 +10,11 @@ function getQueryClient() {
     return new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: 60 * 1000,
+          staleTime: 2 * 60 * 1000,
+          gcTime: 5 * 60 * 1000,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
+          refetchOnReconnect: false,
           retry: 1,
         },
         mutations: {
@@ -31,9 +28,11 @@ function getQueryClient() {
     clientQueryClientInstance = new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: 60 * 1000,
+          staleTime: 2 * 60 * 1000,
+          gcTime: 5 * 60 * 1000,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
+          refetchOnReconnect: false,
           retry: 1,
         },
         mutations: {
@@ -48,6 +47,5 @@ function getQueryClient() {
 
 export function QueryProvider({ children }) {
   const [queryClient] = useState(getQueryClient);
-
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

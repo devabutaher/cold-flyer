@@ -7,22 +7,37 @@ import { CatalogCard } from "./catalog-card";
 import { animations } from "@/lib/animation";
 import { motion } from "framer-motion";
 
-export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, sortFn, itemLabel = "item" }) {
-  const {
-    data: results,
-    isLoading: loading,
-    error,
-  } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      try {
-        return await apiFetchFn();
-      } catch (err) {
-        console.error(`Error fetching ${type}:`, err);
-        throw err;
-      }
-    },
+export function CatalogGrid({
+  type = "product",
+  apiFetchFn,
+  queryKey,
+  filterFn,
+  sortFn,
+  itemLabel = "item",
+  items: externalItems,
+  isLoading: externalLoading,
+  error: externalError,
+}) {
+  const hasExternalData = externalItems !== undefined;
+
+  const query = useQuery({
+    queryKey: hasExternalData ? ["__catalog_disabled__"] : queryKey,
+    queryFn: hasExternalData
+      ? async () => []
+      : async () => {
+          try {
+            return await apiFetchFn();
+          } catch (err) {
+            console.error(`Error fetching ${type}:`, err);
+            throw err;
+          }
+        },
+    enabled: !hasExternalData && !!apiFetchFn,
   });
+
+  const items = hasExternalData ? (externalItems ?? []) : (query.data ?? []);
+  const loading = hasExternalData ? (externalLoading ?? false) : query.isLoading;
+  const error = hasExternalData ? externalError : query.error;
 
   if (loading) {
     return (
@@ -48,9 +63,9 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
     );
   }
 
-  const items = Array.isArray(results) ? results : [];
+  const results = Array.isArray(items) ? items : [];
 
-  if (items.length === 0) {
+  if (results.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -67,8 +82,8 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
   return (
     <div>
       <p className="text-xs text-muted-foreground mb-4 font-medium">
-        {items.length} {itemLabel}
-        {items.length !== 1 ? "s" : ""} found
+        {results.length} {itemLabel}
+        {results.length !== 1 ? "s" : ""} found
       </p>
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
@@ -76,7 +91,7 @@ export function CatalogGrid({ type = "product", apiFetchFn, queryKey, filterFn, 
         initial="hidden"
         animate="visible"
       >
-        {items.map((item) => (
+        {results.map((item) => (
           <CatalogCard key={item._id ?? item.id} item={item} type={type} />
         ))}
       </motion.div>

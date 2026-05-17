@@ -5,9 +5,8 @@ import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { buildBookingColumns } from "./booking-columns";
-import { useBookingsQuery, useCancelBooking } from "@/hooks/queries";
+import { useBookingsQuery, useCancelBooking } from "@/hooks/queries/bookings";
 import { ClipboardList } from "lucide-react";
-import { toast } from "sonner";
 
 const mapBookingRow = (b) => ({
   bookingNumber: b.bookingNumber,
@@ -36,10 +35,7 @@ export default function BookingsTable({ isAdmin = false }) {
   const handleCancel = useCallback(async (id, reason) => {
     try {
       await cancelBooking.mutateAsync({ bookingId: id, reason: reason || "Customer request" });
-      toast.success("Booking cancelled successfully");
-    } catch (error) {
-      toast.error(error.message || "Failed to cancel booking");
-    }
+    } catch {}
   }, [cancelBooking]);
 
   const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel }), [handleCancel]);

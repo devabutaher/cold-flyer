@@ -6,15 +6,9 @@ import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { buildTechnicianColumns } from "./technicians-columns";
+import { getClient } from "@/lib/http-client";
 import { Wrench } from "lucide-react";
 import { toast } from "sonner";
-
-async function fetcher(url, options) {
-  const res = await fetch(url, { credentials: "include", ...options });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Request failed");
-  return data;
-}
 
 const mapRow = (t) => ({
   name: t.user?.name || "N/A",
@@ -42,18 +36,18 @@ export default function TechniciansTable() {
   const { data: technicians = [], isLoading } = useQuery({
     queryKey: ["admin-technicians"],
     queryFn: async () => {
-      const res = await fetcher("/api/admin/technicians");
-      return res?.data?.technicians || [];
+      const res = await getClient().get("/admin/technicians");
+      return res.data?.data?.technicians || [];
     },
   });
 
   const deleteTechnician = useMutation({
-    mutationFn: (id) => fetcher(`/api/admin/technicians/${id}`, { method: "DELETE" }),
+    mutationFn: (id) => getClient().delete(`/admin/technicians/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
       toast.success("Technician removed");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
   const handleDelete = useCallback(async (id) => {

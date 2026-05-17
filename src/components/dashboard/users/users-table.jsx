@@ -6,15 +6,9 @@ import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { buildUserColumns } from "./users-columns";
+import { getClient } from "@/lib/http-client";
 import { Users } from "lucide-react";
 import { toast } from "sonner";
-
-async function fetcher(url, options) {
-  const res = await fetch(url, { credentials: "include", ...options });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Request failed");
-  return data;
-}
 
 const mapRow = (u) => ({
   name: u.name || u.email,
@@ -38,19 +32,18 @@ export default function UsersTable() {
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
-      const res = await fetcher("/api/admin/users");
-      return res?.data?.users || [];
+      const res = await getClient().get("/admin/users");
+      return res.data?.data?.users || [];
     },
   });
 
   const updateRole = useMutation({
-    mutationFn: ({ id, role }) =>
-      fetcher(`/api/admin/users/${id}`, { method: "PATCH", body: JSON.stringify({ role }) }),
+    mutationFn: ({ id, role }) => getClient().patch(`/admin/users/${id}`, { role }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       toast.success("User role updated");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
   const handleRoleChange = useCallback((id, role) => updateRole.mutate({ id, role }), [updateRole]);

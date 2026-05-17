@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useBookingsQuery } from "@/hooks/queries";
+import { useBookingsQuery } from "@/hooks/queries/bookings";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

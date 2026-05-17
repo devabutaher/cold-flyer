@@ -1,45 +1,88 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { CatalogFilters } from "./catalog-filters";
 import { CatalogGrid } from "./catalog-grid";
 
 export function CatalogPage({
   type = "product",
-  searchComponent: SearchComponent,
-  apiFetchFn,
-  getFilterOptions = () => ({}),
-  extraFilterOptions = [],
-  defaultSort = "All Products",
-  filterFn,
-  sortFn,
+  queryKey = [],
+  fetchFn,
+  fetchAllFn,
+  extractArray,
+  buildFilterOptions,
+  sortOptions,
+  defaultSort,
   itemLabel,
+  searchComponent,
 }) {
+  const searchParams = useSearchParams();
+
+  const params = useMemo(
+    () => ({
+      q: searchParams.get("q") || undefined,
+      category: searchParams.get("category") || undefined,
+      brand: searchParams.get("brand") || undefined,
+      productType: searchParams.get("producttype") || undefined,
+      serviceType: searchParams.get("servicetype") || undefined,
+      sort: searchParams.get("sort") || undefined,
+    }),
+    [searchParams],
+  );
+
+  const { data: allItems = [] } = useQuery({
+    queryKey: [...queryKey, "all"],
+    queryFn: async () => {
+      const res = await fetchAllFn();
+      return extractArray(res);
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: items = [], isLoading, error } = useQuery({
+    queryKey: [...queryKey, params],
+    queryFn: async () => {
+      const res = await fetchFn({ ...params, limit: "50" });
+      return extractArray(res);
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const filterOptions = useMemo(() => {
+    if (!buildFilterOptions) return [];
+    return buildFilterOptions(Array.isArray(allItems) ? allItems : []);
+  }, [allItems, buildFilterOptions]);
+
+  const q = searchParams.get("q");
+  const filtersType = type === "product" ? "items" : "services";
+
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="py-4 flex items-center gap-3 overflow-x-auto min-w-0">
-            <div className="flex items-center gap-2 text-muted-foreground mr-1 shrink-0">
-              <span className="text-[10px] font-black uppercase tracking-widest">Filters:</span>
-            </div>
-            <div className="h-8 w-28 bg-muted animate-pulse rounded" />
-            <div className="h-8 w-28 bg-muted animate-pulse rounded" />
-            <div className="h-8 w-28 bg-muted animate-pulse rounded" />
-            <div className="ml-auto w-48 h-8 bg-muted animate-pulse rounded" />
-          </div>
-        }
-      >
+      <Suspense fallback={<div className="h-12 bg-muted animate-pulse rounded" />}>
         <CatalogFilters
-          type={type}
-          searchComponent={SearchComponent}
-          apiFetchFn={apiFetchFn}
-          getFilterOptions={getFilterOptions}
-          extraFilterOptions={extraFilterOptions}
+          type={filtersType}
+          filterOptions={filterOptions}
+          sortOptions={sortOptions}
           defaultSort={defaultSort}
+          searchComponent={searchComponent}
         />
       </Suspense>
-      <CatalogGrid type={type} apiFetchFn={apiFetchFn} filterFn={filterFn} sortFn={sortFn} itemLabel={itemLabel} />
+      {q && (
+        <div className="mt-4">
+          <h1 className="font-sans font-bold text-2xl text-foreground">
+            Results for <span className="text-primary">&quot;{q}&quot;</span>
+          </h1>
+        </div>
+      )}
+      <CatalogGrid
+        items={items}
+        isLoading={isLoading}
+        error={error}
+        type={type}
+        itemLabel={itemLabel}
+      />
     </>
   );
 }

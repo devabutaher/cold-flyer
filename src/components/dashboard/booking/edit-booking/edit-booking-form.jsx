@@ -1,12 +1,10 @@
 "use client";
 
-import { useUpdateBooking } from "@/hooks/queries";
+import { useUpdateBooking } from "@/hooks/queries/bookings";
 import { parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
-import { toast } from "sonner";
-
 import { FormHeader, ScheduleSection, PropertySection, AddressSection, NotesSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
@@ -86,11 +84,8 @@ export default function EditBookingForm({ booking, isAdmin = false }) {
 
     try {
       await updateBooking.mutateAsync({ id: booking._id, data: payload });
-      toast.success("Booking updated successfully!");
       router.push("/dashboard/bookings");
-    } catch (error) {
-      toast.error(error.message || "Failed to update booking");
-    }
+    } catch {}
   }
 
   return (

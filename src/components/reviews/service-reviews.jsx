@@ -6,11 +6,11 @@ import { Star, User as UserIcon, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { getClient, extractList } from "@/lib/http-client";
 
 async function fetcher(url) {
-  const res = await fetch(url, { credentials: "include" });
-  const data = await res.json();
-  return data?.data?.reviews || [];
+  const res = await getClient().get(url);
+  return extractList(res, "reviews");
 }
 
 export function ServiceReviews({ serviceId }) {

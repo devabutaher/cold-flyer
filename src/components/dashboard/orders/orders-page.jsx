@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCancelOrder, useOrdersQuery } from "@/hooks/queries";
-import { apiPost } from "@/lib/api-client";
+import { useCancelOrder, useOrdersQuery } from "@/hooks/queries/orders";
+import { getClient } from "@/lib/http-client";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ export default function OrdersPage({ isAdmin = false }) {
   const handlePay = async (orderId, provider = "stripe") => {
     setPayingOrderId(orderId);
     try {
-      const res = await apiPost(`/orders/${orderId}/checkout`, { provider });
+      const res = await getClient().post(`/orders/${orderId}/checkout`, { provider }).then((r) => r.data);
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }

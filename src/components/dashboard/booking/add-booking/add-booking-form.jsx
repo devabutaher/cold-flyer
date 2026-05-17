@@ -1,12 +1,10 @@
 "use client";
 
-import { useCreateBooking } from "@/hooks/queries";
+import { useCreateBooking } from "@/hooks/queries/bookings";
 import { parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
-import { toast } from "sonner";
-
 import { FormHeader, ScheduleSection, PropertySection, AddressSection, NotesSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
@@ -80,11 +78,8 @@ export default function AddBookingForm({ serviceId, serviceName }) {
 
     try {
       await createBooking.mutateAsync(payload);
-      toast.success("Booking created successfully!");
       router.push("/dashboard/bookings");
-    } catch (error) {
-      toast.error(error.message || "Failed to create booking");
-    }
+    } catch {}
   }
 
   function handleReset() {
