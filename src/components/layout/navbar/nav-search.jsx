@@ -1,31 +1,34 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useRef, useState } from "react";
 
 export function NavSearch() {
   const t = useTranslations("common");
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const inputRef = useRef(null);
 
+  const searchBase = useMemo(() => (pathname.startsWith("/services") ? "/services" : "/items"), [pathname]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/items?q=${encodeURIComponent(query.trim())}`);
+    router.push(`${searchBase}?q=${encodeURIComponent(query.trim())}`);
   };
 
   const handleClear = () => {
     setQuery("");
     inputRef.current?.focus();
-    router.push("/items");
+    router.push(searchBase);
   };
 
   return (
@@ -40,7 +43,7 @@ export function NavSearch() {
               onChange={(e) => setQuery(e.target.value)}
               id="input-button-group"
               placeholder={t("placeholderSearch")}
-              className="pr-7 w-full"
+              className="pr-7 w-full rounded-md rounded-r-none"
             />
             {query && (
               <button

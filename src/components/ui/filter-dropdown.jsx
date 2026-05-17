@@ -4,6 +4,26 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { motion } from "framer-motion";
+
+const dropdownVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: -4 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.15, ease: "easeOut" },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -8 },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.2, delay: i * 0.03, ease: "easeOut" },
+  }),
+};
 
 function FilterDropdown({ options, value, onChange, placeholder }) {
   const t = useTranslations("common");
@@ -27,22 +47,35 @@ function FilterDropdown({ options, value, onChange, placeholder }) {
           position="popper"
           sideOffset={4}
         >
-          <SelectPrimitive.Viewport className="p-1">
-            {normalizedOptions.map((option) => (
-              <SelectPrimitive.Item
-                key={option.value}
-                value={option.value}
-                className={cn(
-                  "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-3 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
-                )}
-              >
-                <SelectPrimitive.ItemIndicator className="absolute right-2 flex size-4 items-center justify-center">
-                  <CheckIcon className="size-3" />
-                </SelectPrimitive.ItemIndicator>
-                <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
-              </SelectPrimitive.Item>
-            ))}
-          </SelectPrimitive.Viewport>
+          <motion.div
+            variants={dropdownVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <SelectPrimitive.Viewport className="p-1">
+              {normalizedOptions.map((option, i) => (
+                <motion.div
+                  key={option.value}
+                  custom={i}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <SelectPrimitive.Item
+                    value={option.value}
+                    className={cn(
+                      "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-3 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
+                    )}
+                  >
+                    <SelectPrimitive.ItemIndicator className="absolute right-2 flex size-4 items-center justify-center">
+                      <CheckIcon className="size-3" />
+                    </SelectPrimitive.ItemIndicator>
+                    <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                  </SelectPrimitive.Item>
+                </motion.div>
+              ))}
+            </SelectPrimitive.Viewport>
+          </motion.div>
         </SelectPrimitive.Content>
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>

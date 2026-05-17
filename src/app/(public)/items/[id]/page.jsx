@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProductSchema, getBreadcrumbSchema } from "@/lib/seo";
 import { sanitizeForRSC } from "@/lib/utils";
-import { StructuredData } from "@/components/structured-data";
 import { ProductDetailClient } from "@/components/detail/product-detail.client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -83,8 +82,12 @@ export default async function ProductPage({ params }) {
 
   return (
     <>
-      <StructuredData schema={productSchema} />
-      <StructuredData schema={breadcrumbSchema} />
+      {productSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      )}
+      {breadcrumbSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      )}
       <ProductDetailClient product={product} />
     </>
   );

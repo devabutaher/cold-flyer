@@ -8,6 +8,7 @@ export async function getServicesServer(params) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const query = new URLSearchParams();
+    if (params?.q) query.set("search", params.q);
     if (params?.category) query.set("category", params.category);
     if (params?.serviceType) query.set("serviceType", params.serviceType);
     if (params?.sort) {

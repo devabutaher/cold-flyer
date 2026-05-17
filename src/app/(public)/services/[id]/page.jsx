@@ -1,11 +1,10 @@
-import { notFound } from "next/navigation";
-import { getServiceSchema, getBreadcrumbSchema } from "@/lib/seo";
-import { sanitizeForRSC } from "@/lib/utils";
-import { StructuredData } from "@/components/structured-data";
 import ServiceDetailClient from "@/components/detail/service-detail";
+import { getBreadcrumbSchema, getServiceSchema } from "@/lib/seo";
+import { sanitizeForRSC } from "@/lib/utils";
+import { notFound } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 async function fetchService(slug) {
   try {
@@ -86,8 +85,12 @@ export default async function ServicePage({ params }) {
 
   return (
     <>
-      <StructuredData schema={serviceSchema} />
-      <StructuredData schema={breadcrumbSchema} />
+      {serviceSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      )}
+      {breadcrumbSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      )}
       <ServiceDetailClient service={service} />
     </>
   );

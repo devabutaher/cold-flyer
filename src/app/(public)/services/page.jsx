@@ -22,6 +22,7 @@ function ServicesContent() {
       queryKey={["services"]}
       fetchFn={(params) => {
         const query = new URLSearchParams();
+        if (params?.q) query.set("search", params.q);
         if (params?.category) query.set("category", params.category);
         if (params?.serviceType) query.set("serviceType", params.serviceType);
         if (params?.sort) {
