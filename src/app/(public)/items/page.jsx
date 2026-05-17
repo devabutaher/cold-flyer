@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { apiGet } from "@/lib/api-client";
+import { apiGet, extractDataArray } from "@/lib/api-client";
 import { PackageSearch } from "lucide-react";
 import { CatalogCard } from "@/components/catalog/catalog-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
@@ -70,11 +70,7 @@ function ItemsFilters() {
     queryKey: ["products-filters"],
     queryFn: async () => {
       const res = await apiGet("/products?limit=200");
-      if (Array.isArray(res)) return res;
-      if (Array.isArray(res?.data)) return res.data;
-      if (Array.isArray(res?.data?.products)) return res.data.products;
-      if (Array.isArray(res?.products)) return res.products;
-      return [];
+      return extractDataArray(res, "products");
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -112,12 +108,7 @@ function ItemsContent() {
 
       const endpoint = params.toString() ? `/products?${params}` : "/products";
       const res = await apiGet(endpoint);
-
-      if (Array.isArray(res)) return res;
-      if (Array.isArray(res?.data)) return res.data;
-      if (Array.isArray(res?.data?.products)) return res.data.products;
-      if (Array.isArray(res?.products)) return res.products;
-      return [];
+      return extractDataArray(res, "products");
     },
     staleTime: 2 * 60 * 1000,
   });

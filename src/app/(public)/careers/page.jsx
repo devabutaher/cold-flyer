@@ -22,7 +22,7 @@ export default function CareersPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
         <Image
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1170&auto=format&fit=crop"
           alt="Team collaboration"
@@ -158,10 +158,10 @@ export default function CareersPage() {
       </section>
 
       {/* Open Positions */}
-      <section className="py-28 bg-foreground text-background">
+      <section className="py-28 bg-inverted text-inverted-foreground">
         <div className="container">
           <div className="text-center mb-20">
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-background mb-5">
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-inverted-foreground mb-5">
               Open Positions
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />

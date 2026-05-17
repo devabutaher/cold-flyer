@@ -26,7 +26,7 @@ export default function FAQPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
         <Image
           src="https://images.unsplash.com/photo-1665789318391-6057c533005e?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="FAQ support"
@@ -34,16 +34,18 @@ export default function FAQPage() {
           sizes="100vw"
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Help Center</Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
+              Help Center
+            </Badge>
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
               Frequently <br />
               <span className="text-primary">Asked Questions</span>
             </h1>
-            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
               Find answers to common questions about our products, services, and policies.
             </p>
           </div>
@@ -157,7 +159,7 @@ export default function FAQPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-28 bg-foreground text-background">
+      <section className="py-28 bg-inverted text-inverted-foreground">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>

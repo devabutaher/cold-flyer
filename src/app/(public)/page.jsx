@@ -5,7 +5,6 @@ import Contact from "@/components/home/contact";
 import Faq from "@/components/home/faq";
 import Hero from "@/components/home/hero";
 import Portfolio from "@/components/home/portfolio";
-import ServicesCarousel from "@/components/home/products/services-carousel";
 import ShopSection from "@/components/home/products/shop-section";
 import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
@@ -17,7 +16,6 @@ export default function Home() {
     <>
       <Hero />
       <PromoCards />
-      <ServicesCarousel />
       <ShopSection />
       <Services />
       <About />

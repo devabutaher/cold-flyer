@@ -1,18 +1,22 @@
 "use client";
 
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
 import { getData } from "@/data";
+import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
 import { useLocale } from "next-intl";
+import Image from "next/image";
 
 export default function TermsPage() {
   const locale = useLocale();
-  const { sections, lastUpdated, version } = { sections: getData("sections", locale), lastUpdated: getData("lastUpdated", locale), version: getData("version", locale) };
+  const { sections, lastUpdated, version } = {
+    sections: getData("sections", locale),
+    lastUpdated: getData("lastUpdated", locale),
+    version: getData("version", locale),
+  };
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
         <Image
           src="https://images.unsplash.com/photo-1652690527826-dcddbd1eb46e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Legal documents"
@@ -20,16 +24,16 @@ export default function TermsPage() {
           sizes="100vw"
           className="object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs bg-primary text-primary-foreground">Legal</Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">Legal</Badge>
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
               Terms & <br />
               <span className="text-primary">Conditions</span>
             </h1>
-            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
               Please read these terms carefully before using our products and services.
             </p>
           </div>
@@ -59,7 +63,7 @@ export default function TermsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             {/* Table of Contents */}
             <div className="lg:col-span-4">
-              <div className="sticky top-12 space-y-6">
+              <div className="sticky top-12 space-y-6 pt-4">
                 <div className="p-6 bg-card rounded-xl border border-border/30">
                   <div className="flex items-center gap-2 mb-4">
                     <Shield size={18} className="text-primary" />

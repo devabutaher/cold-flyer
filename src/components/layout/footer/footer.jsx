@@ -17,7 +17,7 @@ function SocialLink({ href, children }) {
     >
       <Link
         href={href}
-        className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 hover:bg-primary transition-colors"
+        className="flex h-9 w-9 items-center justify-center rounded-md bg-inverted-foreground/10 hover:bg-primary transition-colors"
       >
         {children}
       </Link>
@@ -34,11 +34,11 @@ function FooterLink({ href, children }) {
     >
       <Link
         href={href}
-        className="text-neutral-400 text-sm hover:text-white transition-colors inline-block"
+        className="text-muted-foreground text-sm hover:text-inverted-foreground transition-colors inline-block"
       >
         {children}
         <motion.span
-          className="absolute bottom-0 left-0 h-px bg-white"
+          className="absolute bottom-0 left-0 h-px bg-inverted-foreground"
           variants={{
             rest: { scaleX: 0, originX: 0 },
             hover: { scaleX: 1, originX: 0 },
@@ -109,7 +109,7 @@ export default function Footer() {
   const footerLinks = getData("footerLinks", locale);
 
   return (
-    <footer className="bg-neutral-900 text-neutral-100">
+    <footer className="bg-inverted text-inverted-foreground">
       <div className="container py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
@@ -133,7 +133,7 @@ export default function Footer() {
                 Cold<span className="text-primary">Flyer</span>
               </h1>
             </Link>
-            <p className="text-neutral-400 text-sm leading-relaxed mb-5">
+            <p className="text-muted-foreground text-sm leading-relaxed mb-5">
               {t("home.brandTagline")}
             </p>
             <div className="flex gap-3">
@@ -198,7 +198,7 @@ export default function Footer() {
         </div>
 
         <motion.div
-          className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-neutral-400 text-xs"
+          className="border-t border-inverted-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -207,9 +207,9 @@ export default function Footer() {
           <span>{t("common.copyright")}</span>
           <div className="flex gap-4">
             {footerLinks.quickLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="hover:text-white transition-colors relative group">
+              <Link key={link.label} href={link.href} className="hover:text-inverted-foreground transition-colors relative group">
                 {link.label}
-                <span className="absolute bottom-0 left-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+                <span className="absolute bottom-0 left-0 h-px bg-inverted-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
               </Link>
             ))}
           </div>

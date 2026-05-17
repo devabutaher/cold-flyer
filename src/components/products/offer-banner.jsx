@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 export default function OfferBanner() {
   const t = useTranslations("common");
   return (
-    <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-accent-foreground -mt-8">
+    <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
       {/* Decorative background shapes */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <svg
@@ -44,9 +44,7 @@ export default function OfferBanner() {
                     {t("exclusive")}
                   </span>
                 </div>
-                <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug max-w-md">
-                  {t("saleDesc")}
-                </p>
+                <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug max-w-md">{t("saleDesc")}</p>
               </div>
             </div>
           </div>

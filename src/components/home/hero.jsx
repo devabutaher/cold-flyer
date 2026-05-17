@@ -28,7 +28,12 @@ function SlideContent({ slide, index, t }) {
       <motion.div
         variants={{
           hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-          visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+          },
         }}
       >
         <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
@@ -68,7 +73,8 @@ function SlideContent({ slide, index, t }) {
         <Link href="/items">
           <Button size="xl" className="group relative overflow-hidden">
             <span className="relative z-10 inline-flex items-center gap-2">
-              {t("common.shopCollection")} <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
+              {t("common.shopCollection")}{" "}
+              <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </span>
           </Button>
         </Link>
@@ -102,10 +108,7 @@ export default function Hero() {
   ]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative h-[90vh] min-h-175 w-full overflow-hidden bg-neutral-900"
-    >
+    <section ref={sectionRef} className="relative h-[90vh] min-h-175 w-full overflow-hidden bg-inverted">
       <motion.div className="embla h-full relative" ref={emblaRef} style={{ opacity, scale }}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
@@ -122,7 +125,7 @@ export default function Hero() {
                 />
               </motion.div>
 
-              <div className="absolute inset-0 bg-linear-to-r from-neutral-900/60 via-neutral-900/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
               <SlideContent slide={slide} index={i} t={t} />
             </div>

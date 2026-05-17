@@ -1,23 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowLeftRight,
-  Box,
-  Calendar,
-  Clock,
-  Globe,
-  Package,
-  RefreshCw,
-  ShieldCheck,
-  Ship,
-  Truck,
-  Warehouse,
-} from "lucide-react";
 import { getData } from "@/data";
+import { Clock, Package } from "lucide-react";
 import { useLocale } from "next-intl";
+import Image from "next/image";
 
 export default function ShippingPage() {
   const locale = useLocale();
@@ -28,7 +16,7 @@ export default function ShippingPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
         <Image
           src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1170&auto=format&fit=crop"
           alt="Shipping warehouse"
@@ -36,16 +24,18 @@ export default function ShippingPage() {
           sizes="100vw"
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Delivery & Returns</Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
+            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
+              Delivery & Returns
+            </Badge>
+            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
               Shipping <br />
               <span className="text-primary">& Returns</span>
             </h1>
-            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
               Reliable delivery solutions and flexible return options for your peace of mind.
             </p>
           </div>
@@ -143,10 +133,10 @@ export default function ShippingPage() {
       </section>
 
       {/* Returns Policy */}
-      <section className="py-28 bg-foreground text-background">
+      <section className="py-28 bg-inverted text-inverted-foreground">
         <div className="container">
           <div className="text-center mb-20">
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-background mb-5">
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-inverted-foreground mb-5">
               Returns Made Simple
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
@@ -163,11 +153,11 @@ export default function ShippingPage() {
                 >
                   <Icon size={44} className="mb-7 text-primary group-hover:text-primary transition-colors" />
 
-                  <h3 className="font-sans text-2xl font-extrabold text-foreground mb-3 group-hover:text-background transition-colors">
+                  <h3 className="font-sans text-2xl font-extrabold text-foreground mb-3 group-hover:text-inverted-foreground transition-colors">
                     {item.title}
                   </h3>
 
-                  <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-background/70 transition-colors">
+                  <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-inverted-foreground/70 transition-colors">
                     {item.desc}
                   </p>
                 </div>

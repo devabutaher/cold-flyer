@@ -33,13 +33,13 @@ function TestimonialCard({ review, index }) {
       viewport={animations.inView.once}
       whileHover={{ y: -3 }}
     >
-      <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-[220px] sm:min-h-[200px]">
+      <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-70">
         <Quote size={28} className="text-primary/20 absolute top-4 right-4" />
         <Stars count={review.stars} />
-        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4">
+        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4 overflow-hidden">
           &#34;{review.body}&#34;
         </p>
-        <div className="flex items-center gap-3 border-t border-border pt-4">
+        <div className="flex items-center gap-3 border-t border-border pt-4 mt-auto">
           <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-sans font-bold text-sm shrink-0">
             {review.avatar}
           </div>
@@ -57,7 +57,7 @@ export default function Testimonials() {
   const t = useTranslations("home");
   const locale = useLocale();
   const reviews = getData("reviews", locale);
-  const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ align: "start" }, [
+  const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ align: "start", containItems: false }, [
     Autoplay({ delay: 4500, stopOnInteraction: true }),
   ]);
 
@@ -68,7 +68,9 @@ export default function Testimonials() {
       <div className="container">
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("whatCustomersSay")}</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
+              {t("whatCustomersSay")}
+            </span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               {t("testimonialsTitle")}
             </h2>
@@ -76,9 +78,9 @@ export default function Testimonials() {
         </div>
 
         <div className="overflow-hidden relative" ref={emblaRef}>
-          <div className="flex gap-5">
+          <div className="flex items-stretch">
             {reviews.map((review, i) => (
-              <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%]">
+              <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] pr-5">
                 <TestimonialCard review={review} index={i} />
               </div>
             ))}
@@ -86,23 +88,16 @@ export default function Testimonials() {
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-6">
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => emblaApi?.scrollPrev()}
-            aria-label="Previous review"
-          >
+          <Button size="icon" variant="ghost" onClick={() => emblaApi?.scrollPrev()} aria-label="Previous review">
             <ChevronLeft size={18} />
           </Button>
           <div className="h-1.5 w-40 bg-secondary rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+            <div
+              className="h-full bg-primary rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => emblaApi?.scrollNext()}
-            aria-label="Next review"
-          >
+          <Button size="icon" variant="ghost" onClick={() => emblaApi?.scrollNext()} aria-label="Next review">
             <ChevronRight size={18} />
           </Button>
         </div>

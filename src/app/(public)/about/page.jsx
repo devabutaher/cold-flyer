@@ -1,11 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AnimatedSection } from "@/components/ui/animated-section";
+import { motion } from "framer-motion";
 import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
+import Image from "next/image";
 
 const values = [
   {
@@ -132,7 +132,7 @@ function ValueCard({ value, index }) {
               isPrimaryHover
                 ? "text-foreground group-hover:text-primary-foreground"
                 : isForegroundHover
-                  ? "text-foreground group-hover:text-background"
+                  ? "text-foreground group-hover:text-inverted-foreground"
                   : "text-foreground"
             }`}
           >
@@ -143,7 +143,7 @@ function ValueCard({ value, index }) {
               isPrimaryHover
                 ? "text-muted-foreground group-hover:text-primary-foreground/80"
                 : isForegroundHover
-                  ? "text-muted-foreground group-hover:text-background/70"
+                  ? "text-muted-foreground group-hover:text-inverted-foreground/70"
                   : "text-muted-foreground"
             }`}
           >
@@ -198,7 +198,7 @@ function StatItem({ stat, index }) {
 export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
-      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-foreground">
+      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
         <Image
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=80"
           alt="HVAC facility"
@@ -207,14 +207,16 @@ export default function AboutPage() {
           sizes="100vw"
           className="object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/70 via-foreground/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Precision Engineering</Badge>
+              <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
+                Precision Engineering
+              </Badge>
             </motion.div>
             <motion.h1
-              className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8"
+              className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -224,7 +226,7 @@ export default function AboutPage() {
               of Comfort
             </motion.h1>
             <motion.p
-              className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed"
+              className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -337,7 +339,7 @@ export default function AboutPage() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="py-28 bg-foreground text-background">
+      <AnimatedSection className="py-28 bg-inverted text-inverted-foreground">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>

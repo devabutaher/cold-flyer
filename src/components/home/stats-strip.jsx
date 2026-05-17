@@ -61,7 +61,7 @@ export default function StatsStrip() {
   }, []);
 
   return (
-    <AnimatedSection ref={ref} className="bg-neutral-900 py-14 sm:py-16">
+    <AnimatedSection ref={ref} className="bg-inverted py-14 sm:py-16">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
           {stats.map((s, i) => (

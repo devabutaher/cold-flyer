@@ -2,6 +2,14 @@ import { toast } from "sonner";
 
 const API_BASE_URL = "/api";
 
+export function extractDataArray(res, key) {
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res?.data)) return res.data;
+  if (key && Array.isArray(res?.data?.[key])) return res.data[key];
+  if (key && Array.isArray(res?.[key])) return res[key];
+  return [];
+}
+
 const MUTATION_METHODS = ["POST", "PUT", "PATCH", "DELETE"];
 
 const ENDPOINT_TO_QUERY_KEY = {

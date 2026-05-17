@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { apiGet } from "@/lib/api-client";
+import { apiGet, extractDataArray } from "@/lib/api-client";
 import { PackageSearch } from "lucide-react";
 import { CatalogCard } from "@/components/catalog/catalog-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
@@ -36,11 +36,7 @@ export default function ACUnitsPage() {
       setLoading(true);
       try {
         const res = await apiGet("/products?productType=unit&limit=200");
-        let data = [];
-        if (Array.isArray(res)) data = res;
-        else if (Array.isArray(res?.data)) data = res.data;
-        else if (Array.isArray(res?.data?.products)) data = res.data.products;
-        else if (Array.isArray(res?.products)) data = res.products;
+        const data = extractDataArray(res, "products");
 
         setProducts(data);
         const brds = [...new Set(data.map((p) => p.brand).filter(Boolean))].sort();
