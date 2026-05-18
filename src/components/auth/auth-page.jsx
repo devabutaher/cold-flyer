@@ -1,147 +1,21 @@
 "use client";
 
-import { useAuth } from "@/components/providers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createAccountSchema, signInSchema } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Crown, Eye, EyeOff, Shield } from "lucide-react";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-
-const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+import Image from "next/image";
+import { useAuthForm } from "@/hooks/use-auth-form";
 
 export default function AuthPage() {
   const t = useTranslations("auth");
-  const [tab, setTab] = useState("signin");
-  const [showPassword, setShowPassword] = useState(false);
-  const [authError, setAuthError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showAdminHint, setShowAdminHint] = useState(false);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
-  const { refreshUser } = useAuth();
-
-  const isSignIn = tab === "signin";
-
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: zodResolver(isSignIn ? signInSchema : createAccountSchema),
-  });
-
-  useEffect(() => {
-    if (!GOOGLE_CLIENT_ID) return;
-    if (!window.google?.accounts) {
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  const handleGoogle = async () => {
-    if (!GOOGLE_CLIENT_ID) {
-      setAuthError(t("googleSignInFailed"));
-      return;
-    }
-
-    setLoading(true);
-    setAuthError("");
-
-    try {
-      const idToken = await new Promise((resolve, reject) => {
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: (response) => {
-            if (response?.credential) resolve(response.credential);
-            else reject(new Error(t("noCredential")));
-          },
-        });
-        window.google.accounts.id.prompt();
-      });
-
-      const res = await fetch("/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-        credentials: "include",
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || t("googleSignInFailedFallback"));
-      await refreshUser();
-      toast.success(t("signedInGoogle"));
-      router.push(redirectTo);
-    } catch (err) {
-      if (err.message !== t("noCredential")) {
-        setAuthError(err.message || t("googleSignInFailedFallback"));
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleTabSwitch = (t) => {
-    setTab(t);
-    setAuthError("");
-    setShowPassword(false);
-    reset();
-  };
-
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setAuthError("");
-    try {
-      const endpoint = isSignIn ? "/api/auth/login" : "/api/auth/register";
-      const body = isSignIn
-        ? { email: data.email, password: data.password }
-        : {
-            name: data.name,
-            email: data.email,
-            password: data.password,
-            phone: data.phone || "",
-          };
-
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        credentials: "include",
-      });
-
-      const result = await res.json();
-      if (!result.success) throw new Error(result.message || t("somethingWentWrong"));
-
-      await refreshUser();
-
-      if (isSignIn) {
-        if (result.data?.user?.role === "admin") {
-          toast.success(t("welcomeAdmin"));
-        } else {
-          toast.success(t("welcomeBack"));
-        }
-      } else {
-        toast.success(t("welcomeNew"));
-      }
-      router.push(redirectTo);
-    } catch (err) {
-      setAuthError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    tab, isSignIn, showPassword, authError, loading, showAdminHint,
+    googleBtnRef, register, handleSubmit, errors,
+    setShowPassword, setShowAdminHint, handleTabSwitch, onSubmit,
+  } = useAuthForm();
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
@@ -156,12 +30,8 @@ export default function AuthPage() {
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/20" />
         <div className="relative z-10">
           <Badge>{t("badge")}</Badge>
-          <h1 className="font-sans font-bold text-5xl text-white leading-tight mt-2 mb-4">
-            {t("heroTitle")}
-          </h1>
-          <p className="text-white/70 text-sm leading-relaxed max-w-md">
-            {t("heroDesc")}
-          </p>
+          <h1 className="font-sans font-bold text-5xl text-white leading-tight mt-2 mb-4">{t("heroTitle")}</h1>
+          <p className="text-white/70 text-sm leading-relaxed max-w-md">{t("heroDesc")}</p>
         </div>
       </div>
 
@@ -194,7 +64,7 @@ export default function AuthPage() {
           <div className="mb-4">
             <button
               type="button"
-              onClick={() => setShowAdminHint(!showAdminHint)}
+              onClick={() => setShowAdminHint((p) => !p)}
               className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1"
             >
               <Shield size={12} />
@@ -207,9 +77,7 @@ export default function AuthPage() {
                   <Crown size={14} />
                   {t("adminAccessTitle")}
                 </p>
-                <p className="text-muted-foreground text-xs mt-1">
-                  {t("adminAccessDesc")}
-                </p>
+                <p className="text-muted-foreground text-xs mt-1">{t("adminAccessDesc")}</p>
               </div>
             )}
           </div>
@@ -297,27 +165,7 @@ export default function AuthPage() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          <Button type="button" variant="outline" onClick={handleGoogle} disabled={loading} className="w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
-              <path
-                fill="#FFC107"
-                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-              ></path>
-              <path
-                fill="#FF3D00"
-                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-              ></path>
-              <path
-                fill="#4CAF50"
-                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-              ></path>
-              <path
-                fill="#1976D2"
-                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-              ></path>
-            </svg>
-            {t("googleSignIn")}
-          </Button>
+          <div ref={googleBtnRef} className="w-full min-h-[44px]" />
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             {t("protectedBy")}{" "}

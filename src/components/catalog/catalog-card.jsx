@@ -74,7 +74,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
         {/* Wishlist button */}
         <motion.button
           onClick={toggleWishlist}
-          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
+          className="absolute right-2 top-2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}

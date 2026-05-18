@@ -105,14 +105,14 @@ const ImageContainer = ({
                       <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
                         <button
                           onClick={() => zoomOut()}
-                          className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                          className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70 min-h-11 min-w-11 flex items-center justify-center"
                           aria-label={t("zoomOut")}
                         >
                           <MinusCircle className="size-6" />
                         </button>
                         <button
                           onClick={() => zoomIn()}
-                          className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                          className="cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70 min-h-11 min-w-11 flex items-center justify-center"
                           aria-label={t("zoomIn")}
                         >
                           <PlusCircle className="size-6" />
@@ -124,7 +124,7 @@ const ImageContainer = ({
               </TransformWrapper>
               <DialogClose asChild>
                 <button
-                  className="absolute top-4 right-4 z-10 cursor-pointer rounded-full border bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                  className="absolute top-4 right-4 z-10 cursor-pointer rounded-full border bg-black/50 p-2 text-white transition-colors hover:bg-black/70 min-h-11 min-w-11 flex items-center justify-center"
                   aria-label={t("close")}
                 >
                   <X className="size-6" />
@@ -376,7 +376,7 @@ const ImageCarousel = ({
             <Button
               variant="outline"
               size="icon"
-              className="bg-background/80 hover:bg-background dark:bg-background/80 dark:hover:bg-background absolute top-1/2 left-[2%] z-10 h-8 w-8 rounded-full backdrop-blur-xs disabled:opacity-50"
+              className="bg-background/80 hover:bg-background dark:bg-background/80 dark:hover:bg-background absolute top-1/2 left-[2%] z-10 h-11 w-11 rounded-full backdrop-blur-xs disabled:opacity-50"
               disabled={!canScrollPrev}
               onClick={scrollPrev}
             >
@@ -387,7 +387,7 @@ const ImageCarousel = ({
             <Button
               variant="outline"
               size="icon"
-              className="bg-background/80 hover:bg-background dark:bg-background/80 dark:hover:bg-background absolute top-1/2 right-[2%] z-10 h-8 w-8 rounded-full backdrop-blur-xs disabled:opacity-50"
+              className="bg-background/80 hover:bg-background dark:bg-background/80 dark:hover:bg-background absolute top-1/2 right-[2%] z-10 h-11 w-11 rounded-full backdrop-blur-xs disabled:opacity-50"
               disabled={!canScrollNext}
               onClick={scrollNext}
             >

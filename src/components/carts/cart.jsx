@@ -54,7 +54,7 @@ function CartItem({ product, currencyPrefix, onUpdateQuantity, onRemoveProduct }
           </div>
           <motion.button
             onClick={() => onRemoveProduct(product.id)}
-            className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+            className="shrink-0 rounded-lg p-2.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive min-h-11 min-w-11 flex items-center justify-center"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -121,7 +121,7 @@ export function Cart({
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-10">
+      <div className="container py-6 pb-28 lg:py-10 lg:pb-10">
         <div className="mb-8">
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("myCart")}</span>
           <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">{t("pageTitle")}</h1>
@@ -177,7 +177,7 @@ export function Cart({
         )}
 
         {!isLoading && !errorMessage && !isCartEmpty && (
-          <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4 lg:gap-8 lg:grid-cols-[1fr_360px]">
             <div className="space-y-3">
               <AnimatePresence mode="popLayout">
                 {products.map((product) => (
@@ -268,7 +268,7 @@ export function Cart({
               {paymentProviders.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <p className="text-xs font-medium text-muted-foreground">{t("paymentMethod")}</p>
-                  <div className="grid gap-1.5">
+                  <div className="flex gap-2 overflow-x-auto pb-1 lg:grid lg:grid-cols-1 lg:gap-1.5 lg:overflow-visible lg:pb-0">
                     {paymentProviders.map((p) => {
                       const Icon = p.icon;
                       const selected = paymentProvider === p.value;
