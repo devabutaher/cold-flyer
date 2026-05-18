@@ -8,7 +8,7 @@ export default function layout({ children }) {
     <>
       <TextSlider />
       <Navbar />
-      <main>
+      <main className="relative">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

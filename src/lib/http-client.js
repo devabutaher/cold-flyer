@@ -13,6 +13,20 @@ function createClientInstance() {
     headers: { "Content-Type": "application/json" },
   });
 
+  instance.interceptors.request.use((config) => {
+    if (config.method !== "get" && config.method !== "head" && config.method !== "options") {
+      let token = document.cookie.replace(/(?:(?:^|.*;\s*)csrf-token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+      if (!token) {
+        const bytes = new Uint8Array(32);
+        crypto.getRandomValues(bytes);
+        token = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+        document.cookie = `csrf-token=${token}; path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+      }
+      config.headers["x-csrf-token"] = token;
+    }
+    return config;
+  });
+
   instance.interceptors.response.use(
     (response) => response,
     async (error) => {

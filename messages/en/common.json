@@ -75,6 +75,7 @@
     "genuineProduct": "Genuine Product",
     "products": "Products",
     "bestPrice": "Best Price",
+    "freeDelivery": "Free Delivery on Orders Over BDT",
     "addedToCart": "{name} added to cart",
     "bookingInitiated": "Booking initiated for {name}",
     "removedFromWishlist": "Removed from wishlist",

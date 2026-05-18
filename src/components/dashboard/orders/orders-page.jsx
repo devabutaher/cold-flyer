@@ -36,8 +36,9 @@ export default function OrdersPage({ isAdmin = false }) {
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }
-    } catch {
-      console.error("Failed to create payment");
+    } catch (error) {
+      const msg = error?.response?.data?.message || error?.message || "Failed to create payment";
+      console.error("Payment error:", msg);
     } finally {
       setPayingOrderId(null);
     }

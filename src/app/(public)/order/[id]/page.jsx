@@ -23,6 +23,7 @@ export default function OrderSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [polling, setPolling] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const pollingRef = useRef(null);
 
   const isSuccess = searchParams.get("success") !== "false";
@@ -36,6 +37,45 @@ export default function OrderSuccessPage() {
     let timeoutId = null;
     let startedAt = Date.now();
 
+    const tryVerifyPayment = async (fetchedOrder) => {
+      setVerifying(true);
+      try {
+        let verifyRes;
+        if (provider === "sslcommerz") {
+          verifyRes = await getClient().post(`/payments/sslcommerz/verify/${orderId}`);
+        } else if (fetchedOrder?.stripeSessionId) {
+          verifyRes = await getClient().post(`/orders/${orderId}/verify-payment`, { sessionId: fetchedOrder.stripeSessionId });
+        }
+        if (!mounted) return;
+        if (verifyRes && verifyRes.data && !verifyRes.data.success) {
+          console.warn("Verify payment returned:", verifyRes.data);
+        }
+        const refreshRes = await getClient().get(`/orders/${orderId}`);
+        if (!mounted) return;
+        const refreshedOrder = refreshRes.data?.data?.order || refreshRes.data?.order;
+        if (refreshedOrder) setOrder(refreshedOrder);
+      } catch (err) {
+        console.error("Verify payment failed:", err?.response?.data || err?.message || err);
+      } finally {
+        if (mounted) setVerifying(false);
+      }
+    };
+
+    const stopPolling = () => {
+      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
+      intervalId = null;
+      timeoutId = null;
+    };
+
+    const handleTimeout = (fetchedOrder) => {
+      setPollTimedOut(true);
+      setPolling(false);
+      setLoading(false);
+      stopPolling();
+      tryVerifyPayment(fetchedOrder);
+    };
+
     const fetchOrder = async (isPoll = false) => {
       try {
         const res = await getClient().get(`/orders/${orderId}`);
@@ -48,43 +88,29 @@ export default function OrderSuccessPage() {
 
         if (fetchedOrder.paymentStatus === "paid") {
           setPolling(false);
-          if (intervalId) clearInterval(intervalId);
-          if (timeoutId) clearTimeout(timeoutId);
           setLoading(false);
+          stopPolling();
           return;
         }
 
-        if (isPoll) {
-          setPolling(true);
-          if (Date.now() - startedAt > POLL_TIMEOUT) {
-            setPollTimedOut(true);
-            setPolling(false);
-            setLoading(false);
-            if (intervalId) clearInterval(intervalId);
-            if (timeoutId) clearTimeout(timeoutId);
-          }
-        } else {
+        if (!isPoll) {
           setLoading(false);
           if (isSuccess) {
             startedAt = Date.now();
             setPolling(true);
-            timeoutId = setTimeout(() => {
-              if (mounted) {
-                setPollTimedOut(true);
-                setPolling(false);
-              }
-            }, POLL_TIMEOUT);
+            timeoutId = setTimeout(() => handleTimeout(fetchedOrder), POLL_TIMEOUT);
             intervalId = setInterval(() => fetchOrder(true), POLL_INTERVAL);
           }
+          return;
+        }
+
+        if (Date.now() - startedAt > POLL_TIMEOUT) {
+          handleTimeout(fetchedOrder);
         }
       } catch {
         if (mounted && isPoll) {
           if (Date.now() - startedAt > POLL_TIMEOUT) {
-            setPollTimedOut(true);
-            setPolling(false);
-            setLoading(false);
-            if (intervalId) clearInterval(intervalId);
-            if (timeoutId) clearTimeout(timeoutId);
+            handleTimeout();
           }
         } else if (mounted) {
           setLoading(false);
@@ -101,7 +127,7 @@ export default function OrderSuccessPage() {
     };
   }, [orderId, backendUser, isSuccess]);
 
-  if (loading || polling) {
+  if (loading || polling || verifying) {
     return (
       <div className="container flex min-h-[60vh] items-center justify-center py-12">
         <Card className="w-full max-w-md">
@@ -110,10 +136,10 @@ export default function OrderSuccessPage() {
             <Skeleton className="h-8 w-3/4 mx-auto" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3" />
-            {polling && (
+            {(polling || verifying) && (
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 size={14} className="animate-spin" />
-                Confirming payment...
+                {verifying ? "Verifying payment..." : "Confirming payment..."}
               </div>
             )}
           </CardContent>

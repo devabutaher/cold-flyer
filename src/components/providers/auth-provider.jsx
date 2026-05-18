@@ -5,6 +5,20 @@ import { useRouter } from "next/navigation";
 
 const AuthContext = createContext(null);
 
+async function fetchWithRefresh(url, options = {}) {
+  let res = await fetch(url, { credentials: "include", ...options });
+  if (res.ok || options.skipRefresh) return res;
+
+  const refreshRes = await fetch("/api/auth/refresh", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!refreshRes.ok) return res;
+
+  return fetch(url, { credentials: "include", ...options });
+}
+
 export function AuthProvider({ children }) {
   const [backendUser, setBackendUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +29,7 @@ export function AuthProvider({ children }) {
     if (initialized.current) return;
     initialized.current = true;
 
-    fetch("/api/auth/me", { credentials: "include" })
+    fetchWithRefresh("/api/auth/me", { skipRefresh: true })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setBackendUser(data?.data?.user || null);
@@ -30,7 +44,7 @@ export function AuthProvider({ children }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const response = await fetch("/api/auth/me", { credentials: "include" });
+      const response = await fetchWithRefresh("/api/auth/me");
       if (response.ok) {
         const data = await response.json();
         const user = data?.data?.user || null;

@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Error = () => {
   const t = useTranslations("errors");
@@ -15,7 +15,7 @@ const Error = () => {
         <h2 className="mb-6 text-5xl font-semibold">{t("notFoundTitle")}</h2>
         <h3 className="mb-1.5 text-3xl font-semibold">{t("notFoundDesc")}</h3>
         <p className="text-muted-foreground mb-6 max-w-sm">
-          The page you're looking for isn't found, we suggest you to go back.
+          The page you&apos;re looking for isn&apos;t found, we suggest you to go back.
         </p>
         <Button size="lg" onClick={() => router.back()}>
           {t("goHome")}
@@ -29,6 +29,7 @@ const Error = () => {
           fill
           loading="eager"
           className="object-contain"
+          sizes="(max-width: 768px) 100vw, 200px"
         />
       </div>
     </div>
