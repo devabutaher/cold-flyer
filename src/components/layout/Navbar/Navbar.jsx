@@ -8,14 +8,14 @@ import Logo from "@/components/ui/logo";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
+import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
+import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { NavSearch } from "./nav-search";
 import { NavButtons } from "./shared";
-import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 
 function CartIcon() {
   const { itemCount } = useCart();
@@ -35,15 +35,13 @@ function CartIcon() {
       <AnimatePresence>
         {itemCount > 0 && (
           <motion.div
+            className="absolute -right-1 -top-1"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
           >
-            <Badge
-              variant="default"
-              className="absolute -right-1 -top-1 h-5 w-5 translate-x-1/3 -translate-y-1/3 justify-center p-0 text-xs"
-            >
+            <Badge variant="default" className="h-5 w-5 translate-x-1/3 -translate-y-1/3 justify-center p-0 text-xs">
               {itemCount > 99 ? "99+" : itemCount}
             </Badge>
           </motion.div>

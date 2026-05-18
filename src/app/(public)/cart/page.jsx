@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ShoppingCart, Package, X, Loader2, Tag, CreditCard, Smartphone, Banknote, Check } from "lucide-react";
+import { ShoppingCart, Package, X, Loader2, Tag, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,13 +14,6 @@ import { useCart } from "@/store/cart";
 import { useAuth } from "@/components/providers";
 import { getClient } from "@/lib/http-client";
 import { QuantityInput } from "@/components/carts/quantity-input";
-import { cn } from "@/lib/utils";
-
-const PAYMENT_PROVIDERS = [
-  { value: "stripe", label: "Card (Visa/MasterCard)", icon: CreditCard },
-  { value: "sslcommerz", label: "SSLCOMMERZ (bKash/Nagad/Card)", icon: Smartphone },
-  { value: "cod", label: "Cash on Delivery", icon: Banknote },
-];
 
 function CartEmpty() {
   return (
@@ -60,7 +53,6 @@ function CartContent() {
   const { items, updateQuantity, removeItem, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
-  const [paymentProvider, setPaymentProvider] = useState("stripe");
 
   const subtotal = items.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * 0.05;
@@ -92,25 +84,10 @@ function CartContent() {
         ...(couponCode && { couponCode }),
       };
 
-      // Create order first, then get checkout URL
       const response = await getClient().post("/orders", orderData).then((r) => r.data);
 
       if (response.success && response.data?.order?._id) {
-        const orderId = response.data.order._id;
-
-        // Create checkout session
-        const sessionResponse = await getClient().post(`/orders/${orderId}/checkout`, { provider: paymentProvider }).then((r) => r.data);
-
-        if (sessionResponse.success) {
-          clearCart();
-          if (sessionResponse.data?.checkoutUrl) {
-            window.location.href = sessionResponse.data.checkoutUrl;
-          } else {
-            router.push(`/order/${orderId}?success=true&provider=${paymentProvider}`);
-          }
-        } else {
-          toast.error(sessionResponse.message || "Failed to create checkout");
-        }
+        router.push(`/checkout/${response.data.order._id}`);
       } else {
         toast.error(response.message || "Failed to create order");
       }
@@ -231,33 +208,6 @@ function CartContent() {
           )}
         </div>
 
-        <div className="mt-4 space-y-2">
-          <p className="text-xs font-medium text-muted-foreground">Payment Method</p>
-          <div className="grid gap-1.5">
-            {PAYMENT_PROVIDERS.map((p) => {
-              const Icon = p.icon;
-              const selected = paymentProvider === p.value;
-              return (
-                <button
-                  key={p.value}
-                  type="button"
-                  onClick={() => setPaymentProvider(p.value)}
-                  className={cn(
-                    "flex items-center gap-2.5 rounded-lg border px-3 py-2 text-left text-xs transition-colors",
-                    selected
-                      ? "border-primary bg-primary/5 text-foreground"
-                      : "border-border text-muted-foreground hover:border-muted-foreground/30"
-                  )}
-                >
-                  <Icon size={14} />
-                  <span className="flex-1">{p.label}</span>
-                  {selected && <Check size={12} className="text-primary" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         <div className="flex items-center justify-between">
           <span className="font-bold text-foreground">Total</span>
           <span className="text-xl font-extrabold text-primary">
@@ -267,9 +217,17 @@ function CartContent() {
 
         <div className="mt-6 space-y-3">
           <Button className="w-full" size="lg" onClick={handleCheckout} disabled={isProcessing}>
-            {isProcessing
-              ? "Processing..."
-              : `Pay with ${PAYMENT_PROVIDERS.find((p) => p.value === paymentProvider)?.label || "Card"}`}
+            {isProcessing ? (
+              <span className="flex items-center gap-2">
+                <Loader2 size={16} className="animate-spin" />
+                Processing...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Proceed to Checkout
+                <ArrowRight size={16} />
+              </span>
+            )}
           </Button>
           <Button variant="outline" className="w-full" asChild>
             <Link href="/items">Continue Shopping</Link>
