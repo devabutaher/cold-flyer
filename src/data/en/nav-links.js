@@ -1,4 +1,4 @@
-import { AirVent, FileText, HelpCircle, Layers, LayoutGrid, Settings, ShieldCheck, Users } from "lucide-react";
+import { AirVent, Briefcase, FileText, HelpCircle, Layers, LayoutGrid, Mail, Settings, ShieldCheck, Truck, Users } from "lucide-react";
 
 export const productLinks = [
   {
@@ -36,21 +36,54 @@ export const serviceLinks = [
   },
 ];
 
-export const staticLinks = [
+export const primaryLinks = [
   {
     label: "Services",
     href: "/services",
     icon: <Settings />,
   },
   {
+    label: "Contact",
+    href: "/contact",
+    icon: <Mail />,
+  },
+  {
     label: "About",
     href: "/about",
     icon: <Users />,
   },
+];
+
+export const moreLinks = [
   {
-    label: "Terms",
+    label: "Blog",
+    href: "/blog",
+    icon: <FileText />,
+  },
+  {
+    label: "FAQ",
+    href: "/faq",
+    icon: <HelpCircle />,
+  },
+  {
+    label: "Careers",
+    href: "/careers",
+    icon: <Briefcase />,
+  },
+  {
+    label: "Privacy Policy",
+    href: "/privacy",
+    icon: <ShieldCheck />,
+  },
+  {
+    label: "Terms & Conditions",
     href: "/terms",
     icon: <FileText />,
+  },
+  {
+    label: "Shipping & Returns",
+    href: "/shipping",
+    icon: <Truck />,
   },
 ];
 

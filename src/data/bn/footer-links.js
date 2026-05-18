@@ -7,6 +7,7 @@ export const footerLinks = {
   ],
   company: [
     { label: "আমাদের সম্পর্কে", href: "/about" },
+    { label: "ব্লগ", href: "/blog" },
     { label: "ক্যারিয়ার", href: "/careers" },
     { label: "সাধারণ প্রশ্ন", href: "/faq" },
     { label: "যোগাযোগ", href: "/contact" },

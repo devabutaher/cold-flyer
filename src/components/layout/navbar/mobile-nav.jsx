@@ -1,140 +1,124 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
 import { UserDropdown } from "@/components/auth/user-dropdown";
-import { LinkItem, NavButtons } from "@/components/layout/navbar/shared";
+import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { LinkItem, NavButtons, ThemeToggle } from "@/components/layout/navbar/shared";
 import { useAuth } from "@/components/providers";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Portal, PortalBackdrop } from "@/components/ui/portal";
+import Logo from "@/components/ui/logo";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { getData } from "@/data";
-import { cn } from "@/lib/utils";
-import { animations } from "@/lib/animation";
-import { MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, Package, XIcon } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { Suspense, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { NavSearch } from "./nav-search";
 
 export function MobileNav() {
   const t = useTranslations("common");
+  const navT = useTranslations("nav");
   const locale = useLocale();
-  const mainNavLinks = getData("mainNavLinks", locale);
-  const staticLinks = getData("staticLinks", locale);
-  const [open, setOpen] = useState(false);
+  const primaryLinks = getData("primaryLinks", locale);
+  const moreLinks = getData("moreLinks", locale);
   const { backendUser } = useAuth();
+  const [open, setOpen] = useState(false);
 
   return (
-    <div className="lg:hidden">
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Button
-          aria-controls="mobile-menu"
-          aria-expanded={open}
-          aria-label={t("toggleMenu")}
-          className="lg:hidden"
-          onClick={() => setOpen(!open)}
-          size="icon"
-          variant="outline"
-        >
-          <AnimatePresence mode="wait">
-            {open ? (
-              <motion.span
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <XIcon />
-              </motion.span>
-            ) : (
-              <motion.span
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <MenuIcon />
-              </motion.span>
-            )}
-          </AnimatePresence>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button size="icon" variant="outline" className="xl:hidden" aria-label={t("toggleMenu")}>
+          <MenuIcon size={20} />
         </Button>
-      </motion.div>
+      </SheetTrigger>
 
-      <AnimatePresence>
-        {open && (
-          <Portal className="top-12 lg:hidden">
-            <PortalBackdrop />
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className={cn(
-                "size-full overflow-y-auto p-4 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-md",
-              )}
-            >
-              <motion.div
-                className="flex w-full flex-col gap-y-6"
-                variants={animations.stagger.fast}
-                initial="hidden"
-                animate="visible"
+      <SheetContent side="right" open={open} className="flex w-full flex-col p-0 sm:max-w-sm" showCloseButton={false}>
+        {/* Header */}
+        <SheetHeader className="border-b border-border px-4 pb-3 pt-4">
+          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <div className="flex items-center justify-between gap-3">
+            <Logo />
+            <SheetClose asChild>
+              <Button
+                size="icon"
+                variant="outline"
+                className="transition-transform duration-200 hover:scale-105 active:scale-95"
               >
-                <motion.div
-                  className="flex items-center gap-2 w-full mt-6 lg:mt-0"
-                  variants={animations.entrance.fadeUp}
-                >
-                  <Suspense fallback={<div className="w-48 h-8 bg-muted animate-pulse rounded" />}>
-                    <div className="flex-1 lg:w-auto h-12 grid place-items-center">
-                      <NavSearch />
-                    </div>
-                  </Suspense>
-                  {backendUser && (
-                    <div className="shrink-0">
-                      <UserDropdown />
-                    </div>
-                  )}
-                </motion.div>
-                <div className="flex flex-col gap-y-5">
-                  {mainNavLinks.map((category, ci) => (
-                    <motion.div key={category.category} className="space-y-2" variants={animations.entrance.fadeUp}>
-                      <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                        {category.category}
-                      </span>
-                      <div className="grid gap-1">
-                        {category.links.map((link) => (
-                          <LinkItem
-                            className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
-                            key={`${category.category}-${link.label}`}
-                            {...link}
-                          />
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-                  <motion.div className="space-y-2" variants={animations.entrance.fadeUp}>
-                    <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{t("pages")}</span>
-                    <div className="grid gap-1">
-                      {staticLinks.map((link) => (
-                        <LinkItem
-                          className="rounded-lg p-2 hover:bg-muted active:bg-muted dark:active:bg-muted/50"
-                          key={link.label}
-                          {...link}
-                        />
-                      ))}
-                    </div>
-                  </motion.div>
-                </div>
-                <motion.div className="border-t pt-4" variants={animations.entrance.fadeUp}>
-                  <NavButtons />
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          </Portal>
-        )}
-      </AnimatePresence>
-    </div>
+                <XIcon size={20} />
+              </Button>
+            </SheetClose>
+          </div>
+
+          {/* Search + UserDropdown in same row */}
+          <div className="mt-2 flex items-center gap-2">
+            <div className="flex-1">
+              <Suspense fallback={<div className="h-9 w-full animate-pulse rounded-lg bg-muted" />}>
+                <NavSearch />
+              </Suspense>
+            </div>
+            {backendUser && <UserDropdown />}
+          </div>
+        </SheetHeader>
+
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-1 px-3 py-3">
+            <div className="grid gap-0.5">
+              <LinkItem
+                label={navT("products")}
+                href="/items"
+                icon={<Package size={16} />}
+                className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                onClick={() => setOpen(false)}
+              />
+            </div>
+
+            <div className="grid gap-0.5">
+              {primaryLinks.map((link) => (
+                <LinkItem
+                  key={link.href}
+                  {...link}
+                  className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                  onClick={() => setOpen(false)}
+                />
+              ))}
+            </div>
+
+            <Accordion type="single" collapsible>
+              <AccordionItem value="more" className="border-none">
+                <AccordionTrigger className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted hover:no-underline">
+                  {navT("more")}
+                </AccordionTrigger>
+                <AccordionContent className="pb-1">
+                  <div className="grid gap-0.5 pl-2">
+                    {moreLinks.map((link) => (
+                      <LinkItem
+                        key={link.href}
+                        {...link}
+                        className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                        onClick={() => setOpen(false)}
+                      />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+
+        {/* Footer: locale + auth actions */}
+        <div className="border-t border-border px-4 py-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              {navT("language")}/{navT("theme")}
+            </span>
+            <div className="flex items-center gap-2">
+              <LocaleSwitcher />
+              <ThemeToggle />
+            </div>
+          </div>
+          <NavButtons context="mobile" onClick={() => setOpen(false)} />
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

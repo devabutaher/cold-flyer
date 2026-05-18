@@ -134,6 +134,7 @@ export default function CouponsTable() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Create Coupon</AlertDialogTitle>
+            <AlertDialogDescription>Add a new discount coupon for customers to use at checkout.</AlertDialogDescription>
           </AlertDialogHeader>
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">

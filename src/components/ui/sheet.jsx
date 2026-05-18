@@ -1,14 +1,55 @@
 "use client";
 
 import { Dialog as SheetPrimitive } from "radix-ui";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState, useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 
-function Sheet({ ...props }) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
-}
+// Animation variants per side
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const contentVariants = {
+  right: {
+    hidden: { x: "100%", opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+    exit: { x: "100%", opacity: 0 },
+  },
+  left: {
+    hidden: { x: "-100%", opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+    exit: { x: "-100%", opacity: 0 },
+  },
+  top: {
+    hidden: { y: "-100%", opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+    exit: { y: "-100%", opacity: 0 },
+  },
+  bottom: {
+    hidden: { y: "100%", opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+    exit: { y: "100%", opacity: 0 },
+  },
+};
+
+const spring = {
+  type: "spring",
+  stiffness: 380,
+  damping: 34,
+  mass: 0.8,
+};
+
+const ease = {
+  duration: 0.18,
+  ease: [0.32, 0.72, 0, 1],
+};
+
+// ─── Primitives (unchanged) ──────────────────────────────────────────────────
 
 function SheetTrigger({ ...props }) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
@@ -16,50 +57,6 @@ function SheetTrigger({ ...props }) {
 
 function SheetClose({ ...props }) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
-}
-
-function SheetPortal({ ...props }) {
-  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
-}
-
-function SheetOverlay({ className, ...props }) {
-  return (
-    <SheetPrimitive.Overlay
-      data-slot="sheet-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-[state=open]:animate-in data-[state=open]:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-function SheetContent({ className, children, side = "right", showCloseButton = true, ...props }) {
-  return (
-    <SheetPortal>
-      <SheetOverlay />
-      <SheetPrimitive.Content
-        data-slot="sheet-content"
-        data-side={side}
-        className={cn(
-          "fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg transition duration-200 ease-in-out data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-r data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-l data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[side=bottom]:data-[state=open]:slide-in-from-bottom-10 data-[side=left]:data-[state=open]:slide-in-from-left-10 data-[side=right]:data-[state=open]:slide-in-from-right-10 data-[side=top]:data-[state=open]:slide-in-from-top-10 data-closed:animate-out data-closed:fade-out-0 data-[side=bottom]:data-closed:slide-out-to-bottom-10 data-[side=left]:data-closed:slide-out-to-left-10 data-[side=right]:data-closed:slide-out-to-right-10 data-[side=top]:data-closed:slide-out-to-top-10",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-        {showCloseButton && (
-          <SheetPrimitive.Close data-slot="sheet-close" asChild>
-            <Button variant="ghost" className="absolute top-4 right-4" size="icon-sm">
-              <XIcon />
-              <span className="sr-only">Close</span>
-            </Button>
-          </SheetPrimitive.Close>
-        )}
-      </SheetPrimitive.Content>
-    </SheetPortal>
-  );
 }
 
 function SheetHeader({ className, ...props }) {
@@ -83,6 +80,113 @@ function SheetDescription({ className, ...props }) {
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
+  );
+}
+
+// ─── Animated Sheet ───────────────────────────────────────────────────────────
+
+/**
+ * Sheet
+ *
+ * Wraps Radix Dialog.Root and syncs its open state with local React state
+ * so AnimatePresence can drive enter/exit animations on the overlay and content.
+ *
+ * Works with both controlled (<Sheet open={...} onOpenChange={...}>) and
+ * uncontrolled (<Sheet>) usage.
+ */
+function Sheet({ open: controlledOpen, onOpenChange: controlledOnOpenChange, defaultOpen = false, ...props }) {
+  // Local state mirrors Radix open state so AnimatePresence can react
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+
+  const handleOpenChange = useCallback(
+    (next) => {
+      if (!isControlled) setInternalOpen(next);
+      controlledOnOpenChange?.(next);
+    },
+    [isControlled, controlledOnOpenChange],
+  );
+
+  return <SheetPrimitive.Root data-slot="sheet" open={open} onOpenChange={handleOpenChange} {...props} />;
+}
+
+/**
+ * SheetContent
+ *
+ * Uses `forceMount` so the DOM node stays alive during exit, letting
+ * Framer Motion play the leave animation before Radix unmounts it.
+ * AnimatePresence is keyed to the Radix open state passed via `open` prop.
+ *
+ * Usage: <SheetContent open={sheetOpen} side="right"> … </SheetContent>
+ * The `open` prop must be passed from the parent Sheet's onOpenChange.
+ *
+ * For simpler uncontrolled usage, SheetContent reads open state via context
+ * provided by the Sheet root.
+ */
+function SheetContent({
+  className,
+  children,
+  side = "right",
+  showCloseButton = true,
+  open, // must be passed from parent for AnimatePresence to work
+  ...props
+}) {
+  const variants = contentVariants[side] ?? contentVariants.right;
+
+  return (
+    <SheetPrimitive.Portal forceMount>
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <SheetPrimitive.Overlay forceMount asChild>
+              <motion.div
+                data-slot="sheet-overlay"
+                key="sheet-overlay"
+                className="fixed inset-0 z-50 bg-black/10 supports-backdrop-filter:backdrop-blur-xs"
+                variants={overlayVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition={ease}
+              />
+            </SheetPrimitive.Overlay>
+
+            {/* Content */}
+            <SheetPrimitive.Content forceMount data-slot="sheet-content" data-side={side} asChild {...props}>
+              <motion.div
+                key="sheet-content"
+                className={cn(
+                  "fixed z-50 flex flex-col bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg outline-none",
+                  side === "bottom" && "inset-x-0 bottom-0 h-auto border-t",
+                  side === "left" && "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+                  side === "right" && "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+                  side === "top" && "inset-x-0 top-0 h-auto border-b",
+                  className,
+                )}
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={spring}
+              >
+                {children}
+                {showCloseButton && (
+                  <SheetPrimitive.Close asChild>
+                    <Button variant="ghost" className="absolute top-4 right-4" size="icon-sm">
+                      <XIcon />
+                      <span className="sr-only">Close</span>
+                    </Button>
+                  </SheetPrimitive.Close>
+                )}
+              </motion.div>
+            </SheetPrimitive.Content>
+          </>
+        )}
+      </AnimatePresence>
+    </SheetPrimitive.Portal>
   );
 }
 

@@ -7,29 +7,48 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Moon, Sun } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
+  const pathname = usePathname();
+  const locale = useLocale();
+  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), '') || '/';
+  const isActive =
+    pathWithoutLocale === href ||
+    pathWithoutLocale === href + '/' ||
+    (href !== '/' && pathWithoutLocale.startsWith(href + '/'));
+
   return (
-    <a className={cn("flex items-center gap-x-2", className)} href={href} onClick={onClick} {...props}>
+    <a
+      className={cn(
+        "flex items-center gap-x-2",
+        isActive && "bg-accent text-accent-foreground font-semibold",
+        className,
+      )}
+      href={href}
+      onClick={onClick}
+      {...props}
+    >
       <div
         className={cn(
-          "flex aspect-square size-6 items-center justify-center rounded-lg border bg-card text-sm shadow-sm",
-          "[&_svg:not([class*='size-'])]:size-5 [&_svg:not([class*='size-'])]:text-foreground",
+          "flex aspect-square size-6 shrink-0 items-center justify-center rounded-lg border bg-card text-sm shadow-sm",
+          "[&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='size-'])]:text-foreground",
         )}
       >
         {icon}
       </div>
       <div className="flex flex-col items-start justify-center">
-        <span className="font-medium">{label}</span>
+        <span className="text-sm font-medium">{label}</span>
+        {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
     </a>
   );
 }
 
-function ThemeToggle() {
+export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -54,51 +73,68 @@ function ThemeToggle() {
   );
 }
 
-export function NavButtons({ onAuthenticated } = {}) {
+/**
+ * NavButtons
+ *
+ * context="desktop" — renders in the sticky navbar (flex-row, all items inline including
+ *                     ThemeToggle and UserDropdown)
+ * context="mobile"  — renders inside the mobile sheet footer (flex-col, full-width buttons,
+ *                     no ThemeToggle/UserDropdown since those live elsewhere in the sheet)
+ */
+export function NavButtons({ onAuthenticated, context = "desktop", onClick }) {
   const t = useTranslations("nav");
   const { backendUser, loading } = useAuth();
 
+  const isMobile = context === "mobile";
+
   if (loading) {
     return (
-      <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-        <Skeleton className="h-9 w-18 rounded-md" />
-        <Skeleton className="h-9 w-20 rounded-md" />
+      <div className={cn("flex gap-2", isMobile ? "w-full flex-col" : "flex-row items-center")}>
+        <Skeleton className={cn("h-9 rounded-md", isMobile ? "w-full" : "w-24")} />
+        {!isMobile && <Skeleton className="h-9 w-24 rounded-md" />}
+      </div>
+    );
+  }
+
+  if (backendUser) {
+    return (
+      <div className={cn("flex gap-2", isMobile ? "w-full flex-col" : "flex-row items-center")}>
+        <Link href="/dashboard" className={isMobile ? "w-full" : undefined}>
+          <Button className={cn(isMobile && "w-full")} onClick={onClick}>
+            {t("dashboard")}
+          </Button>
+        </Link>
+        <Link href="/my-bookings" className={isMobile ? "w-full" : undefined}>
+          <Button variant="outline" className={cn(isMobile && "w-full")} onClick={onClick}>
+            {t("myBookings")}
+          </Button>
+        </Link>
+        {/* ThemeToggle + UserDropdown only on desktop — mobile sheet has its own footer */}
+        {!isMobile && (
+          <>
+            <ThemeToggle />
+            <UserDropdown />
+          </>
+        )}
       </div>
     );
   }
 
   return (
-    <>
-      {backendUser ? (
-        <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-          <Link href={"/dashboard"} className="w-full lg:w-auto">
-            <Button className="w-full lg:w-auto">{t("dashboard")}</Button>
-          </Link>
-          <Link href={"/my-bookings"} className="w-full lg:w-auto">
-            <Button variant="outline" className="w-full lg:w-auto">
-              {t("myBookings")}
-            </Button>
-          </Link>
-          <ThemeToggle />
-          <div className="hidden lg:block">
-            <UserDropdown />
-          </div>
-        </div>
-      ) : (
-        <div className="mt-5 lg:mt-0 flex flex-col lg:flex-row gap-2 w-full lg:w-auto items-center">
-          <ThemeToggle />
-          <Link href={"/auth"} className="w-full lg:w-auto">
-            <Button variant="destructive" className="w-full lg:w-auto" onClick={onAuthenticated}>
-              {t("signIn")}
-            </Button>
-          </Link>
-          <Link href={"/auth"} className="w-full lg:w-auto">
-            <Button className="w-full lg:w-auto" onClick={onAuthenticated}>
-              {t("signUp")}
-            </Button>
-          </Link>
-        </div>
-      )}
-    </>
+    <div className={cn("flex gap-2", isMobile ? "w-full flex-col" : "flex-row items-center")}>
+      {!isMobile && <ThemeToggle />}
+      <Link href="/auth" className={isMobile ? "w-full" : undefined}>
+        <Button
+          variant="destructive"
+          className={cn(isMobile && "w-full")}
+          onClick={(e) => {
+            onAuthenticated?.(e);
+            onClick?.(e);
+          }}
+        >
+          {t("signIn")}
+        </Button>
+      </Link>
+    </div>
   );
 }

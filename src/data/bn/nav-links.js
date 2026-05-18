@@ -1,4 +1,4 @@
-import { AirVent, FileText, HelpCircle, Layers, LayoutGrid, Settings, ShieldCheck, Users } from "lucide-react";
+import { AirVent, Briefcase, FileText, HelpCircle, Layers, LayoutGrid, Mail, Settings, ShieldCheck, Truck, Users } from "lucide-react";
 
 export const productLinks = [
   {
@@ -36,21 +36,54 @@ export const serviceLinks = [
   },
 ];
 
-export const staticLinks = [
+export const primaryLinks = [
   {
     label: "সেবা",
     href: "/services",
     icon: <Settings />,
   },
   {
+    label: "যোগাযোগ",
+    href: "/contact",
+    icon: <Mail />,
+  },
+  {
     label: "আমাদের সম্পর্কে",
     href: "/about",
     icon: <Users />,
+  },
+];
+
+export const moreLinks = [
+  {
+    label: "ব্লগ",
+    href: "/blog",
+    icon: <FileText />,
+  },
+  {
+    label: "প্রশ্নোত্তর",
+    href: "/faq",
+    icon: <HelpCircle />,
+  },
+  {
+    label: "ক্যারিয়ার",
+    href: "/careers",
+    icon: <Briefcase />,
+  },
+  {
+    label: "গোপনীয়তা নীতি",
+    href: "/privacy",
+    icon: <ShieldCheck />,
   },
   {
     label: "শর্তাবলী",
     href: "/terms",
     icon: <FileText />,
+  },
+  {
+    label: "শিপিং এবং রিটার্ন",
+    href: "/shipping",
+    icon: <Truck />,
   },
 ];
 

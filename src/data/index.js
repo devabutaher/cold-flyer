@@ -4,7 +4,7 @@ import { benefits as benefitsEn, departments as departmentsEn, culture as cultur
 import { quickHelpItems as quickHelpItemsEn, contactInfo as contactInfoEn, categories as categoriesEn } from "./en/faq-data";
 import { footerLinks as footerLinksEn, footerColumns as footerColumnsEn } from "./en/footer-links";
 import { heroSliderData as heroSliderDataEn } from "./en/hero-slider-data";
-import { productLinks as productLinksEn, serviceLinks as serviceLinksEn, staticLinks as staticLinksEn, mainNavLinks as mainNavLinksEn } from "./en/nav-links";
+import { productLinks as productLinksEn, serviceLinks as serviceLinksEn, primaryLinks as primaryLinksEn, moreLinks as moreLinksEn, mainNavLinks as mainNavLinksEn } from "./en/nav-links";
 import { principles as principlesEn, dataTypes as dataTypesEn, timeline as timelineEn } from "./en/privacy-data";
 import { CATEGORIES as CATEGORIESEn, BRANDS as BRANDSEn, TAGS as TAGSEn, WARRANTIES as WARRANTIESEn, DEFAULT_FORM_VALUES as DEFAULT_FORM_VALUESEn } from "./en/product-form-constants";
 import { promoCardData as promoCardDataEn } from "./en/promo-card-data";
@@ -21,7 +21,7 @@ import { benefits as benefitsBn, departments as departmentsBn, culture as cultur
 import { quickHelpItems as quickHelpItemsBn, contactInfo as contactInfoBn, categories as categoriesBn } from "./bn/faq-data";
 import { footerLinks as footerLinksBn, footerColumns as footerColumnsBn } from "./bn/footer-links";
 import { heroSliderData as heroSliderDataBn } from "./bn/hero-slider-data";
-import { productLinks as productLinksBn, serviceLinks as serviceLinksBn, staticLinks as staticLinksBn, mainNavLinks as mainNavLinksBn } from "./bn/nav-links";
+import { productLinks as productLinksBn, serviceLinks as serviceLinksBn, primaryLinks as primaryLinksBn, moreLinks as moreLinksBn, mainNavLinks as mainNavLinksBn } from "./bn/nav-links";
 import { principles as principlesBn, dataTypes as dataTypesBn, timeline as timelineBn } from "./bn/privacy-data";
 import { CATEGORIES as CATEGORIESBn, BRANDS as BRANDSBn, TAGS as TAGSBn, WARRANTIES as WARRANTIESBn, DEFAULT_FORM_VALUES as DEFAULT_FORM_VALUESBn } from "./bn/product-form-constants";
 import { promoCardData as promoCardDataBn } from "./bn/promo-card-data";
@@ -46,7 +46,8 @@ const en = {
   heroSliderData: heroSliderDataEn,
   productLinks: productLinksEn,
   serviceLinks: serviceLinksEn,
-  staticLinks: staticLinksEn,
+  primaryLinks: primaryLinksEn,
+  moreLinks: moreLinksEn,
   mainNavLinks: mainNavLinksEn,
   principles: principlesEn,
   dataTypes: dataTypesEn,
@@ -84,7 +85,8 @@ const bn = {
   heroSliderData: heroSliderDataBn,
   productLinks: productLinksBn,
   serviceLinks: serviceLinksBn,
-  staticLinks: staticLinksBn,
+  primaryLinks: primaryLinksBn,
+  moreLinks: moreLinksBn,
   mainNavLinks: mainNavLinksBn,
   principles: principlesBn,
   dataTypes: dataTypesBn,
@@ -118,7 +120,7 @@ export { benefitsEn as benefits, departmentsEn as departments, cultureEn as cult
 export { quickHelpItemsEn as quickHelpItems, contactInfoEn as contactInfo, categoriesEn as categories };
 export { footerLinksEn as footerLinks, footerColumnsEn as footerColumns };
 export { heroSliderDataEn as heroSliderData };
-export { productLinksEn as productLinks, serviceLinksEn as serviceLinks, staticLinksEn as staticLinks, mainNavLinksEn as mainNavLinks };
+export { productLinksEn as productLinks, serviceLinksEn as serviceLinks, primaryLinksEn as primaryLinks, moreLinksEn as moreLinks, mainNavLinksEn as mainNavLinks };
 export { principlesEn as principles, dataTypesEn as dataTypes, timelineEn as timeline };
 export { CATEGORIESEn as CATEGORIES, BRANDSEn as BRANDS, TAGSEn as TAGS, WARRANTIESEn as WARRANTIES, DEFAULT_FORM_VALUESEn as DEFAULT_FORM_VALUES };
 export { promoCardDataEn as promoCardData };

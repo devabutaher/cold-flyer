@@ -7,9 +7,16 @@
     "maintenance": "Maintenance",
     "support": "Support",
     "services": "Services",
+    "contact": "Contact",
     "about": "About",
-    "terms": "Terms",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "careers": "Careers",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "shipping": "Shipping & Returns",
     "products": "Products",
+    "more": "More",
     "cart": "Cart",
     "signIn": "Sign In",
     "signUp": "Sign Up",
@@ -18,6 +25,8 @@
     "myBookings": "My Bookings",
     "dashboard": "Dashboard",
     "signOut": "Sign Out",
-    "adminPanel": "Admin Panel"
+    "adminPanel": "Admin Panel",
+    "language": "Language",
+    "theme": "Theme"
   }
 }

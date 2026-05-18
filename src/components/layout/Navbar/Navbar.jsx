@@ -35,13 +35,13 @@ function CartIcon() {
       <AnimatePresence>
         {itemCount > 0 && (
           <motion.div
-            className="absolute -right-1 -top-1"
+            className="absolute -right-1.5 -top-2.5"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
           >
-            <Badge variant="default" className="h-5 w-5 translate-x-1/3 -translate-y-1/3 justify-center p-0 text-xs">
+            <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-[10px] leading-none">
               {itemCount > 99 ? "99+" : itemCount}
             </Badge>
           </motion.div>
@@ -56,24 +56,38 @@ export default function Navbar() {
 
   return (
     <header
-      className={cn("sticky top-0 z-50 w-full border-transparent border-b transition-all duration-300", {
-        "border-border bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/95 shadow-lg": scrolled,
-      })}
+      className={cn(
+        "sticky top-0 z-50 w-full border-b border-transparent transition-all duration-300",
+        scrolled &&
+          "border-border bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/95 shadow-lg",
+      )}
     >
-      <nav className="mx-auto flex h-14 w-full container items-center justify-between px-4">
+      <nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">
+        {/* Left: Logo + Desktop Nav */}
         <div className="flex items-center gap-5">
           <Logo />
+          {/* Desktop nav only shown on xl+ */}
           <DesktopNav />
         </div>
-        <div className="hidden items-center gap-2 lg:flex">
-          <Suspense fallback={<div className="w-48 h-8 bg-muted animate-pulse rounded" />}>
+
+        {/* Right: Desktop actions */}
+        <div className="hidden xl:flex items-center gap-2">
+          <Suspense fallback={<div className="h-8 w-48 animate-pulse rounded bg-muted" />}>
             <NavSearch />
           </Suspense>
           <LocaleSwitcher />
           <CartIcon />
-          <NavButtons />
+          <NavButtons context="desktop" />
         </div>
-        <div className="flex items-center gap-2 lg:hidden">
+
+        {/* Right: Tablet + Mobile actions */}
+        <div className="flex xl:hidden items-center gap-2">
+          {/* Search visible on tablet (md+), hidden on small mobile */}
+          <div className="hidden sm:block">
+            <Suspense fallback={<div className="h-8 w-32 animate-pulse rounded bg-muted" />}>
+              <NavSearch />
+            </Suspense>
+          </div>
           <CartIcon />
           <MobileNav />
         </div>
