@@ -65,12 +65,11 @@ async function proxy(request, params, method) {
 
     const resHeaders = new Headers({ "Content-Type": ct || "application/json" });
 
-    const setCookies = response.headers.getSetCookie?.();
-    if (setCookies?.length > 0) {
-      for (const cookie of setCookies) {
-        resHeaders.append("Set-Cookie", cookie);
+    response.headers.forEach((value, key) => {
+      if (key.toLowerCase() === "set-cookie") {
+        resHeaders.append("Set-Cookie", value);
       }
-    }
+    });
 
     return NextResponse.json(body, { status: response.status, headers: resHeaders });
   } catch (error) {

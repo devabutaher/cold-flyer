@@ -2,9 +2,38 @@ import axios from "axios";
 
 const API_BASE = "/api";
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const CSRF_COOKIE = "csrf-token";
 
 let refreshPromise = null;
 let clientInstance = null;
+let csrfBootstrapped = false;
+
+function getCsrfFromCookie() {
+  const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${CSRF_COOKIE}\\s*=\\s*([^;]*)`));
+  return match ? match[1] : null;
+}
+
+function setCsrfCookie(token) {
+  document.cookie = `${CSRF_COOKIE}=${token}; path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}; maxAge=86400`;
+}
+
+function generateCsrfToken() {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function bootstrapCsrf() {
+  if (csrfBootstrapped) return;
+  csrfBootstrapped = true;
+  try {
+    await axios.get(`${API_BASE}/csrf-token`, { withCredentials: true });
+  } catch {
+    if (!getCsrfFromCookie()) {
+      setCsrfCookie(generateCsrfToken());
+    }
+  }
+}
 
 function createClientInstance() {
   const instance = axios.create({
@@ -15,12 +44,10 @@ function createClientInstance() {
 
   instance.interceptors.request.use((config) => {
     if (config.method !== "get" && config.method !== "head" && config.method !== "options") {
-      let token = document.cookie.replace(/(?:(?:^|.*;\s*)csrf-token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+      let token = getCsrfFromCookie();
       if (!token) {
-        const bytes = new Uint8Array(32);
-        crypto.getRandomValues(bytes);
-        token = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-        document.cookie = `csrf-token=${token}; path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+        token = generateCsrfToken();
+        setCsrfCookie(token);
       }
       config.headers["x-csrf-token"] = token;
     }
@@ -59,7 +86,10 @@ async function attemptTokenRefresh() {
 
 export function getClient() {
   if (typeof window === "undefined") return null;
-  if (!clientInstance) clientInstance = createClientInstance();
+  if (!clientInstance) {
+    bootstrapCsrf();
+    clientInstance = createClientInstance();
+  }
   return clientInstance;
 }
 
