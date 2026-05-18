@@ -10,7 +10,7 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     if (!loading && !backendUser) {
-      router.replace("/auth");
+      router.replace(`/auth?redirect=${encodeURIComponent(window.location.pathname)}`);
     }
   }, [backendUser, loading, router]);
 

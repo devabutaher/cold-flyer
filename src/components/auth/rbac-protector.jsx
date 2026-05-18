@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children, requiredRole = "user" }) {
     if (loading) return;
 
     if (!backendUser) {
-      router.replace("/auth");
+      router.replace(`/auth?redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
 

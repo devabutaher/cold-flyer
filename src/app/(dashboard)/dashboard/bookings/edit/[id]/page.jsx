@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getCurrentUser } from "@/lib/auth-server";
 import { getBookingByIdServer } from "@/lib/actions/services";
 
@@ -14,17 +14,25 @@ async function getUser() {
   }
 }
 
+function getPath(h) {
+  return h.get("x-invoke-path") || h.get("next-url") || "";
+}
+
 export default async function EditBookingPage({ params }) {
   const cookieStore = await cookies();
 
   if (!cookieStore.get("accessToken")) {
-    redirect("/auth");
+    const h = await headers();
+    const p = getPath(h);
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   const user = await getUser();
 
   if (!user) {
-    redirect("/auth");
+    const h = await headers();
+    const p = getPath(h);
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   const { id } = await params;

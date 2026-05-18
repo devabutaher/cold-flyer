@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getCurrentUser } from "@/lib/auth-server";
 import { getAddressesAction } from "@/lib/actions/user";
 import { sanitizeForRSC } from "@/lib/utils";
@@ -12,7 +12,9 @@ export default async function ProfilePage() {
   const cookieStore = await cookies();
 
   if (!cookieStore.get("accessToken")) {
-    redirect("/auth");
+    const h = await headers();
+    const p = h.get("x-invoke-path") || h.get("next-url") || "";
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   const user = await getCurrentUser();

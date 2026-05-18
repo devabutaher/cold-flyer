@@ -66,7 +66,7 @@ function CartContent() {
 
     if (!backendUser) {
       toast.error("Please login to proceed to checkout");
-      router.push("/auth");
+      router.push(`/auth?redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
 

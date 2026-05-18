@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Mail, Phone, Cake, VenetianMask, Pencil, X, Check, Camera } from "lucide-react";
+import { User, Mail, Phone, Cake, VenetianMask, Pencil, X, Check, Camera, CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { updateProfileAction } from "@/lib/actions/user";
 
 const GENDER_OPTIONS = [
@@ -34,18 +36,30 @@ function formatDate(dateStr) {
 }
 
 function toDateInputValue(dateStr) {
-  if (!dateStr) return "";
+  if (!dateStr) return undefined;
   try {
-    return new Date(dateStr).toISOString().split("T")[0];
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? undefined : d;
   } catch {
-    return "";
+    return undefined;
   }
+}
+
+function formatShortDate(date) {
+  if (!date) return "";
+  return date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 export function ProfileSection({ user }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(toDateInputValue(user.dateOfBirth) || new Date());
   const [form, setForm] = useState({
     name: user.name || "",
     phone: user.phone || "",
@@ -58,7 +72,8 @@ export function ProfileSection({ user }) {
     const payload = {};
     if (form.name !== user.name) payload.name = form.name;
     if (form.phone !== (user.phone || "")) payload.phone = form.phone;
-    if (form.dateOfBirth !== toDateInputValue(user.dateOfBirth)) payload.dateOfBirth = form.dateOfBirth || null;
+    const origDate = toDateInputValue(user.dateOfBirth);
+    if (form.dateOfBirth?.getTime() !== origDate?.getTime()) payload.dateOfBirth = form.dateOfBirth?.toISOString() || null;
     if (form.gender !== (user.gender || "")) payload.gender = form.gender || null;
 
     if (Object.keys(payload).length === 0) {
@@ -86,6 +101,7 @@ export function ProfileSection({ user }) {
       dateOfBirth: toDateInputValue(user.dateOfBirth),
       gender: user.gender || "",
     });
+    setCalendarMonth(toDateInputValue(user.dateOfBirth) || new Date());
     setIsEditing(false);
   }
 
@@ -156,12 +172,40 @@ export function ProfileSection({ user }) {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="dob">Date of Birth</Label>
-                  <Input
-                    id="dob"
-                    type="date"
-                    value={form.dateOfBirth}
-                    onChange={(e) => setForm({ ...form, dateOfBirth: e.target.value })}
-                  />
+                  <div className="relative flex gap-2">
+                    <Input
+                      id="dob"
+                      readOnly
+                      value={form.dateOfBirth ? formatShortDate(form.dateOfBirth) : ""}
+                      placeholder="Pick a date"
+                      className="bg-background pr-10 cursor-pointer"
+                      onClick={() => setCalendarOpen(true)}
+                    />
+                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
+                        >
+                          <ChevronDownIcon className="size-4" />
+                          <span className="sr-only">Pick a date</span>
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto overflow-hidden p-0" align="end" sideOffset={10}>
+                        <Calendar
+                          mode="single"
+                          selected={form.dateOfBirth}
+                          month={calendarMonth}
+                          onMonthChange={setCalendarMonth}
+                          captionLayout="dropdown"
+                          onSelect={(date) => {
+                            setForm({ ...form, dateOfBirth: date });
+                            setCalendarOpen(false);
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="gender">Gender</Label>

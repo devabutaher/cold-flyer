@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth-server";
 
@@ -17,7 +17,9 @@ export default async function OrdersPage() {
   const cookieStore = await cookies();
 
   if (!cookieStore.get("accessToken")) {
-    redirect("/auth");
+    const h = await headers();
+    const p = h.get("x-invoke-path") || h.get("next-url") || "";
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   const user = await getUser();

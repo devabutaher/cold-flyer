@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { attemptTokenRefresh } from "@/lib/refresh-mutex";
 
 const AuthContext = createContext(null);
 
@@ -9,12 +10,8 @@ async function fetchWithRefresh(url, options = {}) {
   let res = await fetch(url, { credentials: "include", ...options });
   if (res.ok || options.skipRefresh) return res;
 
-  const refreshRes = await fetch("/api/auth/refresh", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-  });
-  if (!refreshRes.ok) return res;
+  const refreshed = await attemptTokenRefresh();
+  if (!refreshed) return res;
 
   return fetch(url, { credentials: "include", ...options });
 }

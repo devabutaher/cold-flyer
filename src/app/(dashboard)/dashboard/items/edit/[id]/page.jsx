@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getCurrentUser } from "@/lib/auth-server";
 import EditProductForm from "@/components/dashboard/product/edit-product/edit-product-form";
 import { getProductBySlugServer } from "@/lib/actions/products";
@@ -31,7 +31,9 @@ export default async function EditProductPage({ params }) {
   const cookieStore = await cookies();
 
   if (!cookieStore.get("accessToken")) {
-    redirect("/auth");
+    const h = await headers();
+    const p = h.get("x-invoke-path") || h.get("next-url") || "";
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   const user = await getUser();

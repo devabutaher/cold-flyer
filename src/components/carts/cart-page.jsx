@@ -42,7 +42,7 @@ export default function CartPage() {
 
     if (!backendUser) {
       toast.error(t("loginToCheckout"));
-      router.push("/auth");
+      router.push(`/auth?redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
 

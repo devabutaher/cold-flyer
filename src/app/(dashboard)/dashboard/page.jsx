@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getCurrentUser } from "@/lib/auth-server";
 import DashboardClient from "@/components/dashboard/stats/dashboard-client";
 
@@ -14,16 +14,24 @@ async function getUser() {
   }
 }
 
+function getPath(h) {
+  return h.get("x-invoke-path") || h.get("next-url") || "";
+}
+
 export default async function DashboardLayout() {
   const cookieStore = await cookies();
   const user = await getUser();
 
   if (!cookieStore.get("accessToken")) {
-    redirect("/auth");
+    const h = await headers();
+    const p = getPath(h);
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   if (!user) {
-    redirect("/auth");
+    const h = await headers();
+    const p = getPath(h);
+    redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
   if (user.role !== "admin") {

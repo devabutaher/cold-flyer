@@ -1,10 +1,10 @@
 import axios from "axios";
+import { attemptTokenRefresh } from "./refresh-mutex";
 
 const API_BASE = "/api";
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const CSRF_COOKIE = "csrf-token";
 
-let refreshPromise = null;
 let clientInstance = null;
 let csrfBootstrapped = false;
 
@@ -62,7 +62,7 @@ function createClientInstance() {
         originalRequest._retry = true;
         const refreshed = await attemptTokenRefresh();
         if (refreshed) return instance(originalRequest);
-        if (typeof window !== "undefined") window.location.href = "/auth";
+        if (typeof window !== "undefined") window.location.href = `/auth?redirect=${encodeURIComponent(window.location.pathname)}`;
         return Promise.reject(error);
       }
       return Promise.reject(error);
@@ -70,18 +70,6 @@ function createClientInstance() {
   );
 
   return instance;
-}
-
-async function attemptTokenRefresh() {
-  if (refreshPromise) return refreshPromise;
-  refreshPromise = axios
-    .post(`${API_BASE}/auth/refresh`, {}, { withCredentials: true })
-    .then(() => true)
-    .catch(() => false)
-    .finally(() => {
-      refreshPromise = null;
-    });
-  return refreshPromise;
 }
 
 export function getClient() {
