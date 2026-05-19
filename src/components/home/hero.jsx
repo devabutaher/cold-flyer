@@ -112,6 +112,7 @@ export default function Hero() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px"
                   priority={i === 0}
                   loading={i === 0 ? "eager" : "lazy"}
+                  quality={75}
                   className="absolute inset-0 object-cover object-center opacity-55"
                 />
               </div>

@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Tag, Truck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { haptic } from "@/lib/haptic";
 import { DetailBackButton } from "./detail-back-button";
 import { DetailMetaInfo } from "./detail-meta-info";
 import { DetailPrice } from "./detail-price";
@@ -29,6 +30,7 @@ export function ProductDetailClient({ product }) {
 
   const handleAddToCart = () => {
     if (product && !isOutOfStock) {
+      haptic.success();
       addItem(product, quantity);
       toast.success(t("addedToCart", { name: `${quantity} × ${product.name}` }));
     }
@@ -36,6 +38,7 @@ export function ProductDetailClient({ product }) {
 
   const handleBuyNow = () => {
     if (product && !isOutOfStock) {
+      haptic.heavy();
       addItem(product, quantity);
       window.location.href = "/cart";
     }

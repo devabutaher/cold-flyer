@@ -21,7 +21,9 @@ export default function TermsPage() {
           src="https://images.unsplash.com/photo-1652690527826-dcddbd1eb46e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Legal documents"
           fill
+          priority
           sizes="100vw"
+          quality={75}
           className="object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />

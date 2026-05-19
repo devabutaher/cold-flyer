@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useState, memo } from "react";
+import { haptic } from "@/lib/haptic";
 
 const TAG_STYLES = {
   Sale: "bg-destructive text-destructive-foreground",
@@ -47,9 +48,11 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
     if (isProduct) {
       const isOutOfStock = item.stock === 0 || !item.stock;
       if (isOutOfStock) return;
+      haptic.success();
       addItem(item, 1);
       toast.success(t("addedToCart", { name }));
     } else {
+      haptic.click();
       toast.success(t("bookingInitiated", { name }));
     }
   };

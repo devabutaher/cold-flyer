@@ -21,7 +21,9 @@ export default function ShippingPage() {
           src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1170&auto=format&fit=crop"
           alt="Shipping warehouse"
           fill
+          priority
           sizes="100vw"
+          quality={75}
           className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />

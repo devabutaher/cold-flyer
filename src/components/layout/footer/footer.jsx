@@ -122,7 +122,7 @@ export default function Footer() {
           >
             <Link href={"/"} className="flex items-center gap-2 mb-4">
               <div className="bg-primary p-2 rounded-md">
-                <Image src="/logo.png" width={200} height={200} alt="logo" className="w-4 h-4" />
+                <Image src="/logo.png" width={32} height={32} alt="logo" className="w-4 h-4" />
               </div>
 
               <h1 className="font-bold text-xl font-heading">

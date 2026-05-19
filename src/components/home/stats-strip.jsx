@@ -49,8 +49,8 @@ export default function StatsStrip() {
     <AnimatedSection ref={ref} className="bg-inverted py-10 sm:py-14">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
-          {STATS.map((s) => (
-            <Counter key={s.key} {...s} started={started} label={t(s.key)} />
+          {STATS.map(({ key, ...s }) => (
+            <Counter key={key} {...s} started={started} label={t(key)} />
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/providers";
+import { googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
 import { createAccountSchema, signInSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -8,7 +9,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
@@ -33,11 +33,17 @@ export function useAuthForm() {
     resolver: zodResolver(isSignIn ? signInSchema : createAccountSchema),
   });
 
-  const { register, handleSubmit, formState: { errors }, reset } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = form;
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) return;
     if (window.google?.accounts) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setGoogleReady(true);
       return;
     }
@@ -79,6 +85,7 @@ export function useAuthForm() {
       size: "large",
       locale: "en",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [googleReady]);
 
   const handleTabSwitch = (newTab) => {
@@ -112,8 +119,20 @@ export function useAuthForm() {
   };
 
   return {
-    tab, isSignIn, showPassword, authError, loading, showAdminHint, googleReady,
-    googleBtnRef, register, handleSubmit, errors,
-    setShowPassword, setShowAdminHint, handleTabSwitch, onSubmit,
+    tab,
+    isSignIn,
+    showPassword,
+    authError,
+    loading,
+    showAdminHint,
+    googleReady,
+    googleBtnRef,
+    register,
+    handleSubmit,
+    errors,
+    setShowPassword,
+    setShowAdminHint,
+    handleTabSwitch,
+    onSubmit,
   };
 }

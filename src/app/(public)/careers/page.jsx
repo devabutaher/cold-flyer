@@ -29,6 +29,7 @@ export default function CareersPage() {
           fill
           priority
           sizes="100vw"
+          quality={75}
           className="object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />

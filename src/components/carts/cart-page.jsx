@@ -8,6 +8,7 @@ import { useAuth } from "@/components/providers";
 import { getClient } from "@/lib/http-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { haptic } from "@/lib/haptic";
 import { Cart } from "./cart";
 import { CartSkeleton } from "./cart-skeleton";
 import { CreditCard, Smartphone, Banknote } from "lucide-react";
@@ -48,6 +49,7 @@ export default function CartPage() {
 
     setIsProcessing(true);
     try {
+      haptic.heavy();
       const orderData = {
         items: items.map((item) => ({
           product: item.productId || item.productRef,

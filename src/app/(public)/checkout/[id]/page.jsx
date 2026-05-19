@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Package, CreditCard, Smartphone, Banknote, Check, Loader2, MapPin, ChevronLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -212,8 +213,8 @@ export default function CheckoutPage() {
                 {order.items.map((item) => (
                   <div key={item._id} className="flex items-center gap-4 py-3">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted">
-                      {item.image ? (
-                        <img src={item.image} alt={item.name} className="h-full w-full rounded-lg object-cover" />
+                        {item.image ? (
+                          <Image src={item.image} alt={item.name} fill sizes="48px" className="object-cover rounded-lg" />
                       ) : (
                         <Package size={18} className="text-muted-foreground" />
                       )}

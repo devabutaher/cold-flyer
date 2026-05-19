@@ -205,6 +205,7 @@ export default function AboutPage() {
           fill
           priority
           sizes="100vw"
+          quality={75}
           className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
