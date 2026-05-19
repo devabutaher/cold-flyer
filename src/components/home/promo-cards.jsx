@@ -15,17 +15,15 @@ function PromoCard({ card, index }) {
           ? "bg-primary text-primary-foreground border-primary"
           : "bg-card text-foreground border-border hover:border-primary/30"
       }`}
-      whileHover={{ y: -3, boxShadow: "0 16px 40px -8px oklch(0 0 0 / 0.15)" }}
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      <motion.div
+      <div
         className={`mb-4 flex h-10 w-10 items-center justify-center rounded-md ${
           card.accent ? "bg-white/20" : "bg-primary/10"
         }`}
-        whileHover={{ rotate: -5 }}
       >
         <card.icon size={20} className={card.accent ? "text-white" : "text-primary"} />
-      </motion.div>
+      </div>
 
       <span
         className={`text-[10px] font-bold uppercase tracking-widest ${card.accent ? "text-white/70" : "text-primary"}`}

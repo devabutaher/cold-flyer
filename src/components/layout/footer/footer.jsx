@@ -121,13 +121,9 @@ export default function Footer() {
             transition={{ duration: 0.4 }}
           >
             <Link href={"/"} className="flex items-center gap-2 mb-4">
-              <motion.div
-                className="bg-primary p-2 rounded-md"
-                whileHover={{ rotate: -5 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
+              <div className="bg-primary p-2 rounded-md">
                 <Image src="/logo.png" width={200} height={200} alt="logo" className="w-4 h-4" />
-              </motion.div>
+              </div>
 
               <h1 className="font-bold text-xl font-heading">
                 Cold<span className="text-primary">Flyer</span>

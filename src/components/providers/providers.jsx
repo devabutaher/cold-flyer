@@ -20,7 +20,7 @@ export function Providers({ children }) {
         <QueryProvider>
           <CartProvider>
             <AuthProvider>
-              <AnimatePresence mode="wait">{children}</AnimatePresence>
+              <AnimatePresence mode="popLayout">{children}</AnimatePresence>
               <Toaster />
             </AuthProvider>
           </CartProvider>

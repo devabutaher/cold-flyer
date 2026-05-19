@@ -5,7 +5,6 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
-import { animations } from "@/lib/animation";
 import { useTranslations } from "next-intl";
 
 const faqItems = [
@@ -68,20 +67,13 @@ function AnimatedChevron({ isOpen }) {
   );
 }
 
-function FaqItem({ item, index, openValue }) {
+function FaqItem({ item, openValue }) {
   const isOpen = openValue === item.id;
 
   return (
-    <motion.div
-      variants={animations.entrance.fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
-      transition={{ duration: 0.35, delay: index * 0.07 }}
-    >
-      <AccordionPrimitive.Item value={item.id} className="border-b border-border last:border-0">
+    <AccordionPrimitive.Item value={item.id} className="border-b border-border last:border-0">
         <AccordionPrimitive.Header asChild>
-          <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none">
+          <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 py-4 min-h-11 text-left text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none">
             <span className="transition-colors group-hover:text-primary">{item.question}</span>
             <AnimatedChevron isOpen={isOpen} />
           </AccordionPrimitive.Trigger>
@@ -104,7 +96,6 @@ function FaqItem({ item, index, openValue }) {
           )}
         </AnimatePresence>
       </AccordionPrimitive.Item>
-    </motion.div>
   );
 }
 
@@ -145,7 +136,7 @@ export default function Faq() {
   const [openValue, setOpenValue] = useState(faqItems[0].id);
 
   return (
-    <AnimatedSection className="bg-background py-16" id="faq">
+    <AnimatedSection className="bg-background py-10 sm:py-14 md:py-16" id="faq">
       <div className="container">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
           <div className="flex flex-col justify-center">
@@ -163,8 +154,8 @@ export default function Faq() {
               collapsible
               className="w-full"
             >
-              {faqItems.map((item, index) => (
-                <FaqItem key={item.id} item={item} index={index} openValue={openValue} />
+              {faqItems.map((item) => (
+                <FaqItem key={item.id} item={item} openValue={openValue} />
               ))}
             </AccordionPrimitive.Root>
           </div>

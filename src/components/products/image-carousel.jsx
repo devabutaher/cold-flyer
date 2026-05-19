@@ -13,10 +13,13 @@ import {
   DialogTrigger,
 } from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
+import dynamic from "next/dynamic";
 import { ArrowLeft, ArrowRight, MinusCircle, Package, PlusCircle, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+
+const TransformComponent = dynamic(() => import("react-zoom-pan-pinch").then(m => m.TransformComponent), { ssr: false });
+const TransformWrapper = dynamic(() => import("react-zoom-pan-pinch").then(m => m.TransformWrapper), { ssr: false });
 
 const getAspectRatioClass = (ratio) => {
   switch (ratio) {
@@ -56,7 +59,7 @@ const ImageContainer = ({
                 alt={image.title || alt}
                 fill
                 loading="eager"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 className={cn(
                   "absolute inset-0 h-full w-full",
                   fit === "contain" && "object-contain",
@@ -88,11 +91,10 @@ const ImageContainer = ({
                         <Image
                           src={image.url}
                           alt={image.title || t("fullSize")}
-                          width={1920}
-                          height={1920}
-                          quality={95}
-                          priority
-                          loading="eager"
+                          fill
+                          sizes="(max-width: 768px) 90vw, 90vw"
+                          quality={75}
+                          loading="lazy"
                           className={cn("max-h-[90vh] max-w-[90vw] object-contain", classNameImage)}
                         />
                       ) : (

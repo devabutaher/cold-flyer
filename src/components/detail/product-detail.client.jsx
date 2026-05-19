@@ -167,23 +167,18 @@ export function ProductDetailClient({ product }) {
             </div>
           </motion.div>
 
-          <motion.div
-            className="flex gap-3 mb-6"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <div className="flex gap-3 mb-6">
+            <div className="flex-1">
               <Button variant="outline" size="lg" className="w-full" disabled={isOutOfStock} onClick={handleAddToCart}>
                 {t("addToCart")}
               </Button>
-            </motion.div>
-            <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            </div>
+            <div className="flex-1">
               <Button size="lg" className="w-full" disabled={isOutOfStock} onClick={handleBuyNow}>
                 {t("buyNow")}
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           <DetailTrustBadges items={trustBadges} />
 

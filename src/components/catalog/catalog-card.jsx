@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import PriceFormat from "@/components/ui/price-format";
 import { useCart } from "@/store/cart";
-import { animations, staggerItem, transitionTokens } from "@/lib/animation";
+import { animations } from "@/lib/animation";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Package, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 const TAG_STYLES = {
   Sale: "bg-destructive text-destructive-foreground",
@@ -63,7 +63,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
 
   const cardContent = (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
-      <Link href={href} className="relative block h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50">
+      <Link href={href} className="relative block h-36 sm:h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50">
         {isProduct && item.tag && item.tag !== "none" && (
           <Badge className={`absolute left-2 top-2 z-10 ${TAG_STYLES[item.tag] || "bg-primary"}`}>{item.tag}</Badge>
         )}
@@ -72,11 +72,9 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
         )}
 
         {/* Wishlist button */}
-        <motion.button
+        <button
           onClick={toggleWishlist}
           className="absolute right-2 top-2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
           aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
         >
           <motion.div
@@ -91,7 +89,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
               )}
             />
           </motion.div>
-        </motion.button>
+        </button>
 
         {/* Image with loading shimmer */}
         {image && (
@@ -104,7 +102,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
               alt={name}
               fill
               priority={index < 3}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               className={cn(
                 "object-cover transition-all duration-500 group-hover:scale-105",
                 imageLoaded ? "opacity-100" : "opacity-0"
@@ -120,13 +118,13 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col justify-between gap-2 p-4">
+      <div className="flex flex-1 flex-col justify-between gap-2 p-3 sm:p-4">
         <div className="space-y-1">
           <Link href={href}>
-            <h4 className="truncate font-bold text-foreground hover:text-primary transition-colors">{name}</h4>
+            <h4 className="truncate font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors">{name}</h4>
           </Link>
 
-          {description && <p className="line-clamp-2 text-sm text-muted-foreground">{description}</p>}
+          {description && <p className="line-clamp-2 text-xs sm:text-sm text-muted-foreground">{description}</p>}
 
           {item.rating > 0 && (
             <div className="flex items-center gap-1">
@@ -148,7 +146,6 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             <span className="text-lg font-bold text-primary">{formatPrice(item.basePrice, item.priceType)}</span>
           )}
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size={isProduct ? "icon" : "sm"}
               onClick={handleAction}
@@ -156,7 +153,6 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             >
               {isProduct ? <ShoppingCart size={16} /> : t("book")}
             </Button>
-          </motion.div>
         </div>
       </div>
     </div>
@@ -164,18 +160,11 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
 
   if (!animate) return cardContent;
 
-  return (
-    <motion.div
-      variants={staggerItem}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.35, ease: "easeOut", delay: index * 0.05 }}
-    >
-      {cardContent}
-    </motion.div>
-  );
+  return cardContent;
 }
+
+export const MemoizedCatalogCard = memo(function MemoizedCatalogCard(props) {
+  return <CatalogCard {...props} />;
+});
 
 export default CatalogCard;

@@ -117,8 +117,47 @@ export function DataTable({
       {/* ── Toolbar slot ─────────────────────────────── */}
       {toolbar && <div className="flex flex-wrap items-center justify-between gap-3">{toolbar(table)}</div>}
 
-      {/* ── Table ────────────────────────────────────── */}
-      <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm">
+      {/* ── Mobile card view (hidden on md+) ─────────── */}
+      <div className="md:hidden space-y-3">
+        {loading ? (
+          [...Array(Math.min(pageSize, 5))].map((_, i) => (
+            <div key={i} className="rounded-xl border border-border bg-card p-4 space-y-2">
+              <div className="h-4 bg-muted rounded animate-pulse w-3/4" />
+              <div className="h-3 bg-muted rounded animate-pulse w-1/2" />
+              <div className="h-3 bg-muted rounded animate-pulse w-2/3" />
+            </div>
+          ))
+        ) : table.getRowModel().rows.length ? (
+          table.getRowModel().rows.map((row) => (
+            <div
+              key={row.id}
+              className="rounded-xl border border-border bg-card p-4 space-y-2"
+              onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+            >
+              {row.getVisibleCells().map((cell) => {
+                const header = cell.column.columnDef.header;
+                const label = typeof header === "string" ? header : "";
+                if (!label || label === "Actions") return null;
+                return (
+                  <div key={cell.id} className="flex justify-between items-start gap-2">
+                    <span className="text-xs font-medium text-muted-foreground shrink-0">{label}</span>
+                    <span className="text-sm text-right">{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center gap-3 text-muted-foreground py-12">
+            {emptyIcon && <div className="opacity-40">{emptyIcon}</div>}
+            <p className="text-sm">{emptyMessage}</p>
+            {emptyAction}
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop table (hidden on mobile) ─────────── */}
+      <div className="hidden md:block rounded-xl border border-border bg-card overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className={cn(stickyHeader && "sticky top-0 z-10")}>
@@ -230,7 +269,7 @@ export function DataTable({
                 <Button
                   size="icon"
                   variant="outline"
-                  className="h-8 w-8"
+                  className="h-10 w-10"
                   onClick={() => action(table)}
                   disabled={!canDo(table)}
                   aria-label={label}

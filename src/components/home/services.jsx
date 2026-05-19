@@ -1,34 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { animations } from "@/lib/animation";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 
 function ServiceCard({ service, index, t }) {
   return (
-    <motion.div
-      className="bg-muted rounded-xl p-6 sm:p-7 group hover:bg-secondary hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-      variants={animations.entrance.fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
-      transition={{ duration: 0.35, delay: index * 0.08, ease: "easeOut" }}
-      whileHover={{ y: -3 }}
-    >
+    <div className="bg-muted rounded-xl p-6 sm:p-7 group hover:bg-secondary hover:shadow-lg transition-all duration-300 relative overflow-hidden">
       <service.icon
         size={72}
         className="absolute right-4 bottom-3 text-primary opacity-[0.05] group-hover:opacity-[0.08] transition-opacity"
       />
-      <motion.div
+      <div
         className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4"
-        whileHover={{ scale: 1.1, rotate: -5 }}
       >
         <service.icon size={22} className="text-accent-foreground" />
-      </motion.div>
+      </div>
       <h3 className="font-sans font-bold text-lg text-foreground mb-2">{service.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed mb-5">{service.sub}</p>
       <Link
@@ -37,7 +26,7 @@ function ServiceCard({ service, index, t }) {
       >
         {t("common.learnMore")} <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -46,7 +35,7 @@ export default function Services() {
   const locale = useLocale();
   const servicesData = getData("servicesData", locale);
   return (
-    <AnimatedSection className="py-16 bg-background" id="services">
+    <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-background" id="services">
       <div className="container">
         <div className="mb-9">
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("home.ourExpertise")}</span>

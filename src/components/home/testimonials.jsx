@@ -3,11 +3,9 @@
 import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
-import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "../ui/button";
-import { animations, staggerItem } from "@/lib/animation";
 import { useTranslations, useLocale } from "next-intl";
 
 function Stars({ count }) {
@@ -24,32 +22,24 @@ function Stars({ count }) {
   );
 }
 
-function TestimonialCard({ review, index }) {
+function TestimonialCard({ review }) {
   return (
-    <motion.div
-      variants={staggerItem}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
-      whileHover={{ y: -3 }}
-    >
-      <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-70">
-        <Quote size={28} className="text-primary/20 absolute top-4 right-4" />
-        <Stars count={review.stars} />
-        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4 overflow-hidden">
-          &#34;{review.body}&#34;
-        </p>
-        <div className="flex items-center gap-3 border-t border-border pt-4 mt-auto">
-          <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-sans font-bold text-sm shrink-0">
-            {review.avatar}
-          </div>
-          <div>
-            <p className="font-sans font-bold text-foreground text-sm">{review.name}</p>
-            <p className="text-muted-foreground text-xs">{review.role}</p>
-          </div>
+    <div className="bg-secondary rounded-xl p-5 h-full flex flex-col shadow-sm hover:shadow-lg transition-shadow duration-300 relative min-h-70">
+      <Quote size={28} className="text-primary/20 absolute top-4 right-4" />
+      <Stars count={review.stars} />
+      <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4 mb-4 overflow-hidden">
+        &#34;{review.body}&#34;
+      </p>
+      <div className="flex items-center gap-3 border-t border-border pt-4 mt-auto">
+        <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-sans font-bold text-sm shrink-0">
+          {review.avatar}
+        </div>
+        <div>
+          <p className="font-sans font-bold text-foreground text-sm">{review.name}</p>
+          <p className="text-muted-foreground text-xs">{review.role}</p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -64,7 +54,7 @@ export default function Testimonials() {
   const progress = ((selectedIndex + 1) / reviews.length) * 100;
 
   return (
-    <AnimatedSection className="py-16 bg-background">
+    <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-background">
       <div className="container">
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
@@ -81,7 +71,7 @@ export default function Testimonials() {
           <div className="flex items-stretch">
             {reviews.map((review, i) => (
               <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] pr-5">
-                <TestimonialCard review={review} index={i} />
+                <TestimonialCard review={review} />
               </div>
             ))}
           </div>

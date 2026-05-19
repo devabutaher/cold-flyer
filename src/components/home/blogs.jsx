@@ -1,25 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { animations, staggerItem } from "@/lib/animation";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 
-function BlogCard({ blog, index, t }) {
+function BlogCard({ blog, t }) {
   return (
-    <motion.article
-      variants={staggerItem}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
-      whileHover={{ y: -4, boxShadow: "0 12px 32px -4px oklch(0 0 0 / 0.12)" }}
-      className="bg-background rounded-xl overflow-hidden group shadow-sm transition-all duration-300 border border-transparent hover:border-border"
-    >
-      <div className="h-44 overflow-hidden relative group-hover:opacity-90 transition-opacity">
+    <article className="bg-background rounded-xl overflow-hidden group shadow-sm transition-shadow duration-300 border border-transparent hover:border-border">
+      <div className="h-36 sm:h-44 overflow-hidden relative group-hover:opacity-90 transition-opacity">
         <Image
           src={blog.img}
           alt={blog.title}
@@ -43,7 +34,7 @@ function BlogCard({ blog, index, t }) {
           </Link>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -52,7 +43,7 @@ export default function Blogs() {
   const locale = useLocale();
   const blogs = getData("blogs", locale);
   return (
-    <AnimatedSection className="py-16 bg-card" id="blogs">
+    <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-card" id="blogs">
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
@@ -68,17 +59,11 @@ export default function Blogs() {
             {t("viewAll")} <ArrowRight size={14} className="transition-transform hover:translate-x-1" />
           </Link>
         </div>
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-3 gap-5"
-          variants={animations.stagger.fast}
-          initial="hidden"
-          whileInView="visible"
-          viewport={animations.inView.once}
-        >
-          {blogs.map((blog, i) => (
-            <BlogCard key={blog.title} blog={blog} index={i} t={t} />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {blogs.map((blog) => (
+            <BlogCard key={blog.title} blog={blog} t={t} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </AnimatedSection>
   );

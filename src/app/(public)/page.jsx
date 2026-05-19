@@ -1,15 +1,21 @@
+import dynamic from "next/dynamic";
 import About from "@/components/home/about";
-import Blogs from "@/components/home/blogs";
 import BrandsStrip from "@/components/home/brand-strip";
-import Contact from "@/components/home/contact";
-import Faq from "@/components/home/faq";
 import Hero from "@/components/home/hero";
-import Portfolio from "@/components/home/portfolio";
 import ShopSection from "@/components/home/products/shop-section";
 import PromoCards from "@/components/home/promo-cards";
 import Services from "@/components/home/services";
 import StatsStrip from "@/components/home/stats-strip";
-import Testimonials from "@/components/home/testimonials";
+
+const Portfolio = dynamic(() => import("@/components/home/portfolio"));
+const Testimonials = dynamic(() => import("@/components/home/testimonials"));
+const Faq = dynamic(() => import("@/components/home/faq"));
+const Contact = dynamic(() => import("@/components/home/contact"));
+const Blogs = dynamic(() => import("@/components/home/blogs"));
+
+function SectionSkeleton() {
+  return <div className="py-10 sm:py-14 md:py-16"><div className="container"><div className="h-64 bg-muted rounded-xl animate-pulse" /></div></div>;
+}
 
 export default function Home() {
   return (
@@ -21,11 +27,11 @@ export default function Home() {
       <About />
       <StatsStrip />
       <BrandsStrip />
-      <Portfolio />
-      <Testimonials />
-      <Faq />
-      <Contact />
-      <Blogs />
+      <Portfolio loading={<SectionSkeleton />} />
+      <Testimonials loading={<SectionSkeleton />} />
+      <Faq loading={<SectionSkeleton />} />
+      <Contact loading={<SectionSkeleton />} />
+      <Blogs loading={<SectionSkeleton />} />
     </>
   );
 }

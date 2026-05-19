@@ -197,16 +197,14 @@ export function Cart({
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <motion.div whileHover={{ x: -3 }} whileTap={{ scale: 0.97 }}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-muted-foreground"
-                    onClick={() => onContinueShopping(checkoutPayload)}
-                  >
-                    {t("continueShoppingBack")}
-                  </Button>
-                </motion.div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-muted-foreground"
+                  onClick={() => onContinueShopping(checkoutPayload)}
+                >
+                  {t("continueShoppingBack")}
+                </Button>
               </motion.div>
             </div>
 
@@ -273,7 +271,7 @@ export function Cart({
                       const Icon = p.icon;
                       const selected = paymentProvider === p.value;
                       return (
-                        <motion.button
+                        <button
                           key={p.value}
                           type="button"
                           onClick={() => onPaymentProviderChange(p.value)}
@@ -283,8 +281,6 @@ export function Cart({
                               ? "border-primary bg-primary/5 text-foreground"
                               : "border-border text-muted-foreground hover:border-muted-foreground/30"
                           )}
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.98 }}
                         >
                           <Icon size={14} />
                           <span className="flex-1">{p.label}</span>
@@ -297,7 +293,7 @@ export function Cart({
                               <Check size={12} className="text-primary" />
                             </motion.span>
                           )}
-                        </motion.button>
+                        </button>
                       );
                     })}
                   </div>
@@ -305,13 +301,12 @@ export function Cart({
               )}
 
               <div className="mt-4 space-y-3">
-                <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
-                  <Button
-                    className="w-full"
-                    size="lg"
-                    onClick={() => onCheckout(checkoutPayload)}
-                    disabled={isProcessing}
-                  >
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={() => onCheckout(checkoutPayload)}
+                  disabled={isProcessing}
+                >
                     {isProcessing ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -320,12 +315,41 @@ export function Cart({
                     ) : (
                       t("payWith", { provider: paymentProviders.find(p => p.value === paymentProvider)?.label || "Card" })
                     )}
-                  </Button>
-                </motion.div>
+                </Button>
                 <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>
                   {t("continueShopping")}
                 </Button>
               </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Mobile sticky checkout bar */}
+        {!isLoading && !errorMessage && !isCartEmpty && (
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur-sm p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium text-muted-foreground">{t("total")}</span>
+              <span className="text-xl font-extrabold text-primary">
+                {currencyPrefix}
+                {totalAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </span>
+            </div>
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                className="w-full"
+                size="lg"
+                onClick={() => onCheckout(checkoutPayload)}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("processing")}
+                  </>
+                ) : (
+                  t("payWith", { provider: paymentProviders.find(p => p.value === paymentProvider)?.label || "Card" })
+                )}
+              </Button>
             </motion.div>
           </div>
         )}

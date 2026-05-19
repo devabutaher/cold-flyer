@@ -3,8 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { PackageSearch } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { CatalogCard } from "./catalog-card";
-import { animations } from "@/lib/animation";
+import { CatalogCard, MemoizedCatalogCard } from "./catalog-card";
 import { motion } from "framer-motion";
 
 export function CatalogGrid({
@@ -41,7 +40,7 @@ export function CatalogGrid({
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
         {[...Array(8)].map((_, i) => (
           <CardSkeleton key={i} type={type} />
         ))}
@@ -85,16 +84,11 @@ export function CatalogGrid({
         {results.length} {itemLabel}
         {results.length !== 1 ? "s" : ""} found
       </p>
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-        variants={animations.stagger.fast}
-        initial="hidden"
-        animate="visible"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
         {results.map((item) => (
-          <CatalogCard key={item._id ?? item.id} item={item} type={type} />
+          <MemoizedCatalogCard key={item._id ?? item.id} item={item} type={type} animate={false} />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -102,8 +96,8 @@ export function CatalogGrid({
 function CardSkeleton({ type }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card">
-      <Skeleton className="h-48 w-full" />
-      <div className="flex flex-1 flex-col justify-between gap-2 p-4">
+      <Skeleton className="h-36 sm:h-48 w-full" />
+      <div className="flex flex-1 flex-col justify-between gap-2 p-3 sm:p-4">
         <div className="space-y-2">
           <Skeleton className="h-4 w-3/4" />
           <Skeleton className="h-3 w-full" />

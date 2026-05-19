@@ -1,22 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useScroll(downThreshold, upThreshold) {
   const [scrolled, setScrolled] = useState(false);
   const scrollUpThreshold = upThreshold ?? downThreshold / 2;
+  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const y = window.scrollY;
-      // Hysteresis: different thresholds for up/down to prevent flickering
-      setScrolled((prev) => {
-        if (prev) {
-          // Currently scrolled - only unscroll when below lower threshold
-          return y > scrollUpThreshold;
-        }
-        // Currently not scrolled - only scroll when above higher threshold
-        return y > downThreshold;
+      if (ticking.current) return;
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setScrolled((prev) => {
+          if (prev) {
+            return y > scrollUpThreshold;
+          }
+          return y > downThreshold;
+        });
+        ticking.current = false;
       });
     };
 

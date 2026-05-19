@@ -59,7 +59,7 @@ export default function Navbar() {
       className={cn(
         "sticky top-0 z-50 w-full border-b border-transparent transition-all duration-300",
         scrolled &&
-          "border-border bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/95 shadow-lg",
+          "border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/95 shadow-lg",
       )}
     >
       <nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">

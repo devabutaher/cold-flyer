@@ -8,7 +8,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -27,11 +27,10 @@ function SlideContent({ slide, index, t }) {
     >
       <motion.div
         variants={{
-          hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+          hidden: { opacity: 0, y: 20 },
           visible: {
             opacity: 1,
             y: 0,
-            filter: "blur(0px)",
             transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
           },
         }}
@@ -44,8 +43,8 @@ function SlideContent({ slide, index, t }) {
       <motion.h1
         className="mb-3 sm:mb-4 max-w-2xl text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] text-white"
         variants={{
-          hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
-          visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+          hidden: { opacity: 0, y: 30 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
         }}
       >
         {slide.headline}
@@ -94,14 +93,6 @@ export default function Hero() {
   const locale = useLocale();
   const heroSliderData = getData("heroSliderData", locale);
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
@@ -109,21 +100,21 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-[28rem] w-full overflow-hidden bg-inverted">
-      <motion.div className="embla h-full relative" ref={emblaRef} style={{ opacity, scale }}>
+      <div className="embla h-full relative" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
             <div key={i} className="embla__slide relative h-full min-w-0 flex-[0_0_100%]">
-              <motion.div style={{ y: parallaxY }} className="absolute inset-0">
+              <div className="absolute inset-0">
                 <Image
                   src={slide.img}
                   alt={slide.headline}
                   fill
-                  sizes="100vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px"
                   priority={i === 0}
                   loading={i === 0 ? "eager" : "lazy"}
                   className="absolute inset-0 object-cover object-center opacity-55"
                 />
-              </motion.div>
+              </div>
 
               <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
@@ -131,7 +122,7 @@ export default function Hero() {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Progress dots */}
       <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-8 sm:left-auto sm:right-5 sm:translate-y-1/2 sm:flex-col sm:translate-x-0">

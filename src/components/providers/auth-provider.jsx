@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { attemptTokenRefresh } from "@/lib/refresh-mutex";
 
@@ -68,12 +68,12 @@ export function AuthProvider({ children }) {
     router.push("/");
   }, [router]);
 
-  const value = {
+  const value = useMemo(() => ({
     backendUser,
     loading,
     logOut,
     refreshUser,
-  };
+  }), [backendUser, loading, logOut, refreshUser]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

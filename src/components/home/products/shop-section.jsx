@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProductsQuery } from "@/hooks/queries/products";
 import { useFeaturedServicesQuery } from "@/hooks/queries/services";
-import { motion } from "framer-motion";
 import { CheckCircle, Wrench } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -38,19 +37,25 @@ function ServiceCardSkeleton() {
   );
 }
 
-function ServiceCard({ service, index }) {
+function ServiceFeatures({ features }) {
+  return (
+    <>
+      {features?.slice(0, 3).map((feature, idx) => (
+        <div key={idx} className="flex items-center gap-3">
+          <CheckCircle size={18} className="shrink-0 text-primary" strokeWidth={2.5} />
+          <span className="text-sm font-medium text-foreground">{feature}</span>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function ServiceCard({ service }) {
   const tc = useTranslations("common");
   const src = service.image || service.images?.[0]?.url;
 
   return (
-    <motion.div
-      className="group relative overflow-hidden rounded-2xl bg-card transition-all duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col"
-      whileHover={{ y: -2 }}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-    >
+    <div className="group relative overflow-hidden rounded-2xl bg-card transition-shadow duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col">
       <div className="mb-6 overflow-hidden rounded-t-lg bg-muted h-48 relative">
         <Link href={`/services/${service.slug}`} className="relative block h-full">
           {src ? (
@@ -58,8 +63,7 @@ function ServiceCard({ service, index }) {
               src={src}
               alt={service.name}
               fill
-              priority={index === 0}
-              loading={index === 0 ? "eager" : "lazy"}
+              loading="lazy"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -81,23 +85,11 @@ function ServiceCard({ service, index }) {
           {service.shortDescription || service.description}
         </p>
         <div className="mb-6 space-y-3">
-          {service.includes?.slice(0, 3).map((feature, idx) => (
-            <motion.div
-              key={idx}
-              className="flex items-center gap-3"
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.2, delay: idx * 0.05 }}
-            >
-              <CheckCircle size={18} className="shrink-0 text-primary" strokeWidth={2.5} />
-              <span className="text-sm font-medium text-foreground">{feature}</span>
-            </motion.div>
-          ))}
+          <ServiceFeatures features={service.includes} />
         </div>
         <Button className="w-full">{tc("bookNow")}</Button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -117,7 +109,7 @@ export default function ShopSection() {
         tag={t("professionalSolutions")}
         catalogLabel={t("viewAllServices")}
         catalogLink="/services"
-        renderCard={(service, index) => <ServiceCard service={service} index={index} />}
+        renderCard={(service) => <ServiceCard service={service} />}
         renderSkeleton={() => <ServiceCardSkeleton />}
       />
 
