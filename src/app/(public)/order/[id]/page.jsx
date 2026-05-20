@@ -44,7 +44,9 @@ export default function OrderSuccessPage() {
         if (provider === "sslcommerz") {
           verifyRes = await getClient().post(`/payments/sslcommerz/verify/${orderId}`);
         } else if (fetchedOrder?.stripeSessionId) {
-          verifyRes = await getClient().post(`/orders/${orderId}/verify-payment`, { sessionId: fetchedOrder.stripeSessionId });
+          verifyRes = await getClient().post(`/orders/${orderId}/verify-payment`, {
+            sessionId: fetchedOrder.stripeSessionId,
+          });
         }
         if (!mounted) return;
         if (verifyRes && verifyRes.data && !verifyRes.data.success) {
@@ -125,7 +127,7 @@ export default function OrderSuccessPage() {
       if (intervalId) clearInterval(intervalId);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [orderId, backendUser, isSuccess]);
+  }, [orderId, backendUser, isSuccess, provider]);
 
   if (loading || polling || verifying) {
     return (
@@ -160,9 +162,7 @@ export default function OrderSuccessPage() {
                 <CheckCircle className="h-16 w-16 text-green-500" />
               </div>
               <h1 className="mb-2 text-2xl font-bold">Order Placed Successfully!</h1>
-              <p className="mb-6 text-muted-foreground">
-                Your order has been placed. Pay with cash upon delivery.
-              </p>
+              <p className="mb-6 text-muted-foreground">Your order has been placed. Pay with cash upon delivery.</p>
             </>
           ) : isSuccess && isPaid ? (
             <>
@@ -223,7 +223,7 @@ export default function OrderSuccessPage() {
                       ? "text-amber-600"
                       : order.paymentStatus === "paid"
                         ? "text-green-600"
-                        : "text-red-600"
+                        : "text-red-600",
                   )}
                 >
                   {order.paymentMethod === "cod" ? "Cash on Delivery" : order.paymentStatus?.toUpperCase()}
@@ -245,11 +245,7 @@ export default function OrderSuccessPage() {
               </Link>
             )}
             {pollTimedOut && (
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => window.location.reload()}
-              >
+              <Button variant="outline" className="w-full" onClick={() => window.location.reload()}>
                 Refresh Status
               </Button>
             )}

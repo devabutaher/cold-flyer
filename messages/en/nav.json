@@ -27,6 +27,11 @@
     "signOut": "Sign Out",
     "adminPanel": "Admin Panel",
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "items": "Items",
+    "bookings": "Bookings",
+    "users": "Users",
+    "technicians": "Technicians",
+    "coupons": "Coupons"
   }
 }

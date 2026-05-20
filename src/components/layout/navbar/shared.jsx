@@ -5,21 +5,21 @@ import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
-import { useLocale, useTranslations } from "next-intl";
 
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   const pathname = usePathname();
   const locale = useLocale();
-  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), '') || '/';
+  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "") || "/";
   const isActive =
     pathWithoutLocale === href ||
-    pathWithoutLocale === href + '/' ||
-    (href !== '/' && pathWithoutLocale.startsWith(href + '/'));
+    pathWithoutLocale === href + "/" ||
+    (href !== "/" && pathWithoutLocale.startsWith(href + "/"));
 
   return (
     <a
@@ -125,7 +125,7 @@ export function NavButtons({ onAuthenticated, context = "desktop", onClick }) {
       {!isMobile && <ThemeToggle />}
       <Link href="/auth" className={isMobile ? "w-full" : undefined}>
         <Button
-          variant="destructive"
+          variant="default"
           className={cn(isMobile && "w-full")}
           onClick={(e) => {
             onAuthenticated?.(e);

@@ -23,7 +23,6 @@ export function useAuthForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
   const { refreshUser } = useAuth();
   const googleBtnRef = useRef(null);
 
@@ -48,7 +47,7 @@ export function useAuthForm() {
       return;
     }
     const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
+    script.src = "https://accounts.google.com/gsi/client?hl=en";
     script.async = true;
     script.defer = true;
     script.onload = () => setGoogleReady(true);
@@ -67,9 +66,9 @@ export function useAuthForm() {
         setAuthError("");
         try {
           await googleAuth(response.credential);
-          await refreshUser();
+          const user = await refreshUser();
           toast.success(t("signedInGoogle"));
-          router.push(redirectTo);
+          router.push(searchParams.get("redirect") || (user?.role === "admin" ? "/dashboard" : "/"));
         } catch (err) {
           setAuthError(err.message || t("googleSignInFailedFallback"));
         } finally {
@@ -104,13 +103,13 @@ export function useAuthForm() {
       } else {
         await registerUser(data.name, data.email, data.password, data.phone || "");
       }
-      await refreshUser();
+      const user = await refreshUser();
       if (isSignIn) {
         toast.success(t("welcomeBack"));
       } else {
         toast.success(t("welcomeNew"));
       }
-      router.push(redirectTo);
+      router.push(searchParams.get("redirect") || (user?.role === "admin" ? "/dashboard" : "/"));
     } catch (err) {
       setAuthError(err.message);
     } finally {

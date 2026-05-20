@@ -55,7 +55,7 @@ export function PWAInstallPrompt() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-20 left-4 right-4 z-50 sm:left-auto sm:right-4 sm:w-80"
+          className="fixed bottom-10 left-4 right-4 z-50 sm:left-auto sm:right-4 sm:w-80"
         >
           <div className="rounded-2xl border border-border bg-card p-4 shadow-lg">
             <div className="flex items-start justify-between gap-3">
@@ -65,9 +65,7 @@ export function PWAInstallPrompt() {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold">Install Cold Flyer</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Add to home screen for quick access
-                  </p>
+                  <p className="text-xs text-muted-foreground">Add to home screen for quick access</p>
                 </div>
               </div>
               <button

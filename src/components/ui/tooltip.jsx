@@ -79,7 +79,6 @@ function TooltipContent({ className, sideOffset = 6, side = "top", children, ...
             sideOffset={sideOffset}
             side={side}
             forceMount
-            asChild
             {...props}
           >
             <motion.div

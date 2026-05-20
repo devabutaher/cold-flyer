@@ -27,6 +27,11 @@
     "signOut": "সাইন আউট",
     "adminPanel": "অ্যাডমিন প্যানেল",
     "language": "ভাষা",
-    "theme": "থিম"
+    "theme": "থিম",
+    "items": "আইটেম",
+    "bookings": "বুকিংস",
+    "users": "ব্যবহারকারী",
+    "technicians": "টেকনিশিয়ান",
+    "coupons": "কুপন"
   }
 }

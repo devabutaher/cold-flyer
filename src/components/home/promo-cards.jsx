@@ -82,12 +82,12 @@ export default function PromoCards() {
 
   return (
     <motion.div
-      className="container relative z-20 -mt-14 mb-12 sm:-mt-16 sm:mb-16"
+      className="container relative z-20 -mt-14 mb-12 lg:-mt-16 lg:mb-16"
       variants={animations.stagger.normal}
       initial="hidden"
       animate="visible"
     >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
         {cards.map((card, index) => (
           <PromoCard key={card.title} card={card} index={index} />
         ))}

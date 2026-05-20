@@ -26,11 +26,9 @@ export default async function ProfilePage() {
   const { addresses } = await getAddressesAction();
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <ProfileSection user={sanitizeForRSC(user)} />
-        <AddressSection initialAddresses={sanitizeForRSC(addresses)} />
-      </div>
+    <div className="max-w-3xl mx-auto space-y-8">
+      <ProfileSection user={sanitizeForRSC(user)} />
+      <AddressSection initialAddresses={sanitizeForRSC(addresses)} />
     </div>
   );
 }

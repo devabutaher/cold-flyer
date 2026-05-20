@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { Accordion as AccordionPrimitive } from "radix-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";

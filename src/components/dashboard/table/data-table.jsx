@@ -117,43 +117,109 @@ export function DataTable({
       {/* ── Toolbar slot ─────────────────────────────── */}
       {toolbar && <div className="flex flex-wrap items-center justify-between gap-3">{toolbar(table)}</div>}
 
-      {/* ── Mobile card view (hidden on md+) ─────────── */}
-      <div className="md:hidden space-y-3">
-        {loading ? (
-          [...Array(Math.min(pageSize, 5))].map((_, i) => (
-            <div key={i} className="rounded-xl border border-border bg-card p-4 space-y-2">
-              <div className="h-4 bg-muted rounded animate-pulse w-3/4" />
-              <div className="h-3 bg-muted rounded animate-pulse w-1/2" />
-              <div className="h-3 bg-muted rounded animate-pulse w-2/3" />
-            </div>
-          ))
-        ) : table.getRowModel().rows.length ? (
-          table.getRowModel().rows.map((row) => (
-            <div
-              key={row.id}
-              className="rounded-xl border border-border bg-card p-4 space-y-2"
-              onClick={onRowClick ? () => onRowClick(row.original) : undefined}
-            >
-              {row.getVisibleCells().map((cell) => {
-                const header = cell.column.columnDef.header;
-                const label = typeof header === "string" ? header : "";
-                if (!label || label === "Actions") return null;
-                return (
-                  <div key={cell.id} className="flex justify-between items-start gap-2">
-                    <span className="text-xs font-medium text-muted-foreground shrink-0">{label}</span>
-                    <span className="text-sm text-right">{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
-                  </div>
-                );
-              })}
-            </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center gap-3 text-muted-foreground py-12">
-            {emptyIcon && <div className="opacity-40">{emptyIcon}</div>}
-            <p className="text-sm">{emptyMessage}</p>
-            {emptyAction}
+      {/* ── Mobile table with horizontal scroll ──────── */}
+      <div className="md:hidden">
+        <div className="relative rounded-xl border border-border bg-card overflow-hidden shadow-sm">
+          <div
+            className="overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
+            style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}
+          >
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((hg) => (
+                  <TableRow key={hg.id} className="bg-muted/60 hover:bg-muted/60 border-b border-border">
+                    {hg.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        style={{
+                          minWidth: header.column.columnDef.minSize ?? 120,
+                          width: header.getSize() !== 150 ? `${header.getSize()}px` : undefined,
+                        }}
+                        className="h-11 text-xs font-semibold uppercase tracking-wide text-muted-foreground px-3 whitespace-nowrap"
+                      >
+                        {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                          <button
+                            className="flex items-center gap-1.5 cursor-pointer select-none hover:text-foreground transition-colors"
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                            {header.column.getIsSorted() === "asc" && <ChevronUpIcon size={13} className="opacity-70" />}
+                            {header.column.getIsSorted() === "desc" && (
+                              <ChevronDownIcon size={13} className="opacity-70" />
+                            )}
+                            {!header.column.getIsSorted() && header.column.getCanSort() && (
+                              <ChevronUpIcon size={13} className="opacity-20" />
+                            )}
+                          </button>
+                        ) : (
+                          flexRender(header.column.columnDef.header, header.getContext())
+                        )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="p-0">
+                      <div className="space-y-3 p-4">
+                        {[...Array(Math.min(pageSize, 5))].map((_, i) => (
+                          <div key={i} className="flex gap-3">
+                            <div className="h-4 bg-muted rounded animate-pulse flex-1" />
+                            <div className="h-4 bg-muted rounded animate-pulse flex-1" />
+                            <div className="h-4 bg-muted rounded animate-pulse w-16" />
+                          </div>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                      className={cn(
+                        "border-b border-border/60 transition-colors snap-start",
+                        "hover:bg-muted/30 data-[state=selected]:bg-primary/5",
+                        onRowClick && "cursor-pointer",
+                      )}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="px-3 py-3 whitespace-nowrap text-sm">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="h-48 text-center">
+                      <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                        {emptyIcon && <div className="opacity-40">{emptyIcon}</div>}
+                        <p className="text-sm">{emptyMessage}</p>
+                        {emptyAction}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
-        )}
+
+          {/* Scroll indicator fade */}
+          <div className="pointer-events-none absolute top-[3.25rem] right-0 bottom-0 w-8 bg-gradient-to-l from-card/80 to-transparent md:hidden" />
+        </div>
+
+        {/* Scroll hint */}
+        <div className="flex items-center justify-center gap-1.5 mt-2 text-xs text-muted-foreground md:hidden">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-50">
+            <path d="M6 3L2 8l4 5M10 3l4 5-4 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span>Swipe to see more</span>
+        </div>
       </div>
 
       {/* ── Desktop table (hidden on mobile) ─────────── */}

@@ -1,7 +1,7 @@
-const CACHE_NAME = "cold-flyer-v1";
-const STATIC_CACHE = "cold-flyer-static-v1";
-const DYNAMIC_CACHE = "cold-flyer-dynamic-v1";
-const API_CACHE = "cold-flyer-api-v1";
+const CACHE_NAME = "cold-flyer-v2";
+const STATIC_CACHE = "cold-flyer-static-v2";
+const DYNAMIC_CACHE = "cold-flyer-dynamic-v2";
+const API_CACHE = "cold-flyer-api-v2";
 
 const STATIC_ASSETS = [
   "/",
@@ -57,7 +57,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isStaticAsset(url)) {
-    event.respondWith(cacheFirst(request, STATIC_CACHE));
+    event.respondWith(networkFirstWithCache(request, STATIC_CACHE, MAX_DYNAMIC_CACHE));
     return;
   }
 

@@ -68,9 +68,9 @@ export default function Testimonials() {
         </div>
 
         <div className="overflow-hidden relative" ref={emblaRef}>
-          <div className="flex items-stretch">
+          <div className="flex items-stretch -ml-5">
             {reviews.map((review, i) => (
-              <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] pr-5">
+              <div key={i} className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] pl-5">
                 <TestimonialCard review={review} />
               </div>
             ))}

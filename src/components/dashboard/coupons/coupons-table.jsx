@@ -1,12 +1,8 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "@/components/dashboard/table/data-table";
-import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
-import { buildCouponColumns } from "./coupons-columns";
-import { Button } from "@/components/ui/button";
+import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,12 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
-import { Percent, PlusIcon, Loader2 } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Loader2, Percent, PlusIcon } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { buildCouponColumns } from "./coupons-columns";
 
 const mapRow = (c) => ({
   code: c.code,
@@ -108,10 +108,13 @@ export default function CouponsTable() {
     });
   };
 
-  const handleDelete = useCallback(async (id) => {
-    if (!confirm("Delete this coupon?")) return;
-    deleteCoupon.mutate(id);
-  }, [deleteCoupon]);
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!confirm("Delete this coupon?")) return;
+      deleteCoupon.mutate(id);
+    },
+    [deleteCoupon],
+  );
 
   const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete }), [handleDelete]);
 
@@ -134,7 +137,7 @@ export default function CouponsTable() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Create Coupon</AlertDialogTitle>
-            <AlertDialogDescription>Add a new discount coupon for customers to use at checkout.</AlertDialogDescription>
+            <AlertDialogAction>Add a new discount coupon for customers to use at checkout.</AlertDialogAction>
           </AlertDialogHeader>
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">

@@ -21,7 +21,7 @@ const mapOrderRow = (o) => ({
   paymentStatus: o.paymentStatus,
 });
 
-export default function OrdersPage({ isAdmin = false }) {
+export default function OrdersPage() {
   const router = useRouter();
   const [payingOrderId, setPayingOrderId] = useState(null);
   const { data: ordersData = [], isLoading: loading, refetch } = useOrdersQuery();

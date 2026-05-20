@@ -1,6 +1,5 @@
 "use client";
 
-import Logo from "@/components/ui/logo";
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { PlusIcon } from "lucide-react";
+import { HomeIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { footerNavLinks, navGroups } from "./app-shared";
@@ -23,8 +22,13 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader className="h-14 justify-center">
-        <SidebarMenuButton asChild variant="outline">
-          <Logo />
+        <SidebarMenuButton asChild>
+          <Link href="/">
+            <HomeIcon />
+            <h1 className="font-bold text-xl font-sans">
+              Cold<span className="text-primary">Flyer</span>
+            </h1>
+          </Link>
         </SidebarMenuButton>
       </SidebarHeader>
 

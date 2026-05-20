@@ -52,11 +52,7 @@ export default async function EditServicePage({ params }) {
   }
 
   if (!service) {
-    return (
-      <div className="container mx-auto py-8">
-        <p className="text-muted-foreground">Service not found</p>
-      </div>
-    );
+    return <p className="text-muted-foreground">Service not found</p>;
   }
 
   return <EditServiceForm service={service} isAdmin={user.role === "admin"} />;

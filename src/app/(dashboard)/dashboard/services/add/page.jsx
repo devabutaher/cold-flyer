@@ -32,9 +32,5 @@ export default async function AddServicePage() {
     (mod) => mod.default,
   );
 
-  return (
-    <div className="container mx-auto py-8">
-      <AddServiceForm isAdmin={user.role === "admin"} />
-    </div>
-  );
+  return <AddServiceForm isAdmin={user.role === "admin"} />;
 }

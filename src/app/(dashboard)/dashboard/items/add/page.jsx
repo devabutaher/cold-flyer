@@ -32,9 +32,5 @@ export default async function AddProductPage() {
     (mod) => mod.default,
   );
 
-  return (
-    <div className="container mx-auto py-8">
-      <AddProductForm isAdmin={user.role === "admin"} />
-    </div>
-  );
+  return <AddProductForm isAdmin={user.role === "admin"} />;
 }

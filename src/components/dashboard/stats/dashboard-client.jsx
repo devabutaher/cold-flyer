@@ -5,8 +5,10 @@ import { StatsCards } from "@/components/dashboard/stats/stats-cards";
 import { RecentOrders, TopProducts } from "@/components/dashboard/stats/dashboard-cards";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getClient } from "@/lib/http-client";
+import { useAuth } from "@/components/providers";
 
-export default function DashboardClient({ userName }) {
+export default function DashboardClient() {
+  const { backendUser } = useAuth();
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
     queryFn: async () => {
@@ -20,7 +22,7 @@ export default function DashboardClient({ userName }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Admin Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Welcome back, {userName}</p>
+        <p className="text-sm text-muted-foreground mt-0.5">Welcome back, {backendUser?.name}</p>
       </div>
 
       <StatsCards data={data} loading={isLoading} />

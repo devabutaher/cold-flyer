@@ -3,18 +3,29 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuthForm } from "@/hooks/use-auth-form";
 import { cn } from "@/lib/utils";
 import { Crown, Eye, EyeOff, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useAuthForm } from "@/hooks/use-auth-form";
 
 export default function AuthPage() {
   const t = useTranslations("auth");
   const {
-    tab, isSignIn, showPassword, authError, loading, showAdminHint,
-    googleBtnRef, register, handleSubmit, errors,
-    setShowPassword, setShowAdminHint, handleTabSwitch, onSubmit,
+    tab,
+    isSignIn,
+    showPassword,
+    authError,
+    loading,
+    showAdminHint,
+    googleBtnRef,
+    register,
+    handleSubmit,
+    errors,
+    setShowPassword,
+    setShowAdminHint,
+    handleTabSwitch,
+    onSubmit,
   } = useAuthForm();
 
   return (
@@ -165,7 +176,7 @@ export default function AuthPage() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          <div ref={googleBtnRef} className="w-full min-h-[44px]" />
+          <div ref={googleBtnRef} className="w-full min-h-11" />
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             {t("protectedBy")}{" "}

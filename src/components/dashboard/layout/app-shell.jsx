@@ -15,7 +15,7 @@ export function AppShell({ children }) {
         <AppSidebar />
         <SidebarInset className="md:peer-data-[variant=inset]:ml-0">
           <AppHeader />
-          <div className="relative flex flex-1 flex-col gap-4 overflow-y-auto p-0 md:p-6">
+          <div className="relative flex flex-1 flex-col gap-4 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6">
             <motion.div
               key={pathname}
               initial={{ opacity: 0, y: 8 }}

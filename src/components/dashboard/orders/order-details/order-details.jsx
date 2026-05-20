@@ -14,10 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useCancelOrder, useOrderQuery } from "@/hooks/queries/orders";
 import { getClient } from "@/lib/http-client";
-import { useOrderQuery, useCancelOrder } from "@/hooks/queries/orders";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
@@ -32,10 +30,12 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { StatusPill } from "./status-pill";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { OrderDetailSkeleton } from "./order-detail-skeleton";
 import { OrderItemRow } from "./order-item-row";
 import { PriceRow } from "./price-row";
+import { StatusPill } from "./status-pill";
 
 const ORDER_STATUS = {
   pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
@@ -77,7 +77,9 @@ export function OrderDetails({ orderId }) {
   const handlePayment = async (provider = "stripe") => {
     setPaying(true);
     try {
-      const res = await getClient().post(`/orders/${orderId}/checkout`, { provider }).then((r) => r.data);
+      const res = await getClient()
+        .post(`/orders/${orderId}/checkout`, { provider })
+        .then((r) => r.data);
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }
@@ -120,7 +122,7 @@ export function OrderDetails({ orderId }) {
   const orderRef = order.orderNumber ?? `#${order._id?.slice(-8).toUpperCase()}`;
 
   return (
-    <div className="max-w-5xl py-8">
+    <div className="max-w-5xl">
       <div className="mb-7 flex items-center gap-3">
         <Button variant="outline" size="icon" className="h-9 w-9 shrink-0 rounded-lg" asChild>
           <Link href="/dashboard/orders">

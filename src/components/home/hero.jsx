@@ -99,7 +99,10 @@ export default function Hero() {
   ]);
 
   return (
-    <section ref={sectionRef} className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-[28rem] w-full overflow-hidden bg-inverted">
+    <section
+      ref={sectionRef}
+      className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-[28rem] w-full overflow-hidden bg-inverted"
+    >
       <div className="embla h-full relative" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
@@ -126,7 +129,7 @@ export default function Hero() {
       </div>
 
       {/* Progress dots */}
-      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-8 sm:left-auto sm:right-5 sm:translate-y-1/2 sm:flex-col sm:translate-x-0">
+      <div className="absolute top-1/2 right-4 sm:right-6 z-20 flex -translate-y-1/2 flex-col items-center gap-2">
         {heroSliderData.map((_, i) => (
           <button
             key={i}

@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     if (initialized.current) return;
     initialized.current = true;
 
-    fetchWithRefresh("/api/auth/me", { skipRefresh: true })
+    fetchWithRefresh("/api/auth/me")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setBackendUser(data?.data?.user || null);
