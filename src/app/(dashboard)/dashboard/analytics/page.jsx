@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart, DollarSign, CalendarDays } from "lucide-react";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
 import { getClient } from "@/lib/http-client";
+import ProtectedRoute from "@/components/auth/protected-routes";
 
 async function fetcher(url) {
   const res = await getClient().get(url);
@@ -43,6 +44,14 @@ function StatCard({ title, value, icon: Icon, loading, prefix }) {
 }
 
 export default function AnalyticsPage() {
+  return (
+    <ProtectedRoute requiredRole="admin">
+      <AnalyticsContent />
+    </ProtectedRoute>
+  );
+}
+
+function AnalyticsContent() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin-analytics"],
     queryFn: async () => {

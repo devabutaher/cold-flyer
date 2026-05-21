@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/components/providers";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +19,18 @@ import { NavGroup } from "./nav-group";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { backendUser } = useAuth();
+  const isAdmin = backendUser?.role === "admin";
+
+  const adminOnlyPaths = ["/dashboard/items", "/dashboard/services"];
+
+  const visibleGroups = navGroups
+    .filter((group) => isAdmin || group.label !== "Admin")
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => isAdmin || !adminOnlyPaths.includes(item.path)),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <Sidebar collapsible="icon" variant="inset">
@@ -26,39 +39,41 @@ export function AppSidebar() {
           <Link href="/">
             <HomeIcon />
             <h1 className="font-bold text-xl font-sans">
-              Cold<span className="text-primary">Flyer</span>
+              Cold <span className="text-primary">Flyer</span>
             </h1>
           </Link>
         </SidebarMenuButton>
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup className="space-y-2">
-          <SidebarMenuItem className="flex items-center gap-2">
-            <Link href="/dashboard/items/add" className="w-full">
-              <SidebarMenuButton
-                className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground font-bold"
-                tooltip="Add New Product"
-              >
-                <PlusIcon />
-                <span>Add New Product</span>
-              </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-          <SidebarMenuItem className="flex items-center gap-2">
-            <Link href="/dashboard/services/add" className="w-full">
-              <SidebarMenuButton
-                className="min-w-8 bg-secondary text-secondary-foreground duration-200 ease-linear hover:bg-secondary/90 hover:text-secondary-foreground active:bg-secondary/90 active:text-secondary-foreground font-bold"
-                tooltip="Add New Service"
-              >
-                <PlusIcon />
-                <span>Add New Service</span>
-              </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-        </SidebarGroup>
+        {isAdmin && (
+          <SidebarGroup className="space-y-2">
+            <SidebarMenuItem className="flex items-center gap-2">
+              <Link href="/dashboard/items/add" className="w-full">
+                <SidebarMenuButton
+                  className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground font-bold"
+                  tooltip="Add New Product"
+                >
+                  <PlusIcon />
+                  <span>Add New Product</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem className="flex items-center gap-2">
+              <Link href="/dashboard/services/add" className="w-full">
+                <SidebarMenuButton
+                  className="min-w-8 bg-secondary text-secondary-foreground duration-200 ease-linear hover:bg-secondary/90 hover:text-secondary-foreground active:bg-secondary/90 active:text-secondary-foreground font-bold"
+                  tooltip="Add New Service"
+                >
+                  <PlusIcon />
+                  <span>Add New Service</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+          </SidebarGroup>
+        )}
 
-        {navGroups.map((group, index) => (
+        {visibleGroups.map((group, index) => (
           <NavGroup key={`sidebar-group-${index}`} {...group} pathname={pathname} />
         ))}
       </SidebarContent>

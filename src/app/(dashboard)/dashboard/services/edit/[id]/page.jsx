@@ -38,7 +38,7 @@ export default async function EditServicePage({ params }) {
 
   const user = await getUser();
 
-  if (!user) {
+  if (!user || user.role !== "admin") {
     redirect("/");
   }
 

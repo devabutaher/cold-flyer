@@ -24,7 +24,7 @@ export default async function AddProductPage() {
 
   const user = await getUser();
 
-  if (!user) {
+  if (!user || user.role !== "admin") {
     redirect("/");
   }
 

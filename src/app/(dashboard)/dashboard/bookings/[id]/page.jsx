@@ -406,12 +406,14 @@ export default function BookingDetailPage() {
             </>
           )}
           {booking.status === "completed" && <ReviewDialog booking={booking} onSuccess={refetch} />}
-          <Button variant="outline" size="sm" asChild>
-            <Link href={`/dashboard/bookings/edit/${booking._id}`}>
-              <PencilLine size={14} className="mr-2" />
-              Edit
-            </Link>
-          </Button>
+          {isAdmin && (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/dashboard/bookings/edit/${booking._id}`}>
+                <PencilLine size={14} className="mr-2" />
+                Edit
+              </Link>
+            </Button>
+          )}
 
           {canCancel && (
             <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>

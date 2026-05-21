@@ -35,6 +35,10 @@ export default async function EditBookingPage({ params }) {
     redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
+  if (user.role !== "admin") {
+    redirect("/");
+  }
+
   const { id } = await params;
 
   const booking = await getBookingByIdServer(id);

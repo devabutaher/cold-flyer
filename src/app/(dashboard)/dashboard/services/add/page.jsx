@@ -24,7 +24,7 @@ export default async function AddServicePage() {
 
   const user = await getUser();
 
-  if (!user) {
+  if (!user || user.role !== "admin") {
     redirect("/");
   }
 
