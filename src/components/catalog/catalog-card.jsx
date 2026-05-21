@@ -2,18 +2,17 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
 import PriceFormat from "@/components/ui/price-format";
-import { useCart } from "@/store/cart";
-import { animations } from "@/lib/animation";
+import { haptic } from "@/lib/haptic";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/store/cart";
+import { motion } from "framer-motion";
 import { Heart, Package, ShoppingCart, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { memo, useState } from "react";
 import { toast } from "sonner";
-import { useState, memo } from "react";
-import { haptic } from "@/lib/haptic";
 
 const TAG_STYLES = {
   Sale: "bg-destructive text-destructive-foreground",
@@ -80,15 +79,12 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
           className="absolute right-2 top-2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
           aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
         >
-          <motion.div
-            animate={isWishlisted ? { scale: [1, 1.3, 1] } : { scale: 1 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div animate={isWishlisted ? { scale: [1, 1.3, 1] } : { scale: 1 }} transition={{ duration: 0.3 }}>
             <Heart
               size={16}
               className={cn(
                 "transition-colors duration-200",
-                isWishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"
+                isWishlisted ? "fill-destructive text-destructive" : "text-muted-foreground",
               )}
             />
           </motion.div>
@@ -98,7 +94,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
         {image && (
           <>
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-linear-to-r from-muted via-muted/50 to-muted bg-[length:200%_100%] animate-pulse" />
+              <div className="absolute inset-0 bg-linear-to-r from-muted via-muted/50 to-muted bg-size-[200%_100%] animate-pulse" />
             )}
             <Image
               src={image}
@@ -108,7 +104,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               className={cn(
                 "object-cover transition-all duration-500 group-hover:scale-105",
-                imageLoaded ? "opacity-100" : "opacity-0"
+                imageLoaded ? "opacity-100" : "opacity-0",
               )}
               onLoad={() => setImageLoaded(true)}
             />
@@ -124,7 +120,9 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
       <div className="flex flex-1 flex-col justify-between gap-2 p-3 sm:p-4">
         <div className="space-y-1">
           <Link href={href}>
-            <h4 className="truncate font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors">{name}</h4>
+            <h4 className="truncate font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors">
+              {name}
+            </h4>
           </Link>
 
           {description && <p className="line-clamp-2 text-xs sm:text-sm text-muted-foreground">{description}</p>}
@@ -149,15 +147,15 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             <span className="text-lg font-bold text-primary">{formatPrice(item.basePrice, item.priceType)}</span>
           )}
 
-            {isProduct ? (
-              <Button size="icon" onClick={handleAction} disabled={item.stock === 0 || !item.stock}>
-                <ShoppingCart size={16} />
-              </Button>
-            ) : (
-              <Button size="sm" asChild>
-                <Link href={`/dashboard/bookings/new/${item._id}`}>{t("book")}</Link>
-              </Button>
-            )}
+          {isProduct ? (
+            <Button size="icon" onClick={handleAction} disabled={item.stock === 0 || !item.stock}>
+              <ShoppingCart size={16} />
+            </Button>
+          ) : (
+            <Button size="sm" asChild>
+              <Link href={`/dashboard/bookings/new/${item._id}`}>{t("book")}</Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>

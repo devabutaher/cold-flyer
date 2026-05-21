@@ -17,7 +17,22 @@ export async function proxy(request) {
   const isAuth = authRoutes.some((route) => pathname.startsWith(route));
   const isAdmin = adminRoutes.some((route) => pathname.startsWith(route));
 
-  if (isProtected && !accessToken) {
+  let tokenPayload = null;
+  let tokenExpired = false;
+
+  if (accessToken) {
+    try {
+      tokenPayload = JSON.parse(atob(accessToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      tokenExpired = tokenPayload.exp && Date.now() >= tokenPayload.exp * 1000;
+    } catch {
+      tokenExpired = true;
+    }
+  }
+
+  const needsAuth = isProtected && (!accessToken || tokenExpired);
+  const isAuthenticated = accessToken && tokenPayload && !tokenExpired;
+
+  if (needsAuth) {
     if (refreshToken) {
       try {
         const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
@@ -40,22 +55,15 @@ export async function proxy(request) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuth && accessToken) {
+  if (isAuth && isAuthenticated) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (accessToken) {
-    try {
-      const payload = JSON.parse(atob(accessToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
-      response.headers.set("x-user-role", payload.role || "user");
+  if (isAuthenticated) {
+    response.headers.set("x-user-role", tokenPayload.role || "user");
 
-      if (isAdmin && payload.role !== "admin") {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
-    } catch {
-      if (isProtected) {
-        return NextResponse.redirect(new URL("/auth", request.url));
-      }
+    if (isAdmin && tokenPayload.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 

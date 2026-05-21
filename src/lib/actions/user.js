@@ -83,3 +83,17 @@ export async function setDefaultAddressAction(id) {
     };
   }
 }
+
+export async function changePasswordAction(data) {
+  try {
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/auth/change-password", data);
+    return { success: true, message: res.data?.message || "Password changed" };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message || "Failed to change password",
+    };
+  }
+}

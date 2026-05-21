@@ -72,8 +72,8 @@ export function AuthProvider({ children }) {
         method: "POST",
         credentials: "include",
       });
-    } catch {
-    }
+    } catch {}
+    await fetch("/api/auth/signout", { credentials: "include" }).catch(() => {});
     setBackendUser(null);
     router.push("/");
   }, [router]);

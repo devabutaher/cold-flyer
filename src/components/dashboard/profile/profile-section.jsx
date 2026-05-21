@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, Mail, Phone, Cake, VenetianMask, Pencil, X, Check, Camera, CalendarIcon, ChevronDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { User, Mail, Phone, Cake, VenetianMask, Pencil, X, Check, Camera, CalendarIcon, ChevronDownIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,15 +16,13 @@ import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { updateProfileAction } from "@/lib/actions/user";
+import { getClient } from "@/lib/http-client";
+import { useAuth } from "@/components/providers";
 
-const GENDER_OPTIONS = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-];
+const GENDERS = ["male", "female", "other"];
 
 function formatDate(dateStr) {
-  if (!dateStr) return "Not set";
+  if (!dateStr) return "";
   try {
     return new Date(dateStr).toLocaleDateString("en-US", {
       year: "numeric",
@@ -31,7 +30,7 @@ function formatDate(dateStr) {
       day: "numeric",
     });
   } catch {
-    return "Not set";
+    return "";
   }
 }
 
@@ -56,6 +55,7 @@ function formatShortDate(date) {
 
 export function ProfileSection({ user }) {
   const router = useRouter();
+  const t = useTranslations("profile");
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -66,6 +66,10 @@ export function ProfileSection({ user }) {
     dateOfBirth: toDateInputValue(user.dateOfBirth),
     gender: user.gender || "",
   });
+  const { refreshUser } = useAuth();
+  const fileInputRef = useRef(null);
+  const [avatarUrl, setAvatarUrl] = useState(user.avatar || "");
+  const [uploading, setUploading] = useState(false);
 
   async function handleSave() {
     setSaving(true);
@@ -86,11 +90,39 @@ export function ProfileSection({ user }) {
     setSaving(false);
 
     if (result.success) {
-      toast.success("Profile updated");
+      toast.success(t("profileUpdated"));
       setIsEditing(false);
+      refreshUser();
       router.refresh();
     } else {
-      toast.error(result.message || "Failed to update profile");
+      toast.error(result.message || t("failedProfile"));
+    }
+  }
+
+  async function handleFileSelect(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error(t("imageTooLarge"));
+      return;
+    }
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
+      const client = getClient();
+      const res = await client.patch("/users/avatar", formData);
+      if (res.data?.success) {
+        setAvatarUrl(res.data.data.avatar);
+        toast.success(t("avatarUpdated"));
+        refreshUser();
+        router.refresh();
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || t("failedAvatar"));
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
 
@@ -113,21 +145,21 @@ export function ProfileSection({ user }) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Profile Information</CardTitle>
+          <CardTitle>{t("profileInfo")}</CardTitle>
           {!isEditing ? (
             <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
               <Pencil className="size-3.5" />
-              Edit
+              {t("edit")}
             </Button>
           ) : (
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={handleCancel}>
                 <X className="size-3.5" />
-                Cancel
+                {t("cancel")}
               </Button>
               <Button size="sm" onClick={handleSave} disabled={saving}>
                 <Check className="size-3.5" />
-                {saving ? "Saving..." : "Save"}
+                {saving ? t("saving") : t("save")}
               </Button>
             </div>
           )}
@@ -136,18 +168,31 @@ export function ProfileSection({ user }) {
       <CardContent>
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           <div className="relative group">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
             <Avatar size="lg" className="size-20">
-              {user.avatar ? (
-                <AvatarImage src={user.avatar} alt={user.name} />
+              {avatarUrl ? (
+                <AvatarImage src={avatarUrl} alt={user.name} />
               ) : null}
               <AvatarFallback className="text-lg">{initials}</AvatarFallback>
             </Avatar>
             <button
               type="button"
-              className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-              aria-label="Change avatar"
+              disabled={uploading}
+              className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer disabled:opacity-100"
+              aria-label={t("changeAvatar")}
+              onClick={() => fileInputRef.current?.click()}
             >
-              <Camera className="size-5 text-white" />
+              {uploading ? (
+                <Loader2 className="size-5 text-white animate-spin" />
+              ) : (
+                <Camera className="size-5 text-white" />
+              )}
             </button>
           </div>
 
@@ -155,7 +200,7 @@ export function ProfileSection({ user }) {
             {isEditing ? (
               <>
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">{t("name")}</Label>
                   <Input
                     id="name"
                     value={form.name}
@@ -163,7 +208,7 @@ export function ProfileSection({ user }) {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">{t("phone")}</Label>
                   <Input
                     id="phone"
                     value={form.phone}
@@ -171,13 +216,13 @@ export function ProfileSection({ user }) {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="dob">Date of Birth</Label>
+                  <Label htmlFor="dob">{t("dateOfBirth")}</Label>
                   <div className="relative flex gap-2">
                     <Input
                       id="dob"
                       readOnly
                       value={form.dateOfBirth ? formatShortDate(form.dateOfBirth) : ""}
-                      placeholder="Pick a date"
+                      placeholder={t("pickDate")}
                       className="bg-background pr-10 cursor-pointer"
                       onClick={() => setCalendarOpen(true)}
                     />
@@ -208,18 +253,18 @@ export function ProfileSection({ user }) {
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="gender">Gender</Label>
+                  <Label htmlFor="gender">{t("gender")}</Label>
                   <Select
                     value={form.gender}
                     onValueChange={(value) => setForm({ ...form, gender: value })}
                   >
                     <SelectTrigger id="gender" className="w-full">
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder={t("selectGender")} />
                     </SelectTrigger>
                     <SelectContent>
-                      {GENDER_OPTIONS.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
+                      {GENDERS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {t(opt)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -231,7 +276,7 @@ export function ProfileSection({ user }) {
                 <div className="flex items-center gap-3">
                   <User className="size-4 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Name</p>
+                    <p className="text-xs text-muted-foreground">{t("name")}</p>
                     <p className="font-medium">{user.name}</p>
                   </div>
                 </div>
@@ -239,32 +284,50 @@ export function ProfileSection({ user }) {
                 <div className="flex items-center gap-3">
                   <Mail className="size-4 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Email</p>
-                    <p className="font-medium">{user.email}</p>
+                    <p className="text-xs text-muted-foreground">{t("email")}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{user.email}</p>
+                      <Badge
+                        variant={user.isEmailVerified ? "secondary" : "outline"}
+                        className="text-[10px] h-5 px-1.5"
+                      >
+                        {user.isEmailVerified ? t("verified") : t("unverified")}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
                 <Separator />
                 <div className="flex items-center gap-3">
                   <Phone className="size-4 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Phone</p>
-                    <p className="font-medium">{user.phone || "Not set"}</p>
+                    <p className="text-xs text-muted-foreground">{t("phone")}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{user.phone || t("notSet")}</p>
+                      {user.phone && (
+                        <Badge
+                          variant={user.isPhoneVerified ? "secondary" : "outline"}
+                          className="text-[10px] h-5 px-1.5"
+                        >
+                          {user.isPhoneVerified ? t("verified") : t("unverified")}
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <Separator />
                 <div className="flex items-center gap-3">
                   <Cake className="size-4 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Date of Birth</p>
-                    <p className="font-medium">{formatDate(user.dateOfBirth)}</p>
+                    <p className="text-xs text-muted-foreground">{t("dateOfBirth")}</p>
+                    <p className="font-medium">{user.dateOfBirth ? formatDate(user.dateOfBirth) : t("notSet")}</p>
                   </div>
                 </div>
                 <Separator />
                 <div className="flex items-center gap-3">
                   <VenetianMask className="size-4 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Gender</p>
-                    <p className="font-medium capitalize">{user.gender || "Not set"}</p>
+                    <p className="text-xs text-muted-foreground">{t("gender")}</p>
+                    <p className="font-medium capitalize">{user.gender ? t(user.gender) : t("notSet")}</p>
                   </div>
                 </div>
                 <Separator />
@@ -273,7 +336,7 @@ export function ProfileSection({ user }) {
                     {user.role}
                   </Badge>
                   <div>
-                    <p className="text-xs text-muted-foreground">Role</p>
+                    <p className="text-xs text-muted-foreground">{t("role")}</p>
                     <p className="font-medium capitalize">{user.role}</p>
                   </div>
                 </div>

@@ -2,7 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Home, Building2, MapPin, Phone, Pencil, Trash2, Star, Plus, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Home, Building2, MapPin, Phone, Pencil, Trash2, Star, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,27 +52,27 @@ function AddressForm({ form, setForm, errors }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-2">
-        <Label htmlFor="addr-label">Label</Label>
+        <Label htmlFor="addr-label">{t("addresses")}</Label>
         <Select value={form.label} onValueChange={(v) => setForm({ ...form, label: v })}>
           <SelectTrigger id="addr-label">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {LABEL_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>{opt.value}</SelectItem>
-            ))}
+              {LABEL_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>{t(opt.value.toLowerCase())}</SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-fullName">Full Name</Label>
+        <Label htmlFor="addr-fullName">{t("fullName")}</Label>
         <Input id="addr-fullName" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
         {errors?.fullName && <p className="text-xs text-destructive">{errors.fullName}</p>}
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-phone">Phone</Label>
+        <Label htmlFor="addr-phone">{t("phone")}</Label>
         <Input id="addr-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
         {errors?.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
       </div>
@@ -79,24 +80,24 @@ function AddressForm({ form, setForm, errors }) {
       <Separator />
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-line1">Address Line 1</Label>
+        <Label htmlFor="addr-line1">{t("addressLine1")}</Label>
         <Input id="addr-line1" value={form.addressLine1} onChange={(e) => setForm({ ...form, addressLine1: e.target.value })} />
         {errors?.addressLine1 && <p className="text-xs text-destructive">{errors.addressLine1}</p>}
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-line2">Address Line 2 (optional)</Label>
+        <Label htmlFor="addr-line2">{t("addressLine2")}</Label>
         <Input id="addr-line2" value={form.addressLine2} onChange={(e) => setForm({ ...form, addressLine2: e.target.value })} />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="addr-city">City</Label>
+          <Label htmlFor="addr-city">{t("city")}</Label>
           <Input id="addr-city" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
           {errors?.city && <p className="text-xs text-destructive">{errors.city}</p>}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="addr-state">State</Label>
+          <Label htmlFor="addr-state">{t("state")}</Label>
           <Input id="addr-state" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
           {errors?.state && <p className="text-xs text-destructive">{errors.state}</p>}
         </div>
@@ -104,18 +105,18 @@ function AddressForm({ form, setForm, errors }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="addr-zip">Postal Code</Label>
+          <Label htmlFor="addr-zip">{t("postalCode")}</Label>
           <Input id="addr-zip" value={form.postalCode} onChange={(e) => setForm({ ...form, postalCode: e.target.value })} />
           {errors?.postalCode && <p className="text-xs text-destructive">{errors.postalCode}</p>}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="addr-country">Country</Label>
+          <Label htmlFor="addr-country">{t("country")}</Label>
           <Input id="addr-country" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} />
         </div>
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-instructions">Delivery Instructions (optional)</Label>
+        <Label htmlFor="addr-instructions">{t("deliveryInstructions")}</Label>
         <Input id="addr-instructions" value={form.instructions} onChange={(e) => setForm({ ...form, instructions: e.target.value })} />
       </div>
 
@@ -125,7 +126,7 @@ function AddressForm({ form, setForm, errors }) {
           checked={form.isDefault}
           onCheckedChange={(checked) => setForm({ ...form, isDefault: !!checked })}
         />
-        <Label htmlFor="addr-default" className="text-sm font-normal">Set as default address</Label>
+        <Label htmlFor="addr-default" className="text-sm font-normal">{t("setDefault")}</Label>
       </div>
     </div>
   );
@@ -133,6 +134,7 @@ function AddressForm({ form, setForm, errors }) {
 
 export function AddressSection({ initialAddresses }) {
   const router = useRouter();
+  const t = useTranslations("profile");
   const [addresses, setAddresses] = useState(initialAddresses || []);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -204,11 +206,11 @@ export function AddressSection({ initialAddresses }) {
     setSaving(false);
 
     if (result.success) {
-      toast.success(editingId ? "Address updated" : "Address added");
+      toast.success(editingId ? t("addressUpdated") : t("addressAdded"));
       setSheetOpen(false);
       await refreshAddresses();
     } else {
-      toast.error(result.message || "Failed to save address");
+      toast.error(result.message || t("failedAddress"));
     }
   }
 
@@ -219,21 +221,21 @@ export function AddressSection({ initialAddresses }) {
     setDeleting(false);
 
     if (result.success) {
-      toast.success("Address deleted");
+      toast.success(t("addressDeleted"));
       setDeleteId(null);
       await refreshAddresses();
     } else {
-      toast.error(result.message || "Failed to delete address");
+      toast.error(result.message || t("failedDelete"));
     }
   }
 
   async function handleSetDefault(id) {
     const result = await setDefaultAddressAction(id);
     if (result.success) {
-      toast.success("Default address updated");
+      toast.success(t("defaultAddressUpdated"));
       await refreshAddresses();
     } else {
-      toast.error(result.message || "Failed to set default address");
+      toast.error(result.message || t("failedDefault"));
     }
   }
 
@@ -242,10 +244,10 @@ export function AddressSection({ initialAddresses }) {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Addresses</CardTitle>
+            <CardTitle>{t("addresses")}</CardTitle>
             <Button size="sm" onClick={openAddSheet}>
               <Plus className="size-3.5" />
-              Add Address
+              {t("addAddress")}
             </Button>
           </div>
         </CardHeader>
@@ -254,12 +256,12 @@ export function AddressSection({ initialAddresses }) {
             <div className="flex flex-col items-center gap-3 py-12 text-center">
               <MapPin className="size-10 text-muted-foreground/50" />
               <div>
-                <p className="font-medium">No addresses yet</p>
-                <p className="text-sm text-muted-foreground">Add an address for faster checkout.</p>
+                <p className="font-medium">{t("noAddresses")}</p>
+                <p className="text-sm text-muted-foreground">{t("noAddressesDesc")}</p>
               </div>
               <Button variant="outline" size="sm" onClick={openAddSheet}>
                 <Plus className="size-3.5" />
-                Add Address
+                {t("addAddress")}
               </Button>
             </div>
           ) : (
@@ -274,7 +276,7 @@ export function AddressSection({ initialAddresses }) {
                     {addr.isDefault && (
                       <Badge variant="default" className="absolute top-3 right-3 gap-1 text-xs">
                         <Star className="size-3" />
-                        Default
+                        {t("default")}
                       </Badge>
                     )}
                     <div className="flex items-center gap-2 mb-3">
@@ -300,12 +302,12 @@ export function AddressSection({ initialAddresses }) {
                     <div className="flex items-center gap-1">
                       <Button variant="ghost" size="xs" onClick={() => openEditSheet(addr)}>
                         <Pencil className="size-3" />
-                        Edit
+                        {t("editAddress")}
                       </Button>
                       {!addr.isDefault && (
                         <Button variant="ghost" size="xs" onClick={() => handleSetDefault(addr._id)}>
                           <Star className="size-3" />
-                          Set default
+                          {t("setDefaultAddress")}
                         </Button>
                       )}
                       <Button variant="ghost" size="xs" className="text-destructive hover:text-destructive" onClick={() => setDeleteId(addr._id)}>
@@ -323,9 +325,9 @@ export function AddressSection({ initialAddresses }) {
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="right" className="w-full sm:max-w-lg">
           <SheetHeader>
-            <SheetTitle>{editingId ? "Edit Address" : "Add Address"}</SheetTitle>
+            <SheetTitle>{editingId ? t("editAddressTitle") : t("addAddressTitle")}</SheetTitle>
             <SheetDescription>
-              {editingId ? "Update your address details." : "Enter a new shipping address."}
+              {editingId ? t("editAddressDesc") : t("addAddressDesc")}
             </SheetDescription>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-4">
@@ -333,10 +335,10 @@ export function AddressSection({ initialAddresses }) {
           </div>
           <div className="flex gap-2 justify-end p-4 border-t">
             <SheetClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">{t("cancel")}</Button>
             </SheetClose>
             <Button onClick={handleSave} disabled={saving}>
-              {saving ? "Saving..." : editingId ? "Update" : "Add"}
+              {saving ? t("saving") : editingId ? t("editAddressTitle") : t("addAddressTitle")}
             </Button>
           </div>
         </SheetContent>
@@ -345,15 +347,15 @@ export function AddressSection({ initialAddresses }) {
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Address?</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteAddress")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. Are you sure you want to delete this address?
+              {t("deleteAddressDesc")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={handleDelete} disabled={deleting}>
-              {deleting ? "Deleting..." : "Delete"}
+              {deleting ? t("saving") : t("delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -5,6 +5,7 @@ import { getAddressesAction } from "@/lib/actions/user";
 import { sanitizeForRSC } from "@/lib/utils";
 import { ProfileSection } from "@/components/dashboard/profile/profile-section";
 import { AddressSection } from "@/components/dashboard/profile/address-section";
+import { PasswordSection } from "@/components/dashboard/profile/password-section";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function ProfilePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <ProfileSection user={sanitizeForRSC(user)} />
+      <PasswordSection />
       <AddressSection initialAddresses={sanitizeForRSC(addresses)} />
     </div>
   );
