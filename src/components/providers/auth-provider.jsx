@@ -26,10 +26,14 @@ export function AuthProvider({ children }) {
     if (initialized.current) return;
     initialized.current = true;
 
-    fetchWithRefresh("/api/auth/me")
-      .then((res) => (res.ok ? res.json() : null))
+    fetch("/api/auth/status", { credentials: "include" })
+      .then((res) => res.json())
       .then((data) => {
-        setBackendUser(data?.data?.user || null);
+        if (data?.data?.authenticated) {
+          setBackendUser(data.data.user);
+        } else {
+          setBackendUser(null);
+        }
       })
       .catch(() => {
         setBackendUser(null);
@@ -37,6 +41,12 @@ export function AuthProvider({ children }) {
       .finally(() => {
         setLoading(false);
       });
+
+    const heartbeat = setInterval(() => {
+      attemptTokenRefresh();
+    }, 45 * 60 * 1000);
+
+    return () => clearInterval(heartbeat);
   }, []);
 
   const refreshUser = useCallback(async () => {

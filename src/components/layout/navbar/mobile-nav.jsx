@@ -7,7 +7,7 @@ import { useAuth } from "@/components/providers";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/ui/logo";
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { getData } from "@/data";
 import { MenuIcon, Package, XIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -35,6 +35,7 @@ export function MobileNav() {
         {/* Header */}
         <SheetHeader className="border-b border-border px-4 pb-3 pt-4">
           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <SheetDescription className="sr-only">Navigation Menu</SheetDescription>
           <div className="flex items-center justify-between gap-3">
             <Logo />
             <SheetClose asChild>
@@ -85,7 +86,7 @@ export function MobileNav() {
 
             <Accordion type="single" collapsible>
               <AccordionItem value="more" className="border-none">
-                <AccordionTrigger className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted hover:no-underline">
+                <AccordionTrigger className="w-full rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted hover:no-underline">
                   {navT("more")}
                 </AccordionTrigger>
                 <AccordionContent className="pb-1">

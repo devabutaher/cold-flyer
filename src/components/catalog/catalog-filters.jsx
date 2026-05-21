@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { useTranslations } from "next-intl";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ListFilter, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { NavSearch } from "../layout/navbar/nav-search";
@@ -165,6 +165,7 @@ export function CatalogFilters({
         <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto pb-8">
           <SheetHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
             <SheetTitle className="text-lg">{t("filters")}</SheetTitle>
+            <SheetDescription className="sr-only">{t("filters")}</SheetDescription>
             <div className="flex items-center gap-2">
               {activeFilterCount > 0 && (
                 <Button variant="ghost" size="sm" onClick={handleClearAll} className="text-xs text-muted-foreground">

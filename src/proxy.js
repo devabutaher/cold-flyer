@@ -1,20 +1,40 @@
 import { NextResponse } from "next/server";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 const protectedRoutes = ["/dashboard"];
 const authRoutes = ["/auth"];
 const adminRoutes = ["/dashboard/users", "/dashboard/analytics", "/dashboard/technicians", "/dashboard/coupons"];
 
-export function proxy(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
   const response = NextResponse.next();
 
   const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
 
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAuth = authRoutes.some((route) => pathname.startsWith(route));
   const isAdmin = adminRoutes.some((route) => pathname.startsWith(route));
 
   if (isProtected && !accessToken) {
+    if (refreshToken) {
+      try {
+        const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
+          method: "POST",
+          headers: { Cookie: `refreshToken=${refreshToken}` },
+        });
+        if (refreshRes.ok) {
+          const response = NextResponse.next();
+          refreshRes.headers.forEach((value, key) => {
+            if (key.toLowerCase() === "set-cookie") {
+              response.headers.append("Set-Cookie", value);
+            }
+          });
+          return response;
+        }
+      } catch {}
+    }
     const loginUrl = new URL("/auth", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);

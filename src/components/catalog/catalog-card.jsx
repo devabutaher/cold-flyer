@@ -149,13 +149,15 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             <span className="text-lg font-bold text-primary">{formatPrice(item.basePrice, item.priceType)}</span>
           )}
 
-            <Button
-              size={isProduct ? "icon" : "sm"}
-              onClick={handleAction}
-              disabled={isProduct && (item.stock === 0 || !item.stock)}
-            >
-              {isProduct ? <ShoppingCart size={16} /> : t("book")}
-            </Button>
+            {isProduct ? (
+              <Button size="icon" onClick={handleAction} disabled={item.stock === 0 || !item.stock}>
+                <ShoppingCart size={16} />
+              </Button>
+            ) : (
+              <Button size="sm" asChild>
+                <Link href={`/dashboard/bookings/new/${item._id}`}>{t("book")}</Link>
+              </Button>
+            )}
         </div>
       </div>
     </div>
