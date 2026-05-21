@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useRef } from "react";
-import { useTranslations, useLocale } from "next-intl";
 
 function SlideContent({ slide, index, t }) {
   return (
@@ -101,7 +101,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-[28rem] w-full overflow-hidden bg-inverted"
+      className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-112 w-full overflow-hidden bg-inverted"
     >
       <div className="embla h-full relative" ref={emblaRef}>
         <div className="embla__container flex h-full">

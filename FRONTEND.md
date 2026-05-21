@@ -1,5 +1,7 @@
 # Cold Flyer - Project Documentation
 
+See `AGENTS.md` at repo root for the quick-start overview. This file covers detailed UI patterns, theming, and component conventions.
+
 This documentation is designed for AI models to understand the project structure, styling, and patterns to help make informed decisions when creating components or making changes.
 
 ## Project Overview
@@ -8,6 +10,7 @@ This documentation is designed for AI models to understand the project structure
 - **Type**: E-commerce website for AC (Air Conditioning) products and services
 - **Framework**: Next.js 16.2.4 with React 19.2.4
 - **Build Tool**: Turbopack
+- **Package Manager**: pnpm
 
 ## Tech Stack
 
@@ -17,10 +20,10 @@ This documentation is designed for AI models to understand the project structure
 - **Animations**: Motion (Framer Motion), Embla Carousel 8.6.0
 - **Icons**: Lucide React 1.11.0
 - **Forms**: React Hook Form 7.74.0, Zod 4.3.6, @hookform/resolvers
-- **Backend**: Firebase 12.12.1 (Auth, Firestore)
+- **Internationalization**: next-intl 4.12.0 (en, bn), next-themes 0.4.6
 - **State**: Zustand 5 (Cart), React Query 5 (Data fetching)
-- **Fonts**: Google Fonts - DM Sans (headings), Outfit (body), Lora (serif), Geist Mono (mono)
-- **Utilities**: clsx, twMerge, papaparse, xlsx, react-zoom-pan-pinch, date-fns
+- **Fonts**: Google Fonts - DM Sans (headings), Outfit (body), Lora (serif), Geist Mono (mono), Noto Sans Bengali (bn locale)
+- **Utilities**: clsx, twMerge, date-fns, papaparse, xlsx, react-zoom-pan-pinch, react-number-format, sonner, slugify
 
 ## Color Theme — Nova White + Orange
 
@@ -81,6 +84,7 @@ Fonts are loaded via `next/font/google` in `src/app/layout.jsx`:
 | `--font-sans` | Outfit | Body text — soft, cool |
 | `--font-serif` | Lora | Pull quotes, accent text |
 | `--font-mono` | Geist Mono | Code/monospace |
+| `--font-bengali` | Noto Sans Bengali | Bengali locale (bn) |
 
 ### CSS Note
 
@@ -217,13 +221,20 @@ This project uses **shadcn/ui** style components:
 
 - UI Components: `src/components/ui/`
 - Layout Components: `src/components/layout/`
-- Product Components: `src/components/products/`
 - Home Components: `src/components/home/`
-- Auth Components: `src/components/auth/`
-- Services Components: `src/components/services/`
+- Products Components: `src/components/products/`
+- Detail Components: `src/components/detail/`
 - Catalog Components: `src/components/catalog/`
 - Cart Components: `src/components/carts/`
+- Auth Components: `src/components/auth/`
+- Services Components: `src/components/services/`
 - Dashboard Components: `src/components/dashboard/`
+- Reviews Components: `src/components/reviews/`
+- Notifications Components: `src/components/notifications/`
+- Common Components: `src/components/common/`
+- Providers: `src/components/providers/`
+- PWA: `src/components/pwa/`
+- SEO: `src/components/seo/`
 
 ### Available UI Components
 
@@ -274,10 +285,13 @@ Enabled via `next-themes` with `attribute="class"`. Toggle button included in na
 
 ```
 cold-flyer/
+├── i18n/                       # next-intl routing + request config
+├── messages/                   # Translation JSON files (en/, bn/)
 ├── src/
 │   ├── app/                    # Next.js App Router pages
 │   │   ├── (public)/           # Public routes
 │   │   ├── (dashboard)/        # Dashboard routes
+│   │   ├── api/[...path]/      # API proxy → backend
 │   │   ├── layout.jsx          # Root layout
 │   │   ├── globals.css         # Global styles + theme
 │   │   └── not-found.jsx       # 404 page
@@ -285,18 +299,31 @@ cold-flyer/
 │   │   ├── ui/                 # shadcn UI components
 │   │   ├── layout/             # Layout (navbar, footer)
 │   │   ├── products/           # Product components
+│   │   ├── detail/             # Product detail components
+│   │   ├── catalog/            # Catalog/browsing components
 │   │   ├── home/               # Home page components
 │   │   ├── auth/               # Auth components
-│   │   └── common/             # Shared components
-│   ├── data/                   # Static data files
+│   │   ├── services/           # Service related components
+│   │   ├── carts/              # Cart components
+│   │   ├── dashboard/          # Dashboard components
+│   │   ├── reviews/            # Review components
+│   │   ├── notifications/      # Notification components
+│   │   ├── common/             # Shared components
+│   │   └── providers/          # React context providers
+│   ├── data/                   # Static data files (en/, bn/)
 │   ├── hooks/                  # Custom React hooks
-│   ├── lib/                    # Utilities + animation.js
-│   ├── context/                # React context
-│   ├── store/                  # Zustand stores
-│   └── styles/
+│   │   └── queries/            # React Query hooks
+│   ├── lib/                    # Utilities
+│   │   ├── actions/            # Server actions
+│   │   ├── schemas/            # Zod schemas
+│   │   ├── animation.js        # Animation presets
+│   │   └── http-client.js      # Axios client w/ CSRF + refresh
+│   ├── store/                  # Zustand stores (cart.js)
+│   └── proxy.js                # Middleware (JWT guard)
 ├── components.json            # shadcn configuration
-├── package.json
-└── next.config.js
+├── next.config.mjs
+├── jsconfig.json              # @/* → ./src/*
+└── package.json
 ```
 
 ## Route Structure
@@ -310,12 +337,19 @@ cold-flyer/
 | `/items/ac_units` | AC units products |
 | `/items/[id]` | Product detail page |
 | `/services` | Services listing |
-| `/terms` | Terms & conditions |
 | `/cart` | Shopping cart |
+| `/checkout` | Checkout |
 | `/auth` | Authentication |
+| `/order` | Order tracking |
 | `/about` | About us |
 | `/faq` | FAQ |
+| `/blog` | Blog |
+| `/contact` | Contact us |
 | `/my-bookings` | User bookings |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms & conditions |
+| `/shipping` | Shipping info |
+| `/careers` | Careers |
 
 ### Dashboard Routes (`(dashboard)`)
 
@@ -331,6 +365,7 @@ cold-flyer/
 | `/dashboard/analytics` | Analytics |
 | `/dashboard/coupons` | Coupon management |
 | `/dashboard/technicians` | Technician management |
+| `/dashboard/profile` | Profile settings |
 
 ## Component Patterns
 
@@ -401,24 +436,21 @@ const { theme, setTheme } = useTheme();
 ## Available Scripts
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-npm run lint     # Run ESLint
-npm run format   # Format code with Prettier
+pnpm dev         # Start development server (Turbopack)
+pnpm build       # Build for production
+pnpm start       # Start production server
+pnpm lint        # Run ESLint
+pnpm format      # Format code with Prettier
 ```
 
 ## Notes for AI Models
 
-1. Always use `cn()` from `@/lib/utils` for combining Tailwind classes
-2. Use OKLCH color values defined in CSS variables — never use arbitrary hex/HSL colors
-3. Animation presets MUST be imported from `@/lib/animation` — do not create inline variants
-4. Use `variants={animations.entrance.*}` pattern for all scroll-reveal animations
-5. Use `variants={animations.stagger.*}` with `staggerItem` for lists and grids
-6. Use Radix UI primitives for complex interactive components
-7. Import icons from `lucide-react` only
-8. Follow the existing component patterns and file organization
-9. All new sections should be `"use client"` unless purely static
-10. Heavy libraries (xlsx, papaparse, @react-pdf) should use dynamic `import()` instead of top-level imports
-11. Available via browser console: `next-themes` for dark mode debugging
-12. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props
+1. Use `cn()` from `@/lib/utils` for Tailwind class merging
+2. Use OKLCH CSS variables from `globals.css` — never hex/HSL
+3. Animation presets MUST come from `@/lib/animation` — never inline variants
+4. Import icons from `lucide-react` only
+5. Heavy libraries (xlsx, papaparse, @react-pdf) → dynamic `import()`
+6. All new sections should be `"use client"` unless purely static
+7. next-intl with `localePrefix: "never"` — no locale in URL path. Locale detected via `NEXT_LOCALE` cookie or `Accept-Language` header
+8. All `/api/*` requests are proxied from `src/app/api/[...path]/route.js` to the backend at `NEXT_PUBLIC_API_URL`. The axios client in `src/lib/http-client.js` handles CSRF token injection and automatic token refresh
+9. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props
