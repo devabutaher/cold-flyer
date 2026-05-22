@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, ShieldCheck, User } from "lucide-react";
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function PrivacyPage() {
   const locale = useLocale();
+  const t = useTranslations("privacy");
   const principles = getData("principles", locale);
   const dataTypes = getData("dataTypes", locale);
   const timeline = getData("timeline", locale);
@@ -30,11 +31,10 @@ export default function PrivacyPage() {
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-              Your Privacy Matters
+              {t("heroBadge")}
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              Protecting <br />
-              <span className="text-primary">What Matters</span>
+              {t.rich("heroTitle", {br: () => <br/>})}
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
               Your trust is our most valuable asset. We&apos;re committed to safeguarding your personal information with
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              Every decision we make is guided by these core principles that put your privacy first.
+              {t("principlesDesc")}
             </p>
           </div>
 
@@ -123,8 +123,7 @@ export default function PrivacyPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We believe in radical transparency about what information we collect and why. Here&apos;s a complete
-                breakdown of the data we handle.
+                {t("dataDesc")}
               </p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
@@ -136,7 +135,7 @@ export default function PrivacyPage() {
               </div>
 
               <Button size="lg" className="gap-2">
-                Manage Your Data <User size={16} />
+                {t("dataButton")} <User size={16} />
               </Button>
             </div>
 
@@ -211,8 +210,8 @@ export default function PrivacyPage() {
                     <Eye size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Access</h4>
-                    <p className="text-muted-foreground">Request a copy of all personal data we hold about you.</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right1Title")}</h4>
+                    <p className="text-muted-foreground">{t("right1Desc")}</p>
                   </div>
                 </div>
 
@@ -221,8 +220,8 @@ export default function PrivacyPage() {
                     <MessageSquare size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Correction</h4>
-                    <p className="text-muted-foreground">Have inaccurate personal information corrected.</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right2Title")}</h4>
+                    <p className="text-muted-foreground">{t("right2Desc")}</p>
                   </div>
                 </div>
 
@@ -231,8 +230,8 @@ export default function PrivacyPage() {
                     <ShieldCheck size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">Right to Deletion</h4>
-                    <p className="text-muted-foreground">Request complete removal of your data from our systems.</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right3Title")}</h4>
+                    <p className="text-muted-foreground">{t("right3Desc")}</p>
                   </div>
                 </div>
 
@@ -241,8 +240,8 @@ export default function PrivacyPage() {
                     <Globe size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">Data Portability</h4>
-                    <p className="text-muted-foreground">Transfer your data to another service provider.</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right4Title")}</h4>
+                    <p className="text-muted-foreground">{t("right4Desc")}</p>
                   </div>
                 </div>
               </div>
@@ -258,7 +257,7 @@ export default function PrivacyPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Questions about privacy?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Our privacy team is here to help.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">

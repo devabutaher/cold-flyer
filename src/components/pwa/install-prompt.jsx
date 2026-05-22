@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export function PWAInstallPrompt() {
+  const t = useTranslations("common");
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -64,8 +66,8 @@ export function PWAInstallPrompt() {
                   <Download size={20} className="text-primary" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold">Install Cold Flyer</h4>
-                  <p className="text-xs text-muted-foreground">Add to home screen for quick access</p>
+                  <h4 className="text-sm font-semibold">{t("installApp")}</h4>
+                  <p className="text-xs text-muted-foreground">{t("installAppDesc")}</p>
                 </div>
               </div>
               <button
@@ -78,10 +80,10 @@ export function PWAInstallPrompt() {
             </div>
             <div className="mt-3 flex gap-2">
               <Button size="sm" className="flex-1" onClick={handleInstall}>
-                Install
+                {t("install")}
               </Button>
               <Button size="sm" variant="outline" className="flex-1" onClick={handleDismiss}>
-                Maybe later
+                {t("maybeLater")}
               </Button>
             </div>
           </div>

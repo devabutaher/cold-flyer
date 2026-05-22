@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useNotificationsQuery, useMarkNotificationRead, useMarkAllNotificationsRead } from "@/hooks/queries/notifications";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 import { BellIcon, CheckCheck, Loader2 } from "lucide-react";
 import { useMemo } from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 function getNotificationUrl(notification) {
   const data = notification.data || {};
@@ -35,6 +35,7 @@ const TYPE_ICONS = {
 
 export function NotificationDropdown() {
   const t = useTranslations("common");
+  const locale = useLocale();
   const { data: notifications = [], isLoading } = useNotificationsQuery();
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
@@ -111,7 +112,7 @@ export function NotificationDropdown() {
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2 pl-6">{n.message}</p>
                   <span className="text-[10px] text-muted-foreground pl-6 mt-0.5">
-                    {new Date(n.createdAt).toLocaleDateString("en-US", {
+                    {formatDate(n.createdAt, locale, {
                       month: "short",
                       day: "numeric",
                       hour: "2-digit",

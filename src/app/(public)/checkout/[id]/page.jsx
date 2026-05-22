@@ -14,18 +14,21 @@ import { useCart } from "@/store/cart";
 import { getClient } from "@/lib/http-client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
-const PAYMENT_PROVIDERS = [
-  { value: "stripe", label: "Card (Visa/MasterCard)", icon: CreditCard },
-  { value: "sslcommerz", label: "SSLCOMMERZ (bKash/Nagad/Card)", icon: Smartphone },
-  { value: "cod", label: "Cash on Delivery", icon: Banknote },
-];
+
 
 const inputClass =
   "flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
 export default function CheckoutPage() {
   const params = useParams();
+  const t = useTranslations("checkout");
+  const PAYMENT_PROVIDERS = [
+    { value: "stripe", label: t("card"), icon: CreditCard },
+    { value: "sslcommerz", label: t("sslcommerz"), icon: Smartphone },
+    { value: "cod", label: t("cod"), icon: Banknote },
+  ];
   const router = useRouter();
   const { backendUser } = useAuth();
   const { clearCart } = useCart();
@@ -68,7 +71,7 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async () => {
     if (!shipping.fullName || !shipping.phone || !shipping.addressLine1 || !shipping.city) {
-      toast.error("Please fill in your shipping address");
+      toast.error(t("fillAddress"));
       return;
     }
     setSubmitting(true);
@@ -97,10 +100,10 @@ export default function CheckoutPage() {
           router.push(`/order/${orderId}?success=true&provider=${paymentProvider}`);
         }
       } else {
-        toast.error(checkoutRes.message || "Checkout failed");
+        toast.error(checkoutRes.message || t("checkoutFailed"));
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || error?.message || t("somethingWrong"));
     } finally {
       setSubmitting(false);
     }
@@ -125,7 +128,7 @@ export default function CheckoutPage() {
   if (!order) {
     return (
       <div className="container flex min-h-[60vh] items-center justify-center py-12">
-        <p className="text-muted-foreground">Order not found</p>
+        <p className="text-muted-foreground">{t("orderNotFound")}</p>
       </div>
     );
   }
@@ -147,8 +150,8 @@ export default function CheckoutPage() {
         </div>
 
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Checkout</span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl">Order #{order.orderNumber}</h1>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl">{t("orderNumber", {number: order.orderNumber})}</h1>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -157,41 +160,41 @@ export default function CheckoutPage() {
             <div className="rounded-2xl border border-border bg-card p-6">
               <div className="mb-5 flex items-center gap-2">
                 <MapPin size={18} className="text-primary" />
-                <h2 className="text-lg font-bold text-foreground">Shipping Address</h2>
+                <h2 className="text-lg font-bold text-foreground">{t("shippingAddress")}</h2>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Full Name *</label>
-                  <input className={inputClass} value={shipping.fullName} onChange={handleField("fullName")} placeholder="John Doe" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("fullName")}</label>
+                  <input className={inputClass} value={shipping.fullName} onChange={handleField("fullName")} placeholder={t("fullNamePlaceholder")} />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Phone *</label>
-                  <input className={inputClass} value={shipping.phone} onChange={handleField("phone")} placeholder="017XXXXXXXX" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("phone")}</label>
+                  <input className={inputClass} value={shipping.phone} onChange={handleField("phone")} placeholder={t("phonePlaceholder")} />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Address Line 1 *</label>
-                  <input className={inputClass} value={shipping.addressLine1} onChange={handleField("addressLine1")} placeholder="House, Street" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("addressLine1")}</label>
+                  <input className={inputClass} value={shipping.addressLine1} onChange={handleField("addressLine1")} placeholder={t("addressLine1Placeholder")} />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Address Line 2</label>
-                  <input className={inputClass} value={shipping.addressLine2} onChange={handleField("addressLine2")} placeholder="Apartment, Suite (optional)" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("addressLine2")}</label>
+                  <input className={inputClass} value={shipping.addressLine2} onChange={handleField("addressLine2")} placeholder={t("addressLine2Placeholder")} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">City *</label>
-                  <input className={inputClass} value={shipping.city} onChange={handleField("city")} placeholder="Dhaka" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("city")}</label>
+                  <input className={inputClass} value={shipping.city} onChange={handleField("city")} placeholder={t("cityPlaceholder")} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">State</label>
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("state")}</label>
                   <input className={inputClass} value={shipping.state} onChange={handleField("state")} placeholder="Dhaka" />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Postal Code</label>
-                  <input className={inputClass} value={shipping.postalCode} onChange={handleField("postalCode")} placeholder="1000" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("postalCode")}</label>
+                  <input className={inputClass} value={shipping.postalCode} onChange={handleField("postalCode")} placeholder={t("postalCodePlaceholder")} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Country</label>
-                  <input className={inputClass} value={shipping.country} onChange={handleField("country")} placeholder="Bangladesh" />
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("country")}</label>
+                  <input className={inputClass} value={shipping.country} onChange={handleField("country")} placeholder={t("countryPlaceholder")} />
                 </div>
               </div>
 
@@ -202,13 +205,13 @@ export default function CheckoutPage() {
                   onChange={(e) => setSaveToProfile(e.target.checked)}
                   className="h-4 w-4 rounded border-input accent-primary"
                 />
-                <span className="text-xs text-muted-foreground">Save this address to my profile</span>
+                <span className="text-xs text-muted-foreground">{t("saveAddress")}</span>
               </label>
             </div>
 
             {/* Order items */}
             <div className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="mb-4 text-lg font-bold text-foreground">Items</h2>
+              <h2 className="mb-4 text-lg font-bold text-foreground">{t("items")}</h2>
               <div className="divide-y divide-border">
                 {order.items.map((item) => (
                   <div key={item._id} className="flex items-center gap-4 py-3">
@@ -221,7 +224,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="truncate text-sm font-medium text-foreground">{item.name}</p>
-                      <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                      <p className="text-xs text-muted-foreground">{t("qty", {count: item.quantity})}</p>
                     </div>
                     <p className="text-sm font-semibold text-foreground">৳{(item.price * item.quantity).toLocaleString()}</p>
                   </div>
@@ -233,7 +236,7 @@ export default function CheckoutPage() {
           {/* Right: Summary + Payment */}
           <div className="h-fit space-y-6">
             <div className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="mb-4 text-lg font-bold text-foreground">Order Summary</h2>
+              <h2 className="mb-4 text-lg font-bold text-foreground">{t("orderSummary")}</h2>
 
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-muted-foreground">
@@ -242,16 +245,16 @@ export default function CheckoutPage() {
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>Coupon {order.appliedCoupon?.code ? `(${order.appliedCoupon.code})` : ""}</span>
+                    <span>{t("coupon", {code: order.appliedCoupon?.code || ""})}</span>
                     <span className="font-medium">-৳{discount.toLocaleString()}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Shipping</span>
+                  <span>{t("shippingCost")}</span>
                   <span className="font-medium text-foreground">৳{shippingCost.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>VAT</span>
+                  <span>{t("vat")}</span>
                   <span className="font-medium text-foreground">৳{Math.round(tax).toLocaleString()}</span>
                 </div>
               </div>
@@ -259,13 +262,13 @@ export default function CheckoutPage() {
               <Separator className="my-4" />
 
               <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">Total</span>
+                <span className="font-bold text-foreground">{t("total")}</span>
                 <span className="text-xl font-extrabold text-primary">৳{Math.round(total).toLocaleString()}</span>
               </div>
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="mb-4 text-lg font-bold text-foreground">Payment Method</h2>
+              <h2 className="mb-4 text-lg font-bold text-foreground">{t("paymentMethod")}</h2>
               <div className="grid gap-1.5">
                 {PAYMENT_PROVIDERS.map((p) => {
                   const Icon = p.icon;
@@ -295,7 +298,7 @@ export default function CheckoutPage() {
               {submitting ? (
                 <span className="flex items-center gap-2">
                   <Loader2 size={16} className="animate-spin" />
-                  Processing...
+                  {t("processing")}
                 </span>
               ) : (
                 `Place Order - ৳${Math.round(total).toLocaleString()}`

@@ -111,6 +111,38 @@ export function safeParseFloat(value) {
 }
 
 /**
+ * Format date locale-aware
+ * @param {Date|string|number} date
+ * @param {string} locale
+ * @param {Intl.DateTimeFormatOptions} [options]
+ * @returns {string}
+ */
+export function formatDate(date, locale = "en", options = {}) {
+  if (!date) return "";
+  try {
+    return new Date(date).toLocaleDateString(locale, options);
+  } catch {
+    return String(date);
+  }
+}
+
+/**
+ * Format number locale-aware
+ * @param {number} num
+ * @param {string} locale
+ * @param {Intl.NumberFormatOptions} [options]
+ * @returns {string}
+ */
+export function formatNumber(num, locale = "en", options = {}) {
+  if (num == null || isNaN(num)) return "";
+  try {
+    return Number(num).toLocaleString(locale, options);
+  } catch {
+    return String(num);
+  }
+}
+
+/**
  * Format currency
  * @param {number} amount
  * @param {string} [currency]

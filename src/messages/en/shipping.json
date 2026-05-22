@@ -1,0 +1,21 @@
+{
+  "shipping": {
+    "heroBadge": "Delivery & Returns",
+    "heroTitle": "Shipping & Returns",
+    "heroDesc": "Reliable delivery solutions and flexible return options.",
+    "optionsBadge": "Delivery Methods",
+    "optionsTitle": "Shipping Options",
+    "optionsDesc": "Choose the delivery method that best fits your timeline and budget.",
+    "processTitle": "From Order to Doorstep",
+    "processDesc": "Our streamlined delivery process ensures your equipment arrives safely.",
+    "processSupport": "Order Support",
+    "processButton": "Track Your Order",
+    "returnsTitle": "Returns Made Simple",
+    "restrictionsBadge": "Important Info",
+    "restrictionsTitle": "Return Restrictions",
+    "restrictionsDesc": "To maintain product quality and safety, certain items cannot be returned:",
+    "ctaTitle": "Still have questions?",
+    "ctaDesc": "Our shipping team is here to help.",
+    "ctaButton": "Contact Shipping Team"
+  }
+}

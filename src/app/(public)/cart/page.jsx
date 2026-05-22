@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { Suspense, useState } from "react";
 import Image from "next/image";
@@ -16,15 +17,16 @@ import { getClient } from "@/lib/http-client";
 import { QuantityInput } from "@/components/carts/quantity-input";
 
 function CartEmpty() {
+  const t = useTranslations("cart-page");
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">
       <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-muted">
         <ShoppingCart size={36} className="text-muted-foreground" />
       </div>
-      <h2 className="mb-2 text-xl font-bold text-foreground">Your cart is empty</h2>
-      <p className="mb-7 text-sm text-muted-foreground">Looks like you haven&apos;t added anything yet.</p>
+      <h2 className="mb-2 text-xl font-bold text-foreground">{t("emptyTitle")}</h2>
+      <p className="mb-7 text-sm text-muted-foreground">{t("emptyDesc")}</p>
       <Button asChild>
-        <Link href="/items">Start Shopping</Link>
+        <Link href="/items">{t("startShopping")}</Link>
       </Button>
     </div>
   );
@@ -48,6 +50,7 @@ function CartLoading() {
 }
 
 function CartContent() {
+  const t = useTranslations("cart-page");
   const router = useRouter();
   const { backendUser } = useAuth();
   const { items, updateQuantity, removeItem, clearCart } = useCart();
@@ -60,12 +63,12 @@ function CartContent() {
 
   const handleCheckout = async () => {
     if (items.length === 0) {
-      toast.error("Your cart is empty");
+      toast.error(t("emptyCartToast"));
       return;
     }
 
     if (!backendUser) {
-      toast.error("Please login to proceed to checkout");
+      toast.error(t("loginToast"));
       router.push(`/auth?redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
@@ -89,10 +92,10 @@ function CartContent() {
       if (response.success && response.data?.order?._id) {
         router.push(`/checkout/${response.data.order._id}`);
       } else {
-        toast.error(response.message || "Failed to create order");
+        toast.error(response.message || t("orderFailed"));
       }
     } catch (error) {
-      const msg = error?.response?.data?.message || error?.message || "Something went wrong. Please try again.";
+      const msg = error?.response?.data?.message || error?.message || t("somethingWrong");
       toast.error(msg);
     } finally {
       setIsProcessing(false);
@@ -153,7 +156,7 @@ function CartContent() {
                     <p className="text-sm font-bold text-foreground">
                       ৳{(product.price * product.quantity).toLocaleString()}
                     </p>
-                    <p className="text-xs text-muted-foreground">৳{product.price.toLocaleString()} each</p>
+                    <p className="text-xs text-muted-foreground">৳{product.price.toLocaleString()} {t("each")}</p>
                   </div>
                 </div>
               </div>
@@ -163,27 +166,27 @@ function CartContent() {
 
         <div className="pt-2">
           <Button variant="outline" size="sm" className="text-muted-foreground" asChild>
-            <Link href="/items">Continue Shopping</Link>
+            <Link href="/items">{t("continueShopping")}</Link>
           </Button>
         </div>
       </div>
 
       <div className="h-fit rounded-2xl border border-border bg-card p-6">
-        <h2 className="mb-5 text-lg font-bold text-foreground">Order Summary</h2>
+        <h2 className="mb-5 text-lg font-bold text-foreground">{t("orderSummary")}</h2>
 
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-muted-foreground">
-            <span>Subtotal ({items.reduce((s, p) => s + p.quantity, 0)} items)</span>
+            <span>{t('subtotal', { count: items.reduce((s, p) => s + p.quantity, 0) })}<span class="hidden">{items.reduce((s, p) => s + p.quantity, 0)} items)</span>
             <span className="font-medium text-foreground">৳{subtotal.toLocaleString()}</span>
           </div>
 
           <div className="flex justify-between text-muted-foreground">
-            <span>Shipping</span>
+            <span>{t("shipping")}</span>
             <span className="font-medium text-foreground">৳60</span>
           </div>
 
           <div className="flex justify-between text-muted-foreground">
-            <span>VAT (5%)</span>
+            <span>{t("vat")}</span>
             <span className="font-medium text-foreground">৳{vatAmount.toFixed(0)}</span>
           </div>
         </div>
@@ -197,7 +200,7 @@ function CartContent() {
               type="text"
               value={couponCode}
               onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-              placeholder="Coupon code"
+              placeholder={t("couponPlaceholder")}
               className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             />
           </div>
@@ -209,7 +212,7 @@ function CartContent() {
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="font-bold text-foreground">Total</span>
+          <span className="font-bold text-foreground">{t("total")}</span>
           <span className="text-xl font-extrabold text-primary">
             ৳{totalAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </span>
@@ -220,17 +223,17 @@ function CartContent() {
             {isProcessing ? (
               <span className="flex items-center gap-2">
                 <Loader2 size={16} className="animate-spin" />
-                Processing...
+                {t("processing")}
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                Proceed to Checkout
+                {t("proceedToCheckout")}
                 <ArrowRight size={16} />
               </span>
             )}
           </Button>
           <Button variant="outline" className="w-full" asChild>
-            <Link href="/items">Continue Shopping</Link>
+            <Link href="/items">{t("continueShopping")}</Link>
           </Button>
         </div>
       </div>
@@ -239,6 +242,7 @@ function CartContent() {
 }
 
 export default function CartPage() {
+  const t = useTranslations("cart-page");
   const { isHydrated } = useCart();
 
   if (!isHydrated) {
@@ -259,8 +263,8 @@ export default function CartPage() {
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">My Cart</span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">Shopping Cart</h1>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">{t("pageHeading")}</h1>
         </div>
 
         <Suspense fallback={<CartLoading />}>{isHydrated ? <CartContent /> : <CartLoading />}</Suspense>

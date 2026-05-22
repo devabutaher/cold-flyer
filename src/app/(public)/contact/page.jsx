@@ -7,36 +7,38 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const contactMethods = [
   {
     icon: Phone,
-    title: "Phone",
+    title: "phone",
     detail: "09612-345678",
     sub: "Sat-Thu, 9AM-8PM",
   },
   {
     icon: Mail,
-    title: "Email",
+    title: "emailLabel",
     detail: "support@coldflyer.com",
     sub: "We reply within 24 hours",
   },
   {
     icon: MapPin,
-    title: "Office",
+    title: "office",
     detail: "Dhaka, Bangladesh",
     sub: "Head office & showroom",
   },
   {
     icon: Clock,
-    title: "Hours",
+    title: "hours",
     detail: "Sat - Thu, 9AM - 8PM",
     sub: "Friday closed",
   },
 ];
 
 export default function ContactPage() {
+  const t = useTranslations("contact");
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -54,7 +56,7 @@ export default function ContactPage() {
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                Get In Touch
+                {t("heroBadge")}
               </Badge>
             </motion.div>
             <motion.h1
@@ -63,8 +65,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Let&apos;s <br />
-              <span className="text-primary">Talk</span>
+              {t.rich("heroHeading", {br: () => <br/>})}
             </motion.h1>
             <motion.p
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
@@ -72,7 +73,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Have a question about our products or services? Our team is ready to help.
+              {t("heroDesc")}
             </motion.p>
           </div>
         </div>
@@ -95,21 +96,21 @@ export default function ContactPage() {
               <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Name</label>
-                    <Input placeholder="Your name" />
+                    <label className="text-sm font-medium">{t("name")}</label>
+                    <Input placeholder={t("namePlaceholder")} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
-                    <Input type="email" placeholder="your@email.com" />
+                    <label className="text-sm font-medium">{t("email")}</label>
+                    <Input type="email" placeholder={t("emailPlaceholder")} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Subject</label>
-                  <Input placeholder="How can we help?" />
+                  <label className="text-sm font-medium">{t("subject")}</label>
+                  <Input placeholder={t("subjectPlaceholder")} />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Message</label>
-                  <Textarea placeholder="Tell us more about your inquiry..." rows={5} />
+                  <label className="text-sm font-medium">{t("message")}</label>
+                  <Textarea placeholder={t("messagePlaceholder")} rows={5} />
                 </div>
                 <Button size="lg" className="gap-2">
                   <Send size={16} /> Send Message
@@ -133,7 +134,7 @@ export default function ContactPage() {
                       <Icon size={22} className="text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-sans font-extrabold text-lg mb-1">{method.title}</h3>
+                      <h3 className="font-sans font-extrabold text-lg mb-1">{t(method.title)}</h3>
                       <p className="text-foreground font-medium">{method.detail}</p>
                       <p className="text-sm text-muted-foreground mt-0.5">{method.sub}</p>
                     </div>
@@ -151,7 +152,7 @@ export default function ContactPage() {
             <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
               Our Location
             </span>
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">Find Us</h2>
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{t("locationTitle")}</h2>
           </div>
           <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted">
             <Image
@@ -164,8 +165,8 @@ export default function ContactPage() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="bg-background/90 backdrop-blur-sm rounded-xl p-6 text-center">
                 <MapPin size={32} className="text-primary mx-auto mb-2" />
-                <p className="font-medium">Dhaka, Bangladesh</p>
-                <p className="text-sm text-muted-foreground">Visit our showroom</p>
+                <p className="font-medium">{t("locationAddress")}</p>
+                <p className="text-sm text-muted-foreground">{t("locationSub")}</p>
               </div>
             </div>
           </div>
@@ -178,7 +179,7 @@ export default function ContactPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Need urgent support?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Call us now for emergency service.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaSub")}</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
             <Phone size={16} /> 09612-345678

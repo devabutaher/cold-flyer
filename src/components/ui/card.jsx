@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { animations, staggerItem, transitionTokens } from "@/lib/animation";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useTheme } from "next-themes";
 
 function useTilt(enabled) {
   const x = useMotionValue(0);
@@ -35,7 +36,7 @@ function useTilt(enabled) {
   };
 }
 
-function useShimmer(enabled) {
+function useShimmer(enabled, isDark = false) {
   const mouseX = useMotionValue(-200);
   const mouseY = useMotionValue(-200);
 
@@ -54,9 +55,11 @@ function useShimmer(enabled) {
       }
     : undefined;
 
+  const shimmerColor = isDark ? "oklch(1 0 0 / 0.06)" : "oklch(0 0 0 / 0.04)";
+
   const background = useTransform(
     [mouseX, mouseY],
-    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, oklch(1 0 0 / 0.06), transparent 80%)`,
+    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, ${shimmerColor}, transparent 80%)`,
   );
 
   return {
@@ -76,15 +79,18 @@ function Card({
   delay = 0,
   ...props
 }) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   const baseStyles = cn(
-    "group/card relative flex flex-col gap-6 overflow-hidden rounded-xl bg-card py-6 text-sm text-card-foreground shadow-xs ring-1 ring-foreground/10",
+    "group/card relative flex flex-col gap-6 overflow-hidden rounded-xl bg-card py-6 text-sm text-card-foreground shadow-xs ring-1 ring-foreground/10 dark:ring-foreground/20",
     "has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4",
     "*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
     className,
   );
 
   const tiltProps = useTilt(tilt);
-  const shimmerProps = useShimmer(shimmer);
+  const shimmerProps = useShimmer(shimmer, isDark);
 
   const mergedMouseMove = (e) => {
     tiltProps.onMouseMove?.(e);
@@ -110,7 +116,7 @@ function Card({
         ? { whileInView: "visible", viewport: animations.inView.once }
         : { animate: "visible" })}
       transition={{ ...transitionTokens.normal, delay }}
-      whileHover={{ y: -3, boxShadow: "0 12px 32px -4px oklch(0 0 0 / 0.12)" }}
+      whileHover={{ y: -3, boxShadow: isDark ? "0 12px 32px -4px oklch(1 0 0 / 0.12)" : "0 12px 32px -4px oklch(0 0 0 / 0.12)" }}
       style={{
         rotateX: tiltProps.rotateX,
         rotateY: tiltProps.rotateY,

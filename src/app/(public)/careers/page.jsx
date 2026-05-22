@@ -5,17 +5,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Award, Briefcase, Building, Clock, GraduationCap, Mail, MapPin, Phone, Users, Video } from "lucide-react";
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const process = [
-  { step: "01", title: "Apply Online", desc: "Submit your resume and application through our careers portal." },
-  { step: "02", title: "Initial Review", desc: "Our recruiting team reviews applications within 48 hours." },
-  { step: "03", title: "Interviews", desc: "Video call interviews with hiring manager and team." },
-  { step: "04", title: "Offer", desc: "Received offer within 1 week of final interview." },
+  { step: "01", title: "{t("step1Title")}", desc: "{t("step1Desc")}" },
+  { step: "02", title: "{t("step2Title")}", desc: "{t("step2Desc")}" },
+  { step: "03", title: "{t("step3Title")}", desc: "{t("step3Desc")}" },
+  { step: "04", title: "{t("step4Title")}", desc: "{t("step4Desc")}" },
 ];
 
 export default function CareersPage() {
   const locale = useLocale();
+  const t = useTranslations("careers");
   const benefits = getData("benefits", locale);
   const departments = getData("departments", locale);
   const culture = getData("culture", locale);
@@ -36,13 +37,12 @@ export default function CareersPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">Join Our Team</Badge>
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">{t("heroBadge")}</Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
-              Build the <br />
-              <span className="text-primary">Future</span> of Comfort
+              {t.rich("heroTitle", {br: () => <br/>})}
             </h1>
             <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              Join a global team of innovators shaping sustainable climate solutions for generations to come.
+              {t("heroDesc")}
             </p>
           </div>
         </div>
@@ -61,8 +61,7 @@ export default function CareersPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We&#8217;re more than an HVAC company&#8212;we&#8217;re a movement toward sustainable living. Our team
-                combines passion with purpose to solve the world&#8217;s most pressing climate challenges.
+                {t("whyDesc")}
               </p>
 
               <div className="grid grid-cols-2 gap-6">
@@ -109,8 +108,7 @@ export default function CareersPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              We invest in our people because they&#8217;re our greatest asset. Enjoy comprehensive benefits designed
-              for your wellbeing.
+              {t("benefitsDesc")}
             </p>
           </div>
 
@@ -176,7 +174,7 @@ export default function CareersPage() {
                     <Briefcase size={24} className="text-primary" />
                   </div>
                   <h3 className="font-sans font-extrabold text-2xl">{dept.name}</h3>
-                  <span className="ml-auto text-sm text-muted-foreground">{dept.positions.length} open positions</span>
+                  <span className="ml-auto text-sm text-muted-foreground">{t("positionsCount", {count: dept.positions.length})}</span>
                 </div>
 
                 <div className="divide-y divide-border/30">
@@ -260,7 +258,7 @@ export default function CareersPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Don&#8217;t see the right role?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Submit your resume for future opportunities.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">

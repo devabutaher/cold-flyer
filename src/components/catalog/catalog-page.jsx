@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { CatalogFilters } from "./catalog-filters";
 import { CatalogGrid } from "./catalog-grid";
+import { useTranslations } from "next-intl";
 
 export function CatalogPage({
   type = "product",
@@ -55,6 +56,7 @@ export function CatalogPage({
     return buildFilterOptions(Array.isArray(allItems) ? allItems : []);
   }, [allItems, buildFilterOptions]);
 
+  const t = useTranslations("common");
   const q = searchParams.get("q");
   const filtersType = type === "product" ? "items" : "services";
 
@@ -72,7 +74,7 @@ export function CatalogPage({
       {q && (
         <div className="mt-4">
           <h1 className="font-sans font-bold text-2xl text-foreground">
-            Results for <span className="text-primary">&quot;{q}&quot;</span>
+            {t("resultsFor", { query: q })}
           </h1>
         </div>
       )}

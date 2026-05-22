@@ -1,0 +1,28 @@
+{
+  "order": {
+    "pageTitle": "অর্ডার স্ট্যাটাস",
+    "orderPlaced": "অর্ডার সফলভাবে সম্পন্ন হয়েছে!",
+    "orderPlacedDesc": "আপনার অর্ডার সম্পন্ন হয়েছে। ডেলিভারির সময় ক্যাশ পরিশোধ করুন।",
+    "paymentSuccessful": "পেমেন্ট সফল হয়েছে!",
+    "paymentSslcommerz": "SSLCOMMERZ এর মাধ্যমে আপনার পেমেন্ট সফলভাবে প্রসেস করা হয়েছে।",
+    "paymentGeneric": "আপনার অর্ডারের জন্য ধন্যবাদ। আপনার পেমেন্ট প্রসেস করা হয়েছে।",
+    "paymentProcessing": "পেমেন্ট প্রসেসিং",
+    "paymentProcessingDesc": "আপনার পেমেন্ট নিশ্চিত করা হচ্ছে। এটি কিছু সময় নিতে পারে।",
+    "paymentFailed": "পেমেন্ট ব্যর্থ হয়েছে",
+    "paymentCancelled": "পেমেন্ট বাতিল করা হয়েছে",
+    "paymentSslFailed": "আপনার SSLCOMMERZ লেনদেন সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "paymentGenericFailed": "আপনার পেমেন্ট সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "verifying": "পেমেন্ট যাচাই করা হচ্ছে...",
+    "confirming": "পেমেন্ট নিশ্চিত করা হচ্ছে...",
+    "orderLabel": "অর্ডার #{number}",
+    "status": "স্ট্যাটাস:",
+    "payment": "পেমেন্ট:",
+    "cashOnDelivery": "ক্যাশ অন ডেলিভারি",
+    "total": "মোট: ৳{amount}",
+    "viewDetails": "অর্ডার বিবরণ দেখুন",
+    "retryPayment": "পেমেন্ট পুনরায় চেষ্টা করুন",
+    "refreshStatus": "স্ট্যাটাস রিফ্রেশ করুন",
+    "viewAllOrders": "সব অর্ডার দেখুন",
+    "continueShopping": "শপিং চালিয়ে যান"
+  }
+}

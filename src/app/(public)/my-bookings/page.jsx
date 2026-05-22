@@ -9,18 +9,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CalendarDays, ClipboardList, MapPin, Wrench } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/providers";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 
 const STATUS_MAP = {
-  pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
-  confirmed: { label: "Confirmed", className: "bg-blue-500/10 text-blue-600 border-blue-200" },
-  scheduled: { label: "Scheduled", className: "bg-indigo-500/10 text-indigo-600 border-indigo-200" },
-  in_progress: { label: "In Progress", className: "bg-primary/10 text-primary" },
-  completed: { label: "Completed", className: "bg-green-500/10 text-green-600 border-green-200" },
-  cancelled: { label: "Cancelled", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  pending: { label: t("pending"), className: "bg-amber-500/10 text-amber-600 border-amber-200" },
+  confirmed: { label: t("confirmed"), className: "bg-blue-500/10 text-blue-600 border-blue-200" },
+  scheduled: { label: t("scheduled"), className: "bg-indigo-500/10 text-indigo-600 border-indigo-200" },
+  in_progress: { label: t("inProgress"), className: "bg-primary/10 text-primary" },
+  completed: { label: t("completed"), className: "bg-green-500/10 text-green-600 border-green-200" },
+  cancelled: { label: t("cancelled"), className: "bg-destructive/10 text-destructive border-destructive/20" },
 };
 
 export default function MyBookingsPage() {
   const { backendUser, loading: authLoading } = useAuth();
+  const t = useTranslations("bookings");
+  const locale = useLocale();
   const { data: bookings = [], isLoading } = useBookingsQuery();
   const [filter, setFilter] = useState("all");
 
@@ -37,10 +41,10 @@ export default function MyBookingsPage() {
     return (
       <div className="container py-16 text-center">
         <ClipboardList size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-        <h1 className="text-xl font-semibold mb-2">Sign in to view your bookings</h1>
-        <p className="text-sm text-muted-foreground mb-4">You need to be signed in to see your service bookings.</p>
+        <h1 className="text-xl font-semibold mb-2">{t("signInTitle")}</h1>
+        <p className="text-sm text-muted-foreground mb-4">{t("signInDesc")}</p>
         <Button asChild>
-          <Link href="/auth">Sign In</Link>
+          <Link href="/auth">{t("signIn")}</Link>
         </Button>
       </div>
     );
@@ -52,8 +56,8 @@ export default function MyBookingsPage() {
     <div className="container py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">My Bookings</h1>
-          <p className="text-sm text-muted-foreground mt-1">View and manage your service appointments</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t("pageTitle")}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t("pageDesc")}</p>
         </div>
         <Button asChild variant="outline" size="sm">
           <Link href="/services">
@@ -72,7 +76,7 @@ export default function MyBookingsPage() {
             onClick={() => setFilter(s)}
             className="capitalize"
           >
-            {s === "all" ? "All" : s.replace("_", " ")}
+            {s === "all" ? t("all") : s.replace("_", " ")}
           </Button>
         ))}
       </div>
@@ -86,9 +90,9 @@ export default function MyBookingsPage() {
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
           <ClipboardList size={40} className="mx-auto mb-3 text-muted-foreground/30" />
-          <p className="text-sm text-muted-foreground">No bookings found.</p>
+          <p className="text-sm text-muted-foreground">{t("noBookings")}</p>
           <Button asChild variant="outline" size="sm" className="mt-3">
-            <Link href="/services">Book a Service</Link>
+            <Link href="/services">{t("bookService")}</Link>
           </Button>
         </div>
       ) : (
@@ -105,11 +109,11 @@ export default function MyBookingsPage() {
                         </span>
                         <StatusBadge value={booking.status} map={STATUS_MAP} />
                       </div>
-                      <h3 className="font-semibold text-sm mb-1">{booking.service?.name || "Service"}</h3>
+                      <h3 className="font-semibold text-sm mb-1">{booking.service?.name || t("service")}</h3>
                       {booking.scheduledDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <CalendarDays size={12} />
-                          {new Date(booking.scheduledDate).toLocaleDateString("en-US", {
+                          {formatDate(booking.scheduledDate, locale, {
                             weekday: "short",
                             month: "short",
                             day: "numeric",
@@ -126,7 +130,7 @@ export default function MyBookingsPage() {
                         <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                           <MapPin size={12} />
                           {[booking.serviceAddress.city, booking.serviceAddress.state].filter(Boolean).join(", ") ||
-                            "Address set"}
+                            t("addressSet")}
                         </p>
                       )}
                     </div>

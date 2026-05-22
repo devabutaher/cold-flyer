@@ -1,0 +1,28 @@
+{
+  "order": {
+    "pageTitle": "Order Status",
+    "orderPlaced": "Order Placed Successfully!",
+    "orderPlacedDesc": "Your order has been placed. Pay with cash upon delivery.",
+    "paymentSuccessful": "Payment Successful!",
+    "paymentSslcommerz": "Your payment via SSLCOMMERZ has been processed successfully.",
+    "paymentGeneric": "Thank you for your order. Your payment has been processed.",
+    "paymentProcessing": "Payment Processing",
+    "paymentProcessingDesc": "Your payment is being confirmed. This can take a few moments.",
+    "paymentFailed": "Payment Failed",
+    "paymentCancelled": "Payment Cancelled",
+    "paymentSslFailed": "Your SSLCOMMERZ transaction could not be completed. Please try again.",
+    "paymentGenericFailed": "Your payment could not be completed. Please try again.",
+    "verifying": "Verifying payment...",
+    "confirming": "Confirming payment...",
+    "orderLabel": "Order #{number}",
+    "status": "Status:",
+    "payment": "Payment:",
+    "cashOnDelivery": "Cash on Delivery",
+    "total": "Total: ৳{amount}",
+    "viewDetails": "View Order Details",
+    "retryPayment": "Retry Payment",
+    "refreshStatus": "Refresh Status",
+    "viewAllOrders": "View All Orders",
+    "continueShopping": "Continue Shopping"
+  }
+}

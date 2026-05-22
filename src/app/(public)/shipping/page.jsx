@@ -4,11 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getData } from "@/data";
 import { Clock, Package } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ShippingPage() {
   const locale = useLocale();
+  const t = useTranslations("shipping");
   const shippingOptions = getData("shippingOptions", locale);
   const process = getData("process", locale);
   const returns = getData("returns", locale);
@@ -34,11 +35,10 @@ export default function ShippingPage() {
               Delivery & Returns
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              Shipping <br />
-              <span className="text-primary">& Returns</span>
+              {t.rich("heroTitle", {br: () => <br/>})}
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              Reliable delivery solutions and flexible return options for your peace of mind.
+              {t("heroDesc")}
             </p>
           </div>
         </div>
@@ -58,8 +58,7 @@ export default function ShippingPage() {
             </div>
 
             <p className="max-w-md font-medium text-muted-foreground">
-              Choose the delivery method that best fits your timeline and budget. Free shipping available for qualifying
-              orders.
+              {t("optionsDesc")}
             </p>
           </div>
 
@@ -103,7 +102,7 @@ export default function ShippingPage() {
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Our streamlined delivery process ensures your equipment arrives safely and on time, every time.
+                {t("processDesc")}
               </p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
@@ -115,7 +114,7 @@ export default function ShippingPage() {
               </div>
 
               <Button size="lg" className="gap-2">
-                Track Your Order <Package size={16} />
+                {t("processButton")} <Package size={16} />
               </Button>
             </div>
 
@@ -194,7 +193,7 @@ export default function ShippingPage() {
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8">
-                To maintain product quality and safety, certain items cannot be returned:
+                {t("restrictionsDesc")}
               </p>
 
               <ul className="space-y-4">
@@ -217,7 +216,7 @@ export default function ShippingPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Still have questions?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Our shipping team is here to help with any inquiries.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
             <Clock size={16} /> Contact Shipping Team

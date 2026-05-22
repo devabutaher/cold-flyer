@@ -3,7 +3,20 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { User, Mail, Phone, Cake, VenetianMask, Pencil, X, Check, Camera, CalendarIcon, ChevronDownIcon, Loader2 } from "lucide-react";
+import {
+  User,
+  Mail,
+  Phone,
+  Cake,
+  VenetianMask,
+  Pencil,
+  X,
+  Check,
+  Camera,
+  CalendarIcon,
+  ChevronDownIcon,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -77,7 +90,8 @@ export function ProfileSection({ user }) {
     if (form.name !== user.name) payload.name = form.name;
     if (form.phone !== (user.phone || "")) payload.phone = form.phone;
     const origDate = toDateInputValue(user.dateOfBirth);
-    if (form.dateOfBirth?.getTime() !== origDate?.getTime()) payload.dateOfBirth = form.dateOfBirth?.toISOString() || null;
+    if (form.dateOfBirth?.getTime() !== origDate?.getTime())
+      payload.dateOfBirth = form.dateOfBirth?.toISOString() || null;
     if (form.gender !== (user.gender || "")) payload.gender = form.gender || null;
 
     if (Object.keys(payload).length === 0) {
@@ -138,7 +152,12 @@ export function ProfileSection({ user }) {
   }
 
   const initials = user.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
     : "U";
 
   return (
@@ -168,17 +187,9 @@ export function ProfileSection({ user }) {
       <CardContent>
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           <div className="relative group">
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileSelect}
-            />
+            <input type="file" ref={fileInputRef} accept="image/*" className="hidden" onChange={handleFileSelect} />
             <Avatar size="lg" className="size-20">
-              {avatarUrl ? (
-                <AvatarImage src={avatarUrl} alt={user.name} />
-              ) : null}
+              {avatarUrl ? <AvatarImage src={avatarUrl} alt={user.name} /> : null}
               <AvatarFallback className="text-lg">{initials}</AvatarFallback>
             </Avatar>
             <button
@@ -201,19 +212,11 @@ export function ProfileSection({ user }) {
               <>
                 <div className="grid gap-2">
                   <Label htmlFor="name">{t("name")}</Label>
-                  <Input
-                    id="name"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  />
+                  <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="phone">{t("phone")}</Label>
-                  <Input
-                    id="phone"
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  />
+                  <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="dob">{t("dateOfBirth")}</Label>
@@ -228,10 +231,7 @@ export function ProfileSection({ user }) {
                     />
                     <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                       <PopoverTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
-                        >
+                        <Button variant="ghost" className="absolute top-1/2 right-2 size-6 -translate-y-1/2">
                           <ChevronDownIcon className="size-4" />
                           <span className="sr-only">Pick a date</span>
                         </Button>
@@ -254,10 +254,7 @@ export function ProfileSection({ user }) {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="gender">{t("gender")}</Label>
-                  <Select
-                    value={form.gender}
-                    onValueChange={(value) => setForm({ ...form, gender: value })}
-                  >
+                  <Select value={form.gender} onValueChange={(value) => setForm({ ...form, gender: value })}>
                     <SelectTrigger id="gender" className="w-full">
                       <SelectValue placeholder={t("selectGender")} />
                     </SelectTrigger>
@@ -330,16 +327,20 @@ export function ProfileSection({ user }) {
                     <p className="font-medium capitalize">{user.gender ? t(user.gender) : t("notSet")}</p>
                   </div>
                 </div>
-                <Separator />
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary" className="capitalize">
-                    {user.role}
-                  </Badge>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("role")}</p>
-                    <p className="font-medium capitalize">{user.role}</p>
-                  </div>
-                </div>
+                {user.role !== "user" && (
+                  <>
+                    <Separator />
+                    <div className="flex items-center gap-3">
+                      <Badge variant="secondary" className="capitalize">
+                        {user.role}
+                      </Badge>
+                      <div>
+                        <p className="text-xs text-muted-foreground">{t("role")}</p>
+                        <p className="font-medium capitalize">{user.role}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

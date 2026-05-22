@@ -116,7 +116,7 @@ export default function Footer() {
               <Image src="/logo.png" width={32} height={32} alt="logo" className="w-10 h-10" />
 
               <h1 className="font-bold text-xl font-heading">
-                Cold<span className="text-primary">Flyer</span>
+                {t("common.siteName")}
               </h1>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("home.brandTagline")}</p>

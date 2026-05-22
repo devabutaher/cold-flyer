@@ -5,6 +5,7 @@ import { PackageSearch } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { CatalogCard, MemoizedCatalogCard } from "./catalog-card";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export function CatalogGrid({
   type = "product",
@@ -34,6 +35,7 @@ export function CatalogGrid({
     enabled: !hasExternalData && !!apiFetchFn,
   });
 
+  const t = useTranslations("common");
   const items = hasExternalData ? (externalItems ?? []) : (query.data ?? []);
   const loading = hasExternalData ? (externalLoading ?? false) : query.isLoading;
   const error = hasExternalData ? externalError : query.error;
@@ -56,8 +58,8 @@ export function CatalogGrid({
         className="flex flex-col items-center justify-center py-24 text-center"
       >
         <PackageSearch size={48} className="text-destructive mb-4" />
-        <h3 className="font-sans font-bold text-lg text-destructive mb-1">Failed to load {type}s</h3>
-        <p className="text-muted-foreground text-sm">Please try again later.</p>
+        <h3 className="font-sans font-bold text-lg text-destructive mb-1">{t("failedToLoad", { type })}</h3>
+        <p className="text-muted-foreground text-sm">{t("pleaseTryAgain")}</p>
       </motion.div>
     );
   }
@@ -72,8 +74,8 @@ export function CatalogGrid({
         className="flex flex-col items-center justify-center py-24 text-center"
       >
         <PackageSearch size={48} className="text-muted-foreground mb-4" />
-        <h3 className="font-sans font-bold text-lg text-foreground mb-1">No {type}s found</h3>
-        <p className="text-muted-foreground text-sm">Try a different search term or clear your filters.</p>
+        <h3 className="font-sans font-bold text-lg text-foreground mb-1">{t("noItemsFound", { type })}</h3>
+        <p className="text-muted-foreground text-sm">{t("tryDifferentSearch")}</p>
       </motion.div>
     );
   }
@@ -81,8 +83,7 @@ export function CatalogGrid({
   return (
     <div>
       <p className="text-xs text-muted-foreground mb-4 font-medium">
-        {results.length} {itemLabel}
-        {results.length !== 1 ? "s" : ""} found
+        {t("resultCount", { count: results.length, label: itemLabel })}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
         {results.map((item) => (

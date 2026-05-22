@@ -1,11 +1,11 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Star, User as UserIcon, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { getClient, extractList } from "@/lib/http-client";
 
 async function fetcher(url) {
@@ -15,6 +15,7 @@ async function fetcher(url) {
 
 export function ServiceReviews({ serviceId }) {
   const t = useTranslations("common");
+  const locale = useLocale();
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["service-reviews", serviceId],
     queryFn: () => fetcher(`/api/reviews?service=${serviceId}`),
@@ -69,7 +70,7 @@ export function ServiceReviews({ serviceId }) {
             </div>
             {review.comment && <p className="text-sm text-muted-foreground pl-9">{review.comment}</p>}
             <p className="text-[10px] text-muted-foreground pl-9 mt-1">
-              {new Date(review.createdAt).toLocaleDateString("en-US", {
+              {formatDate(review.createdAt, locale, {
                 month: "short",
                 day: "numeric",
                 year: "numeric",

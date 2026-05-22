@@ -133,6 +133,16 @@
     "saleDesc": "সব প্রিমিয়াম এসি ইউনিট এবং HVAC সিস্টেম। ৩১ আগস্ট পর্যন্ত বৈধ।",
     "shopNow": "এখনই কিনুন",
     "allDeals": "সব অফার",
-    "serviceCount": "{count}টি সেবা পাওয়া গেছে"
+    "serviceCount": "{count}টি সেবা পাওয়া গেছে",
+    "resultsFor": "\"{query}\" এর জন্য ফলাফল",
+    "failedToLoad": "{type} লোড করতে ব্যর্থ হয়েছে",
+    "pleaseTryAgain": "অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "noItemsFound": "কোনো {type} পাওয়া যায়নি",
+    "tryDifferentSearch": "অনুগ্রহ করে ভিন্ন সার্চ টার্ম ব্যবহার করুন অথবা ফিল্টার সরান।",
+    "resultCount": "{count}টি {label} পাওয়া গেছে",
+    "installApp": "কোল্ড ফ্লায়ার ইনস্টল করুন",
+    "installAppDesc": "দ্রুত অ্যাক্সেসের জন্য হোম স্ক্রিনে যোগ করুন",
+    "install": "ইনস্টল",
+    "maybeLater": "পরে দেখব"
   }
 }

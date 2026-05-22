@@ -104,7 +104,7 @@ export default async function RootLayout({ children }) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale === "bn" ? "bn-BD" : "en-BD"} suppressHydrationWarning>
+    <html lang={locale === "bn" ? "bn-BD" : "en-BD"} dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://coldflyer.com" />
         <link rel="manifest" href="/manifest.json" />

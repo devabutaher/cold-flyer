@@ -1,0 +1,21 @@
+{
+  "bookings": {
+    "pageTitle": "My Bookings",
+    "pageDesc": "View and manage your service appointments",
+    "signInTitle": "Sign in to view your bookings",
+    "signInDesc": "You need to be signed in to see your service bookings.",
+    "signIn": "Sign In",
+    "browseServices": "Browse Services",
+    "bookService": "Book a Service",
+    "noBookings": "No bookings found.",
+    "all": "All",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "scheduled": "Scheduled",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "service": "Service",
+    "addressSet": "Address set"
+  }
+}

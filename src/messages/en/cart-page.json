@@ -1,0 +1,23 @@
+{
+  "cart-page": {
+    "pageTitle": "My Cart",
+    "pageHeading": "Shopping Cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyDesc": "Looks like you haven't added anything yet.",
+    "startShopping": "Start Shopping",
+    "continueShopping": "Continue Shopping",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal ({count} items)",
+    "shipping": "Shipping",
+    "vat": "VAT (5%)",
+    "total": "Total",
+    "couponPlaceholder": "Coupon code",
+    "proceedToCheckout": "Proceed to Checkout",
+    "processing": "Processing...",
+    "each": "each",
+    "emptyCartToast": "Your cart is empty",
+    "loginToast": "Please login to proceed to checkout",
+    "orderFailed": "Failed to create order",
+    "somethingWrong": "Something went wrong. Please try again."
+  }
+}

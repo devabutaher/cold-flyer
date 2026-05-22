@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const values = [
@@ -196,6 +197,8 @@ function StatItem({ stat, index }) {
 }
 
 export default function AboutPage() {
+  const t = useTranslations("about");
+  const t = useTranslations("about");
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -213,7 +216,7 @@ export default function AboutPage() {
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                Precision Engineering
+                {t("heroBadge")}
               </Badge>
             </motion.div>
             <motion.h1
@@ -222,9 +225,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Engineering <br />
-              <span className="text-primary">the Future</span> <br />
-              of Comfort
+              {t.rich("heroTitle", {br: () => <br/>, primary: (chunks) => <span className="text-primary">{chunks}</span>})}
             </motion.h1>
             <motion.p
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
@@ -232,7 +233,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Redefining thermal efficiency through kinetic innovation and architectural integration.
+              {t("heroSub")}
             </motion.p>
           </div>
         </div>
@@ -245,7 +246,7 @@ export default function AboutPage() {
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
                 <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
-                  Since 1998, we&#8217;ve pioneered the science of thermal dynamics.
+                  {t("storyTitle")}
                 </h2>
               </div>
               <motion.div
@@ -257,23 +258,19 @@ export default function AboutPage() {
               >
                 <div className="font-sans font-extrabold text-6xl text-primary leading-none">26</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
-                  Years of <br /> Excellence
+                  {t("storyYears")}
                 </div>
               </motion.div>
               <Button size="lg" className="gap-2">
-                Our Story <ArrowRight size={16} />
+                {t("storyButton")} <ArrowRight size={16} />
               </Button>
             </div>
             <div className="md:col-span-7 space-y-6">
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Cold Flyer Industrial began with a singular focus: to solve the most complex climate challenges in
-                high-stakes environments. What started as a small engineering firm in 1998 has evolved into a global
-                leader in sustainable climate solutions.
+                {t("storyPara1")}
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Our journey has been defined by a relentless pursuit of &#34;Kinetic Efficiency&#34;&#8212;the belief
-                that climate control systems should not just respond to environments, but anticipate and adapt to them
-                with minimal energy footprint.
+                {t("storyPara2")}
               </p>
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
                 <div>
@@ -282,7 +279,7 @@ export default function AboutPage() {
                     <KineticPulse />
                   </div>
                   <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
-                    Engineers
+                    {t("storyEngineers")}
                   </div>
                 </div>
                 <div>
@@ -291,7 +288,7 @@ export default function AboutPage() {
                     <KineticPulse />
                   </div>
                   <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
-                    Carbon Neutral Goal
+                    {t("storyCarbonGoal")}
                   </div>
                 </div>
               </div>
@@ -305,15 +302,14 @@ export default function AboutPage() {
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
               <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
-                Our DNA
+                {t("valuesLabel")}
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-                The Kinetic Core
+                {t("valuesTitle")}
               </h2>
             </div>
             <p className="max-w-md font-medium text-muted-foreground">
-              Guided by precision, fueled by innovation, and committed to a sustainable legacy for the built
-              environment.
+              {t("valuesDesc")}
             </p>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -328,7 +324,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="text-center mb-20">
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground mb-5">
-              Visionary Leadership
+              {t("teamTitle")}
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
@@ -345,10 +341,10 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
-                Global Reach
+                {t("statsLabel")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                Impact Without <br /> Borders
+                {t.rich("statsTitle", {br: () => <br/>})}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {stats.map((stat, index) => (
@@ -382,12 +378,12 @@ export default function AboutPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              Ready to engineer your comfort?
+              {t("ctaTitle")}
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Talk to our team about your next project.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaSub")}</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
-            Get a Quote <ArrowRight size={16} />
+            {t("ctaButton")} <ArrowRight size={16} />
           </Button>
         </div>
       </AnimatedSection>

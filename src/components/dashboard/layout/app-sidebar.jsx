@@ -39,7 +39,7 @@ export function AppSidebar() {
           <Link href="/">
             <HomeIcon />
             <h1 className="font-bold text-xl font-sans">
-              Cold <span className="text-primary">Flyer</span>
+              Cold<span className="text-primary">Flyer</span>
             </h1>
           </Link>
         </SidebarMenuButton>

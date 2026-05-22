@@ -1,0 +1,29 @@
+{
+  "careers": {
+    "heroBadge": "Join Our Team",
+    "heroTitle": "Build the Future of Comfort",
+    "heroDesc": "Join a global team of innovators shaping sustainable climate solutions for generations to come.",
+    "whyTitle": "Why Cold Flyer?",
+    "whyDesc": "We are more than an HVAC company - we are a movement toward sustainable living.",
+    "benefitsBadge": "What We Offer",
+    "benefitsTitle": "Benefits & Perks",
+    "benefitsDesc": "We invest in our people because they are our greatest asset.",
+    "positionsTitle": "Open Positions",
+    "positionsCount": "{count} open positions",
+    "applyNow": "Apply Now",
+    "processBadge": "How It Works",
+    "processTitle": "Application Process",
+    "step1Title": "Apply Online",
+    "step1Desc": "Submit your resume and application through our careers portal.",
+    "step2Title": "Initial Review",
+    "step2Desc": "Our recruiting team reviews applications within 48 hours.",
+    "step3Title": "Interviews",
+    "step3Desc": "Video call interviews with hiring manager and team.",
+    "step4Title": "Offer",
+    "step4Desc": "Received offer within 1 week of final interview.",
+    "ctaTitle": "Dont see the right role?",
+    "ctaDesc": "Submit your resume for future opportunities.",
+    "ctaEmail": "careers@coldflyer.com",
+    "ctaChat": "Schedule Chat"
+  }
+}

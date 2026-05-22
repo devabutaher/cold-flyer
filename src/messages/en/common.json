@@ -133,6 +133,16 @@
     "saleDesc": "All premium AC units & HVAC systems. Valid until Aug 31st.",
     "shopNow": "Shop Now",
     "allDeals": "All Deals",
-    "serviceCount": "{count} service(s) found"
+    "serviceCount": "{count} service(s) found",
+    "resultsFor": "Results for \"{query}\"",
+    "failedToLoad": "Failed to load {type}s",
+    "pleaseTryAgain": "Please try again later.",
+    "noItemsFound": "No {type}s found",
+    "tryDifferentSearch": "Try a different search term or clear your filters.",
+    "resultCount": "{count} {label} found",
+    "installApp": "Install Cold Flyer",
+    "installAppDesc": "Add to home screen for quick access",
+    "install": "Install",
+    "maybeLater": "Maybe later"
   }
 }

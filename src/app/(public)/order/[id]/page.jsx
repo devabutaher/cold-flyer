@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CheckCircle, XCircle, Package, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ const POLL_TIMEOUT = 20000;
 
 export default function OrderSuccessPage() {
   const params = useParams();
+  const t = useTranslations("order");
   const searchParams = useSearchParams();
   const { backendUser } = useAuth();
   const orderId = params.id;
@@ -141,7 +143,7 @@ export default function OrderSuccessPage() {
             {(polling || verifying) && (
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 size={14} className="animate-spin" />
-                {verifying ? "Verifying payment..." : "Confirming payment..."}
+                {verifying ? "{t("verifying")}" : "{t("confirming")}"}
               </div>
             )}
           </CardContent>
@@ -161,15 +163,15 @@ export default function OrderSuccessPage() {
               <div className="mb-4 flex justify-center">
                 <CheckCircle className="h-16 w-16 text-green-500" />
               </div>
-              <h1 className="mb-2 text-2xl font-bold">Order Placed Successfully!</h1>
-              <p className="mb-6 text-muted-foreground">Your order has been placed. Pay with cash upon delivery.</p>
+              <h1 className="mb-2 text-2xl font-bold">{t("orderPlaced")}</h1>
+              <p className="mb-6 text-muted-foreground">{t("orderPlacedDesc")}</p>
             </>
           ) : isSuccess && isPaid ? (
             <>
               <div className="mb-4 flex justify-center">
                 <CheckCircle className="h-16 w-16 text-green-500" />
               </div>
-              <h1 className="mb-2 text-2xl font-bold">Payment Successful!</h1>
+              <h1 className="mb-2 text-2xl font-bold">{t("paymentSuccessful")}</h1>
               <p className="mb-6 text-muted-foreground">
                 {provider === "sslcommerz"
                   ? "Your payment via SSLCOMMERZ has been processed successfully."
@@ -181,7 +183,7 @@ export default function OrderSuccessPage() {
               <div className="mb-4 flex justify-center">
                 <Loader2 className="h-16 w-16 text-amber-500" />
               </div>
-              <h1 className="mb-2 text-2xl font-bold">Payment Processing</h1>
+              <h1 className="mb-2 text-2xl font-bold">{t("paymentProcessing")}</h1>
               <p className="mb-6 text-muted-foreground">
                 Your payment is being confirmed. This can take a few moments. Please check your order status.
               </p>
@@ -192,7 +194,7 @@ export default function OrderSuccessPage() {
                 <XCircle className="h-16 w-16 text-red-500" />
               </div>
               <h1 className="mb-2 text-2xl font-bold">
-                Payment {order?.paymentStatus === "failed" ? "Failed" : "Cancelled"}
+                {order?.paymentStatus === "failed" ? t("paymentFailed") : t("paymentCancelled")}
               </h1>
               <p className="mb-6 text-muted-foreground">
                 {provider === "sslcommerz"
@@ -206,7 +208,7 @@ export default function OrderSuccessPage() {
             <div className="mb-6 rounded-lg bg-muted p-4 text-left">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Package size={16} />
-                <span>Order #{order.orderNumber}</span>
+                <span>{t("orderLabel", {number: order.orderNumber})}</span>
               </div>
               <p className="mt-2 text-sm">
                 Status:{" "}
@@ -226,16 +228,16 @@ export default function OrderSuccessPage() {
                         : "text-red-600",
                   )}
                 >
-                  {order.paymentMethod === "cod" ? "Cash on Delivery" : order.paymentStatus?.toUpperCase()}
+                  {order.paymentMethod === "cod" ? t("cashOnDelivery") : order.paymentStatus?.toUpperCase()}
                 </span>
               </p>
-              <p className="mt-2 text-lg font-bold">Total: ৳{order.total?.toLocaleString()}</p>
+              <p className="mt-2 text-lg font-bold">{t("total", {amount: order.total?.toLocaleString()})}</p>
             </div>
           )}
 
           <div className="flex flex-col gap-2">
             <Link href={`/dashboard/orders/${orderId}`}>
-              <Button className="w-full">View Order Details</Button>
+              <Button className="w-full">{t("viewDetails")}</Button>
             </Link>
             {(!isPaid || pollTimedOut) && (
               <Link href={`/dashboard/orders/${orderId}`}>

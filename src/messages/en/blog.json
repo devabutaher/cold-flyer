@@ -1,0 +1,11 @@
+{
+  "blog": {
+    "heroBadge": "Insights & Updates",
+    "heroTitle": "Our Blog",
+    "heroDesc": "Tips, guides, and insights on AC maintenance, energy savings, and the latest in cooling technology.",
+    "readMore": "Read More",
+    "subscribeTitle": "Stay in the loop",
+    "subscribeDesc": "Subscribe to our newsletter for the latest tips and offers.",
+    "subscribeButton": "Subscribe"
+  }
+}

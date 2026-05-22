@@ -4,48 +4,11 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { animations } from "@/lib/animation";
 
-const faqItems = [
-  {
-    id: "faq-1",
-    question: "How often should I service my AC unit?",
-    answer:
-      "We recommend servicing your AC unit at least once a year, preferably before the summer season begins. Regular maintenance helps prevent breakdowns, improves efficiency, and extends the lifespan of your unit.",
-  },
-  {
-    id: "faq-2",
-    question: "What signs indicate my AC needs repair?",
-    answer:
-      "Common signs include weak airflow, unusual noises, strange odors, inconsistent cooling, higher energy bills, or frequent cycling on and off. If you notice any of these issues, contact us for a professional inspection.",
-  },
-  {
-    id: "faq-3",
-    question: "Do you offer emergency AC repair services?",
-    answer:
-      "Yes, we provide emergency repair services for urgent AC issues across Bangladesh. Our team is available for same-day service in Dhaka and surrounding areas.",
-  },
-  {
-    id: "faq-4",
-    question: "What brands of AC units do you service?",
-    answer:
-      "We service all major brands including Samsung, LG, Daikin, Gree, Carrier, Mitsubishi, General, Walton, and Vision. Our technicians are trained to handle a wide range of systems.",
-  },
-  {
-    id: "faq-5",
-    question: "How long does a typical AC installation take?",
-    answer:
-      "A standard split AC installation typically takes 3-5 hours. Window AC installation takes 1-2 hours. Complex installations involving ductwork or electrical upgrades may take longer.",
-  },
-  {
-    id: "faq-6",
-    question: "Are your technicians certified?",
-    answer:
-      "Yes, all our technicians are fully certified and undergo regular training to stay updated with the latest HVAC technologies and industry standards.",
-  },
-];
+const FAQ_IDS = ["faqQ1", "faqQ2", "faqQ3", "faqQ4", "faqQ5", "faqQ6"];
 
 function AnimatedChevron({ isOpen }) {
   return (
@@ -101,6 +64,7 @@ function FaqItem({ item, openValue }) {
 }
 
 function FaqImage() {
+  const t = useTranslations("home");
   return (
     <motion.div
       className="relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-130"
@@ -124,8 +88,8 @@ function FaqImage() {
           whileInView={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <p className="text-base font-bold text-white md:text-lg">Expert Support When You Need It</p>
-          <p className="mt-1 text-sm text-white/90">Our team is ready to help with all your climate control needs</p>
+          <p className="text-base font-bold text-white md:text-lg">{t("faqSupportTitle")}</p>
+          <p className="mt-1 text-sm text-white/90">{t("faqSupportDesc")}</p>
         </motion.div>
       </div>
     </motion.div>
@@ -134,6 +98,15 @@ function FaqImage() {
 
 export default function Faq() {
   const t = useTranslations("home");
+  const faqItems = useMemo(
+    () =>
+      FAQ_IDS.map((key) => ({
+        id: key,
+        question: t(key),
+        answer: t(key.replace("Q", "A")),
+      })),
+    [t],
+  );
   const [openValue, setOpenValue] = useState(faqItems[0].id);
 
   return (
@@ -146,7 +119,7 @@ export default function Faq() {
                 {t("commonQuestions")}
               </span>
               <h2 className="mt-1 font-sans text-2xl font-extrabold text-foreground md:text-3xl">
-                Frequently Asked <span className="text-primary">Questions.</span>
+                {t("faqHeading")}
               </h2>
             </div>
 

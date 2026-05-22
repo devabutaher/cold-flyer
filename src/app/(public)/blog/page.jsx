@@ -8,7 +8,7 @@ import { ArrowRight, Calendar, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function BlogCard({ post, index }) {
   return (
@@ -43,7 +43,7 @@ function BlogCard({ post, index }) {
           {post.title}
         </h3>
         <Link href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-          Read More <ArrowRight size={14} />
+          {t("readMore")} <ArrowRight size={14} />
         </Link>
       </div>
     </motion.article>
@@ -52,6 +52,7 @@ function BlogCard({ post, index }) {
 
 export default function BlogPage() {
   const locale = useLocale();
+  const t = useTranslations("blog");
   const blogs = getData("blogs", locale);
 
   return (
@@ -71,7 +72,7 @@ export default function BlogPage() {
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                Insights & Updates
+                {t("heroBadge")}
               </Badge>
             </motion.div>
             <motion.h1
@@ -80,8 +81,7 @@ export default function BlogPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Our <br />
-              <span className="text-primary">Blog</span>
+              {t.rich("heroTitle", {br: () => <br/>})}
             </motion.h1>
             <motion.p
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
@@ -89,7 +89,7 @@ export default function BlogPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Tips, guides, and insights on AC maintenance, energy savings, and the latest in cooling technology.
+              {t("heroDesc")}
             </motion.p>
           </div>
         </div>

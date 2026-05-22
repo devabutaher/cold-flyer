@@ -14,21 +14,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
       }
     } catch {}
   }
-
-  if (!locale || !routing.locales.includes(locale)) {
-    try {
-      const { headers } = await import("next/headers");
-      const headersList = await headers();
-      const acceptLang = headersList.get("accept-language");
-      if (acceptLang) {
-        const preferred = acceptLang.split(",")[0]?.split("-")[0]?.trim();
-        if (preferred && routing.locales.includes(preferred)) {
-          locale = preferred;
-        }
-      }
-    } catch {}
-  }
-
   if (!locale || !routing.locales.includes(locale)) {
     locale = routing.defaultLocale;
   }
@@ -46,7 +31,17 @@ export default getRequestConfig(async ({ requestLocale }) => {
       ...(await import(`../messages/${locale}/auth.json`)).default,
       ...(await import(`../messages/${locale}/cart.json`)).default,
       ...(await import(`../messages/${locale}/errors.json`)).default,
-      ...(await import(`../messages/${locale}/validation.json`)).default,
+      ...(await import(`../messages/${locale}/profile.json`)).default,
+      ...(await import(`../messages/${locale}/bookings.json`)).default,
+      ...(await import(`../messages/${locale}/cart-page.json`)).default,
+      ...(await import(`../messages/${locale}/checkout.json`)).default,
+      ...(await import(`../messages/${locale}/contact.json`)).default,
+      ...(await import(`../messages/${locale}/order.json`)).default,
+      ...(await import(`../messages/${locale}/blog.json`)).default,
+      ...(await import(`../messages/${locale}/careers.json`)).default,
+      ...(await import(`../messages/${locale}/privacy.json`)).default,
+      ...(await import(`../messages/${locale}/shipping.json`)).default,
+      ...(await import(`../messages/${locale}/terms.json`)).default,
     },
   };
 });

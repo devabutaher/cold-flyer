@@ -1,0 +1,23 @@
+{
+  "cart-page": {
+    "pageTitle": "আমার কার্ট",
+    "pageHeading": "শপিং কার্ট",
+    "emptyTitle": "আপনার কার্ট খালি",
+    "emptyDesc": "মনে হচ্ছে আপনি এখনও কিছু যোগ করেননি।",
+    "startShopping": "শপিং শুরু করুন",
+    "continueShopping": "শপিং চালিয়ে যান",
+    "orderSummary": "অর্ডার সারসংক্ষেপ",
+    "subtotal": "সাবটোটাল ({count} আইটেম)",
+    "shipping": "শিপিং",
+    "vat": "ভ্যাট (৫%)",
+    "total": "মোট",
+    "couponPlaceholder": "কুপন কোড",
+    "proceedToCheckout": "চেকআউটে যান",
+    "processing": "প্রসেসিং...",
+    "each": "প্রতিটি",
+    "emptyCartToast": "আপনার কার্ট খালি",
+    "loginToast": "অনুগ্রহ করে লগইন করুন",
+    "orderFailed": "অর্ডার তৈরি করতে ব্যর্থ হয়েছে",
+    "somethingWrong": "কিছু ভুল হয়েছে। দয়া করে আবার চেষ্টা করুন।"
+  }
+}

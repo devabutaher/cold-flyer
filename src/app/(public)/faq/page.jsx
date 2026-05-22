@@ -17,10 +17,11 @@ import {
   Wrench,
 } from "lucide-react";
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function FAQPage() {
   const locale = useLocale();
+  const t = useTranslations("faq");
   const categories = getData("categories", locale);
   const contactInfo = getData("contactInfo", locale);
   return (
@@ -41,14 +42,13 @@ export default function FAQPage() {
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-              Help Center
+              {t("heroBadge")}
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              Frequently <br />
-              <span className="text-primary">Asked Questions</span>
+              {t.rich("heroTitle", {br: () => <br/>})}
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              Find answers to common questions about our products, services, and policies.
+              {t("heroSub")}
             </p>
           </div>
         </div>
@@ -62,14 +62,14 @@ export default function FAQPage() {
               <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search for answers..."
+                placeholder={t("searchPlaceholder")}
                 className="w-full pl-12 pr-4 py-4 rounded-xl bg-card border border-border/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Can&#8217;t find what you&#8217;re looking for?{" "}
+              {t("cantFind")}{" "}
               <a href="#contact" className="text-primary hover:underline">
-                Contact our team
+                {t("contactTeam")}
               </a>
             </p>
           </div>
@@ -84,24 +84,24 @@ export default function FAQPage() {
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
                 <Calculator size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">Get a Quote</h4>
-              <p className="text-sm text-muted-foreground">Request a customized quote for your project</p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">{t("getAQuote")}</h4>
+              <p className="text-sm text-muted-foreground">{t("getAQuoteDesc")}</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
                 <Truck size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">Track Order</h4>
-              <p className="text-sm text-muted-foreground">Check the status of your shipment</p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">{t("trackOrder")}</h4>
+              <p className="text-sm text-muted-foreground">{t("trackOrderDesc")}</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors">
                 <Wrench size={24} className="text-primary group-hover:text-primary-foreground transition-colors" />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">Technical Support</h4>
-              <p className="text-sm text-muted-foreground">Get help with installation and maintenance</p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">{t("technicalSupport")}</h4>
+              <p className="text-sm text-muted-foreground">{t("technicalSupportDesc")}</p>
             </div>
 
             <div className="group text-center p-8 bg-card rounded-xl hover:shadow-lg transition-all duration-500">
@@ -111,8 +111,8 @@ export default function FAQPage() {
                   className="text-primary group-hover:text-primary-foreground transition-colors"
                 />
               </div>
-              <h4 className="font-sans font-extrabold text-lg mb-2">Live Chat</h4>
-              <p className="text-sm text-muted-foreground">Chat with our support team</p>
+              <h4 className="font-sans font-extrabold text-lg mb-2">{t("liveChat")}</h4>
+              <p className="text-sm text-muted-foreground">{t("liveChatDesc")}</p>
             </div>
           </div>
         </div>
@@ -123,9 +123,9 @@ export default function FAQPage() {
         <div className="container">
           <div className="text-center mb-20">
             <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
-              Comprehensive Answers
+              {t("comprehensiveAnswers")}
             </span>
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">Browse by Category</h2>
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{t("browseCategory")}</h2>
           </div>
 
           <div className="space-y-12">
@@ -166,15 +166,14 @@ export default function FAQPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
-                Still Need Help?
+                {t("contactInfo.title")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                We&#8217;re Here to <br /> Help
+                {t.rich("contactInfo.sub", {br: () => <br/>})}
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8">
-                Can&#8217;t find the answer you&#8217;re looking for? Our dedicated support team is ready to assist you
-                with any questions.
+                {t("contactInfo.supportDesc")}
               </p>
 
               <div className="space-y-4">
@@ -183,7 +182,7 @@ export default function FAQPage() {
                     <Mail size={20} className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">Email Support</div>
+                    <div className="font-medium">{t("contactInfo.emailLabel")}</div>
                     <div className="text-sm text-muted">support@coldflyer.com</div>
                   </div>
                 </div>
@@ -193,7 +192,7 @@ export default function FAQPage() {
                     <Phone size={20} className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">Phone Support</div>
+                    <div className="font-medium">{t("contactInfo.phoneLabel")}</div>
                     <div className="text-sm text-muted">1-800-COLD-FLYER</div>
                   </div>
                 </div>
@@ -203,7 +202,7 @@ export default function FAQPage() {
                     <Clock size={20} className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">Hours</div>
+                    <div className="font-medium">{t("contactInfo.hoursLabel")}</div>
                     <div className="text-sm text-muted">Mon-Fri, 9AM-6PM EST</div>
                   </div>
                 </div>
@@ -232,7 +231,7 @@ export default function FAQPage() {
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
               Ready to get started?
             </h3>
-            <p className="text-primary-foreground/70 text-sm">Browse our products or request a quote today.</p>
+            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
           </div>
           <div className="flex gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">
