@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { sendVerificationCodeAction, updateProfileAction, verifyEmailAction } from "@/lib/actions/user";
 import { getClient } from "@/lib/http-client";
+import { UserCog } from "lucide-react";
 import { Cake, Camera, Check, ChevronDownIcon, Loader2, Mail, Pencil, User, VenetianMask, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -366,12 +367,12 @@ export function ProfileSection({ user }) {
                   <>
                     <Separator />
                     <div className="flex items-center gap-3">
-                      <Badge variant="secondary" className="capitalize">
-                        {user.role}
-                      </Badge>
+                      <UserCog className="size-4 text-muted-foreground shrink-0" />
                       <div>
                         <p className="text-xs text-muted-foreground">{t("role")}</p>
-                        <p className="font-medium capitalize">{user.role}</p>
+                        <Badge variant="secondary" className="capitalize">
+                          {user.role}
+                        </Badge>
                       </div>
                     </div>
                   </>

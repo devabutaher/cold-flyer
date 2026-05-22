@@ -49,9 +49,8 @@ export function buildUserColumns({ onRoleChange } = {}) {
         const u = row.original;
         return (
           <div className="flex items-center gap-2">
-            <StatusBadge value={u.role} map={ROLE_MAP} />
             <Select value={u.role} onValueChange={(role) => onRoleChange?.(u._id, role)}>
-              <SelectTrigger className="h-7 w-24 text-xs">
+              <SelectTrigger className="h-6 w-24 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

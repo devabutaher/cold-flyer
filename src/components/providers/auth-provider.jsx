@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
       .then((data) => {
         if (data?.data?.authenticated) setBackendUser(data.data.user);
       })
-      .catch(() => {})
+      .catch((err) => console.error("[AuthProvider] Status fetch failed:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -41,14 +41,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logOut = useCallback(async () => {
-    try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch {}
+    fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    }).catch(() => {});
+    await router.push("/");
     setBackendUser(null);
-    router.push("/");
   }, [router]);
 
   const value = useMemo(

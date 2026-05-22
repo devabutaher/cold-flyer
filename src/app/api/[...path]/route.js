@@ -30,19 +30,23 @@ async function proxy(request, params, method) {
     const qs = searchParams.toString();
     const url = `${BASE_URL}/api/${pathname}${qs ? `?${qs}` : ""}`;
 
-    const cookieHeader = request.headers.get("cookie") || "";
-
     const fetchOptions = {
       method,
-      headers: {
-        Cookie: cookieHeader,
-      },
+      headers: {},
     };
+
+    const accessToken = request.cookies.get("accessToken")?.value;
+    if (accessToken) {
+      fetchOptions.headers.Cookie = `accessToken=${accessToken}`;
+      fetchOptions.headers.Authorization = `Bearer ${accessToken}`;
+    }
 
     if (method !== "GET" && method !== "HEAD") {
       const contentType = request.headers.get("content-type") || "";
       if (contentType.includes("multipart/form-data")) {
-        fetchOptions.body = await request.formData();
+        fetchOptions.body = request.body;
+        fetchOptions.headers["Content-Type"] = contentType;
+        fetchOptions.duplex = "half";
       } else {
         try {
           fetchOptions.body = JSON.stringify(await request.json());
@@ -51,7 +55,7 @@ async function proxy(request, params, method) {
       }
     }
 
-    const response = await fetch(url, { ...fetchOptions, credentials: "include" });
+    const response = await fetch(url, fetchOptions);
 
     let body;
     const ct = response.headers.get("content-type") || "";

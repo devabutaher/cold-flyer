@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 /* ── Avatar + two-line label ──────────────────────────── */
-export function AvatarCell({ src, name, sub, avatarShape = "rounded-md" }) {
+export function AvatarCell({ src, name, sub, avatarShape = "rounded-full" }) {
   const initials = name?.slice(0, 2).toUpperCase() ?? "??";
   return (
     <div className="flex items-center gap-3 min-w-0">
