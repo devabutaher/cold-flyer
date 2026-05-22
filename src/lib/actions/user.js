@@ -84,6 +84,34 @@ export async function setDefaultAddressAction(id) {
   }
 }
 
+export async function sendVerificationCodeAction() {
+  try {
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/auth/send-verification-code");
+    return { success: true, message: res.data?.message || "Code sent" };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message || "Failed to send code",
+    };
+  }
+}
+
+export async function verifyEmailAction(code) {
+  try {
+    const cookieStore = await cookies();
+    const client = createServerClient(cookieStore);
+    const res = await client.post("/api/auth/verify-email", { code });
+    return { success: true, message: res.data?.message || "Email verified" };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message || "Failed to verify email",
+    };
+  }
+}
+
 export async function changePasswordAction(data) {
   try {
     const cookieStore = await cookies();

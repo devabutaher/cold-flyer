@@ -55,7 +55,7 @@ function useShimmer(enabled, isDark = false) {
       }
     : undefined;
 
-  const shimmerColor = isDark ? "oklch(1 0 0 / 0.06)" : "oklch(0 0 0 / 0.04)";
+  const shimmerColor = isDark ? "oklch(0.6460 0.2220 41.1160 / 0.06)" : "oklch(0.6460 0.2220 41.1160 / 0.04)";
 
   const background = useTransform(
     [mouseX, mouseY],
@@ -116,7 +116,7 @@ function Card({
         ? { whileInView: "visible", viewport: animations.inView.once }
         : { animate: "visible" })}
       transition={{ ...transitionTokens.normal, delay }}
-      whileHover={{ y: -3, boxShadow: isDark ? "0 12px 32px -4px oklch(1 0 0 / 0.12)" : "0 12px 32px -4px oklch(0 0 0 / 0.12)" }}
+      whileHover={{ y: -3, boxShadow: isDark ? "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.2)" : "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.12)" }}
       style={{
         rotateX: tiltProps.rotateX,
         rotateY: tiltProps.rotateY,

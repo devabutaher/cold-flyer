@@ -1,39 +1,9 @@
 import axios from "axios";
-import { attemptTokenRefresh } from "./refresh-mutex";
 
 const API_BASE = "/api";
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const CSRF_COOKIE = "csrf-token";
 
 let clientInstance = null;
-let csrfBootstrapped = false;
-
-function getCsrfFromCookie() {
-  const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${CSRF_COOKIE}\\s*=\\s*([^;]*)`));
-  return match ? match[1] : null;
-}
-
-function setCsrfCookie(token) {
-  document.cookie = `${CSRF_COOKIE}=${token}; path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}; maxAge=86400`;
-}
-
-function generateCsrfToken() {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-async function bootstrapCsrf() {
-  if (csrfBootstrapped) return;
-  csrfBootstrapped = true;
-  try {
-    await axios.get(`${API_BASE}/csrf-token`, { withCredentials: true });
-  } catch {
-    if (!getCsrfFromCookie()) {
-      setCsrfCookie(generateCsrfToken());
-    }
-  }
-}
 
 function createClientInstance() {
   const instance = axios.create({
@@ -42,40 +12,12 @@ function createClientInstance() {
     headers: { "Content-Type": "application/json" },
   });
 
-  instance.interceptors.request.use((config) => {
-    if (config.method !== "get" && config.method !== "head" && config.method !== "options") {
-      let token = getCsrfFromCookie();
-      if (!token) {
-        token = generateCsrfToken();
-        setCsrfCookie(token);
-      }
-      config.headers["x-csrf-token"] = token;
-    }
-    return config;
-  });
-
-  instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-      if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes("/auth/")) {
-        originalRequest._retry = true;
-        const refreshed = await attemptTokenRefresh();
-        if (refreshed) return instance(originalRequest);
-        if (typeof window !== "undefined") window.location.href = `/auth?redirect=${encodeURIComponent(window.location.pathname)}`;
-        return Promise.reject(error);
-      }
-      return Promise.reject(error);
-    },
-  );
-
   return instance;
 }
 
 export function getClient() {
   if (typeof window === "undefined") return null;
   if (!clientInstance) {
-    bootstrapCsrf();
     clientInstance = createClientInstance();
   }
   return clientInstance;

@@ -8,10 +8,10 @@ import { getData } from "@/data";
 import { useLocale, useTranslations } from "next-intl";
 
 const process = [
-  { step: "01", title: "{t("step1Title")}", desc: "{t("step1Desc")}" },
-  { step: "02", title: "{t("step2Title")}", desc: "{t("step2Desc")}" },
-  { step: "03", title: "{t("step3Title")}", desc: "{t("step3Desc")}" },
-  { step: "04", title: "{t("step4Title")}", desc: "{t("step4Desc")}" },
+  { step: "01", title: t("step1Title"), desc: t("step1Desc") },
+  { step: "02", title: t("step2Title"), desc: t("step2Desc") },
+  { step: "03", title: t("step3Title"), desc: t("step3Desc") },
+  { step: "04", title: t("step4Title"), desc: t("step4Desc") },
 ];
 
 export default function CareersPage() {

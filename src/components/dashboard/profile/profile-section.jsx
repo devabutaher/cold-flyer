@@ -1,36 +1,23 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import {
-  User,
-  Mail,
-  Phone,
-  Cake,
-  VenetianMask,
-  Pencil,
-  X,
-  Check,
-  Camera,
-  CalendarIcon,
-  ChevronDownIcon,
-  Loader2,
-} from "lucide-react";
-import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/components/providers";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { updateProfileAction } from "@/lib/actions/user";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { sendVerificationCodeAction, updateProfileAction, verifyEmailAction } from "@/lib/actions/user";
 import { getClient } from "@/lib/http-client";
-import { useAuth } from "@/components/providers";
+import { Cake, Camera, Check, ChevronDownIcon, Loader2, Mail, Pencil, User, VenetianMask, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 const GENDERS = ["male", "female", "other"];
 
@@ -83,6 +70,10 @@ export function ProfileSection({ user }) {
   const fileInputRef = useRef(null);
   const [avatarUrl, setAvatarUrl] = useState(user.avatar || "");
   const [uploading, setUploading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [verifyCode, setVerifyCode] = useState("");
+  const [sendingCode, setSendingCode] = useState(false);
+  const [confirmingCode, setConfirmingCode] = useState(false);
 
   async function handleSave() {
     setSaving(true);
@@ -125,7 +116,9 @@ export function ProfileSection({ user }) {
       const formData = new FormData();
       formData.append("avatar", file);
       const client = getClient();
-      const res = await client.patch("/users/avatar", formData);
+      const res = await client.patch("/users/avatar", formData, {
+        headers: { "Content-Type": undefined },
+      });
       if (res.data?.success) {
         setAvatarUrl(res.data.data.avatar);
         toast.success(t("avatarUpdated"));
@@ -137,6 +130,34 @@ export function ProfileSection({ user }) {
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
+  async function handleSendCode() {
+    setSendingCode(true);
+    const result = await sendVerificationCodeAction();
+    setSendingCode(false);
+    if (result.success) {
+      toast.success(result.message || "Code sent");
+      setVerifying(true);
+    } else {
+      toast.error(result.message || "Failed to send code");
+    }
+  }
+
+  async function handleVerifyCode() {
+    if (!verifyCode || verifyCode.length < 6) return;
+    setConfirmingCode(true);
+    const result = await verifyEmailAction(verifyCode);
+    setConfirmingCode(false);
+    if (result.success) {
+      toast.success(result.message || "Email verified");
+      setVerifyCode("");
+      setVerifying(false);
+      refreshUser();
+      router.refresh();
+    } else {
+      toast.error(result.message || "Failed to verify email");
     }
   }
 
@@ -280,7 +301,7 @@ export function ProfileSection({ user }) {
                 <Separator />
                 <div className="flex items-center gap-3">
                   <Mail className="size-4 text-muted-foreground shrink-0" />
-                  <div>
+                  <div className="flex-1">
                     <p className="text-xs text-muted-foreground">{t("email")}</p>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{user.email}</p>
@@ -291,24 +312,38 @@ export function ProfileSection({ user }) {
                         {user.isEmailVerified ? t("verified") : t("unverified")}
                       </Badge>
                     </div>
-                  </div>
-                </div>
-                <Separator />
-                <div className="flex items-center gap-3">
-                  <Phone className="size-4 text-muted-foreground shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("phone")}</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{user.phone || t("notSet")}</p>
-                      {user.phone && (
-                        <Badge
-                          variant={user.isPhoneVerified ? "secondary" : "outline"}
-                          className="text-[10px] h-5 px-1.5"
+                    {!user.isEmailVerified && !verifying && (
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="h-auto p-0 text-xs"
+                        onClick={handleSendCode}
+                        disabled={sendingCode}
+                      >
+                        {sendingCode ? t("sending") : t("verifyEmail")}
+                      </Button>
+                    )}
+                    {!user.isEmailVerified && verifying && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <Input
+                          size={6}
+                          maxLength={6}
+                          placeholder="000000"
+                          value={verifyCode}
+                          onChange={(e) => setVerifyCode(e.target.value.toUpperCase())}
+                          className="w-28 h-8 text-center text-sm tracking-widest"
+                          onKeyDown={(e) => e.key === "Enter" && handleVerifyCode()}
+                        />
+                        <Button
+                          size="sm"
+                          className="h-8"
+                          onClick={handleVerifyCode}
+                          disabled={confirmingCode || verifyCode.length < 6}
                         >
-                          {user.isPhoneVerified ? t("verified") : t("unverified")}
-                        </Badge>
-                      )}
-                    </div>
+                          {confirmingCode ? t("saving") : t("confirm")}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <Separator />

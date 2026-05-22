@@ -143,7 +143,7 @@ export default function OrderSuccessPage() {
             {(polling || verifying) && (
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 size={14} className="animate-spin" />
-                {verifying ? "{t("verifying")}" : "{t("confirming")}"}
+                {verifying ? t("verifying") : t("confirming")}
               </div>
             )}
           </CardContent>

@@ -9,14 +9,31 @@ import { useAuth } from "@/components/providers";
 
 export default function DashboardClient() {
   const { backendUser } = useAuth();
+  const isAdmin = backendUser?.role === "admin";
+
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
     queryFn: async () => {
       const res = await getClient().get("/admin/dashboard");
       return res.data?.data || {};
     },
-    refetchInterval: 60000,
+    enabled: isAdmin,
+    refetchInterval: isAdmin ? 60000 : undefined,
   });
+
+  if (!isAdmin) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Welcome back, {backendUser?.name}</p>
+        </div>
+        <div className="rounded-lg border border-dashed p-8 text-center">
+          <p className="text-muted-foreground">Your personalized stats will appear here soon.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

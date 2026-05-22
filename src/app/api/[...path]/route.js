@@ -31,13 +31,11 @@ async function proxy(request, params, method) {
     const url = `${BASE_URL}/api/${pathname}${qs ? `?${qs}` : ""}`;
 
     const cookieHeader = request.headers.get("cookie") || "";
-    const csrfToken = request.headers.get("x-csrf-token");
 
     const fetchOptions = {
       method,
       headers: {
         Cookie: cookieHeader,
-        ...(csrfToken && { "x-csrf-token": csrfToken }),
       },
     };
 

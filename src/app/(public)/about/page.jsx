@@ -198,7 +198,6 @@ function StatItem({ stat, index }) {
 
 export default function AboutPage() {
   const t = useTranslations("about");
-  const t = useTranslations("about");
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">

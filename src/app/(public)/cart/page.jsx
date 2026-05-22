@@ -176,7 +176,7 @@ function CartContent() {
 
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-muted-foreground">
-            <span>{t('subtotal', { count: items.reduce((s, p) => s + p.quantity, 0) })}<span class="hidden">{items.reduce((s, p) => s + p.quantity, 0)} items)</span>
+            <span>{t('subtotal', { count: items.reduce((s, p) => s + p.quantity, 0) })} ({items.reduce((s, p) => s + p.quantity, 0)} items)</span>
             <span className="font-medium text-foreground">৳{subtotal.toLocaleString()}</span>
           </div>
 

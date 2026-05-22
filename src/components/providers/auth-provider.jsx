@@ -1,20 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { attemptTokenRefresh } from "@/lib/refresh-mutex";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const AuthContext = createContext(null);
-
-async function fetchWithRefresh(url, options = {}) {
-  let res = await fetch(url, { credentials: "include", ...options });
-  if (res.ok || options.skipRefresh) return res;
-
-  const refreshed = await attemptTokenRefresh();
-  if (!refreshed) return res;
-
-  return fetch(url, { credentials: "include", ...options });
-}
 
 export function AuthProvider({ children }) {
   const [backendUser, setBackendUser] = useState(null);
@@ -29,36 +18,21 @@ export function AuthProvider({ children }) {
     fetch("/api/auth/status", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
-        if (data?.data?.authenticated) {
-          setBackendUser(data.data.user);
-        } else {
-          setBackendUser(null);
-        }
+        if (data?.data?.authenticated) setBackendUser(data.data.user);
       })
-      .catch(() => {
-        setBackendUser(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-
-    const heartbeat = setInterval(() => {
-      attemptTokenRefresh();
-    }, 45 * 60 * 1000);
-
-    return () => clearInterval(heartbeat);
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const refreshUser = useCallback(async () => {
     try {
-      const response = await fetchWithRefresh("/api/auth/me");
-      if (response.ok) {
-        const data = await response.json();
+      const res = await fetch("/api/auth/me", { credentials: "include" });
+      if (res.ok) {
+        const data = await res.json();
         const user = data?.data?.user || null;
         setBackendUser(user);
         return user;
       }
-      setBackendUser(null);
       return null;
     } catch {
       setBackendUser(null);
@@ -73,17 +47,19 @@ export function AuthProvider({ children }) {
         credentials: "include",
       });
     } catch {}
-    await fetch("/api/auth/signout", { credentials: "include" }).catch(() => {});
     setBackendUser(null);
     router.push("/");
   }, [router]);
 
-  const value = useMemo(() => ({
-    backendUser,
-    loading,
-    logOut,
-    refreshUser,
-  }), [backendUser, loading, logOut, refreshUser]);
+  const value = useMemo(
+    () => ({
+      backendUser,
+      loading,
+      logOut,
+      refreshUser,
+    }),
+    [backendUser, loading, logOut, refreshUser],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

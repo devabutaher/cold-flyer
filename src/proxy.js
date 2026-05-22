@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
 const protectedRoutes = ["/dashboard"];
 const authRoutes = ["/auth"];
 const adminRoutes = ["/dashboard/users", "/dashboard/analytics", "/dashboard/technicians", "/dashboard/coupons"];
@@ -10,7 +8,6 @@ export async function proxy(request) {
   const { pathname } = request.nextUrl;
   const response = NextResponse.next();
   const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
 
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAuth = authRoutes.some((route) => pathname.startsWith(route));
@@ -28,34 +25,25 @@ export async function proxy(request) {
     }
   }
 
-  const needsAuth = isProtected && (!accessToken || tokenExpired);
   const isAuthenticated = accessToken && tokenPayload && !tokenExpired;
 
-  if (needsAuth) {
-    if (refreshToken) {
-      try {
-        const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
-          method: "POST",
-          headers: { Cookie: `refreshToken=${refreshToken}` },
-        });
-        if (refreshRes.ok) {
-          const response = NextResponse.next();
-          refreshRes.headers.forEach((value, key) => {
-            if (key.toLowerCase() === "set-cookie") {
-              response.headers.append("Set-Cookie", value);
-            }
-          });
-          return response;
-        }
-      } catch {}
-    }
+  if (isProtected && !isAuthenticated) {
     const loginUrl = new URL("/auth", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuth && isAuthenticated) {
-    return NextResponse.redirect(new URL("/", request.url));
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const verifyRes = await fetch(`${API_URL}/api/auth/status`, {
+        headers: { Cookie: `accessToken=${accessToken}` },
+      });
+      const data = await verifyRes.json();
+      if (data?.data?.authenticated) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+    } catch {}
   }
 
   if (isAuthenticated) {

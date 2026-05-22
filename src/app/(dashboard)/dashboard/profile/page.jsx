@@ -29,7 +29,7 @@ export default async function ProfilePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <ProfileSection user={sanitizeForRSC(user)} />
-      <PasswordSection userProvider={user.provider} />
+      <PasswordSection userProvider={user.provider || "email"} />
       <AddressSection initialAddresses={sanitizeForRSC(addresses)} />
     </div>
   );
