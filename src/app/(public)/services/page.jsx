@@ -5,7 +5,15 @@ import { getClient, extractList } from "@/lib/http-client";
 import { CatalogPage } from "@/components/catalog/catalog-page";
 import { uniqueSorted } from "@/lib/utils";
 
-const SORT_OPTIONS = ["Popular", "Price: Low to High", "Price: High to Low", "Best Rated"];
+const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
+
+const SORT_MAP = {
+  "Newest": "newest",
+  "Price: Low to High": "price_asc",
+  "Price: High to Low": "price_desc",
+  "Best Rated": "rating",
+  "Most Popular": "popular",
+};
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -25,10 +33,7 @@ function ServicesContent() {
         if (params?.q) query.set("search", params.q);
         if (params?.category) query.set("category", params.category);
         if (params?.serviceType) query.set("serviceType", params.serviceType);
-        if (params?.sort) {
-          const sortMap = { "Price: Low to High": "price_asc", "Price: High to Low": "price_desc", Rating: "rating", Popular: "popular" };
-          query.set("sortBy", sortMap[params.sort] || "rating");
-        }
+        if (params?.sort) query.set("sortBy", SORT_MAP[params.sort] || "newest");
         if (params?.limit) query.set("limit", String(params.limit));
         const qs = query.toString();
         return getClient().get(`/services${qs ? `?${qs}` : ""}`).then((r) => r.data);
@@ -48,7 +53,7 @@ function ServicesContent() {
         },
       ]}
       sortOptions={SORT_OPTIONS}
-      defaultSort="Popular"
+      defaultSort="Newest"
       itemLabel="service"
     />
   );

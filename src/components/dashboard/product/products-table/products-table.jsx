@@ -67,7 +67,7 @@ export default function ProductsTable({ isAdmin = false }) {
       data={products}
       loading={loading}
       rowCount="products"
-      defaultSort={[{ id: "name", desc: false }]}
+      defaultSort={[]}
       emptyMessage="No products found. Add your first product to get started."
       emptyIcon={<Package size={40} />}
       toolbar={(table) => (

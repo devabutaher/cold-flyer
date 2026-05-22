@@ -46,7 +46,7 @@ export default function BookingsTable({ isAdmin = false }) {
       data={bookings}
       loading={loading}
       rowCount="bookings"
-      defaultSort={[{ id: "bookingNumber", desc: false }]}
+      defaultSort={[]}
       emptyMessage="No bookings found. Browse services to book one."
       emptyIcon={<ClipboardList size={40} />}
       toolbar={(table) => (

@@ -17,7 +17,11 @@ export function NavSearch() {
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const inputRef = useRef(null);
 
-  const searchBase = useMemo(() => (pathname.startsWith("/services") ? "/services" : "/items"), [pathname]);
+  const searchBase = useMemo(() => {
+    if (pathname.startsWith("/services")) return pathname;
+    if (pathname.startsWith("/items")) return pathname;
+    return "/items";
+  }, [pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();

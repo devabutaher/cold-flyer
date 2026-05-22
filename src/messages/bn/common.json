@@ -140,6 +140,7 @@
     "noItemsFound": "কোনো {type} পাওয়া যায়নি",
     "tryDifferentSearch": "অনুগ্রহ করে ভিন্ন সার্চ টার্ম ব্যবহার করুন অথবা ফিল্টার সরান।",
     "resultCount": "{count}টি {label} পাওয়া গেছে",
+    "clearAll": "সব সরান",
     "installApp": "কোল্ড ফ্লায়ার ইনস্টল করুন",
     "installAppDesc": "দ্রুত অ্যাক্সেসের জন্য হোম স্ক্রিনে যোগ করুন",
     "install": "ইনস্টল",

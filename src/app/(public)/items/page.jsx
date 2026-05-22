@@ -5,7 +5,15 @@ import { getClient, extractList } from "@/lib/http-client";
 import { CatalogPage } from "@/components/catalog/catalog-page";
 import { uniqueSorted } from "@/lib/utils";
 
-const SORT_OPTIONS = ["All Products", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular", "Newest"];
+const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
+
+const SORT_MAP = {
+  "Newest": "newest",
+  "Price: Low to High": "price_asc",
+  "Price: High to Low": "price_desc",
+  "Best Rated": "rating",
+  "Most Popular": "popular",
+};
 
 function ItemsContent() {
   return (
@@ -17,7 +25,7 @@ function ItemsContent() {
         if (params?.q) query.set("search", params.q);
         if (params?.category && params.category !== "All Categories") query.set("category", params.category);
         if (params?.brand && params.brand !== "All Brands") query.set("brand", params.brand);
-        if (params?.sort) query.set("sortBy", params.sort);
+        if (params?.sort) query.set("sortBy", SORT_MAP[params.sort] || "newest");
         if (params?.page) query.set("page", String(params.page));
         if (params?.limit) query.set("limit", String(params.limit));
         const qs = query.toString();
@@ -38,6 +46,7 @@ function ItemsContent() {
         },
       ]}
       sortOptions={SORT_OPTIONS}
+      defaultSort="Newest"
       itemLabel="product"
     />
   );

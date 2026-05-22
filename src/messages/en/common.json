@@ -140,6 +140,7 @@
     "noItemsFound": "No {type}s found",
     "tryDifferentSearch": "Try a different search term or clear your filters.",
     "resultCount": "{count} {label} found",
+    "clearAll": "Clear all",
     "installApp": "Install Cold Flyer",
     "installAppDesc": "Add to home screen for quick access",
     "install": "Install",

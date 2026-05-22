@@ -220,7 +220,7 @@ export default function CouponsTable() {
         data={coupons}
         loading={isLoading}
         rowCount="coupons"
-        defaultSort={[{ id: "code", desc: false }]}
+        defaultSort={[]}
         emptyMessage="No coupons yet. Create your first coupon."
         emptyIcon={<Percent size={40} />}
         toolbar={(table) => (

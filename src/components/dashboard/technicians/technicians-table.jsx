@@ -65,7 +65,7 @@ export default function TechniciansTable() {
       data={technicians}
       loading={isLoading}
       rowCount="technicians"
-      defaultSort={[{ id: "name", desc: false }]}
+      defaultSort={[]}
       emptyMessage="No technicians found. Create one from the users page."
       emptyIcon={<Wrench size={40} />}
       toolbar={(table) => (

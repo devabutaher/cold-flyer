@@ -58,7 +58,7 @@ export default function UsersTable() {
       data={users}
       loading={isLoading}
       rowCount="users"
-      defaultSort={[{ id: "name", desc: false }]}
+      defaultSort={[]}
       emptyMessage="No users found."
       emptyIcon={<Users size={40} />}
       toolbar={(table) => (

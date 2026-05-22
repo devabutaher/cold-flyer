@@ -22,7 +22,7 @@ export function LinkItem({ label, description, icon, className, href, onClick, .
     (href !== "/" && pathWithoutLocale.startsWith(href + "/"));
 
   return (
-    <a
+    <Link
       className={cn(
         "flex items-center gap-x-2",
         isActive && "bg-accent text-accent-foreground font-semibold",
@@ -44,7 +44,7 @@ export function LinkItem({ label, description, icon, className, href, onClick, .
         <span className="text-sm font-medium">{label}</span>
         {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
-    </a>
+    </Link>
   );
 }
 

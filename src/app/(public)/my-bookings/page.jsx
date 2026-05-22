@@ -12,21 +12,21 @@ import { useAuth } from "@/components/providers";
 import { useTranslations, useLocale } from "next-intl";
 import { formatDate } from "@/lib/utils";
 
-const STATUS_MAP = {
-  pending: { label: t("pending"), className: "bg-amber-500/10 text-amber-600 border-amber-200" },
-  confirmed: { label: t("confirmed"), className: "bg-blue-500/10 text-blue-600 border-blue-200" },
-  scheduled: { label: t("scheduled"), className: "bg-indigo-500/10 text-indigo-600 border-indigo-200" },
-  in_progress: { label: t("inProgress"), className: "bg-primary/10 text-primary" },
-  completed: { label: t("completed"), className: "bg-green-500/10 text-green-600 border-green-200" },
-  cancelled: { label: t("cancelled"), className: "bg-destructive/10 text-destructive border-destructive/20" },
-};
-
 export default function MyBookingsPage() {
   const { backendUser, loading: authLoading } = useAuth();
   const t = useTranslations("bookings");
   const locale = useLocale();
   const { data: bookings = [], isLoading } = useBookingsQuery();
   const [filter, setFilter] = useState("all");
+
+  const STATUS_MAP = {
+    pending: { label: t("pending"), className: "bg-amber-500/10 text-amber-600 border-amber-200" },
+    confirmed: { label: t("confirmed"), className: "bg-blue-500/10 text-blue-600 border-blue-200" },
+    scheduled: { label: t("scheduled"), className: "bg-indigo-500/10 text-indigo-600 border-indigo-200" },
+    in_progress: { label: t("inProgress"), className: "bg-primary/10 text-primary" },
+    completed: { label: t("completed"), className: "bg-green-500/10 text-green-600 border-green-200" },
+    cancelled: { label: t("cancelled"), className: "bg-destructive/10 text-destructive border-destructive/20" },
+  };
 
   if (authLoading) {
     return (
@@ -51,6 +51,7 @@ export default function MyBookingsPage() {
   }
 
   const filtered = filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
+  const sorted = [...filtered].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div className="container py-8">
@@ -97,7 +98,7 @@ export default function MyBookingsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {filtered.map((booking) => (
+          {sorted.map((booking) => (
             <Link key={booking._id} href={`/dashboard/bookings/${booking._id}`} className="block">
               <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="pt-6">

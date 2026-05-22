@@ -1,12 +1,12 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useTranslations } from "next-intl";
-import FilterDropdown from "@/components/ui/filter-dropdown";
 import { Button } from "@/components/ui/button";
+import FilterDropdown from "@/components/ui/filter-dropdown";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ListFilter, X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { NavSearch } from "../layout/navbar/nav-search";
 
 const snakeCase = (str) =>
@@ -15,7 +15,14 @@ const snakeCase = (str) =>
     .replace(/[\s-]+/g, "_")
     .replace(/_+/g, "_");
 
-const defaultSortOptions = ["All Products", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular", "Newest"];
+const defaultSortOptions = [
+  "All Products",
+  "Price: Low to High",
+  "Price: High to Low",
+  "Best Rated",
+  "Most Popular",
+  "Newest",
+];
 
 export function CatalogFilters({
   type = "items",
@@ -27,6 +34,7 @@ export function CatalogFilters({
 }) {
   const t = useTranslations("common");
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
 
@@ -97,20 +105,26 @@ export function CatalogFilters({
 
     const route = type === "services" ? "/services" : "/items";
 
-    router.push(`${route}?${params.toString()}`);
+    // Use the current pathname for sub-pages (e.g. /items/ac_units, /items/ac_parts)
+    const resolvedRoute = pathname.startsWith(route) ? pathname : route;
+
+    router.push(`${resolvedRoute}?${params.toString()}`);
   };
 
   const handleClearAll = () => {
     const route = type === "services" ? "/services" : "/items";
-    router.push(route);
+    // Use the current pathname for sub-pages (e.g. /items/ac_units, /items/ac_parts)
+    const resolvedRoute = pathname.startsWith(route) ? pathname : route;
+    router.push(resolvedRoute);
     setOpen(false);
   };
 
-  const activeFilterCount = filterOptions.filter((filter) => {
-    const paramKey = filter.key.toLowerCase();
-    const urlValue = searchParams.get(paramKey);
-    return urlValue && urlValue !== snakeCase(filter.defaultValue || "");
-  }).length + (searchParams.get("sort") ? 1 : 0);
+  const activeFilterCount =
+    filterOptions.filter((filter) => {
+      const paramKey = filter.key.toLowerCase();
+      const urlValue = searchParams.get(paramKey);
+      return urlValue && urlValue !== snakeCase(filter.defaultValue || "");
+    }).length + (searchParams.get("sort") ? 1 : 0);
 
   return (
     <div className="py-3">

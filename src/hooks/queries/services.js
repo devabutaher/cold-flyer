@@ -26,12 +26,13 @@ export function useServicesQuery(params) {
       if (params?.serviceType) query.set("serviceType", params.serviceType);
       if (params?.sort) {
         const sortMap = {
+          "Newest": "newest",
           "Price: Low to High": "price_asc",
           "Price: High to Low": "price_desc",
-          Rating: "rating",
-          Popular: "popular",
+          "Best Rated": "rating",
+          "Most Popular": "popular",
         };
-        query.set("sortBy", sortMap[params.sort] || "rating");
+        query.set("sortBy", sortMap[params.sort] || "newest");
       }
       if (params?.featured) query.set("featured", "true");
       if (params?.page) query.set("page", String(params.page));

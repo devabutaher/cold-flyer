@@ -67,7 +67,7 @@ export default function ServicesTable({ isAdmin = false }) {
       data={services}
       loading={loading}
       rowCount="services"
-      defaultSort={[{ id: "name", desc: false }]}
+      defaultSort={[]}
       emptyMessage="No services found. Add your first service to get started."
       emptyIcon={<Package size={40} />}
       toolbar={(table) => (
