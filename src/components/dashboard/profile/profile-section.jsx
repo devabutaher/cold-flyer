@@ -11,8 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { sendVerificationCodeAction, updateProfileAction, verifyEmailAction } from "@/lib/actions/user";
+import { updateProfileAction } from "@/lib/actions/user";
 import { getClient } from "@/lib/http-client";
+import { VerifyEmailDialog } from "@/components/dashboard/profile/verify-email-dialog";
 import {
   Cake,
   Camera,
@@ -82,10 +83,7 @@ export function ProfileSection({ user }) {
   const fileInputRef = useRef(null);
   const [avatarUrl, setAvatarUrl] = useState(user.avatar || "");
   const [uploading, setUploading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
-  const [verifyCode, setVerifyCode] = useState("");
-  const [sendingCode, setSendingCode] = useState(false);
-  const [confirmingCode, setConfirmingCode] = useState(false);
+  const [verifyDialogOpen, setVerifyDialogOpen] = useState(false);
 
   async function handleSave() {
     setSaving(true);
@@ -140,34 +138,6 @@ export function ProfileSection({ user }) {
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  }
-
-  async function handleSendCode() {
-    setSendingCode(true);
-    const result = await sendVerificationCodeAction();
-    setSendingCode(false);
-    if (result.success) {
-      toast.success(result.message || "Code sent");
-      setVerifying(true);
-    } else {
-      toast.error(result.message || "Failed to send code");
-    }
-  }
-
-  async function handleVerifyCode() {
-    if (!verifyCode || verifyCode.length < 6) return;
-    setConfirmingCode(true);
-    const result = await verifyEmailAction(verifyCode);
-    setConfirmingCode(false);
-    if (result.success) {
-      toast.success(result.message || "Email verified");
-      setVerifyCode("");
-      setVerifying(false);
-      refreshUser();
-      router.refresh();
-    } else {
-      toast.error(result.message || "Failed to verify email");
     }
   }
 
@@ -318,37 +288,15 @@ export function ProfileSection({ user }) {
                         {user.isEmailVerified ? t("verified") : t("unverified")}
                       </Badge>
                     </div>
-                    {!user.isEmailVerified && !verifying && (
+                    {!user.isEmailVerified && (
                       <Button
-                        variant="link"
+                        variant="outline"
                         size="sm"
-                        className="h-auto p-0 text-xs"
-                        onClick={handleSendCode}
-                        disabled={sendingCode}
+                        className="mt-1 h-7 text-xs"
+                        onClick={() => setVerifyDialogOpen(true)}
                       >
-                        {sendingCode ? t("sending") : t("verifyEmail")}
+                        {t("verifyEmail")}
                       </Button>
-                    )}
-                    {!user.isEmailVerified && verifying && (
-                      <div className="flex items-center gap-2 mt-2">
-                        <Input
-                          size={6}
-                          maxLength={6}
-                          placeholder="000000"
-                          value={verifyCode}
-                          onChange={(e) => setVerifyCode(e.target.value.toUpperCase())}
-                          className="w-28 h-8 text-center text-sm tracking-widest"
-                          onKeyDown={(e) => e.key === "Enter" && handleVerifyCode()}
-                        />
-                        <Button
-                          size="sm"
-                          className="h-8"
-                          onClick={handleVerifyCode}
-                          disabled={confirmingCode || verifyCode.length < 6}
-                        >
-                          {confirmingCode ? t("saving") : t("confirm")}
-                        </Button>
-                      </div>
                     )}
                   </div>
                 </div>
@@ -387,6 +335,16 @@ export function ProfileSection({ user }) {
           </div>
         </div>
       </CardContent>
+
+      <VerifyEmailDialog
+        open={verifyDialogOpen}
+        onOpenChange={setVerifyDialogOpen}
+        email={user.email}
+        onSuccess={() => {
+          refreshUser();
+          router.refresh();
+        }}
+      />
     </Card>
   );
 }
