@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/providers";
-import { googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
+import { forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
 import { createAccountSchema, signInSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -20,6 +20,8 @@ export function useAuthForm() {
   const [loading, setLoading] = useState(false);
   const [showAdminHint, setShowAdminHint] = useState(false);
   const [googleReady, setGoogleReady] = useState(false);
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,6 +29,20 @@ export function useAuthForm() {
   const googleBtnRef = useRef(null);
 
   const isSignIn = tab === "signin";
+
+  const handleForgotPassword = async (email) => {
+    setLoading(true);
+    setAuthError("");
+    try {
+      await forgotPassword(email);
+      setForgotSent(true);
+      toast.success(t("passwordResetSent"));
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const form = useForm({
     resolver: zodResolver(isSignIn ? signInSchema : createAccountSchema),
@@ -126,6 +142,10 @@ export function useAuthForm() {
     showAdminHint,
     googleReady,
     googleBtnRef,
+    forgotPasswordMode,
+    forgotSent,
+    handleForgotPassword,
+    setForgotPasswordMode,
     register,
     handleSubmit,
     errors,
