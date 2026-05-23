@@ -8,7 +8,7 @@ Modern AC service booking and AC parts marketplace built with Next.js 16 App Rou
 - **Shopping Cart & Checkout** — Full cart flow with Stripe and SSLCOMMERZ payment gateways
 - **AC Service Booking** — Browse services, book appointments, manage bookings
 - **Admin Dashboard** — Manage products, orders, services, users, bookings, coupons, technicians, analytics
-- **Authentication** — JWT-based auth (access + refresh tokens) with optional Google OAuth
+- **Authentication** — JWT single access token auth with optional Google OAuth
 - **Internationalization** — Full English and Bengali (bn) locale support via next-intl
 - **Dark Mode** — System-respecting theme toggle via next-themes
 - **Animated UI** — Framer Motion animations, Embla Carousel, scroll-reveal presets

@@ -317,7 +317,7 @@ cold-flyer/
 │   │   ├── actions/            # Server actions
 │   │   ├── schemas/            # Zod schemas
 │   │   ├── animation.js        # Animation presets
-│   │   └── http-client.js      # Axios client w/ CSRF + refresh
+│   │   └── http-client.js      # Axios client (cookies via withCredentials)
 │   ├── store/                  # Zustand stores (cart.js)
 │   └── proxy.js                # Middleware (JWT guard)
 ├── components.json            # shadcn configuration
@@ -452,5 +452,5 @@ pnpm format      # Format code with Prettier
 5. Heavy libraries (xlsx, papaparse, @react-pdf) → dynamic `import()`
 6. All new sections should be `"use client"` unless purely static
 7. next-intl with `localePrefix: "never"` — no locale in URL path. Locale detected via `NEXT_LOCALE` cookie or `Accept-Language` header
-8. All `/api/*` requests are proxied from `src/app/api/[...path]/route.js` to the backend at `NEXT_PUBLIC_API_URL`. The axios client in `src/lib/http-client.js` handles CSRF token injection and automatic token refresh
+8. All `/api/*` requests are proxied from `src/app/api/[...path]/route.js` to the backend at `NEXT_PUBLIC_API_URL`. Cookies are forwarded automatically via `withCredentials: true` (client) or explicit `Cookie`/`Authorization` headers (server proxy).
 9. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props

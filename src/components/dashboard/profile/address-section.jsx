@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { SearchableSelect } from "@/components/ui/searchable-select";
+import { DISTRICTS, THANAS, getThanas } from "@/data/bd-addresses";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger, SheetClose,
 } from "@/components/ui/sheet";
@@ -39,30 +41,40 @@ const EMPTY_FORM = {
   isDefault: false,
   fullName: "",
   phone: "",
-  addressLine1: "",
-  addressLine2: "",
-  city: "",
-  state: "",
-  postalCode: "",
-  country: "USA",
+  district: "",
+  thana: "",
+  address: "",
   instructions: "",
 };
 
 function AddressForm({ form, setForm, errors }) {
+  const t = useTranslations("profile");
+  const thanas = getThanas(form.district);
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-2">
-        <Label htmlFor="addr-label">{t("addresses")}</Label>
-        <Select value={form.label} onValueChange={(v) => setForm({ ...form, label: v })}>
-          <SelectTrigger id="addr-label">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-              {LABEL_OPTIONS.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>{t(opt.value.toLowerCase())}</SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
+        <Label>{t("addresses")}</Label>
+        <div className="flex gap-2">
+          {LABEL_OPTIONS.map((opt) => {
+            const Icon = opt.icon;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setForm({ ...form, label: opt.value })}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 rounded-md border py-2 text-sm font-medium transition-colors cursor-pointer",
+                  form.label === opt.value
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-input bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                )}
+              >
+                <Icon className="size-4" />
+                {t(opt.value.toLowerCase())}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="grid gap-2">
@@ -80,39 +92,39 @@ function AddressForm({ form, setForm, errors }) {
       <Separator />
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-line1">{t("addressLine1")}</Label>
-        <Input id="addr-line1" value={form.addressLine1} onChange={(e) => setForm({ ...form, addressLine1: e.target.value })} />
-        {errors?.addressLine1 && <p className="text-xs text-destructive">{errors.addressLine1}</p>}
+        <Label>{t("district")}</Label>
+        <SearchableSelect
+          options={DISTRICTS}
+          value={form.district}
+          onChange={(id) => setForm({ ...form, district: id, thana: "" })}
+          placeholder={t("selectDistrict")}
+          searchPlaceholder={t("searchDistrict")}
+        />
+        {errors?.district && <p className="text-xs text-destructive">{errors.district}</p>}
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="addr-line2">{t("addressLine2")}</Label>
-        <Input id="addr-line2" value={form.addressLine2} onChange={(e) => setForm({ ...form, addressLine2: e.target.value })} />
+        <Label>{t("thana")}</Label>
+        <SearchableSelect
+          options={thanas}
+          value={form.thana}
+          onChange={(id) => setForm({ ...form, thana: id })}
+          placeholder={form.district ? t("selectThana") : t("selectDistrictFirst")}
+          searchPlaceholder={t("searchThana")}
+        />
+        {errors?.thana && <p className="text-xs text-destructive">{errors.thana}</p>}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="addr-city">{t("city")}</Label>
-          <Input id="addr-city" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
-          {errors?.city && <p className="text-xs text-destructive">{errors.city}</p>}
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="addr-state">{t("state")}</Label>
-          <Input id="addr-state" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
-          {errors?.state && <p className="text-xs text-destructive">{errors.state}</p>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="addr-zip">{t("postalCode")}</Label>
-          <Input id="addr-zip" value={form.postalCode} onChange={(e) => setForm({ ...form, postalCode: e.target.value })} />
-          {errors?.postalCode && <p className="text-xs text-destructive">{errors.postalCode}</p>}
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="addr-country">{t("country")}</Label>
-          <Input id="addr-country" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} />
-        </div>
+      <div className="grid gap-2">
+        <Label htmlFor="addr-address">{t("address")}</Label>
+        <textarea
+          id="addr-address"
+          value={form.address}
+          onChange={(e) => setForm({ ...form, address: e.target.value })}
+          className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
+          rows={3}
+        />
+        {errors?.address && <p className="text-xs text-destructive">{errors.address}</p>}
       </div>
 
       <div className="grid gap-2">
@@ -166,12 +178,9 @@ export function AddressSection({ initialAddresses }) {
       isDefault: addr.isDefault || false,
       fullName: addr.fullName || "",
       phone: addr.phone || "",
-      addressLine1: addr.addressLine1 || "",
-      addressLine2: addr.addressLine2 || "",
-      city: addr.city || "",
-      state: addr.state || "",
-      postalCode: addr.postalCode || "",
-      country: addr.country || "USA",
+      district: addr.district || "",
+      thana: addr.thana || "",
+      address: addr.address || "",
       instructions: addr.instructions || "",
     });
     setErrors({});
@@ -180,13 +189,12 @@ export function AddressSection({ initialAddresses }) {
 
   function validateForm() {
     const errs = {};
-    if (!form.fullName.trim()) errs.fullName = "Full name is required";
-    if (!form.phone.trim()) errs.phone = "Phone is required";
-    else if (form.phone.trim().length < 10) errs.phone = "Phone must be at least 10 digits";
-    if (!form.addressLine1.trim()) errs.addressLine1 = "Address is required";
-    if (!form.city.trim()) errs.city = "City is required";
-    if (!form.state.trim()) errs.state = "State is required";
-    if (!form.postalCode.trim()) errs.postalCode = "Postal code is required";
+    if (!form.fullName.trim()) errs.fullName = t("fullNameRequired");
+    if (!form.phone.trim()) errs.phone = t("phoneRequired");
+    else if (form.phone.trim().length < 10) errs.phone = t("phoneMinLength");
+    if (!form.district) errs.district = t("districtRequired");
+    if (!form.thana) errs.thana = t("thanaRequired");
+    if (!form.address.trim()) errs.address = t("addressRequired");
     setErrors(errs);
     return Object.keys(errs).length === 0;
   }
@@ -196,7 +204,6 @@ export function AddressSection({ initialAddresses }) {
     setSaving(true);
 
     const payload = { ...form };
-    if (!payload.addressLine2) delete payload.addressLine2;
     if (!payload.instructions) delete payload.instructions;
 
     const result = editingId
@@ -271,7 +278,7 @@ export function AddressSection({ initialAddresses }) {
                 return (
                   <div
                     key={addr._id}
-                    className="relative rounded-lg border p-4 transition-colors hover:border-primary/30"
+                    className="relative rounded-lg border p-5"
                   >
                     {addr.isDefault && (
                       <Badge variant="default" className="absolute top-3 right-3 gap-1 text-xs">
@@ -279,39 +286,41 @@ export function AddressSection({ initialAddresses }) {
                         {t("default")}
                       </Badge>
                     )}
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-4">
                       <LabelIcon className="size-4 text-muted-foreground" />
                       <span className="text-sm font-medium">{addr.label}</span>
                     </div>
-                    <div className="space-y-1 text-sm">
-                      <p className="font-medium">{addr.fullName}</p>
-                      <p className="text-muted-foreground">{addr.addressLine1}</p>
-                      {addr.addressLine2 && (
-                        <p className="text-muted-foreground">{addr.addressLine2}</p>
+                    <div className="space-y-2 text-sm">
+                      <p className="text-base font-semibold">{addr.fullName}</p>
+                      {addr.address && (
+                        <p className="text-muted-foreground leading-relaxed">{addr.address}</p>
                       )}
-                      <p className="text-muted-foreground">
-                        {addr.city}, {addr.state} {addr.postalCode}
-                      </p>
-                      <p className="text-muted-foreground">{addr.country}</p>
-                      <div className="flex items-center gap-1.5 pt-1 text-muted-foreground">
-                        <Phone className="size-3" />
-                        {addr.phone}
+                      {(addr.thana || addr.district) && (
+                        <p className="text-muted-foreground">
+                          {THANAS.find((t) => t.id === addr.thana)?.name || addr.thana}
+                          {addr.thana && addr.district ? ", " : ""}
+                          {DISTRICTS.find((d) => d.id === addr.district)?.name || addr.district}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-1.5 pt-1 text-muted-foreground/70">
+                        <Phone className="size-3.5 shrink-0" />
+                        <span>{addr.phone}</span>
                       </div>
                     </div>
-                    <Separator className="my-3" />
-                    <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="xs" onClick={() => openEditSheet(addr)}>
-                        <Pencil className="size-3" />
+                    <Separator className="my-4" />
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm" className="h-8 gap-1.5" onClick={() => openEditSheet(addr)}>
+                        <Pencil className="size-3.5" />
                         {t("editAddress")}
                       </Button>
                       {!addr.isDefault && (
-                        <Button variant="ghost" size="xs" onClick={() => handleSetDefault(addr._id)}>
-                          <Star className="size-3" />
+                        <Button variant="outline" size="sm" className="h-8 gap-1.5" onClick={() => handleSetDefault(addr._id)}>
+                          <Star className="size-3.5" />
                           {t("setDefaultAddress")}
                         </Button>
                       )}
-                      <Button variant="ghost" size="xs" className="text-destructive hover:text-destructive" onClick={() => setDeleteId(addr._id)}>
-                        <Trash2 className="size-3" />
+                      <Button variant="destructive" size="icon-sm" className="ml-auto" onClick={() => setDeleteId(addr._id)}>
+                        <Trash2 className="size-3.5" />
                       </Button>
                     </div>
                   </div>
@@ -323,7 +332,7 @@ export function AddressSection({ initialAddresses }) {
       </Card>
 
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-lg">
+        <SheetContent side="right" open={sheetOpen} className="w-full sm:max-w-lg">
           <SheetHeader>
             <SheetTitle>{editingId ? t("editAddressTitle") : t("addAddressTitle")}</SheetTitle>
             <SheetDescription>
