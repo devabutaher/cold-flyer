@@ -55,16 +55,17 @@ function ServiceCard({ service }) {
   const src = service.image || service.images?.[0]?.url;
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card transition-shadow duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col">
-      <div className="mb-6 overflow-hidden rounded-t-lg bg-muted h-48 relative">
+    <div className="group relative rounded-2xl bg-card transition-shadow duration-300 hover:shadow-lg border border-border/50 h-full flex flex-col">
+      <div className="mb-6 overflow-hidden rounded-t-2xl bg-muted h-48 relative">
         <Link href={`/services/${service.slug}`} className="relative block h-full">
           {src ? (
             <Image
               src={src}
               alt={service.name}
               fill
+              quality={85}
               loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (

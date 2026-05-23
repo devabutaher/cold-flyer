@@ -64,8 +64,8 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
   };
 
   const cardContent = (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
-      <Link href={href} className="relative block h-36 sm:h-48 overflow-hidden bg-linear-to-br from-muted to-muted/50">
+    <div className="group flex h-full flex-col rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl">
+      <Link href={href} className="relative block h-36 sm:h-48 overflow-hidden rounded-t-xl bg-linear-to-br from-muted to-muted/50">
         {isProduct && item.tag && item.tag !== "none" && (
           <Badge className={`absolute left-2 top-2 z-10 ${TAG_STYLES[item.tag] || "bg-primary"}`}>{item.tag}</Badge>
         )}

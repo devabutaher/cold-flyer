@@ -1,17 +1,46 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { UserDropdown } from "@/components/auth/user-dropdown";
+import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeToggle } from "@/components/layout/navbar/shared";
 import { NotificationDropdown } from "@/components/notifications/notification-dropdown";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { SendIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { MaximizeIcon, MinimizeIcon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { AppBreadcrumbs } from "./app-breadcrumbs";
 import { navLinks } from "./app-shared";
 import { CustomSidebarTrigger } from "./custom-sidebar-trigger";
 
 const activeItem = navLinks.find((item) => item.isActive);
+
+function FullscreenToggle() {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  return (
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button size="icon-sm" variant="outline" onClick={toggleFullscreen} aria-label="Toggle fullscreen">
+        {isFullscreen ? <MinimizeIcon /> : <MaximizeIcon />}
+      </Button>
+    </motion.div>
+  );
+}
 
 export function AppHeader() {
   return (
@@ -28,14 +57,12 @@ export function AppHeader() {
         <Separator className="mr-2 h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
         <AppBreadcrumbs page={activeItem} />
       </div>
-      <div className="flex items-center gap-3">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button size="icon-sm" variant="outline">
-            <SendIcon />
-          </Button>
-        </motion.div>
-        <NotificationDropdown />
+      <div className="flex items-center gap-2">
+        <LocaleSwitcher />
+        <ThemeToggle />
+        <FullscreenToggle />
         <Separator className="h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
+        <NotificationDropdown />
         <UserDropdown />
       </div>
     </motion.header>
