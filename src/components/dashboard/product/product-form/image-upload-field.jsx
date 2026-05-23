@@ -64,20 +64,29 @@ export function ImageUploadField({ value = [], onChange }) {
       <FieldLabel>Product Images (Max {MAX_IMAGES})</FieldLabel>
       <div className="flex flex-wrap gap-3 mt-2">
         {value.map((item, index) => (
-          <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border">
-            <Image
-              src={item.preview || item.url}
-              alt={`Image ${index + 1}`}
-              fill
-              sizes="96px"
-              quality={80}
-              className="object-cover"
-            />
+          <div key={index} className="relative w-24 h-24">
+            <div className="relative w-full h-full rounded-lg overflow-hidden border">
+              {(item.preview || item.url) ? (
+                <Image
+                  src={item.preview || item.url}
+                  alt={`Image ${index + 1}`}
+                  fill
+                  sizes="256px"
+                  quality={100}
+                  loading="eager"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground text-xs">
+                  No image
+                </div>
+              )}
+            </div>
             <Button
               type="button"
               variant="destructive"
               size="icon"
-              className="absolute -top-2 -right-2 h-6 w-6"
+              className="absolute -top-2 -right-2 h-6 w-6 z-10"
               onClick={() => handleRemove(index)}
             >
               <X className="h-3 w-3" />

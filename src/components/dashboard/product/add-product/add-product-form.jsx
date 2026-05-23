@@ -1,7 +1,7 @@
 "use client";
 
 import { useCreateProduct } from "@/hooks/queries/products";
-import { uploadImageAction } from "@/lib/actions/products";
+import { uploadImageAction } from "@/lib/actions/upload";
 import { productFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,7 +85,17 @@ export default function AddProductForm({ isAdmin = false }) {
 
     try {
       const images = form.getValues("images") || [];
-      const uploadedImages = await Promise.all(images.map((img) => uploadImageAction(img, "images")));
+      const uploadedImages = await Promise.all(
+        images.map(async (img) => {
+          const result = await uploadImageAction(img.file);
+          if (!result.success) {
+            toast.error(result.message || "Image upload failed");
+            return null;
+          }
+          return result.data;
+        })
+      );
+      const validImages = uploadedImages.filter(Boolean);
 
       const features = parseListInput(values.features);
       const inBox = parseListInput(values.inBox);
@@ -107,7 +117,7 @@ export default function AddProductForm({ isAdmin = false }) {
         onSale: values.tag === "Sale",
         features: features.length > 0 ? features : undefined,
         inBox: inBox.length > 0 ? inBox : undefined,
-        images: uploadedImages.length > 0 ? uploadedImages : undefined,
+        images: validImages.length > 0 ? validImages : undefined,
         specs: Object.keys(specs).length > 0 ? specs : undefined,
       };
 

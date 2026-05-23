@@ -1,22 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Package, CreditCard, Smartphone, Banknote, Check, Loader2, MapPin, ChevronLeft } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/components/providers";
-import { useCart } from "@/store/cart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getClient } from "@/lib/http-client";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/store/cart";
+import { Banknote, Check, ChevronLeft, CreditCard, Loader2, MapPin, Package, Smartphone } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-
+import Image from "next/image";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const inputClass =
   "flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
@@ -143,7 +141,10 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-6">
-          <Link href="/cart" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/cart"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+          >
             <ChevronLeft size={16} />
             Back to Cart
           </Link>
@@ -151,7 +152,9 @@ export default function CheckoutPage() {
 
         <div className="mb-8">
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
-          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl">{t("orderNumber", {number: order.orderNumber})}</h1>
+          <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl">
+            {t("orderNumber", { number: order.orderNumber })}
+          </h1>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -166,35 +169,75 @@ export default function CheckoutPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("fullName")}</label>
-                  <input className={inputClass} value={shipping.fullName} onChange={handleField("fullName")} placeholder={t("fullNamePlaceholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.fullName}
+                    onChange={handleField("fullName")}
+                    placeholder={t("fullNamePlaceholder")}
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("phone")}</label>
-                  <input className={inputClass} value={shipping.phone} onChange={handleField("phone")} placeholder={t("phonePlaceholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.phone}
+                    onChange={handleField("phone")}
+                    placeholder={t("phonePlaceholder")}
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("addressLine1")}</label>
-                  <input className={inputClass} value={shipping.addressLine1} onChange={handleField("addressLine1")} placeholder={t("addressLine1Placeholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.addressLine1}
+                    onChange={handleField("addressLine1")}
+                    placeholder={t("addressLine1Placeholder")}
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("addressLine2")}</label>
-                  <input className={inputClass} value={shipping.addressLine2} onChange={handleField("addressLine2")} placeholder={t("addressLine2Placeholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.addressLine2}
+                    onChange={handleField("addressLine2")}
+                    placeholder={t("addressLine2Placeholder")}
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("city")}</label>
-                  <input className={inputClass} value={shipping.city} onChange={handleField("city")} placeholder={t("cityPlaceholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.city}
+                    onChange={handleField("city")}
+                    placeholder={t("cityPlaceholder")}
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("state")}</label>
-                  <input className={inputClass} value={shipping.state} onChange={handleField("state")} placeholder="Dhaka" />
+                  <input
+                    className={inputClass}
+                    value={shipping.state}
+                    onChange={handleField("state")}
+                    placeholder="Dhaka"
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("postalCode")}</label>
-                  <input className={inputClass} value={shipping.postalCode} onChange={handleField("postalCode")} placeholder={t("postalCodePlaceholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.postalCode}
+                    onChange={handleField("postalCode")}
+                    placeholder={t("postalCodePlaceholder")}
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("country")}</label>
-                  <input className={inputClass} value={shipping.country} onChange={handleField("country")} placeholder={t("countryPlaceholder")} />
+                  <input
+                    className={inputClass}
+                    value={shipping.country}
+                    onChange={handleField("country")}
+                    placeholder={t("countryPlaceholder")}
+                  />
                 </div>
               </div>
 
@@ -215,18 +258,20 @@ export default function CheckoutPage() {
               <div className="divide-y divide-border">
                 {order.items.map((item) => (
                   <div key={item._id} className="flex items-center gap-4 py-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted">
-                        {item.image ? (
-                          <Image src={item.image} alt={item.name} fill sizes="48px" className="object-cover rounded-lg" />
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted">
+                      {item.image ? (
+                        <Image src={item.image} alt={item.name} fill sizes="48px" className="object-cover rounded-lg" />
                       ) : (
                         <Package size={18} className="text-muted-foreground" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="truncate text-sm font-medium text-foreground">{item.name}</p>
-                      <p className="text-xs text-muted-foreground">{t("qty", {count: item.quantity})}</p>
+                      <p className="text-xs text-muted-foreground">{t("qty", { count: item.quantity })}</p>
                     </div>
-                    <p className="text-sm font-semibold text-foreground">৳{(item.price * item.quantity).toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-foreground">
+                      ৳{(item.price * item.quantity).toLocaleString()}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -245,7 +290,7 @@ export default function CheckoutPage() {
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>{t("coupon", {code: order.appliedCoupon?.code || ""})}</span>
+                    <span>{t("coupon", { code: order.appliedCoupon?.code || "" })}</span>
                     <span className="font-medium">-৳{discount.toLocaleString()}</span>
                   </div>
                 )}
@@ -282,7 +327,7 @@ export default function CheckoutPage() {
                         "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors",
                         selected
                           ? "border-primary bg-primary/5 text-foreground"
-                          : "border-border text-muted-foreground hover:border-muted-foreground/30"
+                          : "border-border text-muted-foreground hover:border-muted-foreground/30",
                       )}
                     >
                       <Icon size={16} />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCreateService, useUpdateService } from "@/hooks/queries/services";
-import { uploadImageAction } from "@/lib/actions/products";
+import { uploadImageAction } from "@/lib/actions/upload";
 import { serviceFormSchema } from "@/lib/schemas";
 import { generateSlug, parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -111,8 +111,19 @@ export default function EditServiceForm({ service, isAdmin = false }) {
     try {
       const images = form.getValues("images") || [];
       const uploadedImages = await Promise.all(
-        images.map((img) => (img.file ? uploadImageAction(img, "images") : img)),
+        images.map(async (img) => {
+          if (img.file) {
+            const result = await uploadImageAction(img.file);
+            if (!result.success) {
+              toast.error(result.message || "Image upload failed");
+              return null;
+            }
+            return result.data;
+          }
+          return { url: img.url };
+        })
       );
+      const validImages = uploadedImages.filter(Boolean);
 
       const includes = parseListInput(values.includes);
       const exclusions = parseListInput(values.exclusions);
@@ -131,7 +142,7 @@ export default function EditServiceForm({ service, isAdmin = false }) {
         exclusions: exclusions.length > 0 ? exclusions : undefined,
         requirements: requirements.length > 0 ? requirements : undefined,
         qualifications: qualifications.length > 0 ? qualifications : undefined,
-        images: uploadedImages.length > 0 ? uploadedImages : undefined,
+        images: validImages.length > 0 ? validImages : undefined,
       };
 
       await updateService.mutateAsync({ id: service._id, data: payload });

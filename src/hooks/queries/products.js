@@ -7,8 +7,8 @@ import {
   createProductAction,
   updateProductAction,
   deleteProductAction,
-  uploadImageAction,
 } from "@/lib/actions/products";
+import { uploadImageAction } from "@/lib/actions/upload";
 
 const client = () => getClient();
 

@@ -89,20 +89,4 @@ export async function deleteProductAction(id) {
   }
 }
 
-export async function uploadImageAction(file, fieldName = "image") {
-  try {
-    const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const formData = new FormData();
-    formData.append(fieldName, file);
-    const res = await client.post("/api/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return { success: true, data: { url: res.data?.data?.url } };
-  } catch (error) {
-    return {
-      success: false,
-      message: error.response?.data?.message || error.message || "Failed to upload image",
-    };
-  }
-}
+

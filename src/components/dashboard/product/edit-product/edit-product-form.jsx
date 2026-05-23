@@ -1,9 +1,9 @@
 "use client";
 
 import { useUpdateProduct } from "@/hooks/queries/products";
-import { uploadImageAction } from "@/lib/actions/products";
+import { uploadImageAction } from "@/lib/actions/upload";
 import { getProductInitialValues, productFormSchema } from "@/lib/schemas";
-import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
+import { parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,8 +62,17 @@ export default function EditProductForm({ product, isAdmin = false }) {
       let uploadedImages = existingImages;
 
       if (newFiles.length > 0) {
-        const newUploaded = await Promise.all(newFiles.map((img) => uploadImageAction(img, "images")));
-        uploadedImages = [...uploadedImages, ...newUploaded];
+        const newUploaded = await Promise.all(
+          newFiles.map(async (img) => {
+            const result = await uploadImageAction(img.file);
+            if (!result.success) {
+              toast.error(result.message || "Image upload failed");
+              return null;
+            }
+            return result.data;
+          })
+        );
+        uploadedImages = [...uploadedImages, ...newUploaded.filter(Boolean)];
       }
 
       const features = parseListInput(values.features);
@@ -72,7 +81,7 @@ export default function EditProductForm({ product, isAdmin = false }) {
 
       const payload = {
         name: values.name,
-        slug: generateSlug(values.name),
+        slug: product.slug,
         sku: values.sku,
         description: values.description || `${values.name} - High quality product`,
         price: Number(values.price),

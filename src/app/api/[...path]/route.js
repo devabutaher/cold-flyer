@@ -44,9 +44,24 @@ async function proxy(request, params, method) {
     if (method !== "GET" && method !== "HEAD") {
       const contentType = request.headers.get("content-type") || "";
       if (contentType.includes("multipart/form-data")) {
-        fetchOptions.body = request.body;
+        if (method === "PATCH") {
+          const chunks = [];
+          const reader = request.body.getReader();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+          }
+          const totalLen = chunks.reduce((a, c) => a + c.length, 0);
+          const body = new Uint8Array(totalLen);
+          let offset = 0;
+          for (const c of chunks) { body.set(c, offset); offset += c.length; }
+          fetchOptions.body = body;
+        } else {
+          fetchOptions.body = request.body;
+          fetchOptions.duplex = "half";
+        }
         fetchOptions.headers["Content-Type"] = contentType;
-        fetchOptions.duplex = "half";
       } else {
         try {
           fetchOptions.body = JSON.stringify(await request.json());

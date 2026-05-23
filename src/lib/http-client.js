@@ -9,7 +9,6 @@ function createClientInstance() {
   const instance = axios.create({
     baseURL: API_BASE,
     withCredentials: true,
-    headers: { "Content-Type": "application/json" },
   });
 
   return instance;

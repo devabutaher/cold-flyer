@@ -13,8 +13,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { sendVerificationCodeAction, updateProfileAction, verifyEmailAction } from "@/lib/actions/user";
 import { getClient } from "@/lib/http-client";
-import { UserCog } from "lucide-react";
-import { Cake, Camera, Check, ChevronDownIcon, Loader2, Mail, Pencil, User, VenetianMask, X } from "lucide-react";
+import {
+  Cake,
+  Camera,
+  Check,
+  ChevronDownIcon,
+  Loader2,
+  Mail,
+  Pencil,
+  User,
+  UserCog,
+  VenetianMask,
+  X,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -60,7 +71,7 @@ export function ProfileSection({ user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [calendarMonth, setCalendarMonth] = useState(toDateInputValue(user.dateOfBirth) || new Date());
+  const [calendarMonth, setCalendarMonth] = useState(toDateInputValue(user.dateOfBirth) || new Date(2002, 0, 1));
   const [form, setForm] = useState({
     name: user.name || "",
     phone: user.phone || "",
@@ -117,9 +128,7 @@ export function ProfileSection({ user }) {
       const formData = new FormData();
       formData.append("avatar", file);
       const client = getClient();
-      const res = await client.patch("/users/avatar", formData, {
-        headers: { "Content-Type": undefined },
-      });
+      const res = await client.post("/users/avatar", formData);
       if (res.data?.success) {
         setAvatarUrl(res.data.data.avatar);
         toast.success(t("avatarUpdated"));
@@ -169,7 +178,7 @@ export function ProfileSection({ user }) {
       dateOfBirth: toDateInputValue(user.dateOfBirth),
       gender: user.gender || "",
     });
-    setCalendarMonth(toDateInputValue(user.dateOfBirth) || new Date());
+    setCalendarMonth(toDateInputValue(user.dateOfBirth) || new Date(2002, 0, 1));
     setIsEditing(false);
   }
 
@@ -242,37 +251,33 @@ export function ProfileSection({ user }) {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="dob">{t("dateOfBirth")}</Label>
-                  <div className="relative flex gap-2">
-                    <Input
-                      id="dob"
-                      readOnly
-                      value={form.dateOfBirth ? formatShortDate(form.dateOfBirth) : ""}
-                      placeholder={t("pickDate")}
-                      className="bg-background pr-10 cursor-pointer"
-                      onClick={() => setCalendarOpen(true)}
-                    />
-                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" className="absolute top-1/2 right-2 size-6 -translate-y-1/2">
-                          <ChevronDownIcon className="size-4" />
-                          <span className="sr-only">Pick a date</span>
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto overflow-hidden p-0" align="end" sideOffset={10}>
-                        <Calendar
-                          mode="single"
-                          selected={form.dateOfBirth}
-                          month={calendarMonth}
-                          onMonthChange={setCalendarMonth}
-                          captionLayout="dropdown"
-                          onSelect={(date) => {
-                            setForm({ ...form, dateOfBirth: date });
-                            setCalendarOpen(false);
-                          }}
+                  <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                        <Input
+                          id="dob"
+                          readOnly
+                          value={form.dateOfBirth ? formatShortDate(form.dateOfBirth) : ""}
+                          placeholder={t("pickDate")}
+                          className="bg-background pr-10 cursor-pointer"
                         />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                        <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={form.dateOfBirth}
+                        month={calendarMonth}
+                        onMonthChange={setCalendarMonth}
+                        captionLayout="dropdown"
+                        onSelect={(date) => {
+                          setForm({ ...form, dateOfBirth: date });
+                          setCalendarOpen(false);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="gender">{t("gender")}</Label>

@@ -56,7 +56,7 @@ export function getProductInitialValues(product) {
     tag: product.tag || "None",
     features: product.features?.join("\n") || "",
     inBox: product.inBox?.join("\n") || "",
-    images: product.images?.map((img) => ({ url: img.url, preview: img.url })) || [],
+    images: (product.images || []).filter((img) => img?.url).map((img) => ({ url: img.url, preview: img.url })),
     specs: product.specs || {},
   };
 }
