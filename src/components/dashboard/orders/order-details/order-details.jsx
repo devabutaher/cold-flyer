@@ -184,17 +184,14 @@ export function OrderDetails({ orderId }) {
                   <p className="font-medium text-foreground">{order.shippingAddress.fullName}</p>
                 )}
                 {order.shippingAddress.phone && <p>{order.shippingAddress.phone}</p>}
-                <p>
-                  {[
-                    order.shippingAddress.addressLine1,
-                    order.shippingAddress.addressLine2,
-                    order.shippingAddress.city,
-                    order.shippingAddress.state,
-                    order.shippingAddress.postalCode,
-                  ]
-                    .filter(Boolean)
-                    .join(", ")}
-                </p>
+                {order.shippingAddress.address && (
+                  <p>{order.shippingAddress.address}</p>
+                )}
+                {(order.shippingAddress.thana || order.shippingAddress.district) && (
+                  <p>
+                    {[order.shippingAddress.thana, order.shippingAddress.district].filter(Boolean).join(", ")}
+                  </p>
+                )}
                 {order.shippingAddress.instructions && (
                   <p className="mt-1 text-xs italic">Note: {order.shippingAddress.instructions}</p>
                 )}

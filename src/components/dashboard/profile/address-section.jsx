@@ -1,158 +1,32 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { Home, Building2, MapPin, Phone, Pencil, Trash2, Star, Plus } from "lucide-react";
-import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
-import { SearchableSelect } from "@/components/ui/searchable-select";
-import { DISTRICTS, THANAS, getThanas } from "@/data/bd-addresses";
+import { AddressCard } from "@/components/dashboard/profile/address-card";
 import {
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger, SheetClose,
-} from "@/components/ui/sheet";
-import {
-  AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  addAddressAction,
-  updateAddressAction,
-  deleteAddressAction,
-  setDefaultAddressAction,
-  getAddressesAction,
-} from "@/lib/actions/user";
-
-const LABEL_OPTIONS = [
-  { value: "Home", icon: Home },
-  { value: "Work", icon: Building2 },
-  { value: "Other", icon: MapPin },
-];
-
-const EMPTY_FORM = {
-  label: "Home",
-  isDefault: false,
-  fullName: "",
-  phone: "",
-  district: "",
-  thana: "",
-  address: "",
-  instructions: "",
-};
-
-function AddressForm({ form, setForm, errors }) {
-  const t = useTranslations("profile");
-  const thanas = getThanas(form.district);
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="grid gap-2">
-        <Label>{t("addresses")}</Label>
-        <div className="flex gap-2">
-          {LABEL_OPTIONS.map((opt) => {
-            const Icon = opt.icon;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setForm({ ...form, label: opt.value })}
-                className={cn(
-                  "flex flex-1 items-center justify-center gap-2 rounded-md border py-2 text-sm font-medium transition-colors cursor-pointer",
-                  form.label === opt.value
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-input bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                )}
-              >
-                <Icon className="size-4" />
-                {t(opt.value.toLowerCase())}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="addr-fullName">{t("fullName")}</Label>
-        <Input id="addr-fullName" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
-        {errors?.fullName && <p className="text-xs text-destructive">{errors.fullName}</p>}
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="addr-phone">{t("phone")}</Label>
-        <Input id="addr-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-        {errors?.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
-      </div>
-
-      <Separator />
-
-      <div className="grid gap-2">
-        <Label>{t("district")}</Label>
-        <SearchableSelect
-          options={DISTRICTS}
-          value={form.district}
-          onChange={(id) => setForm({ ...form, district: id, thana: "" })}
-          placeholder={t("selectDistrict")}
-          searchPlaceholder={t("searchDistrict")}
-        />
-        {errors?.district && <p className="text-xs text-destructive">{errors.district}</p>}
-      </div>
-
-      <div className="grid gap-2">
-        <Label>{t("thana")}</Label>
-        <SearchableSelect
-          options={thanas}
-          value={form.thana}
-          onChange={(id) => setForm({ ...form, thana: id })}
-          placeholder={form.district ? t("selectThana") : t("selectDistrictFirst")}
-          searchPlaceholder={t("searchThana")}
-        />
-        {errors?.thana && <p className="text-xs text-destructive">{errors.thana}</p>}
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="addr-address">{t("address")}</Label>
-        <textarea
-          id="addr-address"
-          value={form.address}
-          onChange={(e) => setForm({ ...form, address: e.target.value })}
-          className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
-          rows={3}
-        />
-        {errors?.address && <p className="text-xs text-destructive">{errors.address}</p>}
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="addr-instructions">{t("deliveryInstructions")}</Label>
-        <Input id="addr-instructions" value={form.instructions} onChange={(e) => setForm({ ...form, instructions: e.target.value })} />
-      </div>
-
-      <div className="flex items-center gap-2 pt-2">
-        <Checkbox
-          id="addr-default"
-          checked={form.isDefault}
-          onCheckedChange={(checked) => setForm({ ...form, isDefault: !!checked })}
-        />
-        <Label htmlFor="addr-default" className="text-sm font-normal">{t("setDefault")}</Label>
-      </div>
-    </div>
-  );
-}
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { deleteAddressAction, getAddressesAction, setDefaultAddressAction } from "@/lib/actions/user";
+import { MapPin, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import { AddressFormSheet } from "./address-form-sheet";
 
 export function AddressSection({ initialAddresses }) {
   const router = useRouter();
   const t = useTranslations("profile");
   const [addresses, setAddresses] = useState(initialAddresses || []);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [errors, setErrors] = useState({});
+  const [editingAddress, setEditingAddress] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -165,60 +39,13 @@ export function AddressSection({ initialAddresses }) {
   }, [router]);
 
   function openAddSheet() {
-    setEditingId(null);
-    setForm(EMPTY_FORM);
-    setErrors({});
+    setEditingAddress(null);
     setSheetOpen(true);
   }
 
   function openEditSheet(addr) {
-    setEditingId(addr._id);
-    setForm({
-      label: addr.label || "Home",
-      isDefault: addr.isDefault || false,
-      fullName: addr.fullName || "",
-      phone: addr.phone || "",
-      district: addr.district || "",
-      thana: addr.thana || "",
-      address: addr.address || "",
-      instructions: addr.instructions || "",
-    });
-    setErrors({});
+    setEditingAddress(addr);
     setSheetOpen(true);
-  }
-
-  function validateForm() {
-    const errs = {};
-    if (!form.fullName.trim()) errs.fullName = t("fullNameRequired");
-    if (!form.phone.trim()) errs.phone = t("phoneRequired");
-    else if (form.phone.trim().length < 10) errs.phone = t("phoneMinLength");
-    if (!form.district) errs.district = t("districtRequired");
-    if (!form.thana) errs.thana = t("thanaRequired");
-    if (!form.address.trim()) errs.address = t("addressRequired");
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  }
-
-  async function handleSave() {
-    if (!validateForm()) return;
-    setSaving(true);
-
-    const payload = { ...form };
-    if (!payload.instructions) delete payload.instructions;
-
-    const result = editingId
-      ? await updateAddressAction(editingId, payload)
-      : await addAddressAction(payload);
-
-    setSaving(false);
-
-    if (result.success) {
-      toast.success(editingId ? t("addressUpdated") : t("addressAdded"));
-      setSheetOpen(false);
-      await refreshAddresses();
-    } else {
-      toast.error(result.message || t("failedAddress"));
-    }
   }
 
   async function handleDelete() {
@@ -273,93 +100,33 @@ export function AddressSection({ initialAddresses }) {
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {addresses.map((addr) => {
-                const LabelIcon = LABEL_OPTIONS.find((o) => o.value === addr.label)?.icon || MapPin;
-                return (
-                  <div
-                    key={addr._id}
-                    className="relative rounded-lg border p-5"
-                  >
-                    {addr.isDefault && (
-                      <Badge variant="default" className="absolute top-3 right-3 gap-1 text-xs">
-                        <Star className="size-3" />
-                        {t("default")}
-                      </Badge>
-                    )}
-                    <div className="flex items-center gap-2 mb-4">
-                      <LabelIcon className="size-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">{addr.label}</span>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <p className="text-base font-semibold">{addr.fullName}</p>
-                      {addr.address && (
-                        <p className="text-muted-foreground leading-relaxed">{addr.address}</p>
-                      )}
-                      {(addr.thana || addr.district) && (
-                        <p className="text-muted-foreground">
-                          {THANAS.find((t) => t.id === addr.thana)?.name || addr.thana}
-                          {addr.thana && addr.district ? ", " : ""}
-                          {DISTRICTS.find((d) => d.id === addr.district)?.name || addr.district}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-1.5 pt-1 text-muted-foreground/70">
-                        <Phone className="size-3.5 shrink-0" />
-                        <span>{addr.phone}</span>
-                      </div>
-                    </div>
-                    <Separator className="my-4" />
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" className="h-8 gap-1.5" onClick={() => openEditSheet(addr)}>
-                        <Pencil className="size-3.5" />
-                        {t("editAddress")}
-                      </Button>
-                      {!addr.isDefault && (
-                        <Button variant="outline" size="sm" className="h-8 gap-1.5" onClick={() => handleSetDefault(addr._id)}>
-                          <Star className="size-3.5" />
-                          {t("setDefaultAddress")}
-                        </Button>
-                      )}
-                      <Button variant="destructive" size="icon-sm" className="ml-auto" onClick={() => setDeleteId(addr._id)}>
-                        <Trash2 className="size-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
+              {addresses.map((addr) => (
+                <AddressCard
+                  key={addr._id}
+                  address={addr}
+                  onEdit={openEditSheet}
+                  onDelete={(id) => setDeleteId(id)}
+                  onSetDefault={handleSetDefault}
+                />
+              ))}
             </div>
           )}
         </CardContent>
       </Card>
 
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" open={sheetOpen} className="w-full sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle>{editingId ? t("editAddressTitle") : t("addAddressTitle")}</SheetTitle>
-            <SheetDescription>
-              {editingId ? t("editAddressDesc") : t("addAddressDesc")}
-            </SheetDescription>
-          </SheetHeader>
-          <div className="flex-1 overflow-y-auto px-4">
-            <AddressForm form={form} setForm={setForm} errors={errors} />
-          </div>
-          <div className="flex gap-2 justify-end p-4 border-t">
-            <SheetClose asChild>
-              <Button variant="outline">{t("cancel")}</Button>
-            </SheetClose>
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? t("saving") : editingId ? t("editAddressTitle") : t("addAddressTitle")}
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
+      <AddressFormSheet
+        key={editingAddress?._id || "new"}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+        address={editingAddress}
+        onSaved={refreshAddresses}
+      />
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteAddress")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("deleteAddressDesc")}
-            </AlertDialogDescription>
+            <AlertDialogDescription>{t("deleteAddressDesc")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>

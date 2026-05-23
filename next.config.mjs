@@ -16,7 +16,7 @@ const nextConfig = {
     deviceSizes: [320, 420, 640, 768, 1024, 1280, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000,
-    qualities: [75, 80, 100],
+    qualities: [75, 80, 85, 100],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     formats: ["image/webp", "image/avif"],

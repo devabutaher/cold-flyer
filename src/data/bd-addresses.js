@@ -1,6 +1,3 @@
-// Bangladesh administrative data — 65 districts, 495 upazilas + 41 Dhaka city thanas
-// Source: https://bdopenapi.vercel.app/ + Bangladesh government
-
 export const DISTRICTS = [
   { id: "1", name: "Comilla", bn_name: "কুমিল্লা" },
   { id: "2", name: "Feni", bn_name: "ফেনী" },

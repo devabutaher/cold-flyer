@@ -41,21 +41,13 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logOut = useCallback(async () => {
-    fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    }).catch(() => {});
-    await router.push("/");
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setBackendUser(null);
+    router.push("/");
   }, [router]);
 
   const value = useMemo(
-    () => ({
-      backendUser,
-      loading,
-      logOut,
-      refreshUser,
-    }),
+    () => ({ backendUser, loading, logOut, refreshUser }),
     [backendUser, loading, logOut, refreshUser],
   );
 
