@@ -1,25 +1,104 @@
 "use client";
 
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Briefcase, Building, Clock, GraduationCap, Mail, MapPin, Phone, Users, Video } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { getData } from "@/data";
+import { getClient } from "@/lib/http-client";
+import { Clock, Loader2, Mail, MapPin, Video, Wrench } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-
-const process = [
-  { step: "01", title: t("step1Title"), desc: t("step1Desc") },
-  { step: "02", title: t("step2Title"), desc: t("step2Desc") },
-  { step: "03", title: t("step3Title"), desc: t("step3Desc") },
-  { step: "04", title: t("step4Title"), desc: t("step4Desc") },
-];
+import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function CareersPage() {
   const locale = useLocale();
   const t = useTranslations("careers");
   const benefits = getData("benefits", locale);
-  const departments = getData("departments", locale);
   const culture = getData("culture", locale);
+
+  const [showApplyForm, setShowApplyForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    experience: "",
+    skills: "",
+    coverLetter: "",
+    resumeUrl: "",
+  });
+
+  const process = [
+    { step: "01", title: t("step1Title"), desc: t("step1Desc") },
+    { step: "02", title: t("step2Title"), desc: t("step2Desc") },
+    { step: "03", title: t("step3Title"), desc: t("step3Desc") },
+    { step: "04", title: t("step4Title"), desc: t("step4Desc") },
+  ];
+
+  const handleApply = () => {
+    setShowApplyForm(true);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      experience: "",
+      skills: "",
+      coverLetter: "",
+      resumeUrl: "",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast.error("Please fill in the required fields");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const client = getClient();
+      const skills = formData.skills
+        ? formData.skills
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [];
+
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        position: "HVAC Technician",
+        experience: formData.experience,
+        skills,
+        coverLetter: formData.coverLetter,
+        resumeUrl: formData.resumeUrl || undefined,
+      };
+
+      await client.post("/job-applications", payload);
+      toast.success(t("applySuccess"));
+      setShowApplyForm(false);
+    } catch (err) {
+      const msg = err.response?.data?.message || "";
+      if (msg.includes("already have")) {
+        toast.error(t("applyAlreadyExists"));
+      } else {
+        toast.error(t("applyError"));
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleChange = (field) => (e) => {
+    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
@@ -33,17 +112,15 @@ export default function CareersPage() {
           quality={75}
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-foreground/80 via-foreground/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">{t("heroBadge")}</Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-background leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", {br: () => <br/>})}
+            <h1 className="font-sans font-extrabold text-6xl text-white md:text-8xl leading-[0.9] tracking-tighter mb-8">
+              {t.rich("heroTitle", { br: () => <br /> })}
             </h1>
-            <p className="text-lg text-muted/60 max-w-xl font-medium leading-relaxed">
-              {t("heroDesc")}
-            </p>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{t("heroDesc")}</p>
           </div>
         </div>
       </section>
@@ -60,9 +137,7 @@ export default function CareersPage() {
                 </h2>
               </div>
 
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {t("whyDesc")}
-              </p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{t("whyDesc")}</p>
 
               <div className="grid grid-cols-2 gap-6">
                 {culture.map((item) => (
@@ -107,9 +182,7 @@ export default function CareersPage() {
               </h2>
             </div>
 
-            <p className="max-w-md font-medium text-muted-foreground">
-              {t("benefitsDesc")}
-            </p>
+            <p className="max-w-md font-medium text-muted-foreground">{t("benefitsDesc")}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -166,44 +239,39 @@ export default function CareersPage() {
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
 
-          <div className="space-y-12">
-            {departments.map((dept) => (
-              <div key={dept.name} className="bg-background/5 rounded-2xl overflow-hidden">
-                <div className="p-8 border-b border-border/30 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <Briefcase size={24} className="text-primary" />
-                  </div>
-                  <h3 className="font-sans font-extrabold text-2xl">{dept.name}</h3>
-                  <span className="ml-auto text-sm text-muted-foreground">{t("positionsCount", {count: dept.positions.length})}</span>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-background/5 rounded-2xl overflow-hidden">
+              <div className="p-8 border-b border-border/30 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <Wrench size={24} className="text-primary" />
                 </div>
-
-                <div className="divide-y divide-border/30">
-                  {dept.positions.map((position, index) => (
-                    <div
-                      key={index}
-                      className="p-6 flex items-center justify-between hover:bg-primary/10 transition-colors cursor-pointer"
-                    >
-                      <div>
-                        <div className="font-medium text-lg mb-1">{position.title}</div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <MapPin size={14} />
-                            {position.location}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock size={14} />
-                            {position.type}
-                          </span>
-                        </div>
-                      </div>
-                      <Button variant="secondary" size="sm">
-                        Apply Now
-                      </Button>
-                    </div>
-                  ))}
+                <div>
+                  <h3 className="font-sans font-extrabold text-2xl">Service Team</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Technical Operations</p>
                 </div>
               </div>
-            ))}
+
+              <div className="divide-y divide-border/30">
+                <div className="p-6 flex items-center justify-between hover:bg-primary/10 transition-colors">
+                  <div>
+                    <div className="font-medium text-lg mb-1">HVAC Technician</div>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <MapPin size={14} />
+                        Dhaka, Bangladesh
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock size={14} />
+                        Full-time
+                      </span>
+                    </div>
+                  </div>
+                  <Button variant="secondary" size="sm" onClick={handleApply}>
+                    Apply Now
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -256,7 +324,7 @@ export default function CareersPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              Don&#8217;t see the right role?
+              {"Don't see the right role?"}
             </h3>
             <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
           </div>
@@ -270,6 +338,101 @@ export default function CareersPage() {
           </div>
         </div>
       </section>
+
+      {/* Apply Form Sheet */}
+      <Sheet open={showApplyForm} onOpenChange={(open) => !open && setShowApplyForm(false)}>
+        <SheetContent open={showApplyForm} className="sm:max-w-125 px-4 overflow-y-auto">
+          <SheetHeader className="mb-6">
+            <SheetTitle className="text-xl">Apply for HVAC Technician</SheetTitle>
+            <SheetDescription>Dhaka, Bangladesh &middot; Full-time</SheetDescription>
+          </SheetHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="apply-name">
+                {t("applyName")} <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="apply-name"
+                placeholder={t("applyNamePlaceholder")}
+                value={formData.name}
+                onChange={handleChange("name")}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="apply-email">
+                {t("applyEmail")} <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="apply-email"
+                type="email"
+                placeholder={t("applyEmailPlaceholder")}
+                value={formData.email}
+                onChange={handleChange("email")}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="apply-phone">
+                {t("applyPhone")} <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="apply-phone"
+                type="tel"
+                placeholder={t("applyPhonePlaceholder")}
+                value={formData.phone}
+                onChange={handleChange("phone")}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="apply-experience">{t("applyExperience")}</Label>
+              <Input
+                id="apply-experience"
+                placeholder={t("applyExperiencePlaceholder")}
+                value={formData.experience}
+                onChange={handleChange("experience")}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="apply-skills">{t("applySkills")}</Label>
+              <Input
+                id="apply-skills"
+                placeholder={t("applySkillsPlaceholder")}
+                value={formData.skills}
+                onChange={handleChange("skills")}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="apply-cover-letter">{t("applyCoverLetter")}</Label>
+              <Textarea
+                id="apply-cover-letter"
+                placeholder={t("applyCoverLetterPlaceholder")}
+                value={formData.coverLetter}
+                onChange={handleChange("coverLetter")}
+                rows={4}
+              />
+            </div>
+
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  {t("applySubmitting")}
+                </>
+              ) : (
+                t("applySubmit")
+              )}
+            </Button>
+          </form>
+        </SheetContent>
+      </Sheet>
     </main>
   );
 }

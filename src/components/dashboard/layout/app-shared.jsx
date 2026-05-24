@@ -1,6 +1,7 @@
 import {
   BarChart,
   ClipboardList,
+  FileText,
   HelpCircle,
   LayoutDashboard,
   Package,
@@ -68,6 +69,11 @@ export const navGroups = [
         title: "Users",
         path: "/dashboard/users",
         icon: <Users />,
+      },
+      {
+        title: "Applications",
+        path: "/dashboard/applications",
+        icon: <FileText />,
       },
       {
         title: "Technicians",

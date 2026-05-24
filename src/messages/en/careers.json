@@ -24,6 +24,25 @@
     "ctaTitle": "Dont see the right role?",
     "ctaDesc": "Submit your resume for future opportunities.",
     "ctaEmail": "careers@coldflyer.com",
-    "ctaChat": "Schedule Chat"
+    "ctaChat": "Schedule Chat",
+    "applyFormTitle": "Apply for {position}",
+    "applyName": "Full Name",
+    "applyNamePlaceholder": "John Doe",
+    "applyEmail": "Email Address",
+    "applyEmailPlaceholder": "john@example.com",
+    "applyPhone": "Phone Number",
+    "applyPhonePlaceholder": "+880 1XXX-XXXXXX",
+    "applyExperience": "Years of Experience",
+    "applyExperiencePlaceholder": "e.g. 3 years in HVAC",
+    "applySkills": "Skills",
+    "applySkillsPlaceholder": "e.g. Installation, Repair, Maintenance",
+    "applyCoverLetter": "Cover Letter",
+    "applyCoverLetterPlaceholder": "Tell us why you would be a great fit...",
+    "applyResume": "Resume (optional)",
+    "applySubmit": "Submit Application",
+    "applySubmitting": "Submitting...",
+    "applySuccess": "Application submitted successfully! We will review and get back to you.",
+    "applyError": "Failed to submit application. Please try again.",
+    "applyAlreadyExists": "You already have a pending application."
   }
 }

@@ -24,6 +24,25 @@
     "ctaTitle": "সঠিক ভূমিকা দেখতে পাচ্ছেন না?",
     "ctaDesc": "ভবিষ্যতের সুযোগের জন্য আপনার জীবনবৃত্তান্ত জমা দিন।",
     "ctaEmail": "careers@coldflyer.com",
-    "ctaChat": "চ্যাট শিডিউল করুন"
+    "ctaChat": "চ্যাট শিডিউল করুন",
+    "applyFormTitle": "{position} পদের জন্য আবেদন",
+    "applyName": "পূর্ণ নাম",
+    "applyNamePlaceholder": "জন ডো",
+    "applyEmail": "ইমেইল ঠিকানা",
+    "applyEmailPlaceholder": "john@example.com",
+    "applyPhone": "ফোন নম্বর",
+    "applyPhonePlaceholder": "+৮৮০ ১XXX-XXXXXX",
+    "applyExperience": "অভিজ্ঞতা",
+    "applyExperiencePlaceholder": "যেমন: ৩ বছর HVAC তে",
+    "applySkills": "দক্ষতা",
+    "applySkillsPlaceholder": "যেমন: ইনস্টলেশন, মেরামত, রক্ষণাবেক্ষণ",
+    "applyCoverLetter": "কভার লেটার",
+    "applyCoverLetterPlaceholder": "আপনি কেন উপযুক্ত তা জানান...",
+    "applyResume": "জীবনবৃত্তান্ত (ঐচ্ছিক)",
+    "applySubmit": "আবেদন জমা দিন",
+    "applySubmitting": "জমা দেওয়া হচ্ছে...",
+    "applySuccess": "আপনার আবেদন সফলভাবে জমা দেওয়া হয়েছে! আমরা পর্যালোচনা করে জানাবো।",
+    "applyError": "আবেদন জমা দিতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+    "applyAlreadyExists": "আপনার ইতিমধ্যে একটি আবেদন আছে।"
   }
 }
