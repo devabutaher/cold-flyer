@@ -9,6 +9,7 @@
     "productsLoadFailed": "Failed to load products",
     "servicesLoadFailed": "Failed to load services",
     "retry": "Try Again",
-    "goHome": "Go Home"
+    "goHome": "Go Home",
+    "goBack": "Go Back"
   }
 }

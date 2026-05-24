@@ -9,16 +9,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye, XCircle, PencilLine } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Eye, MoreHorizontal, PencilLine, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -38,7 +39,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
   };
 
   return (
-    <>
+    <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
       <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -49,7 +50,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/bookings/${booking._id}`}>
+              <Link href={`/dashboard/bookings/${booking._id}`} className="flex items-center w-full">
                 <Eye size={14} className="mr-2" />
                 View Details
               </Link>
@@ -57,7 +58,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
 
             {isAdmin && (
               <DropdownMenuItem asChild>
-                <Link href={`/dashboard/bookings/edit/${booking._id}`}>
+                <Link href={`/dashboard/bookings/edit/${booking._id}`} className="flex items-center w-full">
                   <PencilLine size={14} className="mr-2" />
                   Edit Booking
                 </Link>
@@ -65,42 +66,42 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
             )}
 
             {canCancel && (
-              <DropdownMenuItem onSelect={() => setCancelOpen(true)}>
-                <XCircle size={14} className="mr-2 text-destructive" />
-                Cancel Booking
-              </DropdownMenuItem>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <XCircle size={14} className="text-destructive" />
+                  Cancel Booking
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
             )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Cancel this booking?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Booking <strong>{booking.bookingNumber}</strong> for {booking.service?.name} will be cancelled.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="py-2">
-            <Textarea
-              value={cancelReason}
-              onChange={(e) => setCancelReason(e.target.value)}
-              placeholder="Reason for cancellation (optional)"
-              rows={2}
-            />
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Keep Booking</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-              onClick={handleCancel}
-            >
-              Cancel Booking
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Cancel this booking?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Booking <strong>{booking.bookingNumber}</strong> for {booking.service?.name} will be cancelled.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="py-2">
+          <Textarea
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            placeholder="Reason for cancellation (optional)"
+            rows={2}
+          />
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Keep Booking</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+            onClick={handleCancel}
+          >
+            Cancel Booking
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

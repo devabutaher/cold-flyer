@@ -37,7 +37,7 @@ export function AddressCard({ address, isSelected, onSelect, onEdit, onDelete, o
         "relative rounded-lg border p-5",
         onSelect && "cursor-pointer transition-all",
         isSelected
-          ? "border-primary ring-1 ring-primary bg-primary/[0.03]"
+          ? "border-primary ring-1 ring-primary bg-primary/3"
           : onSelect && "border-border hover:border-muted-foreground/30",
         !onSelect && "border-border",
       )}
