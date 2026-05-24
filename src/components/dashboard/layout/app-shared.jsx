@@ -4,6 +4,7 @@ import {
   FileText,
   HelpCircle,
   LayoutDashboard,
+  Newspaper,
   Package,
   Percent,
   ShoppingCart,
@@ -79,6 +80,16 @@ export const navGroups = [
         title: "Technicians",
         path: "/dashboard/technicians",
         icon: <Wrench />,
+      },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      {
+        title: "Blog Posts",
+        path: "/dashboard/blogs",
+        icon: <Newspaper />,
       },
     ],
   },

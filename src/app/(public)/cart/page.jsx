@@ -78,7 +78,15 @@ function CartContent() {
       if (couponInfo.minOrderValue > 0 && subtotal < couponInfo.minOrderValue) {
         throw new Error(`Minimum order of ৳${couponInfo.minOrderValue.toLocaleString()} required`);
       }
-      const res = await getClient().patch("/cart/apply-coupon", { code: couponCode }).then((r) => r.data);
+      const res = await getClient().patch("/cart/apply-coupon", {
+        code: couponCode,
+        items: items.map((item) => ({
+          productRef: item.productRef || item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      }).then((r) => r.data);
       if (res.success) {
         applyCoupon(res.data.coupon);
         toast.success(ct("couponApplied"));
