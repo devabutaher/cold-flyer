@@ -75,7 +75,7 @@ export function ScheduleSection({ control }) {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Controller
             name="scheduledDate"
             control={control}
@@ -116,8 +116,8 @@ export function ScheduleSection({ control }) {
 
           <div className="flex flex-col gap-2">
             <Label className="px-1">Time Window</Label>
-            <div className="flex gap-2">
-              <div className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex-1 min-w-0 w-full">
                 <Controller
                   name="scheduledTime.start"
                   control={control}
@@ -131,7 +131,7 @@ export function ScheduleSection({ control }) {
                   )}
                 />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0 w-full">
                 <Controller
                   name="scheduledTime.end"
                   control={control}

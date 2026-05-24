@@ -462,12 +462,18 @@ export function BookingDetails({ bookingId }) {
           <div className="space-y-2">
             {isAdmin && booking.status !== "cancelled" && (
               <>
-                {booking.status === "pending" && <ConfirmBookingDialog booking={booking} onSuccess={refetch} />}
-                {booking.status === "confirmed" && (
-                  <ScheduleBookingDialog booking={booking} onSuccess={refetch} technicians={technicians} />
+                {booking.status === "pending" && (
+                  <ConfirmBookingDialog booking={booking} onSuccess={refetch} triggerClassName="w-full" triggerVariant="default" />
                 )}
-                {booking.status === "scheduled" && <StartServiceDialog booking={booking} onSuccess={refetch} />}
-                {booking.status === "in_progress" && <CompleteBookingDialog booking={booking} onSuccess={refetch} />}
+                {booking.status === "confirmed" && (
+                  <ScheduleBookingDialog booking={booking} onSuccess={refetch} technicians={technicians} triggerClassName="w-full" triggerVariant="default" />
+                )}
+                {booking.status === "scheduled" && (
+                  <StartServiceDialog booking={booking} onSuccess={refetch} triggerClassName="w-full" triggerVariant="default" />
+                )}
+                {booking.status === "in_progress" && (
+                  <CompleteBookingDialog booking={booking} onSuccess={refetch} triggerClassName="w-full" triggerVariant="default" />
+                )}
               </>
             )}
             {booking.status === "completed" && (

@@ -115,7 +115,7 @@ export function buildBookingColumns({ onCancel, isAdmin } = {}) {
 
     {
       id: "actions",
-      size: 52,
+      size: isAdmin ? 130 : 52,
       enableSorting: false,
       header: "",
       cell: ({ row }) => <BookingRowActions row={row} onCancel={onCancel} isAdmin={isAdmin} />,

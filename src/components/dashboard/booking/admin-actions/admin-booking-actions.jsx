@@ -1,11 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScheduleSection } from "@/components/dashboard/booking/booking-form";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,11 +12,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useConfirmBooking, useScheduleBooking, useStartService, useCompleteBooking } from "@/hooks/queries/bookings";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useCompleteBooking, useConfirmBooking, useScheduleBooking, useStartService } from "@/hooks/queries/bookings";
 import { CalendarDays, CheckCircle2, Loader2, PlayCircle, ThumbsUp } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function ConfirmBookingDialog({ booking, onSuccess }) {
+export function ConfirmBookingDialog({ booking, onSuccess, triggerClassName, triggerVariant = "outline" }) {
   const [open, setOpen] = useState(false);
   const confirmBooking = useConfirmBooking();
 
@@ -36,7 +37,7 @@ export function ConfirmBookingDialog({ booking, onSuccess }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant={triggerVariant} size="sm" className={triggerClassName}>
           <ThumbsUp size={14} className="mr-2" />
           Confirm
         </Button>
@@ -66,25 +67,41 @@ export function ConfirmBookingDialog({ booking, onSuccess }) {
   );
 }
 
-export function ScheduleBookingDialog({ booking, onSuccess, technicians = [] }) {
+export function ScheduleBookingDialog({
+  booking,
+  onSuccess,
+  technicians = [],
+  triggerClassName,
+  triggerVariant = "outline",
+}) {
   const [open, setOpen] = useState(false);
-  const [scheduledDate, setScheduledDate] = useState(
-    booking.scheduledDate ? new Date(booking.scheduledDate).toISOString().split("T")[0] : "",
-  );
-  const [timeStart, setTimeStart] = useState(booking.scheduledTime?.start || "");
-  const [timeEnd, setTimeEnd] = useState(booking.scheduledTime?.end || "");
   const [technician, setTechnician] = useState(booking.technician?._id || "");
   const scheduleBooking = useScheduleBooking();
 
+  const { control, getValues } = useForm({
+    defaultValues: {
+      scheduledDate: booking.scheduledDate ? new Date(booking.scheduledDate).toISOString().split("T")[0] : "",
+      scheduledTime: {
+        start: booking.scheduledTime?.start || "",
+        end: booking.scheduledTime?.end || "",
+      },
+    },
+  });
+
   const handleSubmit = async () => {
-    if (!scheduledDate || !timeStart || !timeEnd) {
+    const values = getValues();
+    if (!values.scheduledDate || !values.scheduledTime?.start || !values.scheduledTime?.end) {
       toast.error("Please fill in date and time");
       return;
     }
     try {
       await scheduleBooking.mutateAsync({
         id: booking._id,
-        data: { scheduledDate, scheduledTime: { start: timeStart, end: timeEnd }, ...(technician && { technician }) },
+        data: {
+          scheduledDate: values.scheduledDate,
+          scheduledTime: values.scheduledTime,
+          ...(technician && { technician }),
+        },
       });
       setOpen(false);
       onSuccess?.();
@@ -94,39 +111,20 @@ export function ScheduleBookingDialog({ booking, onSuccess, technicians = [] }) 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant={triggerVariant} size="sm" className={triggerClassName}>
           <CalendarDays size={14} className="mr-2" />
           Schedule
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent style={{ maxWidth: "700px" }}>
         <AlertDialogHeader>
           <AlertDialogTitle>Schedule Booking</AlertDialogTitle>
           <AlertDialogDescription>Set date, time, and technician for {booking.bookingNumber}</AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="space-y-4 py-4">
-          <div>
-            <Label>Date</Label>
-            <Input
-              type="date"
-              value={scheduledDate}
-              onChange={(e) => setScheduledDate(e.target.value)}
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label>Start Time</Label>
-              <Input type="time" value={timeStart} onChange={(e) => setTimeStart(e.target.value)} required />
-            </div>
-            <div>
-              <Label>End Time</Label>
-              <Input type="time" value={timeEnd} onChange={(e) => setTimeEnd(e.target.value)} required />
-            </div>
-          </div>
+        <div className="py-4">
+          <ScheduleSection control={control} />
           {technicians.length > 0 && (
-            <div>
+            <div className="mt-4">
               <Label>Technician</Label>
               <Select value={technician} onValueChange={setTechnician}>
                 <SelectTrigger>
@@ -161,7 +159,7 @@ export function ScheduleBookingDialog({ booking, onSuccess, technicians = [] }) 
   );
 }
 
-export function StartServiceDialog({ booking, onSuccess }) {
+export function StartServiceDialog({ booking, onSuccess, triggerClassName, triggerVariant = "outline" }) {
   const [open, setOpen] = useState(false);
   const startService = useStartService();
 
@@ -176,7 +174,7 @@ export function StartServiceDialog({ booking, onSuccess }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+        <Button variant={triggerVariant} size="sm" className={triggerClassName}>
           <PlayCircle size={14} className="mr-2" />
           Start Service
         </Button>
@@ -206,7 +204,7 @@ export function StartServiceDialog({ booking, onSuccess }) {
   );
 }
 
-export function CompleteBookingDialog({ booking, onSuccess }) {
+export function CompleteBookingDialog({ booking, onSuccess, triggerClassName, triggerVariant = "outline" }) {
   const [open, setOpen] = useState(false);
   const [diagnosis, setDiagnosis] = useState(booking.diagnosis || "");
   const [workDone, setWorkDone] = useState(booking.workDone || "");
@@ -223,7 +221,7 @@ export function CompleteBookingDialog({ booking, onSuccess }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button size="sm" className="bg-green-600 hover:bg-green-700">
+        <Button variant={triggerVariant} size="sm" className={triggerClassName}>
           <CheckCircle2 size={14} className="mr-2" />
           Complete
         </Button>
