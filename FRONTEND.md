@@ -226,6 +226,7 @@ This project uses **shadcn/ui** style components:
 - Detail Components: `src/components/detail/`
 - Catalog Components: `src/components/catalog/`
 - Cart Components: `src/components/carts/`
+- Checkout Components: `src/components/checkout/` — `address-picker.jsx`, `order-items-list.jsx`, `payment-method-selector.jsx`, `order-summary.jsx`, `checkout-page.jsx`
 - Auth Components: `src/components/auth/`
 - Services Components: `src/components/services/`
 - Dashboard Components: `src/components/dashboard/`
@@ -263,13 +264,14 @@ Located in `src/components/ui/`:
 | Radio Group | Radio button group |
 | Breadcrumb | Breadcrumb navigation |
 | Button Group | Grouped buttons |
-| Alert Dialog | Confirmation dialog |
+| Alert Dialog | Confirmation dialog — `w-[calc(100%-2rem)]` ensures 16px side margin on mobile matching app-shell `px-4` |
 | Infinite Slider | Infinite scrolling slider |
 | Text Slider | Text animation slider |
 | Filter Dropdown | Filter control |
 | File Upload | File upload component |
 | Quantity Input | Quantity selector |
 | Price Format | Price display formatter |
+| SearchableSelect | Popover + search input + scrollable list — BD district/thana selector |
 | Sidebar | Dashboard sidebar |
 | Navigation Menu | Navigation menu |
 
@@ -305,6 +307,7 @@ cold-flyer/
 │   │   ├── auth/               # Auth components
 │   │   ├── services/           # Service related components
 │   │   ├── carts/              # Cart components
+│   │   ├── checkout/           # Checkout components (address-picker, order-items, payment-method, order-summary, checkout-page)
 │   │   ├── dashboard/          # Dashboard components
 │   │   ├── reviews/            # Review components
 │   │   ├── notifications/      # Notification components
@@ -338,14 +341,13 @@ cold-flyer/
 | `/items/[id]` | Product detail page |
 | `/services` | Services listing |
 | `/cart` | Shopping cart |
-| `/checkout` | Checkout |
+| `/checkout/[id]` | Checkout by order ID |
 | `/auth` | Authentication |
 | `/order` | Order tracking |
 | `/about` | About us |
 | `/faq` | FAQ |
 | `/blog` | Blog |
 | `/contact` | Contact us |
-| `/my-bookings` | User bookings |
 | `/privacy` | Privacy policy |
 | `/terms` | Terms & conditions |
 | `/shipping` | Shipping info |
@@ -454,3 +456,45 @@ pnpm format      # Format code with Prettier
 7. next-intl with `localePrefix: "never"` — no locale in URL path. Locale detected via `NEXT_LOCALE` cookie or `Accept-Language` header
 8. All `/api/*` requests are proxied from `src/app/api/[...path]/route.js` to the backend at `NEXT_PUBLIC_API_URL`. Cookies are forwarded automatically via `withCredentials: true` (client) or explicit `Cookie`/`Authorization` headers (server proxy).
 9. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props
+
+10. Next.js 16 `params` is a Promise — use `const { id } = await params` in page components
+11. BD address data at `src/data/bd-addresses.js` — 65 districts, 536 thanas, `getThanas(districtId)` helper
+12. Profile shared components: `AddressCard` (`src/components/dashboard/profile/address-card.jsx`), `AddressFormSheet` (`src/components/dashboard/profile/address-form-sheet.jsx`) — reusable in checkout
+
+## Dashboard Booking Details
+
+Located at `src/components/dashboard/booking/booking-details/`:
+
+| File | Purpose |
+|------|---------|
+| `booking-details.jsx` | Main two-column layout (`lg:grid-cols-3`) — detail body + admin actions sidebar |
+| `detail-card.jsx` | Reusable Card wrapper with icon + title for field groups |
+| `booking-detail-skeleton.jsx` | Loading skeleton matching the two-column layout |
+
+Admin action dialogs accept `triggerClassName` and `triggerVariant` props for full-width styling:
+
+```jsx
+<ConfirmBookingDialog
+  bookingId={id}
+  triggerClassName="w-full"
+  triggerVariant="default"
+/>
+```
+
+Cancel dialog pattern — AlertDialog wraps outside DropdownMenu:
+
+```jsx
+<AlertDialog>
+  <DropdownMenu>
+    <DropdownMenuTrigger>⋮</DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <AlertDialogTrigger asChild>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          Cancel Booking
+        </DropdownMenuItem>
+      </AlertDialogTrigger>
+    </DropdownMenuContent>
+  </DropdownMenu>
+  <AlertDialogContent>...</AlertDialogContent>
+</AlertDialog>
+```

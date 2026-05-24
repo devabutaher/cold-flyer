@@ -104,7 +104,7 @@ export function NavButtons({ onAuthenticated, context = "desktop", onClick }) {
             {t("dashboard")}
           </Button>
         </Link>
-        <Link href="/my-bookings" className={isMobile ? "w-full" : undefined}>
+        <Link href="/dashboard/bookings" className={isMobile ? "w-full" : undefined}>
           <Button variant="outline" className={cn(isMobile && "w-full")} onClick={onClick}>
             {t("myBookings")}
           </Button>

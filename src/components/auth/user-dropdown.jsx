@@ -76,7 +76,7 @@ export function UserDropdown() {
               {t("orders")}
             </DropdownMenuItem>
           </Link>
-          <Link href="/my-bookings" passHref>
+          <Link href="/dashboard/bookings" passHref>
             <DropdownMenuItem className="cursor-pointer">
               <CalendarCheck className="mr-2 size-4" />
               {tn("myBookings")}
