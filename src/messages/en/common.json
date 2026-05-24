@@ -142,6 +142,10 @@
     "installApp": "Install Cold Flyer",
     "installAppDesc": "Add to home screen for quick access",
     "install": "Install",
-    "maybeLater": "Maybe later"
+    "maybeLater": "Maybe later",
+    "useCode": "Use Code",
+    "copyCode": "Copy",
+    "copied": "Copied!",
+    "noOffer": "No active offers right now"
   }
 }

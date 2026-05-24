@@ -13,20 +13,30 @@ const STORAGE_KEY = "cold_flyer_cart";
 // Pure state management without middleware
 function createCartStore() {
   let items = [];
+  let coupon = null;
+  let couponLoading = false;
   let listeners = new Set();
   let hydrated = false;
 
   // Load from localStorage
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) items = JSON.parse(stored);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        items = parsed;
+      } else if (parsed.items) {
+        items = parsed.items;
+        coupon = parsed.coupon || null;
+      }
+    }
   } catch (e) {
     items = [];
   }
 
   function persist() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, coupon }));
     } catch (e) {
       // Ignore storage errors
     }
@@ -95,6 +105,27 @@ function createCartStore() {
 
     clearCart: () => {
       items = [];
+      coupon = null;
+      persist();
+      notify();
+    },
+
+    getCoupon: () => coupon,
+    getCouponLoading: () => couponLoading,
+
+    setCouponLoading: (val) => {
+      couponLoading = val;
+      notify();
+    },
+
+    applyCoupon: (applied) => {
+      coupon = applied;
+      persist();
+      notify();
+    },
+
+    removeCoupon: () => {
+      coupon = null;
       persist();
       notify();
     },
@@ -119,6 +150,7 @@ function createCartStore() {
 
     reset: () => {
       items = [];
+      coupon = null;
       notify();
     },
 
@@ -152,6 +184,11 @@ export function useCart() {
     getItemCount: cartStore.getItemCount,
     getSubtotal: cartStore.getSubtotal,
     getTotal: cartStore.getTotal,
+    coupon: cartStore.getCoupon(),
+    couponLoading: cartStore.getCouponLoading(),
+    applyCoupon: cartStore.applyCoupon,
+    setCouponLoading: cartStore.setCouponLoading,
+    removeCoupon: cartStore.removeCoupon,
   };
 }
 

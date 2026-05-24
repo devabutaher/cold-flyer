@@ -9,6 +9,7 @@
     "vat": "ভ্যাট",
     "couponCode": "কুপন কোড",
     "applyCoupon": "প্রয়োগ করুন",
+    "coupon": "কুপন ({code})",
     "couponApplied": "কুপন সফলভাবে প্রয়োগ করা হয়েছে!",
     "invalidCoupon": "অবৈধ কুপন কোড",
     "total": "মোট",

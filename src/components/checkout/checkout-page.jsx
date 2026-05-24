@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2, Tag, X } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -39,6 +40,8 @@ export function CheckoutPage({ orderId }) {
   const [deleteId, setDeleteId] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [paymentProvider, setPaymentProvider] = useState("stripe");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponUpdating, setCouponUpdating] = useState(false);
 
   const addresses = useMemo(() => backendUser?.addresses || [], [backendUser?.addresses]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -101,6 +104,47 @@ export function CheckoutPage({ orderId }) {
   function openAddSheet() {
     setEditingAddress(null);
     setAddressSheetOpen(true);
+  }
+
+  async function handleApplyCoupon() {
+    if (!couponInput.trim()) return;
+    setCouponUpdating(true);
+    try {
+      const lookup = await getClient().get(`/coupons/lookup/${couponInput}`).then((r) => r.data);
+      if (!lookup.success || !lookup.data?.coupon) {
+        throw new Error(t("invalidCoupon"));
+      }
+      const couponInfo = lookup.data.coupon;
+      if (couponInfo.minOrderValue > 0 && (order?.subtotal || 0) < couponInfo.minOrderValue) {
+        throw new Error(`Minimum order of ৳${couponInfo.minOrderValue.toLocaleString()} required`);
+      }
+      const res = await getClient().patch(`/orders/${orderId}/coupon`, { couponCode: couponInput }).then((r) => r.data);
+      if (res.success) {
+        setOrder(res.data.order);
+        setCouponInput("");
+        toast.success(t("couponApplied"));
+      }
+    } catch (err) {
+      const msg = err?.response?.data?.message || err.message || t("invalidCoupon");
+      toast.error(msg);
+    } finally {
+      setCouponUpdating(false);
+    }
+  }
+
+  async function handleRemoveCoupon() {
+    setCouponUpdating(true);
+    try {
+      const res = await getClient().patch(`/orders/${orderId}/coupon`, { removeCoupon: true }).then((r) => r.data);
+      if (res.success) {
+        setOrder(res.data.order);
+        toast.success(t("couponRemoved"));
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || t("somethingWrong"));
+    } finally {
+      setCouponUpdating(false);
+    }
   }
 
   async function handlePlaceOrder() {
@@ -196,6 +240,45 @@ export function CheckoutPage({ orderId }) {
                 onDelete={(id) => setDeleteId(id)}
                 onSetDefault={handleSetDefault}
               />
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="mb-4 text-lg font-bold text-foreground">Coupon</h2>
+              {order.appliedCoupon ? (
+                <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <Tag size={16} className="text-green-600" />
+                    <div>
+                      <span className="text-sm font-medium text-green-700">{order.appliedCoupon.code}</span>
+                      <span className="ml-2 text-xs text-green-600">
+                        {order.appliedCoupon.discountType === "percentage"
+                          ? `${order.appliedCoupon.discountValue}% off`
+                          : order.appliedCoupon.discountType === "fixed"
+                            ? `৳${order.appliedCoupon.discountValue} off`
+                            : "Free shipping"}
+                      </span>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={handleRemoveCoupon} disabled={couponUpdating} className="text-destructive hover:text-destructive h-8">
+                    {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("removeCoupon")}
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                      placeholder={t("couponPlaceholder")}
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                  </div>
+                  <Button size="sm" onClick={handleApplyCoupon} disabled={!couponInput.trim() || couponUpdating} className="h-9 shrink-0">
+                    {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("applyCoupon")}
+                  </Button>
+                </div>
+              )}
             </div>
             <div className="rounded-2xl border border-border bg-card p-6">
               <h2 className="mb-4 text-lg font-bold text-foreground">{t("items")}</h2>

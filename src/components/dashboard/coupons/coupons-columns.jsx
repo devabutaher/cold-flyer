@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { StatusBadge, MonoCell } from "@/components/dashboard/table/table-cells";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 const ACTIVE_MAP = {
   true: { label: "Active", className: "bg-green-500/10 text-green-600" },
@@ -14,7 +14,7 @@ const DISCOUNT_TYPE_MAP = {
   free_shipping: { label: "Free Shipping", className: "bg-teal-500/10 text-teal-600" },
 };
 
-export function buildCouponColumns({ onDelete } = {}) {
+export function buildCouponColumns({ onDelete, onEdit } = {}) {
   return [
     {
       id: "select",
@@ -100,7 +100,17 @@ export function buildCouponColumns({ onDelete } = {}) {
       enableSorting: false,
       header: "",
       cell: ({ row }) => (
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-1">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit?.(row.original);
+            }}
+          >
+            <Pencil size={14} className="text-muted-foreground" />
+          </Button>
           <Button
             variant="ghost"
             size="icon-sm"

@@ -39,6 +39,12 @@
     "fillAddress": "অনুগ্রহ করে আপনার শিপিং ঠিকানা পূরণ করুন",
     "checkoutFailed": "চেকআউট ব্যর্থ হয়েছে",
     "somethingWrong": "কিছু ভুল হয়েছে",
-    "orderNotFound": "অর্ডার পাওয়া যায়নি"
+    "orderNotFound": "অর্ডার পাওয়া যায়নি",
+    "applyCoupon": "প্রয়োগ করুন",
+    "removeCoupon": "সরান",
+    "couponPlaceholder": "কুপন কোড",
+    "couponApplied": "কুপন সফলভাবে প্রয়োগ করা হয়েছে!",
+    "invalidCoupon": "অবৈধ কুপন কোড",
+    "couponRemoved": "কুপন সরানো হয়েছে"
   }
 }

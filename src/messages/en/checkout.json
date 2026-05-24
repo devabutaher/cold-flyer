@@ -39,6 +39,12 @@
     "fillAddress": "Please fill in your shipping address",
     "checkoutFailed": "Checkout failed",
     "somethingWrong": "Something went wrong",
-    "orderNotFound": "Order not found"
+    "orderNotFound": "Order not found",
+    "applyCoupon": "Apply",
+    "removeCoupon": "Remove",
+    "couponPlaceholder": "Coupon code",
+    "couponApplied": "Coupon applied successfully!",
+    "invalidCoupon": "Invalid coupon code",
+    "couponRemoved": "Coupon removed"
   }
 }

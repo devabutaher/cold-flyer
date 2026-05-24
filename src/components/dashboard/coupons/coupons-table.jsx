@@ -3,25 +3,14 @@
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Percent, PlusIcon } from "lucide-react";
+import { Percent, PlusIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { buildCouponColumns } from "./coupons-columns";
+import { CouponFormDialog } from "./coupon-form-dialog";
 
 const mapRow = (c) => ({
   code: c.code,
@@ -45,14 +34,7 @@ const PDF_COLUMNS = [
 
 export default function CouponsTable() {
   const queryClient = useQueryClient();
-  const [showCreate, setShowCreate] = useState(false);
-  const [code, setCode] = useState("");
-  const [discountType, setDiscountType] = useState("percentage");
-  const [discountValue, setDiscountValue] = useState("");
-  const [minOrderValue, setMinOrderValue] = useState("");
-  const [maxUsage, setMaxUsage] = useState("");
-  const [validFrom, setValidFrom] = useState("");
-  const [validUntil, setValidUntil] = useState("");
+  const [editingCoupon, setEditingCoupon] = useState(null);
 
   const { data: coupons = [], isLoading } = useQuery({
     queryKey: ["admin-coupons"],
@@ -71,43 +53,6 @@ export default function CouponsTable() {
     onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
-  const createCoupon = useMutation({
-    mutationFn: (data) => getClient().post("/admin/coupons", data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
-      setShowCreate(false);
-      resetForm();
-      toast.success("Coupon created");
-    },
-    onError: (err) => toast.error(err.response?.data?.message || err.message),
-  });
-
-  const resetForm = () => {
-    setCode("");
-    setDiscountType("percentage");
-    setDiscountValue("");
-    setMinOrderValue("");
-    setMaxUsage("");
-    setValidFrom("");
-    setValidUntil("");
-  };
-
-  const handleCreate = async () => {
-    if (!code || !discountValue || !validFrom || !validUntil) {
-      toast.error("Fill required fields");
-      return;
-    }
-    createCoupon.mutate({
-      code: code.toUpperCase(),
-      discountType,
-      discountValue: Number(discountValue),
-      minOrderValue: minOrderValue ? Number(minOrderValue) : 0,
-      maxUsage: maxUsage ? Number(maxUsage) : undefined,
-      validFrom: new Date(validFrom),
-      validUntil: new Date(validUntil),
-    });
-  };
-
   const handleDelete = useCallback(
     async (id) => {
       if (!confirm("Delete this coupon?")) return;
@@ -116,7 +61,7 @@ export default function CouponsTable() {
     [deleteCoupon],
   );
 
-  const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete }), [handleDelete]);
+  const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete, onEdit: setEditingCoupon }), [handleDelete]);
 
   const typeOptions = ["percentage", "fixed", "free_shipping"];
   const statusOptions = ["true", "false"];
@@ -128,92 +73,26 @@ export default function CouponsTable() {
           <h1 className="text-xl font-semibold tracking-tight">Coupons</h1>
           <p className="text-sm text-muted-foreground">Manage discount coupons</p>
         </div>
-        <Button size="sm" onClick={() => setShowCreate(true)}>
-          <PlusIcon size={14} className="mr-1" /> Add Coupon
-        </Button>
+        <CouponFormDialog
+          mode="create"
+          trigger={
+            <Button size="sm">
+              <PlusIcon size={14} className="mr-1" /> Add Coupon
+            </Button>
+          }
+        />
       </div>
 
-      <AlertDialog open={showCreate} onOpenChange={setShowCreate}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Create Coupon</AlertDialogTitle>
-            <AlertDialogAction>Add a new discount coupon for customers to use at checkout.</AlertDialogAction>
-          </AlertDialogHeader>
-          <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Code *</Label>
-                <Input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="SUMMER20" />
-              </div>
-              <div>
-                <Label>Type</Label>
-                <Select value={discountType} onValueChange={setDiscountType}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="percentage">Percentage</SelectItem>
-                    <SelectItem value="fixed">Fixed (৳)</SelectItem>
-                    <SelectItem value="free_shipping">Free Shipping</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Value *</Label>
-                <Input
-                  type="number"
-                  value={discountValue}
-                  onChange={(e) => setDiscountValue(e.target.value)}
-                  placeholder="20"
-                />
-              </div>
-              <div>
-                <Label>Min Order</Label>
-                <Input
-                  type="number"
-                  value={minOrderValue}
-                  onChange={(e) => setMinOrderValue(e.target.value)}
-                  placeholder="0"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Valid From *</Label>
-                <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
-              </div>
-              <div>
-                <Label>Valid Until *</Label>
-                <Input type="date" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} />
-              </div>
-            </div>
-            <div>
-              <Label>Max Usage</Label>
-              <Input
-                type="number"
-                value={maxUsage}
-                onChange={(e) => setMaxUsage(e.target.value)}
-                placeholder="Unlimited"
-              />
-            </div>
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleCreate} disabled={createCoupon.isPending}>
-              {createCoupon.isPending ? (
-                <>
-                  <Loader2 size={14} className="animate-spin mr-2" />
-                  Creating...
-                </>
-              ) : (
-                "Create Coupon"
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {editingCoupon && (
+        <CouponFormDialog
+          key={editingCoupon._id}
+          mode="edit"
+          coupon={editingCoupon}
+          open={!!editingCoupon}
+          onOpenChange={(open) => !open && setEditingCoupon(null)}
+          onSuccess={() => setEditingCoupon(null)}
+        />
+      )}
 
       <DataTable
         columns={columns}

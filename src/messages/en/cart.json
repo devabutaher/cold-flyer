@@ -9,6 +9,7 @@
     "vat": "VAT",
     "couponCode": "Coupon Code",
     "applyCoupon": "Apply",
+    "coupon": "Coupon ({code})",
     "couponApplied": "Coupon applied successfully!",
     "invalidCoupon": "Invalid coupon code",
     "total": "Total",

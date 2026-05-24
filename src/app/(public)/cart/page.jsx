@@ -51,15 +51,57 @@ function CartLoading() {
 
 function CartContent() {
   const t = useTranslations("cart-page");
+  const ct = useTranslations("cart");
   const router = useRouter();
   const { backendUser } = useAuth();
-  const { items, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, updateQuantity, removeItem, clearCart, coupon, couponLoading, applyCoupon, setCouponLoading, removeCoupon } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
 
   const subtotal = items.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * 0.05;
-  const totalAmount = subtotal + 60 + vatAmount;
+  const shipping = 60;
+  const discount = coupon?.calculatedDiscount || 0;
+  const totalAmount = subtotal + shipping + vatAmount - discount;
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponError("");
+    setCouponLoading(true);
+    try {
+      const lookup = await getClient().get(`/coupons/lookup/${couponCode}`).then((r) => r.data);
+      if (!lookup.success || !lookup.data?.coupon) {
+        throw new Error(ct("invalidCoupon"));
+      }
+      const couponInfo = lookup.data.coupon;
+      if (couponInfo.minOrderValue > 0 && subtotal < couponInfo.minOrderValue) {
+        throw new Error(`Minimum order of ৳${couponInfo.minOrderValue.toLocaleString()} required`);
+      }
+      const res = await getClient().patch("/cart/apply-coupon", { code: couponCode }).then((r) => r.data);
+      if (res.success) {
+        applyCoupon(res.data.coupon);
+        toast.success(ct("couponApplied"));
+      }
+    } catch (err) {
+      const msg = err?.response?.data?.message || ct("invalidCoupon");
+      setCouponError(msg);
+      toast.error(msg);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = async () => {
+    try {
+      await getClient().delete("/cart/remove-coupon");
+      removeCoupon();
+      setCouponCode("");
+      toast.success("Coupon removed");
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to remove coupon");
+    }
+  };
 
   const handleCheckout = async () => {
     if (items.length === 0) {
@@ -84,7 +126,7 @@ function CartContent() {
         })),
         paymentMethod: "card",
         isPickup: false,
-        ...(couponCode && { couponCode }),
+        ...(coupon?.code && { couponCode: coupon.code }),
       };
 
       const response = await getClient().post("/orders", orderData).then((r) => r.data);
@@ -189,27 +231,57 @@ function CartContent() {
             <span>{t("vat")}</span>
             <span className="font-medium text-foreground">৳{vatAmount.toFixed(0)}</span>
           </div>
+          {discount > 0 && (
+            <div className="flex justify-between text-green-600">
+              <span>{ct("coupon", { code: coupon?.code || "" })}</span>
+              <span className="font-medium">-৳{discount.toLocaleString()}</span>
+            </div>
+          )}
         </div>
 
         <Separator className="my-4" />
 
-        <div className="flex items-center gap-2 mb-4">
-          <div className="relative flex-1">
-            <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-              placeholder={t("couponPlaceholder")}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            />
-          </div>
-          {couponCode && (
-            <button onClick={() => setCouponCode("")} className="text-xs text-muted-foreground hover:text-foreground">
+        {coupon ? (
+          <div className="mb-4 flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-3 py-2">
+            <div className="flex items-center gap-2">
+              <Tag size={14} className="text-green-600" />
+              <span className="text-sm font-medium text-green-700">{coupon.code}</span>
+              <span className="text-xs text-green-600">-৳{discount.toLocaleString()}</span>
+            </div>
+            <button onClick={handleRemoveCoupon} className="text-green-600 hover:text-green-800">
               <X size={14} />
             </button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="mb-4">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(""); }}
+                  placeholder={t("couponPlaceholder")}
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <Button
+                size="sm"
+                onClick={handleApplyCoupon}
+                disabled={!couponCode.trim() || couponLoading}
+                className="h-9 shrink-0"
+              >
+                {couponLoading ? <Loader2 size={14} className="animate-spin" /> : ct("applyCoupon")}
+              </Button>
+              {couponCode && (
+                <button onClick={() => { setCouponCode(""); setCouponError(""); }} className="text-xs text-muted-foreground hover:text-foreground shrink-0">
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+            {couponError && <p className="mt-1 text-xs text-destructive">{couponError}</p>}
+          </div>
+        )}
 
         <div className="flex items-center justify-between">
           <span className="font-bold text-foreground">{t("total")}</span>
