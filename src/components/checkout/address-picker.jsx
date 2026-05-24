@@ -15,7 +15,7 @@ export function AddressPicker({ addresses, effectiveSelectedId, onSelect, onAdd,
           <MapPin size={18} className="text-primary" />
           <h2 className="text-lg font-bold text-foreground">{t("shippingAddress")}</h2>
         </div>
-        <Button variant="outline" size="sm" className="gap-1.5 shrink-0" onClick={onAdd}>
+        <Button variant="outline" size="sm" className="gap-1.5 shrink-0" onClick={onAdd} type="button">
           <Plus size={14} />
           Add
         </Button>
@@ -28,7 +28,7 @@ export function AddressPicker({ addresses, effectiveSelectedId, onSelect, onAdd,
             <p className="font-medium">{t("savedAddresses")}</p>
             <p className="text-sm text-muted-foreground">{t("noSavedAddresses")}</p>
           </div>
-          <Button variant="outline" size="sm" onClick={onAdd}>
+          <Button variant="outline" size="sm" onClick={onAdd} type="button">
             <Plus className="size-3.5" />
             Add
           </Button>

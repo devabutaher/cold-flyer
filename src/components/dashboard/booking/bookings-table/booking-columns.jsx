@@ -15,8 +15,8 @@ const BOOKING_STATUS_MAP = {
   rescheduled: { label: "Rescheduled", className: "bg-orange-500/10 text-orange-600 border-orange-200" },
 };
 
-export function buildBookingColumns({ onCancel } = {}) {
-  return [
+export function buildBookingColumns({ onCancel, isAdmin } = {}) {
+  const columns = [
     {
       id: "select",
       size: 44,
@@ -63,14 +63,18 @@ export function buildBookingColumns({ onCancel } = {}) {
       },
     },
 
-    {
-      header: "Customer",
-      accessorKey: "user",
-      cell: ({ row }) => {
-        const b = row.original;
-        return <span className="text-sm min-w-32 block">{b.user?.name || "—"}</span>;
-      },
-    },
+    ...(isAdmin
+      ? [
+          {
+            header: "Customer",
+            accessorKey: "user",
+            cell: ({ row }) => {
+              const b = row.original;
+              return <span className="text-sm min-w-32 block">{b.user?.name || "—"}</span>;
+            },
+          },
+        ]
+      : []),
 
     {
       header: "Date",
@@ -114,7 +118,9 @@ export function buildBookingColumns({ onCancel } = {}) {
       size: 52,
       enableSorting: false,
       header: "",
-      cell: ({ row }) => <BookingRowActions row={row} onCancel={onCancel} />,
+      cell: ({ row }) => <BookingRowActions row={row} onCancel={onCancel} isAdmin={isAdmin} />,
     },
   ];
+
+  return columns;
 }

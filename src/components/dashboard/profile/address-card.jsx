@@ -75,6 +75,7 @@ export function AddressCard({ address, isSelected, onSelect, onEdit, onDelete, o
             <Button
               variant="outline"
               size="sm"
+              type="button"
               className="h-8 gap-1.5"
               onClick={(e) => {
                 e.stopPropagation();
@@ -89,6 +90,7 @@ export function AddressCard({ address, isSelected, onSelect, onEdit, onDelete, o
             <Button
               variant="outline"
               size="sm"
+              type="button"
               className="h-8 gap-1.5"
               onClick={(e) => {
                 e.stopPropagation();
@@ -103,6 +105,7 @@ export function AddressCard({ address, isSelected, onSelect, onEdit, onDelete, o
             <Button
               variant="destructive"
               size="icon-sm"
+              type="button"
               className="ml-auto"
               onClick={(e) => {
                 e.stopPropagation();

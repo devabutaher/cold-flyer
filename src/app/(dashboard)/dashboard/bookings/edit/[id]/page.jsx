@@ -55,5 +55,5 @@ export default async function EditBookingPage({ params }) {
     (mod) => mod.default,
   );
 
-  return <EditBookingForm booking={booking} isAdmin={user.role === "admin"} />;
+  return <EditBookingForm booking={booking} />;
 }

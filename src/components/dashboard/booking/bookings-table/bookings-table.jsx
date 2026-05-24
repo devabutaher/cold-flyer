@@ -38,7 +38,7 @@ export default function BookingsTable({ isAdmin = false }) {
     } catch {}
   }, [cancelBooking]);
 
-  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel }), [handleCancel]);
+  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel, isAdmin }), [handleCancel, isAdmin]);
 
   return (
     <DataTable
