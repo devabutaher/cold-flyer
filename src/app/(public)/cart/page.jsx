@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -58,12 +58,44 @@ function CartContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
+  const [availableCoupons, setAvailableCoupons] = useState([]);
 
   const subtotal = items.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * 0.05;
   const shipping = 60;
   const discount = coupon?.calculatedDiscount || 0;
   const totalAmount = subtotal + shipping + vatAmount - discount;
+
+  useEffect(() => {
+    if (!coupon) {
+      getClient().get("/coupons?limit=4").then((r) => {
+        if (r.data?.success && r.data?.data?.coupons) {
+          setAvailableCoupons(r.data.data.coupons);
+        }
+      }).catch(() => {});
+    }
+  }, [coupon]);
+
+  useEffect(() => {
+    if (coupon || items.length === 0) return;
+    const timer = setTimeout(() => {
+      getClient().post("/coupons/auto-apply", {
+        subtotal,
+        itemCount: items.length,
+        items: items.map((item) => ({
+          product: { _id: item.productRef || item.productId },
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      }).then((r) => {
+        if (r.data?.success && r.data?.data?.coupon) {
+          applyCoupon(r.data.data.coupon);
+          toast.success(`Coupon ${r.data.data.coupon.code} auto-applied!`);
+        }
+      }).catch(() => {});
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [items.length, subtotal, items, coupon, applyCoupon]);
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
@@ -77,6 +109,15 @@ function CartContent() {
       const couponInfo = lookup.data.coupon;
       if (couponInfo.minOrderValue > 0 && subtotal < couponInfo.minOrderValue) {
         throw new Error(`Minimum order of ৳${couponInfo.minOrderValue.toLocaleString()} required`);
+      }
+      if (couponInfo.minItemCount > 0 && items.length < couponInfo.minItemCount) {
+        throw new Error(`Minimum ${couponInfo.minItemCount} items required`);
+      }
+      if (couponInfo.applicableTo === "products" && couponInfo.productIds?.length > 0) {
+        const hasMatch = items.some((item) =>
+          couponInfo.productIds.some((pid) => pid === (item.productRef || item.productId)),
+        );
+        if (!hasMatch) throw new Error("This coupon does not apply to items in your cart");
       }
       const res = await getClient().patch("/cart/apply-coupon", {
         code: couponCode,
@@ -288,6 +329,65 @@ function CartContent() {
               )}
             </div>
             {couponError && <p className="mt-1 text-xs text-destructive">{couponError}</p>}
+          </div>
+        )}
+
+        {!coupon && availableCoupons.length > 0 && (
+          <div className="mb-4">
+            <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{ct("availableOffers")}</p>
+            <div className="space-y-2">
+              {availableCoupons.map((c) => {
+                const eligible = c.minOrderValue <= subtotal;
+                const label = c.discountType === "percentage"
+                  ? `${c.discountValue}% OFF`
+                  : c.discountType === "fixed"
+                    ? `৳${c.discountValue} OFF`
+                    : "Free Shipping";
+                const scopeLabel = c.applicableTo && c.applicableTo !== "all"
+                  ? ({ products: "Products", services: "Services", categories: "Categories", brands: "Brands" }[c.applicableTo] || "Selected")
+                  : null;
+                return (
+                  <div key={c.code} className={`flex items-center justify-between rounded-lg border px-3 py-2 ${eligible ? "border-border bg-card" : "border-dashed border-muted-foreground/30 opacity-60"}`}>
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2">
+                        <Tag size={12} className="shrink-0 text-muted-foreground" />
+                        <span className="text-sm font-bold text-foreground truncate">{label}</span>
+                        <span className="text-xs font-mono text-muted-foreground">{c.code}</span>
+                        {c.minOrderValue > 0 && (
+                          <span className="text-[10px] text-muted-foreground/60 hidden sm:inline">
+                            Min ৳{c.minOrderValue.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                      {(scopeLabel || c.firstOrderOnly) && (
+                        <div className="flex items-center gap-1.5 mt-0.5 ml-5">
+                          {scopeLabel && (
+                            <span className="text-[9px] uppercase tracking-wider text-muted-foreground/50">{scopeLabel} only</span>
+                          )}
+                          {c.firstOrderOnly && (
+                            <span className="text-[9px] uppercase tracking-wider text-green-600/70">First order</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {eligible ? (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 text-xs shrink-0"
+                        onClick={() => {
+                          setCouponCode(c.code);
+                        }}
+                      >
+                        {ct("applyCoupon")}
+                      </Button>
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground/50 shrink-0">{ct("notEligible")}</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 

@@ -118,6 +118,9 @@ export function CheckoutPage({ orderId }) {
       if (couponInfo.minOrderValue > 0 && (order?.subtotal || 0) < couponInfo.minOrderValue) {
         throw new Error(`Minimum order of ৳${couponInfo.minOrderValue.toLocaleString()} required`);
       }
+      if (couponInfo.minItemCount > 0 && (order?.items?.length || 0) < couponInfo.minItemCount) {
+        throw new Error(`Minimum ${couponInfo.minItemCount} items required`);
+      }
       const res = await getClient().patch(`/orders/${orderId}/coupon`, { couponCode: couponInput }).then((r) => r.data);
       if (res.success) {
         setOrder(res.data.order);

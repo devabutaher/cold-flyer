@@ -146,6 +146,7 @@
     "useCode": "Use Code",
     "copyCode": "Copy",
     "copied": "Copied!",
-    "noOffer": "No active offers right now"
+    "noOffer": "No active offers right now",
+    "activeOffers": "Active Offers"
   }
 }

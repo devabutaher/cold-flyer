@@ -18,6 +18,10 @@ const mapRow = (t) => ({
   status: t.status,
   rating: t.rating,
   completedJobs: t.completedJobs || 0,
+  nid: t.nid || "",
+  bloodGroup: t.bloodGroup || "",
+  emergencyContact: t.emergencyContact || "",
+  salary: t.salary || 0,
 });
 
 const PDF_COLUMNS = [
@@ -28,6 +32,9 @@ const PDF_COLUMNS = [
   { header: "Status", accessorKey: "status", width: 0.8 },
   { header: "Rating", accessorKey: "rating", width: 0.6 },
   { header: "Jobs Done", accessorKey: "completedJobs", width: 0.8 },
+  { header: "NID", accessorKey: "nid", width: 1.5 },
+  { header: "Blood", accessorKey: "bloodGroup", width: 0.6 },
+  { header: "Salary", accessorKey: "salary", width: 0.8 },
 ];
 
 export default function TechniciansTable() {

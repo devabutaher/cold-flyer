@@ -308,7 +308,7 @@ cold-flyer/
 │   │   ├── services/           # Service related components
 │   │   ├── carts/              # Cart components
 │   │   ├── checkout/           # Checkout components (address-picker, order-items, payment-method, order-summary, checkout-page)
-│   │   ├── dashboard/          # Dashboard components
+│   │   ├── dashboard/          # Dashboard components (activity-log, attendance, blog, booking, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, technicians, users)
 │   │   ├── reviews/            # Review components
 │   │   ├── notifications/      # Notification components
 │   │   ├── common/             # Shared components
@@ -368,6 +368,13 @@ cold-flyer/
 | `/dashboard/coupons` | Coupon management |
 | `/dashboard/technicians` | Technician management |
 | `/dashboard/profile` | Profile settings |
+| `/dashboard/customers` | Customer management |
+| `/dashboard/expenses` | Expense tracking |
+| `/dashboard/attendance` | Attendance + GPS check-in/out |
+| `/dashboard/location` | Live worker location tracking |
+| `/dashboard/activity-log` | Activity log viewer |
+| `/dashboard/reporting` | P&L reports & duplicate detection |
+| `/dashboard/messages` | WhatsApp/SMS messaging |
 
 ## Component Patterns
 

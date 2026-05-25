@@ -32,6 +32,8 @@
     "failedCheckout": "Failed to create checkout",
     "failedOrder": "Failed to create order",
     "paymentUnavailable": "Payment system unavailable. Please try again later.",
-    "unableToProcess": "Unable to process order. Please check your cart items."
+    "unableToProcess": "Unable to process order. Please check your cart items.",
+    "availableOffers": "Available Offers",
+    "notEligible": "Not eligible"
   }
 }
