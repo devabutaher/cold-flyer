@@ -171,7 +171,6 @@ export default function AuthPage() {
           variants={animations.entrance.fadeUp}
           initial="hidden"
           animate="visible"
-          key={tab}
         >
           <h2 className="font-sans font-bold text-2xl text-foreground mb-1">{t("signInTitle")}</h2>
           <p className="text-muted-foreground text-sm mb-7">{t("signInSub")}</p>

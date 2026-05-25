@@ -9,6 +9,7 @@ import { buildUserColumns } from "./users-columns";
 import { getClient } from "@/lib/http-client";
 import { Users } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const mapRow = (u) => ({
   name: u.name || u.email,
@@ -46,11 +47,30 @@ export default function UsersTable() {
     onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id) => getClient().delete(`/admin/users/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      toast.success("User deleted.");
+    },
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
+  });
+
+  const router = useRouter();
+
+  const handleView = useCallback((user) => {
+    router.push(`/dashboard/users/${user._id}`);
+  }, [router]);
+
   const handleRoleChange = useCallback((id, role) => updateRole.mutate({ id, role }), [updateRole]);
+  const handleDelete = useCallback((id) => deleteMutation.mutate(id), [deleteMutation]);
 
-  const columns = useMemo(() => buildUserColumns({ onRoleChange: handleRoleChange }), [handleRoleChange]);
+  const columns = useMemo(
+    () => buildUserColumns({ onRoleChange: handleRoleChange, onView: handleView, onDelete: handleDelete }),
+    [handleRoleChange, handleView, handleDelete],
+  );
 
-  const roleOptions = ["user", "admin"];
+  const roleOptions = ["user", "admin", "technician"];
 
   return (
     <DataTable

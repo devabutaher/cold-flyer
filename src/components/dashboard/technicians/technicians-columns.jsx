@@ -1,5 +1,9 @@
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AvatarCell, StatusBadge, RatingCell } from "@/components/dashboard/table/table-cells";
+import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 const STATUS_MAP = {
   available: { label: "Available", className: "bg-green-500/10 text-green-600" },
@@ -77,16 +81,27 @@ export function buildTechnicianColumns({ onDelete } = {}) {
       cell: ({ row }) => {
         const t = row.original;
         return (
-          <div className="flex justify-end">
-            <button
-              className="text-xs text-destructive hover:underline"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete?.(t._id);
-              }}
-            >
-              Remove
-            </button>
+          <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon-sm">
+                  <MoreHorizontal size={15} />
+                  <span className="sr-only">Actions</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={`/dashboard/technicians/${t._id}`}>
+                    <Eye size={14} className="mr-2" />
+                    View Details
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onDelete?.(t._id)}>
+                  <Trash2 size={14} className="mr-2 text-destructive" />
+                  Remove
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       },

@@ -1,8 +1,7 @@
 import { AvatarCell, StatusBadge } from "@/components/dashboard/table/table-cells";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDate } from "@/lib/utils";
-import { CheckCircle, Eye, XCircle } from "lucide-react";
+import { ApplicationRowActions } from "./application-row-actions";
 
 const STATUS_MAP = {
   pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600" },
@@ -10,7 +9,7 @@ const STATUS_MAP = {
   rejected: { label: "Rejected", className: "bg-destructive/10 text-destructive" },
 };
 
-export function buildApplicationColumns({ onView, onApprove, onReject } = {}) {
+export function buildApplicationColumns({ onView, onApprove, onReject, onDelete } = {}) {
   return [
     {
       id: "select",
@@ -68,42 +67,18 @@ export function buildApplicationColumns({ onView, onApprove, onReject } = {}) {
     },
     {
       id: "actions",
-      size: 160,
+      size: 130,
       enableSorting: false,
       header: "",
-      cell: ({ row }) => {
-        const a = row.original;
-        const isPending = a.status === "pending";
-        return (
-          <div className="flex items-center gap-1 justify-end">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onView?.(a)} title="View Details">
-              <Eye className="h-4 w-4" />
-            </Button>
-            {isPending && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-green-600 hover:text-green-700"
-                  onClick={() => onApprove?.(a)}
-                  title="Approve"
-                >
-                  <CheckCircle className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-destructive"
-                  onClick={() => onReject?.(a)}
-                  title="Reject"
-                >
-                  <XCircle className="h-4 w-4" />
-                </Button>
-              </>
-            )}
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <ApplicationRowActions
+          application={row.original}
+          onView={onView}
+          onApprove={onApprove}
+          onReject={onReject}
+          onDelete={onDelete}
+        />
+      ),
     },
   ];
 }

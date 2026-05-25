@@ -47,13 +47,23 @@ export default function ApplicationsTable() {
     onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id) => getClient().delete(`/admin/applications/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-applications"] });
+      toast.success("Application deleted.");
+    },
+    onError: (err) => toast.error(err.response?.data?.message || err.message),
+  });
+
   const handleView = useCallback((app) => setDetailApp(app), []);
   const handleApprove = useCallback((app) => setApproveApp(app), []);
   const handleReject = useCallback((app) => setRejectApp(app), []);
+  const handleDelete = useCallback((id) => deleteMutation.mutate(id), [deleteMutation]);
 
   const columns = useMemo(
-    () => buildApplicationColumns({ onView: handleView, onApprove: handleApprove, onReject: handleReject }),
-    [handleView, handleApprove, handleReject],
+    () => buildApplicationColumns({ onView: handleView, onApprove: handleApprove, onReject: handleReject, onDelete: handleDelete }),
+    [handleView, handleApprove, handleReject, handleDelete],
   );
 
   const statusOptions = ["pending", "approved", "rejected"];

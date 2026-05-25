@@ -2,6 +2,7 @@
   "faq": {
     "pageTitle": "FAQ",
     "pageDescription": "Find answers to common questions about Cold Flyer products, services, and policies.",
+    "heroBadge": "FAQ",
     "heroTitle": "How Can We Help?",
     "heroSub": "Find answers to common questions about our products, services, and policies.",
     "searchPlaceholder": "Search for answers...",

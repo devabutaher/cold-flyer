@@ -25,6 +25,8 @@ import {
   StartServiceDialog,
   CompleteBookingDialog,
 } from "@/components/dashboard/booking/admin-actions/admin-booking-actions";
+import { useQuery } from "@tanstack/react-query";
+import { getClient } from "@/lib/http-client";
 import { Eye, MoreHorizontal, PencilLine, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -33,6 +35,15 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
   const booking = row.original;
   const [cancelOpen, setCancelOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
+
+  const { data: technicians = [] } = useQuery({
+    queryKey: ["admin-technicians"],
+    queryFn: async () => {
+      const res = await getClient().get("/admin/technicians?limit=100");
+      return res.data?.data?.technicians || [];
+    },
+    enabled: isAdmin,
+  });
 
   const canCancel = ["pending", "confirmed", "scheduled", "in_progress"].includes(booking.status);
 
@@ -58,6 +69,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
         <ScheduleBookingDialog
           booking={booking}
           onSuccess={() => {}}
+          technicians={technicians}
           triggerClassName="h-7 px-2.5 text-xs gap-1"
           triggerVariant="default"
         />

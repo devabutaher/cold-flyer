@@ -20,7 +20,7 @@ export default function ApplicationDetailSheet({ application, open, onOpenChange
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-[500px] overflow-y-auto">
+      <SheetContent open={open} className="sm:max-w-125 overflow-y-auto px-4">
         <SheetHeader className="mb-6">
           <div className="flex items-center gap-3 mb-1">
             <SheetTitle className="text-xl">{application.name}</SheetTitle>
