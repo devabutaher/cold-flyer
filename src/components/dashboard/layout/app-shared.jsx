@@ -1,5 +1,6 @@
 import {
   BarChart,
+  Briefcase,
   ClipboardList,
   FileText,
   HelpCircle,
@@ -90,6 +91,11 @@ export const navGroups = [
         title: "Blog Posts",
         path: "/dashboard/blogs",
         icon: <Newspaper />,
+      },
+      {
+        title: "Recent Works",
+        path: "/dashboard/recent-works",
+        icon: <Briefcase />,
       },
     ],
   },

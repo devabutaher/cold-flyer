@@ -22,7 +22,7 @@ export function AppSidebar() {
   const { backendUser } = useAuth();
   const isAdmin = backendUser?.role === "admin";
 
-  const adminOnlyPaths = ["/dashboard/items", "/dashboard/services", "/dashboard/blogs"];
+  const adminOnlyPaths = ["/dashboard/items", "/dashboard/services", "/dashboard/blogs", "/dashboard/recent-works"];
 
   const visibleGroups = navGroups
     .filter((group) => isAdmin || group.label !== "Admin")

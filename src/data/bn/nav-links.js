@@ -1,4 +1,16 @@
-import { AirVent, Briefcase, FileText, HelpCircle, Layers, LayoutGrid, Mail, Settings, ShieldCheck, Truck, Users } from "lucide-react";
+import {
+  AirVent,
+  Briefcase,
+  FileText,
+  HelpCircle,
+  Layers,
+  LayoutGrid,
+  Mail,
+  Settings,
+  ShieldCheck,
+  Truck,
+  Users,
+} from "lucide-react";
 
 export const productLinks = [
   {
@@ -55,6 +67,11 @@ export const primaryLinks = [
 ];
 
 export const moreLinks = [
+  {
+    label: "সাম্প্রতিক কাজ",
+    href: "/recent-works",
+    icon: <Briefcase />,
+  },
   {
     label: "ব্লগ",
     href: "/blog",

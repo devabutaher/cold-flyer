@@ -9,6 +9,7 @@ function createClientInstance() {
   const instance = axios.create({
     baseURL: API_BASE,
     withCredentials: true,
+    timeout: 15000,
   });
 
   return instance;
@@ -31,6 +32,7 @@ export function createServerClient(cookieStore) {
     baseURL: BACKEND_URL,
     headers,
     withCredentials: true,
+    timeout: 15000,
   });
 }
 
