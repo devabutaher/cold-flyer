@@ -12,7 +12,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
 
 async function fetchBlog(slug) {
   try {
-    const res = await fetch(`${API_URL}/api/blogs/slug/${slug}`, { next: { revalidate: 30 } });
+    const res = await fetch(`${API_URL}/api/blogs/slug/${slug}`, { next: { tags: ["blogs", "blog-detail"] } });
     if (!res.ok) return null;
     const data = await res.json();
     return data?.data?.blog || data?.blog || null;
@@ -23,7 +23,7 @@ async function fetchBlog(slug) {
 
 async function fetchFeaturedBlogs(currentSlug) {
   try {
-    const res = await fetch(`${API_URL}/api/blogs/featured?limit=3`, { next: { revalidate: 60 } });
+    const res = await fetch(`${API_URL}/api/blogs/featured?limit=3`, { next: { tags: ["blogs"] } });
     if (!res.ok) return [];
     const data = await res.json();
     const blogs = data?.data?.blogs || data?.blogs || [];

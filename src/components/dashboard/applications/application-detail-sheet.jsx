@@ -13,7 +13,7 @@ const STATUS_MAP = {
   rejected: { label: "Rejected", className: "bg-destructive/10 text-destructive" },
 };
 
-export default function ApplicationDetailSheet({ application, open, onOpenChange, onApprove, onReject }) {
+export function ApplicationDetailSheet({ application, open, onOpenChange, onApprove, onReject }) {
   if (!application) return null;
 
   const statusStyle = STATUS_MAP[application.status] || STATUS_MAP.pending;

@@ -8,7 +8,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
 
 async function fetchProduct(slug) {
   try {
-    const res = await fetch(`${API_URL}/api/products/slug/${slug}`, { next: { revalidate: 30 } });
+    const res = await fetch(`${API_URL}/api/products/slug/${slug}`, { next: { tags: ["products", "product-detail"] } });
     if (!res.ok) return null;
     const data = await res.json();
     return data?.data?.product || data?.product || null;

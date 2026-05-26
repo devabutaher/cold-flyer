@@ -13,6 +13,9 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { applicationSchema } from "@/validations";
 
 export default function CareersPage() {
   const locale = useLocale();
@@ -22,14 +25,11 @@ export default function CareersPage() {
 
   const [showApplyForm, setShowApplyForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    experience: "",
-    skills: "",
-    coverLetter: "",
-    resumeUrl: "",
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+    defaultValues: { name: "", email: "", phone: "", experience: "", skills: "", coverLetter: "" },
+    resolver: zodResolver(applicationSchema),
+    mode: "onTouched",
   });
 
   const process = [
@@ -41,43 +41,28 @@ export default function CareersPage() {
 
   const handleApply = () => {
     setShowApplyForm(true);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      experience: "",
-      skills: "",
-      coverLetter: "",
-      resumeUrl: "",
-    });
+    reset({ name: "", email: "", phone: "", experience: "", skills: "", coverLetter: "" });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone) {
-      toast.error("Please fill in the required fields");
-      return;
-    }
-
+  const onApply = async (data) => {
     setSubmitting(true);
     try {
       const client = getClient();
-      const skills = formData.skills
-        ? formData.skills
+      const skills = data.skills
+        ? data.skills
             .split(",")
             .map((s) => s.trim())
             .filter(Boolean)
         : [];
 
       const payload = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
         position: "HVAC Technician",
-        experience: formData.experience,
+        experience: data.experience,
         skills,
-        coverLetter: formData.coverLetter,
-        resumeUrl: formData.resumeUrl || undefined,
+        coverLetter: data.coverLetter,
       };
 
       await client.post("/job-applications", payload);
@@ -93,10 +78,6 @@ export default function CareersPage() {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleChange = (field) => (e) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   return (
@@ -347,76 +328,84 @@ export default function CareersPage() {
             <SheetDescription>Dhaka, Bangladesh &middot; Full-time</SheetDescription>
           </SheetHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit(onApply)} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="apply-name">
                 {t("applyName")} <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="apply-name"
-                placeholder={t("applyNamePlaceholder")}
-                value={formData.name}
-                onChange={handleChange("name")}
-                required
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <Input id="apply-name" placeholder={t("applyNamePlaceholder")} {...field} />
+                )}
               />
+              {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-email">
                 {t("applyEmail")} <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="apply-email"
-                type="email"
-                placeholder={t("applyEmailPlaceholder")}
-                value={formData.email}
-                onChange={handleChange("email")}
-                required
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <Input id="apply-email" type="email" placeholder={t("applyEmailPlaceholder")} {...field} />
+                )}
               />
+              {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-phone">
                 {t("applyPhone")} <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="apply-phone"
-                type="tel"
-                placeholder={t("applyPhonePlaceholder")}
-                value={formData.phone}
-                onChange={handleChange("phone")}
-                required
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <Input id="apply-phone" type="tel" placeholder={t("applyPhonePlaceholder")} {...field} />
+                )}
               />
+              {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-experience">{t("applyExperience")}</Label>
-              <Input
-                id="apply-experience"
-                placeholder={t("applyExperiencePlaceholder")}
-                value={formData.experience}
-                onChange={handleChange("experience")}
+              <Controller
+                name="experience"
+                control={control}
+                render={({ field }) => (
+                  <Input id="apply-experience" placeholder={t("applyExperiencePlaceholder")} {...field} />
+                )}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-skills">{t("applySkills")}</Label>
-              <Input
-                id="apply-skills"
-                placeholder={t("applySkillsPlaceholder")}
-                value={formData.skills}
-                onChange={handleChange("skills")}
+              <Controller
+                name="skills"
+                control={control}
+                render={({ field }) => (
+                  <Input id="apply-skills" placeholder={t("applySkillsPlaceholder")} {...field} />
+                )}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-cover-letter">{t("applyCoverLetter")}</Label>
-              <Textarea
-                id="apply-cover-letter"
-                placeholder={t("applyCoverLetterPlaceholder")}
-                value={formData.coverLetter}
-                onChange={handleChange("coverLetter")}
-                rows={4}
+              <Controller
+                name="coverLetter"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    id="apply-cover-letter"
+                    placeholder={t("applyCoverLetterPlaceholder")}
+                    {...field}
+                    rows={4}
+                  />
+                )}
               />
             </div>
 

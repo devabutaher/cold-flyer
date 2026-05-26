@@ -7,7 +7,7 @@ import { getClient } from "@/lib/http-client";
 const client = () => getClient();
 
 export const customerKeys = {
-  all: ["customers"],
+  all: ["admin-customers"],
 };
 
 export function useCustomersQuery() {

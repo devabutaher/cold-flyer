@@ -12,8 +12,9 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { changePasswordAction } from "@/lib/actions/user";
 import { useAuth } from "@/components/providers";
-
-
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { passwordChangeSchema } from "@/validations";
 
 export function PasswordSection({ userProvider }) {
   const router = useRouter();
@@ -24,32 +25,29 @@ export function PasswordSection({ userProvider }) {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [form, setForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
+    resolver: zodResolver(passwordChangeSchema),
+    mode: "onTouched",
   });
+
+  const newPassword = watch("newPassword");
+  const confirmPassword = watch("confirmPassword");
 
   if (userProvider === "google") return null;
 
-  async function handleSave() {
-    if (!form.currentPassword) {
-      toast.error(t("passwordRequired"));
-      return;
-    }
-    if (!form.newPassword || form.newPassword.length < 8) {
-      toast.error(t("passwordMinLength"));
-      return;
-    }
-    if (form.newPassword !== form.confirmPassword) {
-      toast.error(t("passwordsDoNotMatch"));
-      return;
-    }
-
+  async function onSave(data) {
     setSaving(true);
     const result = await changePasswordAction({
-      currentPassword: form.currentPassword,
-      newPassword: form.newPassword,
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
     });
     setSaving(false);
 
@@ -63,7 +61,7 @@ export function PasswordSection({ userProvider }) {
   }
 
   function handleCancel() {
-    setForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    reset({ currentPassword: "", newPassword: "", confirmPassword: "" });
     setIsOpen(false);
   }
 
@@ -96,7 +94,7 @@ export function PasswordSection({ userProvider }) {
               <X className="size-3.5" />
               {t("cancel")}
             </Button>
-            <Button size="sm" onClick={handleSave} disabled={saving}>
+            <Button size="sm" onClick={handleSubmit(onSave)} disabled={saving}>
               <Check className="size-3.5" />
               {saving ? t("updating") : t("updatePassword")}
             </Button>
@@ -108,11 +106,12 @@ export function PasswordSection({ userProvider }) {
           <div className="grid gap-2">
             <Label htmlFor="current-password">{t("currentPassword")}</Label>
             <div className="relative">
-              <Input
-                id="current-password"
-                type={showCurrent ? "text" : "password"}
-                value={form.currentPassword}
-                onChange={(e) => setForm({ ...form, currentPassword: e.target.value })}
+              <Controller
+                name="currentPassword"
+                control={control}
+                render={({ field }) => (
+                  <Input id="current-password" type={showCurrent ? "text" : "password"} {...field} />
+                )}
               />
               <button
                 type="button"
@@ -123,6 +122,7 @@ export function PasswordSection({ userProvider }) {
                 {showCurrent ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>
             </div>
+            {errors.currentPassword && <p className="text-xs text-destructive">{errors.currentPassword.message}</p>}
           </div>
 
           <Separator />
@@ -130,11 +130,12 @@ export function PasswordSection({ userProvider }) {
           <div className="grid gap-2">
             <Label htmlFor="new-password">{t("newPassword")}</Label>
             <div className="relative">
-              <Input
-                id="new-password"
-                type={showNew ? "text" : "password"}
-                value={form.newPassword}
-                onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
+              <Controller
+                name="newPassword"
+                control={control}
+                render={({ field }) => (
+                  <Input id="new-password" type={showNew ? "text" : "password"} {...field} />
+                )}
               />
               <button
                 type="button"
@@ -145,18 +146,18 @@ export function PasswordSection({ userProvider }) {
                 {showNew ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>
             </div>
-
-
+            {errors.newPassword && <p className="text-xs text-destructive">{errors.newPassword.message}</p>}
           </div>
 
           <div className="grid gap-2">
             <Label htmlFor="confirm-password">{t("confirmPassword")}</Label>
             <div className="relative">
-              <Input
-                id="confirm-password"
-                type={showConfirm ? "text" : "password"}
-                value={form.confirmPassword}
-                onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              <Controller
+                name="confirmPassword"
+                control={control}
+                render={({ field }) => (
+                  <Input id="confirm-password" type={showConfirm ? "text" : "password"} {...field} />
+                )}
               />
               <button
                 type="button"
@@ -167,7 +168,8 @@ export function PasswordSection({ userProvider }) {
                 {showConfirm ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>
             </div>
-            {form.confirmPassword && form.newPassword !== form.confirmPassword && (
+            {errors.confirmPassword && <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>}
+            {confirmPassword && newPassword !== confirmPassword && !errors.confirmPassword && (
               <p className="text-xs text-destructive">{t("passwordsDoNotMatch")}</p>
             )}
           </div>

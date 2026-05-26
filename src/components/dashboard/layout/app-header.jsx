@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { MaximizeIcon, MinimizeIcon } from "lucide-react";
+import { MaximizeIcon, MinimizeIcon, RotateCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AppBreadcrumbs } from "./app-breadcrumbs";
 import { navLinks } from "./app-shared";
 import { CustomSidebarTrigger } from "./custom-sidebar-trigger";
@@ -42,6 +43,25 @@ function FullscreenToggle() {
   );
 }
 
+function RefreshButton() {
+  const router = useRouter();
+  const [spinning, setSpinning] = useState(false);
+
+  const handleRefresh = useCallback(() => {
+    setSpinning(true);
+    router.refresh();
+    setTimeout(() => setSpinning(false), 600);
+  }, [router]);
+
+  return (
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button size="icon-sm" variant="outline" onClick={handleRefresh} aria-label="Refresh page data">
+        <RotateCw size={14} className={cn("transition-transform", spinning && "animate-spin")} />
+      </Button>
+    </motion.div>
+  );
+}
+
 export function AppHeader() {
   return (
     <motion.header
@@ -61,6 +81,7 @@ export function AppHeader() {
         <LocaleSwitcher />
         <ThemeToggle />
         <FullscreenToggle />
+        <RefreshButton />
         <Separator className="h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
         <NotificationDropdown />
         <UserDropdown />

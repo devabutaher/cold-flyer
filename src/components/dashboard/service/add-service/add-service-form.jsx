@@ -2,7 +2,7 @@
 
 import { useCreateService } from "@/hooks/queries/services";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { serviceFormSchema } from "@/lib/schemas";
+import { serviceFormSchema } from "@/validations";
 import { generateSlug, parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

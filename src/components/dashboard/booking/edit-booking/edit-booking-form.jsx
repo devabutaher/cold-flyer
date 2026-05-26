@@ -8,22 +8,12 @@ import { AddressFormSheet } from "@/components/dashboard/profile/address-form-sh
 import { AddressPicker } from "@/components/checkout/address-picker";
 import { DISTRICTS, THANAS } from "@/data/bd-addresses";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { FormHeader, ScheduleSection, PropertySection, NotesSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
 
-const bookingFormSchema = z.object({
-  scheduledDate: z.string().min(1, "Date is required"),
-  scheduledTime: z.object({
-    start: z.string().optional(),
-    end: z.string().optional(),
-  }),
-  propertyType: z.string().optional(),
-  issues: z.string().optional(),
-  notes: z.string().optional(),
-});
+import { bookingFormSchema } from "@/validations";
 
 function getBookingInitialValues(booking) {
   return {

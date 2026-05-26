@@ -1,13 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useTechnicianQuery } from "@/hooks/queries/technicians";
 import { ArrowLeft, Award, CalendarDays, Car, Clock, Mail, MapPin, Phone, Star, Toolbox, User, Wrench } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
-import { getClient } from "@/lib/http-client";
 
 const STATUS_MAP = {
   available: { label: "Available", className: "bg-green-500/10 text-green-600" },
@@ -42,22 +41,29 @@ export function TechnicianDetailsSkeleton() {
 }
 
 export function TechnicianDetails({ technicianId }) {
-  const { data: technician, isLoading } = useQuery({
-    queryKey: ["technician", technicianId],
-    queryFn: async () => {
-      const res = await getClient().get(`/admin/technicians/${technicianId}`);
-      return res.data?.data?.technician;
-    },
-  });
+  const { data: technician, isLoading, isError, error } = useTechnicianQuery(technicianId);
 
   if (isLoading) return <TechnicianDetailsSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="py-16 text-center">
+        <Wrench size={48} className="mx-auto mb-4 text-muted-foreground/30" />
+        <p className="text-sm text-destructive mb-2">Failed to load technician details.</p>
+        <p className="text-xs text-muted-foreground mb-4">{error?.message || "An unexpected error occurred."}</p>
+        <Button asChild size="sm">
+          <Link href="/dashboard/technicians">Back to Technicians</Link>
+        </Button>
+      </div>
+    );
+  }
 
   if (!technician) {
     return (
       <div className="py-16 text-center">
         <User size={48} className="mx-auto mb-4 text-muted-foreground/30" />
         <p className="text-sm text-muted-foreground mb-4">Technician not found.</p>
-        <Button asChild size="sm" animate={false}>
+        <Button asChild size="sm">
           <Link href="/dashboard/technicians">Back to Technicians</Link>
         </Button>
       </div>
@@ -111,6 +117,12 @@ export function TechnicianDetails({ technicianId }) {
                 <CalendarDays size={14} className="text-muted-foreground shrink-0" />
                 <span>Hired {technician.hireDate ? new Date(technician.hireDate).toLocaleDateString() : "—"}</span>
               </div>
+              {technician.salary != null && (
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground shrink-0 w-3.5 flex justify-center">৳</span>
+                  <span>Salary: ৳{technician.salary.toLocaleString()}</span>
+                </div>
+              )}
             </CardContent>
           </Card>
 

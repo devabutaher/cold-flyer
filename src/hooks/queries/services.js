@@ -80,6 +80,7 @@ export function useCreateService(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
+      queryClient.invalidateQueries({ queryKey: serviceKeys.featured });
       toast.success("Service created successfully");
       userOnSuccess?.(data, variables, context);
     },
@@ -103,7 +104,8 @@ export function useUpdateService(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
-      queryClient.invalidateQueries({ queryKey: serviceKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: ["service"] });
+      queryClient.invalidateQueries({ queryKey: serviceKeys.featured });
       toast.success("Service updated successfully");
       userOnSuccess?.(data, variables, context);
     },
@@ -126,6 +128,7 @@ export function useDeleteService(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
+      queryClient.invalidateQueries({ queryKey: serviceKeys.featured });
       toast.success("Service deleted successfully");
       userOnSuccess?.(data, variables, context);
     },

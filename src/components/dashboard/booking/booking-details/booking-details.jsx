@@ -75,7 +75,7 @@ function formatDateTime(date) {
 }
 
 export function BookingDetails({ bookingId }) {
-  const { data: booking, isLoading, refetch } = useBookingQuery(bookingId);
+  const { data: booking, isLoading, isError, error, refetch } = useBookingQuery(bookingId);
   const { backendUser } = useAuth();
   const isAdmin = backendUser?.role === "admin";
 
@@ -89,6 +89,19 @@ export function BookingDetails({ bookingId }) {
   });
 
   if (isLoading) return <BookingDetailSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="py-16 text-center">
+        <ClipboardList size={48} className="mx-auto mb-4 text-muted-foreground/30" />
+        <p className="text-sm text-destructive mb-2">Failed to load booking details.</p>
+        <p className="text-xs text-muted-foreground mb-4">{error?.message || "An unexpected error occurred."}</p>
+        <Button asChild size="sm">
+          <Link href="/dashboard/bookings">Back to Bookings</Link>
+        </Button>
+      </div>
+    );
+  }
 
   if (!booking) {
     return (

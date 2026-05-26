@@ -22,8 +22,11 @@ import { getClient } from "@/lib/http-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { couponFormSchema } from "@/validations";
 
 const initialForm = {
   code: "",
@@ -46,14 +49,13 @@ const initialForm = {
   excludedCategoryIds: [],
 };
 
-function useFormState(initial) {
-  const [state, setState] = useState(initial);
-  const initialRef = useRef(null);
-  useEffect(() => { initialRef.current = initial; }, [initial]);
-  const patch = useCallback((key, value) => setState((s) => ({ ...s, [key]: value })), []);
-  const reset = useCallback(() => { if (initialRef.current) setState(initialRef.current); }, []);
-  return [state, patch, reset];
-}
+const CATEGORIES = [
+  "Air Conditioners", "Heaters", "Ventilation", "Refrigeration", "Parts & Accessories",
+];
+
+const BRANDS = [
+  "Samsung", "LG", "Daikin", "Gree", "General", "Mitsubishi", "Panasonic", "Sharp", "Whirlpool", "Hitachi",
+];
 
 const fetchProducts = async (search) => {
   const res = await getClient().get(`/admin/products?search=${encodeURIComponent(search)}&limit=20`);
@@ -68,6 +70,8 @@ const fetchServices = async (search) => {
 export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen, onOpenChange: controlledOnOpenChange, onSuccess, trigger }) {
   const queryClient = useQueryClient();
   const [internalOpen, setInternalOpen] = useState(false);
+  const [fromOpen, setFromOpen] = useState(false);
+  const [untilOpen, setUntilOpen] = useState(false);
 
   const isEdit = mode === "edit";
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
@@ -98,17 +102,27 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
     return { ...initialForm };
   };
 
-  const [form, patch, reset] = useFormState(getInitial());
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: getInitial(),
+    resolver: zodResolver(couponFormSchema),
+    mode: "onTouched",
+  });
 
-  const [fromOpen, setFromOpen] = useState(false);
-  const [untilOpen, setUntilOpen] = useState(false);
+  const discountType = watch("discountType");
+  const applicableTo = watch("applicableTo");
 
   const handleOpenChange = (nextOpen) => {
+    if (!nextOpen) reset();
     if (controlledOnOpenChange) {
       controlledOnOpenChange(nextOpen);
     } else {
       setInternalOpen(nextOpen);
-      if (!nextOpen) reset();
     }
   };
 
@@ -126,40 +140,28 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
     onError: (err) => toast.error(err?.response?.data?.message || err.message),
   });
 
-  const handleSubmit = () => {
-    if (!form.code || !form.discountValue || !form.validFrom || !form.validUntil) {
-      toast.error("Fill required fields");
-      return;
-    }
+  const onSubmit = (formData) => {
     mutation.mutate({
-      code: form.code.toUpperCase(),
-      discountType: form.discountType,
-      discountValue: Number(form.discountValue),
-      ...(form.discountType === "percentage" && form.maxDiscount ? { maxDiscount: Number(form.maxDiscount) } : {}),
-      minOrderValue: form.minOrderValue ? Number(form.minOrderValue) : 0,
-      ...(form.maxUsage ? { maxUsage: Number(form.maxUsage) } : {}),
-      validFrom: new Date(form.validFrom),
-      validUntil: new Date(form.validUntil),
-      applicableTo: form.applicableTo,
-      ...(form.applicableTo === "products" ? { productIds: form.productIds.map((p) => p._id || p) } : {}),
-      ...(form.applicableTo === "services" ? { serviceIds: form.serviceIds.map((s) => s._id || s) } : {}),
-      ...(form.applicableTo === "categories" ? { categoryIds: form.categoryIds } : {}),
-      ...(form.applicableTo === "brands" ? { brandIds: form.brandIds } : {}),
-      firstOrderOnly: form.firstOrderOnly,
-      ...(form.minItemCount ? { minItemCount: Number(form.minItemCount) } : {}),
-      showOnBanner: form.showOnBanner,
-      ...(form.excludedProductIds.length > 0 ? { excludedProductIds: form.excludedProductIds.map((p) => p._id || p) } : {}),
-      ...(form.excludedCategoryIds.length > 0 ? { excludedCategoryIds: form.excludedCategoryIds } : {}),
+      code: formData.code,
+      discountType: formData.discountType,
+      discountValue: Number(formData.discountValue),
+      ...(formData.discountType === "percentage" && formData.maxDiscount ? { maxDiscount: Number(formData.maxDiscount) } : {}),
+      minOrderValue: formData.minOrderValue ? Number(formData.minOrderValue) : 0,
+      ...(formData.maxUsage ? { maxUsage: Number(formData.maxUsage) } : {}),
+      validFrom: new Date(formData.validFrom),
+      validUntil: new Date(formData.validUntil),
+      applicableTo: formData.applicableTo,
+      ...(formData.applicableTo === "products" ? { productIds: formData.productIds.map((p) => p._id || p) } : {}),
+      ...(formData.applicableTo === "services" ? { serviceIds: formData.serviceIds.map((s) => s._id || s) } : {}),
+      ...(formData.applicableTo === "categories" ? { categoryIds: formData.categoryIds } : {}),
+      ...(formData.applicableTo === "brands" ? { brandIds: formData.brandIds } : {}),
+      firstOrderOnly: formData.firstOrderOnly,
+      ...(formData.minItemCount ? { minItemCount: Number(formData.minItemCount) } : {}),
+      showOnBanner: formData.showOnBanner,
+      ...(formData.excludedProductIds.length > 0 ? { excludedProductIds: formData.excludedProductIds.map((p) => p._id || p) } : {}),
+      ...(formData.excludedCategoryIds.length > 0 ? { excludedCategoryIds: formData.excludedCategoryIds } : {}),
     });
   };
-
-  const CATEGORIES = [
-    "Air Conditioners", "Heaters", "Ventilation", "Refrigeration", "Parts & Accessories",
-  ];
-
-  const BRANDS = [
-    "Samsung", "LG", "Daikin", "Gree", "General", "Mitsubishi", "Panasonic", "Sharp", "Whirlpool", "Hitachi",
-  ];
 
   return (
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
@@ -177,50 +179,88 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="coupon-code">Code <span className="text-destructive">*</span></Label>
-              <Input id="coupon-code" value={form.code} onChange={(e) => patch("code", e.target.value.toUpperCase())} placeholder="SUMMER20" />
+              <Controller
+                name="code"
+                control={control}
+                render={({ field }) => (
+                  <Input id="coupon-code" {...field} placeholder="SUMMER20" onChange={(e) => field.onChange(e.target.value.toUpperCase())} />
+                )}
+              />
+              {errors.code && <p className="text-xs text-destructive">{errors.code.message}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="coupon-type">Discount Type</Label>
-              <Select value={form.discountType} onValueChange={(v) => patch("discountType", v)}>
-                <SelectTrigger id="coupon-type" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="percentage">Percentage</SelectItem>
-                  <SelectItem value="fixed">Fixed (৳)</SelectItem>
-                  <SelectItem value="free_shipping">Free Shipping</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="discountType"
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="coupon-type" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="percentage">Percentage</SelectItem>
+                      <SelectItem value="fixed">Fixed (৳)</SelectItem>
+                      <SelectItem value="free_shipping">Free Shipping</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 
           {/* Row 2: Value + Min Order */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="coupon-value">{form.discountType === "free_shipping" ? "Value" : "Value *"}</Label>
-              {form.discountType === "free_shipping" ? (
+              <Label htmlFor="coupon-value">{discountType === "free_shipping" ? "Value" : "Value *"}</Label>
+              {discountType === "free_shipping" ? (
                 <Input id="coupon-value" value="—" disabled className="text-muted-foreground" />
               ) : (
-                <Input id="coupon-value" type="number" value={form.discountValue} onChange={(e) => patch("discountValue", e.target.value)} placeholder={form.discountType === "percentage" ? "20" : "500"} />
+                <Controller
+                  name="discountValue"
+                  control={control}
+                  render={({ field }) => (
+                    <Input id="coupon-value" type="number" {...field} placeholder={discountType === "percentage" ? "20" : "500"} />
+                  )}
+                />
               )}
+              {errors.discountValue && <p className="text-xs text-destructive">{errors.discountValue.message}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="coupon-min-order">Min. Order</Label>
-              <Input id="coupon-min-order" type="number" value={form.minOrderValue} onChange={(e) => patch("minOrderValue", e.target.value)} placeholder="0" />
+              <Controller
+                name="minOrderValue"
+                control={control}
+                render={({ field }) => (
+                  <Input id="coupon-min-order" type="number" {...field} placeholder="0" />
+                )}
+              />
             </div>
           </div>
 
           {/* Row 3: Max Discount + Max Usage */}
           <div className="grid grid-cols-2 gap-4">
-            {form.discountType === "percentage" ? (
+            {discountType === "percentage" ? (
               <div className="space-y-2">
                 <Label htmlFor="coupon-max-discount">Max Discount (cap)</Label>
-                <Input id="coupon-max-discount" type="number" value={form.maxDiscount} onChange={(e) => patch("maxDiscount", e.target.value)} placeholder="Uncapped" />
+                <Controller
+                  name="maxDiscount"
+                  control={control}
+                  render={({ field }) => (
+                    <Input id="coupon-max-discount" type="number" {...field} placeholder="Uncapped" />
+                  )}
+                />
               </div>
             ) : <div />}
             <div className="space-y-2">
               <Label htmlFor="coupon-usage">Max Usage</Label>
-              <Input id="coupon-usage" type="number" value={form.maxUsage} onChange={(e) => patch("maxUsage", e.target.value)} placeholder="Unlimited" />
+              <Controller
+                name="maxUsage"
+                control={control}
+                render={({ field }) => (
+                  <Input id="coupon-usage" type="number" {...field} placeholder="Unlimited" />
+                )}
+              />
             </div>
           </div>
 
@@ -228,31 +268,45 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Valid From <span className="text-destructive">*</span></Label>
-              <Popover open={fromOpen} onOpenChange={setFromOpen}>
-                <PopoverTrigger asChild>
-                  <div className="relative cursor-pointer" role="button" tabIndex={0}>
-                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                    <Input readOnly value={form.validFrom ? format(new Date(form.validFrom + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                  <Calendar mode="single" selected={form.validFrom ? new Date(form.validFrom + "T00:00:00") : undefined} onSelect={(date) => { patch("validFrom", date ? format(date, "yyyy-MM-dd") : ""); setFromOpen(false); }} />
-                </PopoverContent>
-              </Popover>
+              <Controller
+                name="validFrom"
+                control={control}
+                render={({ field }) => (
+                  <Popover open={fromOpen} onOpenChange={setFromOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                        <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                      <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => { field.onChange(date ? format(date, "yyyy-MM-dd") : ""); setFromOpen(false); }} />
+                    </PopoverContent>
+                  </Popover>
+                )}
+              />
+              {errors.validFrom && <p className="text-xs text-destructive">{errors.validFrom.message}</p>}
             </div>
             <div className="space-y-2">
               <Label>Valid Until <span className="text-destructive">*</span></Label>
-              <Popover open={untilOpen} onOpenChange={setUntilOpen}>
-                <PopoverTrigger asChild>
-                  <div className="relative cursor-pointer" role="button" tabIndex={0}>
-                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                    <Input readOnly value={form.validUntil ? format(new Date(form.validUntil + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                  <Calendar mode="single" selected={form.validUntil ? new Date(form.validUntil + "T00:00:00") : undefined} onSelect={(date) => { patch("validUntil", date ? format(date, "yyyy-MM-dd") : ""); setUntilOpen(false); }} />
-                </PopoverContent>
-              </Popover>
+              <Controller
+                name="validUntil"
+                control={control}
+                render={({ field }) => (
+                  <Popover open={untilOpen} onOpenChange={setUntilOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                        <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                      <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => { field.onChange(date ? format(date, "yyyy-MM-dd") : ""); setUntilOpen(false); }} />
+                    </PopoverContent>
+                  </Popover>
+                )}
+              />
+              {errors.validUntil && <p className="text-xs text-destructive">{errors.validUntil.message}</p>}
             </div>
           </div>
 
@@ -265,100 +319,141 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Applicable To</Label>
-                <Select value={form.applicableTo} onValueChange={(v) => patch("applicableTo", v)}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Items</SelectItem>
-                    <SelectItem value="products">Specific Products</SelectItem>
-                    <SelectItem value="services">Specific Services</SelectItem>
-                    <SelectItem value="categories">Specific Categories</SelectItem>
-                    <SelectItem value="brands">Specific Brands</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="applicableTo"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Items</SelectItem>
+                        <SelectItem value="products">Specific Products</SelectItem>
+                        <SelectItem value="services">Specific Services</SelectItem>
+                        <SelectItem value="categories">Specific Categories</SelectItem>
+                        <SelectItem value="brands">Specific Brands</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="coupon-min-items">Min. Items</Label>
-                <Input id="coupon-min-items" type="number" value={form.minItemCount} onChange={(e) => patch("minItemCount", e.target.value)} placeholder="0 (no limit)" />
+                <Controller
+                  name="minItemCount"
+                  control={control}
+                  render={({ field }) => (
+                    <Input id="coupon-min-items" type="number" {...field} placeholder="0 (no limit)" />
+                  )}
+                />
               </div>
             </div>
 
-            {form.applicableTo === "products" && (
-              <SearchableMultiSelect
-                label="Select Products"
-                value={form.productIds}
-                onChange={(v) => patch("productIds", v)}
-                fetchFn={fetchProducts}
-                placeholder="Search products..."
+            {applicableTo === "products" && (
+              <Controller
+                name="productIds"
+                control={control}
+                render={({ field }) => (
+                  <SearchableMultiSelect
+                    label="Select Products"
+                    value={field.value}
+                    onChange={field.onChange}
+                    fetchFn={fetchProducts}
+                    placeholder="Search products..."
+                  />
+                )}
               />
             )}
 
-            {form.applicableTo === "services" && (
-              <SearchableMultiSelect
-                label="Select Services"
-                value={form.serviceIds}
-                onChange={(v) => patch("serviceIds", v)}
-                fetchFn={fetchServices}
-                placeholder="Search services..."
+            {applicableTo === "services" && (
+              <Controller
+                name="serviceIds"
+                control={control}
+                render={({ field }) => (
+                  <SearchableMultiSelect
+                    label="Select Services"
+                    value={field.value}
+                    onChange={field.onChange}
+                    fetchFn={fetchServices}
+                    placeholder="Search services..."
+                  />
+                )}
               />
             )}
 
-            {form.applicableTo === "categories" && (
+            {applicableTo === "categories" && (
               <div className="space-y-2">
                 <Label>Select Categories</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  {CATEGORIES.map((cat) => {
-                    const selected = form.categoryIds.includes(cat);
-                    return (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => patch("categoryIds", selected ? form.categoryIds.filter((c) => c !== cat) : [...form.categoryIds, cat])}
-                        className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
-                      >
-                        <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
-                          {selected && <span className="text-xxxs">✓</span>}
-                        </div>
-                        {cat}
-                      </button>
-                    );
-                  })}
-                </div>
+                <Controller
+                  name="categoryIds"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="grid grid-cols-2 gap-2">
+                      {CATEGORIES.map((cat) => {
+                        const selected = field.value.includes(cat);
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => field.onChange(selected ? field.value.filter((c) => c !== cat) : [...field.value, cat])}
+                            className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
+                          >
+                            <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
+                              {selected && <span className="text-xxxs">✓</span>}
+                            </div>
+                            {cat}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                />
               </div>
             )}
 
-            {form.applicableTo === "brands" && (
+            {applicableTo === "brands" && (
               <div className="space-y-2">
                 <Label>Select Brands</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  {BRANDS.map((brand) => {
-                    const selected = form.brandIds.includes(brand);
-                    return (
-                      <button
-                        key={brand}
-                        type="button"
-                        onClick={() => patch("brandIds", selected ? form.brandIds.filter((b) => b !== brand) : [...form.brandIds, brand])}
-                        className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
-                      >
-                        <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
-                          {selected && <span className="text-xxxs">✓</span>}
-                        </div>
-                        {brand}
-                      </button>
-                    );
-                  })}
-                </div>
+                <Controller
+                  name="brandIds"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="grid grid-cols-2 gap-2">
+                      {BRANDS.map((brand) => {
+                        const selected = field.value.includes(brand);
+                        return (
+                          <button
+                            key={brand}
+                            type="button"
+                            onClick={() => field.onChange(selected ? field.value.filter((b) => b !== brand) : [...field.value, brand])}
+                            className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
+                          >
+                            <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
+                              {selected && <span className="text-xxxs">✓</span>}
+                            </div>
+                            {brand}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                />
               </div>
             )}
 
-            {/* Excluded Products */}
-            <SearchableMultiSelect
-              label="Excluded Products"
-              value={form.excludedProductIds}
-              onChange={(v) => patch("excludedProductIds", v)}
-              fetchFn={fetchProducts}
-              placeholder="Search products to exclude..."
+            <Controller
+              name="excludedProductIds"
+              control={control}
+              render={({ field }) => (
+                <SearchableMultiSelect
+                  label="Excluded Products"
+                  value={field.value}
+                  onChange={field.onChange}
+                  fetchFn={fetchProducts}
+                  placeholder="Search products to exclude..."
+                />
+              )}
             />
           </div>
 
@@ -366,32 +461,44 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
 
           {/* Flags Row */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="flex items-center gap-2">
-              <input
-                id="coupon-first-order"
-                type="checkbox"
-                checked={form.firstOrderOnly}
-                onChange={(e) => patch("firstOrderOnly", e.target.checked)}
-                className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
-              />
-              <Label htmlFor="coupon-first-order" className="text-xs cursor-pointer">First Order Only</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                id="coupon-show-banner"
-                type="checkbox"
-                checked={form.showOnBanner}
-                onChange={(e) => patch("showOnBanner", e.target.checked)}
-                className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
-              />
-              <Label htmlFor="coupon-show-banner" className="text-xs cursor-pointer">Show on Banner</Label>
-            </div>
+            <Controller
+              name="firstOrderOnly"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center gap-2">
+                  <input
+                    id="coupon-first-order"
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+                  />
+                  <Label htmlFor="coupon-first-order" className="text-xs cursor-pointer">First Order Only</Label>
+                </div>
+              )}
+            />
+            <Controller
+              name="showOnBanner"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center gap-2">
+                  <input
+                    id="coupon-show-banner"
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+                  />
+                  <Label htmlFor="coupon-show-banner" className="text-xs cursor-pointer">Show on Banner</Label>
+                </div>
+              )}
+            />
           </div>
         </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit} disabled={mutation.isPending}>
+          <AlertDialogAction onClick={handleSubmit(onSubmit)} disabled={mutation.isPending}>
             {mutation.isPending ? (
               <>
                 <Loader2 size={14} className="animate-spin mr-2" />

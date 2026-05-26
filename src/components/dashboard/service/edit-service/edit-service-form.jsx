@@ -2,7 +2,7 @@
 
 import { useCreateService, useUpdateService } from "@/hooks/queries/services";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { serviceFormSchema } from "@/lib/schemas";
+import { serviceFormSchema } from "@/validations";
 import { generateSlug, parseListInput } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -146,6 +146,7 @@ export default function EditServiceForm({ service, isAdmin = false }) {
       };
 
       await updateService.mutateAsync({ id: service._id, data: payload });
+      router.push("/dashboard/services");
     } catch (error) {
       console.error(error);
     } finally {

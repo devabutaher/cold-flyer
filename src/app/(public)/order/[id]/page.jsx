@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, XCircle, Package, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
@@ -19,6 +19,7 @@ export default function OrderSuccessPage() {
   const params = useParams();
   const t = useTranslations("order");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { backendUser } = useAuth();
   const orderId = params.id;
   const [order, setOrder] = useState(null);
@@ -247,7 +248,7 @@ export default function OrderSuccessPage() {
               </Link>
             )}
             {pollTimedOut && (
-              <Button variant="outline" className="w-full" onClick={() => window.location.reload()}>
+              <Button variant="outline" className="w-full" onClick={() => router.refresh()}>
                 Refresh Status
               </Button>
             )}

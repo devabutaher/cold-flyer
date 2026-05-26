@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/components/providers";
 import { forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
-import { createAccountSchema, signInSchema } from "@/lib/schemas";
+import { createAccountSchema, signInSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";

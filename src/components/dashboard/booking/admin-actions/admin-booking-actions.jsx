@@ -20,6 +20,8 @@ import { useCompleteBooking, useConfirmBooking, useScheduleBooking, useStartServ
 import { CalendarDays, CheckCircle2, Loader2, PlayCircle, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { scheduleBookingSchema } from "@/validations";
 import { toast } from "sonner";
 
 export function ConfirmBookingDialog({ booking, onSuccess, triggerClassName, triggerVariant = "outline" }) {
@@ -78,7 +80,7 @@ export function ScheduleBookingDialog({
   const [technician, setTechnician] = useState(booking.technician?._id || "");
   const scheduleBooking = useScheduleBooking();
 
-  const { control, getValues } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       scheduledDate: booking.scheduledDate ? new Date(booking.scheduledDate).toISOString().split("T")[0] : "",
       scheduledTime: {
@@ -86,14 +88,11 @@ export function ScheduleBookingDialog({
         end: booking.scheduledTime?.end || "",
       },
     },
+    resolver: zodResolver(scheduleBookingSchema),
+    mode: "onTouched",
   });
 
-  const handleSubmit = async () => {
-    const values = getValues();
-    if (!values.scheduledDate || !values.scheduledTime?.start || !values.scheduledTime?.end) {
-      toast.error("Please fill in date and time");
-      return;
-    }
+  const onSubmit = async (values) => {
     try {
       await scheduleBooking.mutateAsync({
         id: booking._id,
@@ -123,6 +122,9 @@ export function ScheduleBookingDialog({
         </AlertDialogHeader>
         <div className="py-4">
           <ScheduleSection control={control} />
+          {errors.scheduledDate && <p className="text-xs text-destructive mt-2">{errors.scheduledDate.message}</p>}
+          {errors.scheduledTime?.start && <p className="text-xs text-destructive mt-1">{errors.scheduledTime.start.message}</p>}
+          {errors.scheduledTime?.end && <p className="text-xs text-destructive mt-1">{errors.scheduledTime.end.message}</p>}
           {technicians.length > 0 && (
             <div className="mt-4">
               <Label>Technician</Label>
@@ -143,7 +145,7 @@ export function ScheduleBookingDialog({
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit} disabled={scheduleBooking.isPending}>
+          <AlertDialogAction onClick={handleSubmit(onSubmit)} disabled={scheduleBooking.isPending}>
             {scheduleBooking.isPending ? (
               <>
                 <Loader2 size={14} className="animate-spin mr-2" />

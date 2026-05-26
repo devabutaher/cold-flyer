@@ -7,7 +7,7 @@ import { getClient } from "@/lib/http-client";
 const client = () => getClient();
 
 export const userKeys = {
-  all: ["users"],
+  all: ["admin-users"],
   detail: (id) => ["user", id],
 };
 
@@ -43,6 +43,7 @@ export function useUpdateUserRole(componentOptions = {}) {
     mutationFn: ({ id, role }) => client().patch(`/admin/users/${id}`, { role }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: userKeys.all });
+      queryClient.invalidateQueries({ queryKey: userKeys.detail(variables.id) });
       toast.success("User role updated");
       userOnSuccess?.(data, variables, context);
     },

@@ -8,21 +8,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { BasicInfoSection, FormActions, FormHeader } from "../recent-work-form";
-
-const recentWorkFormSchema = z.object({
-  title: z.string().min(1, "Project title is required"),
-  category: z.string().min(1, "Category is required"),
-  description: z.string().min(1, "Description is required"),
-  excerpt: z.string().optional(),
-  clientName: z.string().optional(),
-  completionDate: z.string().optional(),
-  tags: z.string().optional(),
-  featured: z.boolean().optional(),
-  image: z.any().optional(),
-});
+import { recentWorkFormSchema } from "@/validations";
 
 const initialValues = {
   title: "",

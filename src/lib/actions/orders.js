@@ -54,6 +54,7 @@ export async function cancelOrderAction(orderId, reason) {
     const client = createServerClient(cookieStore);
     await client.patch(`/api/orders/${orderId}/cancel`, { reason });
     revalidateTag("orders");
+    revalidateTag("order-detail");
     return { success: true };
   } catch (error) {
     return {

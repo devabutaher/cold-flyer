@@ -1,7 +1,17 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
@@ -34,6 +44,7 @@ const PDF_COLUMNS = [
 
 export default function TechniciansTable() {
   const queryClient = useQueryClient();
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const { data: technicians = [], isLoading } = useQuery({
     queryKey: ["admin-technicians"],
@@ -48,52 +59,81 @@ export default function TechniciansTable() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
       toast.success("Technician removed");
+      setDeleteTarget(null);
     },
-    onError: (err) => toast.error(err.response?.data?.message || err.message),
+    onError: (err) => {
+      toast.error(err.response?.data?.message || err.message);
+      setDeleteTarget(null);
+    },
   });
 
   const handleDelete = useCallback(async (id) => {
-    if (!confirm("Remove this technician profile?")) return;
-    deleteTechnician.mutate(id);
-  }, [deleteTechnician]);
+    setDeleteTarget(id);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (deleteTarget) deleteTechnician.mutate(deleteTarget);
+  }, [deleteTarget, deleteTechnician]);
 
   const columns = useMemo(() => buildTechnicianColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const statusOptions = ["available", "busy", "offline", "on_leave"];
 
   return (
-    <DataTable
-      columns={columns}
-      data={technicians}
-      loading={isLoading}
-      rowCount="technicians"
-      defaultSort={[]}
-      emptyMessage="No technicians found. Create one from the users page."
-      emptyIcon={<Wrench size={40} />}
-      toolbar={(table) => (
-        <TableToolbar
-          table={table}
-          searchPlaceholder="Search technicians..."
-          selectedLabel="technicians"
-          filters={[
-            {
-              columnId: "status",
-              placeholder: "All Statuses",
-              allLabel: "All Statuses",
-              options: statusOptions,
-            },
-          ]}
-          actions={
-            <ExportMenu
-              table={table}
-              filename="technicians"
-              mapRow={mapRow}
-              pdfTitle="ColdFlyer — Technicians Report"
-              pdfColumns={PDF_COLUMNS}
-            />
-          }
-        />
-      )}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={technicians}
+        loading={isLoading}
+        rowCount="technicians"
+        defaultSort={[]}
+        emptyMessage="No technicians found. Create one from the users page."
+        emptyIcon={<Wrench size={40} />}
+        toolbar={(table) => (
+          <TableToolbar
+            table={table}
+            searchPlaceholder="Search technicians..."
+            selectedLabel="technicians"
+            filters={[
+              {
+                columnId: "status",
+                placeholder: "All Statuses",
+                allLabel: "All Statuses",
+                options: statusOptions,
+              },
+            ]}
+            actions={
+              <ExportMenu
+                table={table}
+                filename="technicians"
+                mapRow={mapRow}
+                pdfTitle="ColdFlyer — Technicians Report"
+                pdfColumns={PDF_COLUMNS}
+              />
+            }
+          />
+        )}
+      />
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this technician?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently remove the technician profile. The linked user account will not be affected.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteTarget(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              onClick={handleConfirmDelete}
+              disabled={deleteTechnician.isPending}
+            >
+              {deleteTechnician.isPending ? "Removing…" : "Remove"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

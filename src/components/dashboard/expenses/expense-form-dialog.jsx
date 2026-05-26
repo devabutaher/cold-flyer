@@ -1,11 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -20,7 +16,13 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
+import { expenseFormSchema } from "@/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const CATEGORY_OPTIONS = [
@@ -35,12 +37,7 @@ const CATEGORY_OPTIONS = [
   { value: "other", label: "Other" },
 ];
 
-const INITIAL_FORM = {
-  item: "",
-  amount: "",
-  date: "",
-  category: "",
-};
+const INITIAL_FORM = { item: "", amount: "", date: "", category: "" };
 
 function getInitialForm(mode, expense) {
   if (mode === "edit" && expense) {
@@ -55,30 +52,31 @@ function getInitialForm(mode, expense) {
 }
 
 export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange, onSuccess }) {
-  const [form, setForm] = useState(INITIAL_FORM);
   const [dateOpen, setDateOpen] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: INITIAL_FORM,
+    resolver: zodResolver(expenseFormSchema),
+    mode: "onTouched",
+  });
 
   useEffect(() => {
     if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setForm(mode === "edit" && expense ? {
-        item: expense.item || "",
-        amount: expense.amount?.toString() || "",
-        date: expense.date ? expense.date.slice(0, 10) : "",
-        category: expense.category || "",
-      } : INITIAL_FORM);
+      reset(getInitialForm(mode, expense));
     }
-  }, [mode, expense, open]);
-
-  const set = useCallback((key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  }, [mode, expense, open, reset]);
 
   const mutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (formData) => {
       const payload = {
-        ...form,
-        amount: form.amount ? Number(form.amount) : 0,
+        ...formData,
+        amount: Number(formData.amount),
+        category: formData.category || undefined,
       };
       if (mode === "create") {
         const res = await getClient().post("/expenses", payload);
@@ -91,23 +89,17 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
     onSuccess: () => {
       toast.success(mode === "create" ? "Expense created." : "Expense updated.");
       onSuccess?.();
+      onOpenChange(false);
     },
     onError: (err) => toast.error(err.response?.data?.message || err.message),
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.item || !form.amount || !form.date) {
-      toast.error("Item, amount, and date are required.");
-      return;
-    }
-    mutation.mutate();
-  };
+  const onSubmit = (formData) => mutation.mutate(formData);
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <AlertDialogHeader>
             <AlertDialogTitle>{mode === "create" ? "Add Expense" : "Edit Expense"}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -120,59 +112,81 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
               <Label htmlFor="item" className="mb-1.5 block">
                 Item <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="item"
-                value={form.item}
-                onChange={(e) => set("item", e.target.value)}
-                placeholder="Expense item name"
-                required
+              <Controller
+                name="item"
+                control={control}
+                render={({ field }) => <Input id="item" {...field} placeholder="Expense item name" />}
               />
+              {errors.item && <p className="text-xs text-destructive mt-1">{errors.item.message}</p>}
             </div>
             <div className="col-span-2 sm:col-span-1">
               <Label htmlFor="amount" className="mb-1.5 block">
                 Amount (৳) <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="amount"
-                type="number"
-                value={form.amount}
-                onChange={(e) => set("amount", e.target.value)}
-                placeholder="0"
-                required
+              <Controller
+                name="amount"
+                control={control}
+                render={({ field }) => <Input id="amount" type="number" {...field} placeholder="0" />}
               />
+              {errors.amount && <p className="text-xs text-destructive mt-1">{errors.amount.message}</p>}
             </div>
             <div className="col-span-2 sm:col-span-1">
               <Label className="mb-1.5 block">
                 Date <span className="text-destructive">*</span>
               </Label>
-              <Popover open={dateOpen} onOpenChange={setDateOpen}>
-                <PopoverTrigger asChild>
-                  <div className="relative cursor-pointer" role="button" tabIndex={0}>
-                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                    <Input readOnly value={form.date ? format(new Date(form.date + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" required />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                  <Calendar mode="single" selected={form.date ? new Date(form.date + "T00:00:00") : undefined} onSelect={(date) => { set("date", date ? format(date, "yyyy-MM-dd") : ""); setDateOpen(false); }} />
-                </PopoverContent>
-              </Popover>
+              <Controller
+                name="date"
+                control={control}
+                render={({ field }) => (
+                  <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                        <Input
+                          readOnly
+                          value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
+                          placeholder="Pick a date"
+                          className="pl-10 cursor-pointer"
+                        />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value + "T00:00:00") : undefined}
+                        onSelect={(date) => {
+                          field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                          setDateOpen(false);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                )}
+              />
+              {errors.date && <p className="text-xs text-destructive mt-1">{errors.date.message}</p>}
             </div>
             <div className="col-span-2">
               <Label htmlFor="category" className="mb-1.5 block">
                 Category
               </Label>
-              <Select value={form.category} onValueChange={(v) => set("category", v)}>
-                <SelectTrigger id="category" className="w-full">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORY_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="category" className="w-full">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CATEGORY_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 

@@ -7,7 +7,7 @@ import { getClient } from "@/lib/http-client";
 const client = () => getClient();
 
 export const couponKeys = {
-  all: ["coupons"],
+  all: ["admin-coupons"],
 };
 
 export function useCouponsQuery() {

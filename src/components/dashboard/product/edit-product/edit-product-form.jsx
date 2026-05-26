@@ -2,7 +2,7 @@
 
 import { useUpdateProduct } from "@/hooks/queries/products";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { getProductInitialValues, productFormSchema } from "@/lib/schemas";
+import { getProductInitialValues, productFormSchema } from "@/validations";
 import { parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";

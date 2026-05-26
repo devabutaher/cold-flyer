@@ -7,7 +7,7 @@ import { getClient } from "@/lib/http-client";
 const client = () => getClient();
 
 export const applicationKeys = {
-  all: ["applications"],
+  all: ["admin-applications"],
 };
 
 export function useApplicationsQuery() {
@@ -29,7 +29,7 @@ export function useApproveApplication(componentOptions = {}) {
     mutationFn: (id) => client().patch(`/admin/applications/${id}/approve`, {}),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
-      queryClient.invalidateQueries({ queryKey: ["technicians"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
       toast.success("Application approved. Technician profile created.");
       userOnSuccess?.(data, variables, context);
     },

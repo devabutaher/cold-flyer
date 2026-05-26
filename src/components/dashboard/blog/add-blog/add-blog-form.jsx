@@ -8,19 +8,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { BasicInfoSection, FormActions, FormHeader } from "../blog-form";
-
-const blogFormSchema = z.object({
-  title: z.string().min(1, "Blog title is required"),
-  category: z.string().min(1, "Category is required"),
-  excerpt: z.string().optional(),
-  content: z.string().min(1, "Content is required"),
-  tags: z.string().optional(),
-  featured: z.boolean().optional(),
-  image: z.any().optional(),
-});
+import { blogFormSchema } from "@/validations";
 
 const initialValues = {
   title: "",

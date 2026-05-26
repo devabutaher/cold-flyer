@@ -27,6 +27,7 @@ import {
   ReceiptText,
   Smartphone,
   Truck,
+  User,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -52,22 +53,36 @@ const PAYMENT_STATUS = {
   pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
   failed: { label: "Failed", className: "bg-destructive/10 text-destructive border-destructive/20" },
   refunded: { label: "Refunded", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  partially_refunded: { label: "Partial Refund", className: "bg-orange-500/10 text-orange-600 border-orange-200" },
 };
 
 export function OrderDetails({ orderId }) {
   const router = useRouter();
-  const { data: order, isLoading, refetch } = useOrderQuery(orderId);
+  const { data: order, isLoading, isError, error, refetch } = useOrderQuery(orderId);
   const cancelOrder = useCancelOrder();
   const [paying, setPaying] = useState(false);
 
   if (isLoading) return <OrderDetailSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="py-16 text-center">
+        <Package size={48} className="mx-auto mb-4 text-muted-foreground/30" />
+        <p className="text-sm text-destructive mb-2">Failed to load order details.</p>
+        <p className="text-xs text-muted-foreground mb-4">{error?.message || "An unexpected error occurred."}</p>
+        <Button asChild size="sm">
+          <Link href="/dashboard/orders">Back to Orders</Link>
+        </Button>
+      </div>
+    );
+  }
 
   if (!order) {
     return (
       <div className="py-16 text-center">
         <Package size={48} className="mx-auto mb-4 text-muted-foreground/30" />
         <p className="text-sm text-muted-foreground mb-4">Order not found.</p>
-        <Button asChild size="sm" animate={false}>
+        <Button asChild size="sm">
           <Link href="/dashboard/orders">Back to Orders</Link>
         </Button>
       </div>
@@ -85,6 +100,7 @@ export function OrderDetails({ orderId }) {
       }
     } catch {
       console.error("Failed to create payment");
+      toast.error("Failed to initiate payment. Please try again.");
     } finally {
       setPaying(false);
     }
@@ -96,6 +112,7 @@ export function OrderDetails({ orderId }) {
       refetch();
     } catch {
       console.error("Failed to cancel order");
+      toast.error("Failed to cancel order. Please try again.");
     }
   };
 
@@ -114,6 +131,7 @@ export function OrderDetails({ orderId }) {
       URL.revokeObjectURL(url);
     } catch {
       console.error("Failed to generate invoice");
+      toast.error("Failed to generate invoice.");
     }
   };
 
@@ -225,6 +243,25 @@ export function OrderDetails({ orderId }) {
         </div>
 
         <div className="space-y-5">
+          {order.user && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <User size={15} className="text-primary" />
+                  Customer
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 text-sm space-y-1">
+                <p className="font-medium">{order.user.name || "—"}</p>
+                {order.user.email && (
+                  <p className="text-muted-foreground">{order.user.email}</p>
+                )}
+                {order.user.phone && (
+                  <p className="text-muted-foreground">{order.user.phone}</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">

@@ -2,7 +2,7 @@
 
 import { useCreateProduct } from "@/hooks/queries/products";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { productFormSchema } from "@/lib/schemas";
+import { productFormSchema } from "@/validations";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

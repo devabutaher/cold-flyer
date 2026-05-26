@@ -1,14 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useUserQuery } from "@/hooks/queries/users";
 import { ArrowLeft, Award, CalendarDays, Lock, Mail, MapPin, Phone, Shield, Star, User, Calendar } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getClient } from "@/lib/http-client";
-
 function UserDetailsSkeleton() {
   return (
     <div className="space-y-6">
@@ -35,22 +33,29 @@ function UserDetailsSkeleton() {
 }
 
 export function UserDetails({ userId }) {
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: async () => {
-      const res = await getClient().get(`/admin/users/${userId}`);
-      return res.data?.data?.user;
-    },
-  });
+  const { data: user, isLoading, isError, error } = useUserQuery(userId);
 
   if (isLoading) return <UserDetailsSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="py-16 text-center">
+        <User size={48} className="mx-auto mb-4 text-muted-foreground/30" />
+        <p className="text-sm text-destructive mb-2">Failed to load user details.</p>
+        <p className="text-xs text-muted-foreground mb-4">{error?.message || "An unexpected error occurred."}</p>
+        <Button asChild size="sm">
+          <Link href="/dashboard/users">Back to Users</Link>
+        </Button>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
       <div className="py-16 text-center">
         <User size={48} className="mx-auto mb-4 text-muted-foreground/30" />
         <p className="text-sm text-muted-foreground mb-4">User not found.</p>
-        <Button asChild size="sm" animate={false}>
+        <Button asChild size="sm">
           <Link href="/dashboard/users">Back to Users</Link>
         </Button>
       </div>
@@ -131,6 +136,12 @@ export function UserDetails({ userId }) {
                   <Mail size={14} className="text-muted-foreground shrink-0" />
                   <span className="capitalize">{user.provider || "Email"}</span>
                 </div>
+                {user.userId && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground shrink-0 w-3.5 flex justify-center text-xs font-semibold">#</span>
+                    <span className="font-mono text-xs">{user.userId}</span>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileText } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
-import ApplicationDetailSheet from "./application-detail-sheet";
+import { ApplicationDetailSheet } from "./application-detail-sheet";
 import { buildApplicationColumns } from "./applications-columns";
 import ApproveApplicationDialog from "./approve-application-dialog";
 import RejectApplicationDialog from "./reject-application-dialog";

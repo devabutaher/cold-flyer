@@ -81,6 +81,7 @@ export function useUpdateRecentWork(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: recentWorkKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["recentWork"] });
       toast.success("Recent work updated successfully");
       userOnSuccess?.(data, variables, context);
     },
@@ -103,6 +104,7 @@ export function useDeleteRecentWork(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: recentWorkKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["recentWork"] });
       toast.success("Recent work deleted successfully");
       userOnSuccess?.(data, variables, context);
     },

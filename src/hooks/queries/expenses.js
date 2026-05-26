@@ -7,7 +7,7 @@ import { getClient } from "@/lib/http-client";
 const client = () => getClient();
 
 export const expenseKeys = {
-  all: ["expenses"],
+  all: ["admin-expenses"],
 };
 
 export function useExpensesQuery() {

@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
-import { buildServiceColumns } from "./service-columns";
-import { useServicesQuery, useDeleteService } from "@/hooks/queries/services";
+import { useDeleteService, useServicesQuery } from "@/hooks/queries/services";
 import { Package } from "lucide-react";
+import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import { buildServiceColumns } from "./service-columns";
 
 const mapServiceRow = (s) => ({
   name: s.name,
@@ -45,12 +45,15 @@ export default function ServicesTable({ isAdmin = false }) {
     return true;
   }, [isAdmin]);
 
-  const handleDelete = useCallback(async (id) => {
-    if (!checkAdminAccess()) return;
-    try {
-      await deleteService.mutateAsync(id);
-    } catch {}
-  }, [deleteService, checkAdminAccess]);
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!checkAdminAccess()) return;
+      try {
+        await deleteService.mutateAsync(id);
+      } catch {}
+    },
+    [deleteService, checkAdminAccess],
+  );
 
   const columns = useMemo(() => buildServiceColumns({ onDelete: handleDelete }), [handleDelete]);
 

@@ -81,6 +81,7 @@ export function useUpdateBlog(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: blogKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["blog"] });
       toast.success("Blog updated successfully");
       userOnSuccess?.(data, variables, context);
     },
@@ -103,6 +104,7 @@ export function useDeleteBlog(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: blogKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["blog"] });
       toast.success("Blog deleted successfully");
       userOnSuccess?.(data, variables, context);
     },
