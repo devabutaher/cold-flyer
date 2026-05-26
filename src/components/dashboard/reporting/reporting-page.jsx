@@ -104,7 +104,7 @@ export default function ReportingPage() {
   } = useQuery({
     queryKey: ["admin-report", year, month],
     queryFn: async () => {
-      const res = await getClient().get("/api/admin/report", {
+      const res = await getClient().get("/admin/report", {
         params: { year, month },
       });
       return res.data?.data || {};
@@ -120,7 +120,7 @@ export default function ReportingPage() {
   } = useQuery({
     queryKey: ["admin-duplicates", dupField],
     queryFn: async () => {
-      const res = await getClient().get(`/api/admin/report/duplicates`, {
+      const res = await getClient().get(`/admin/report/duplicates`, {
         params: { field: dupField },
       });
       return res.data?.data?.duplicates || [];
@@ -146,7 +146,7 @@ export default function ReportingPage() {
   const handleExport = useCallback(async () => {
     setExporting(true);
     try {
-      const res = await getClient().get("/api/admin/report", {
+      const res = await getClient().get("/admin/report", {
         params: { year, month, export: "excel" },
         responseType: "blob",
       });

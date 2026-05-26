@@ -116,7 +116,7 @@ export function ScheduleBookingDialog({
           Schedule
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent style={{ maxWidth: "700px" }}>
+      <AlertDialogContent className="data-[size=default]:sm:max-w-[700px]">
         <AlertDialogHeader>
           <AlertDialogTitle>Schedule Booking</AlertDialogTitle>
           <AlertDialogDescription>Set date, time, and technician for {booking.bookingNumber}</AlertDialogDescription>

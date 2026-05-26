@@ -13,7 +13,7 @@ export function useActivityLogQuery() {
   return useQuery({
     queryKey: activityKeys.all,
     queryFn: async () => {
-      const res = await client().get("/api/activity");
+      const res = await client().get("/activity");
       return res.data?.data?.logs || [];
     },
     placeholderData: (prev) => prev,

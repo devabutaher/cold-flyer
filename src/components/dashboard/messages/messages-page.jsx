@@ -27,14 +27,14 @@ export default function MessagesPage() {
   const { data: messages = [], isLoading } = useQuery({
     queryKey: ["admin-messages"],
     queryFn: async () => {
-      const res = await getClient().get("/api/messages");
+      const res = await getClient().get("/messages");
       return res.data?.data?.messages || [];
     },
   });
 
   const importCustomers = useCallback(async () => {
     try {
-      const res = await getClient().get("/api/customers");
+      const res = await getClient().get("/customers");
       const customers = res.data?.data?.customers || [];
       const newRecipients = customers.filter((c) => c.phone).map((c) => ({ name: c.name, phone: c.phone }));
       setRecipients((prev) => {
@@ -50,7 +50,7 @@ export default function MessagesPage() {
 
   const importWorkers = useCallback(async () => {
     try {
-      const res = await getClient().get("/api/technicians");
+      const res = await getClient().get("/admin/technicians");
       const technicians = res.data?.data?.technicians || [];
       const newRecipients = technicians
         .filter((t) => t.user?.phone)
@@ -99,7 +99,7 @@ export default function MessagesPage() {
   const logMessage = useCallback(
     async (channel) => {
       try {
-        await getClient().post("/api/messages", {
+        await getClient().post("/messages", {
           time: new Date().toISOString(),
           name: recipients.map((r) => r.name).join(", "),
           number: recipients.map((r) => r.phone).join(", "),

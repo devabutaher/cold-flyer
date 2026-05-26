@@ -1,14 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePlus, Info, X } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, ImagePlus, Info, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -152,12 +155,17 @@ export function BasicInfoSection({ control, errors }) {
             render={({ field }) => (
               <Field>
                 <FieldLabel>Completion Date</FieldLabel>
-                <Input
-                  {...field}
-                  type="date"
-                  value={field.value ?? ""}
-                  onChange={(e) => field.onChange(e.target.value)}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                      <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                      <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                    <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")} />
+                  </PopoverContent>
+                </Popover>
               </Field>
             )}
           />

@@ -18,7 +18,7 @@ export function ServiceReviews({ serviceId }) {
   const locale = useLocale();
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["service-reviews", serviceId],
-    queryFn: () => fetcher(`/api/reviews?service=${serviceId}`),
+    queryFn: () => fetcher(`/reviews?service=${serviceId}`),
     enabled: !!serviceId,
   });
 

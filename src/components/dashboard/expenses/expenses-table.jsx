@@ -37,7 +37,7 @@ export default function ExpensesTable() {
   const { data: expenses = [], isLoading } = useQuery({
     queryKey: ["admin-expenses"],
     queryFn: async () => {
-      const res = await getClient().get("/api/expenses");
+      const res = await getClient().get("/expenses");
       return res.data?.data?.expenses || [];
     },
   });
@@ -48,7 +48,7 @@ export default function ExpensesTable() {
   );
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => getClient().delete(`/api/expenses/${id}`),
+    mutationFn: (id) => getClient().delete(`/expenses/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-expenses"] });
       toast.success("Expense deleted.");

@@ -112,7 +112,7 @@ export default function AttendancePage() {
   const { data: todayData = [], isLoading: todayLoading, refetch: refetchToday } = useQuery({
     queryKey: ["attendance-today"],
     queryFn: async () => {
-      const res = await getClient().get("/api/attendance/today");
+      const res = await getClient().get("/attendance/today");
       return res.data?.data?.workers || [];
     },
   });
@@ -120,7 +120,7 @@ export default function AttendancePage() {
   const { data: historyData = [], isLoading: historyLoading } = useQuery({
     queryKey: ["attendance-history"],
     queryFn: async () => {
-      const res = await getClient().get("/api/attendance/history");
+      const res = await getClient().get("/attendance/history");
       return res.data?.data?.records || [];
     },
   });

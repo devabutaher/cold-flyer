@@ -48,6 +48,15 @@ export function buildBlogColumns({ onDelete } = {}) {
     },
 
     {
+      header: "Author",
+      accessorKey: "author.name",
+      cell: ({ row }) => {
+        const b = row.original;
+        return <span className="text-sm text-muted-foreground">{b.author?.name || "—"}</span>;
+      },
+    },
+
+    {
       header: "Category",
       accessorKey: "category",
       cell: ({ row }) => {
@@ -58,6 +67,20 @@ export function buildBlogColumns({ onDelete } = {}) {
             className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider ${color}`}
           >
             {cat}
+          </span>
+        );
+      },
+      meta: { filterVariant: "select" },
+    },
+
+    {
+      header: "Featured",
+      accessorKey: "featured",
+      cell: ({ row }) => {
+        const featured = row.getValue("featured");
+        return (
+          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wider ${featured ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+            {featured ? "Featured" : "Hidden"}
           </span>
         );
       },

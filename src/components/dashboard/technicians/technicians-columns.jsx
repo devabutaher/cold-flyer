@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { AvatarCell, StatusBadge, RatingCell, MonoCell } from "@/components/dashboard/table/table-cells";
+import { AvatarCell, StatusBadge, RatingCell } from "@/components/dashboard/table/table-cells";
 import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -69,30 +69,12 @@ export function buildTechnicianColumns({ onDelete } = {}) {
       cell: ({ row }) => <RatingCell rating={row.getValue("rating")} />,
     },
     {
-      header: "NID",
-      accessorKey: "nid",
-      cell: ({ row }) => <MonoCell value={row.original.nid} />,
-    },
-    {
-      header: "Blood",
-      accessorKey: "bloodGroup",
-      cell: ({ row }) => {
-        const bg = row.original.bloodGroup;
-        return bg ? <span className="text-sm font-semibold">{bg}</span> : <span className="text-sm text-muted-foreground">—</span>;
-      },
-    },
-    {
       header: "Salary",
       accessorKey: "salary",
       cell: ({ row }) => {
         const s = row.original.salary;
         return s ? <span className="text-sm font-medium tabular-nums">৳{s.toLocaleString()}</span> : <span className="text-sm text-muted-foreground">—</span>;
       },
-    },
-    {
-      header: "Emergency",
-      accessorKey: "emergencyContact",
-      cell: ({ row }) => <MonoCell value={row.original.emergencyContact} />,
     },
     {
       header: "Jobs Done",
@@ -117,7 +99,7 @@ export function buildTechnicianColumns({ onDelete } = {}) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/dashboard/technicians/${t._id}`}>
+                  <Link href={`/dashboard/technicians/${t._id}`} className="flex items-center w-full">
                     <Eye size={14} className="mr-2" />
                     View Details
                   </Link>

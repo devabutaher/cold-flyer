@@ -16,7 +16,7 @@ export function useTodayAttendanceQuery() {
   return useQuery({
     queryKey: attendanceKeys.today(),
     queryFn: async () => {
-      const res = await client().get("/api/attendance/today");
+      const res = await client().get("/attendance/today");
       return res.data?.data?.workers || [];
     },
     placeholderData: (prev) => prev,
@@ -27,7 +27,7 @@ export function useAttendanceHistoryQuery() {
   return useQuery({
     queryKey: attendanceKeys.history(),
     queryFn: async () => {
-      const res = await client().get("/api/attendance/history");
+      const res = await client().get("/attendance/history");
       return res.data?.data?.records || [];
     },
     placeholderData: (prev) => prev,
@@ -40,7 +40,7 @@ export function useCheckinMutation(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ workerId, location, task, lat, lng }) =>
-      client().post("/api/attendance/checkin", { workerId, location, task, lat, lng }),
+      client().post("/attendance/checkin", { workerId, location, task, lat, lng }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: attendanceKeys.today() });
       toast.success("Checked in successfully");
@@ -60,7 +60,7 @@ export function useCheckoutMutation(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ workerId, note }) =>
-      client().post("/api/attendance/checkout", { workerId, note }),
+      client().post("/attendance/checkout", { workerId, note }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: attendanceKeys.today() });
       queryClient.invalidateQueries({ queryKey: attendanceKeys.history() });

@@ -5,6 +5,12 @@ import { PriceCell, StatusBadge } from "../../table/table-cells";
 import { CalendarDays, ClipboardList } from "lucide-react";
 import { BookingRowActions } from "./booking-row-actions";
 
+const PAYMENT_STATUS_MAP = {
+  pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
+  paid: { label: "Paid", className: "bg-green-500/10 text-green-600 border-green-200" },
+  partial: { label: "Partial", className: "bg-orange-500/10 text-orange-600 border-orange-200" },
+};
+
 const BOOKING_STATUS_MAP = {
   pending: { label: "Pending", className: "bg-amber-500/10 text-amber-600 border-amber-200" },
   confirmed: { label: "Confirmed", className: "bg-blue-500/10 text-blue-600 border-blue-200" },
@@ -77,6 +83,16 @@ export function buildBookingColumns({ onCancel, isAdmin } = {}) {
       : []),
 
     {
+      header: "Technician",
+      accessorKey: "technician",
+      cell: ({ row }) => {
+        const b = row.original;
+        const techName = b.technician?.user?.name || b.technician?.employeeId;
+        return <span className="text-sm min-w-32 block">{techName || "—"}</span>;
+      },
+    },
+
+    {
       header: "Date",
       accessorKey: "scheduledDate",
       cell: ({ row }) => {
@@ -111,6 +127,16 @@ export function buildBookingColumns({ onCancel, isAdmin } = {}) {
         const status = row.getValue("status");
         return <StatusBadge value={status} map={BOOKING_STATUS_MAP} />;
       },
+    },
+
+    {
+      header: "Payment",
+      accessorKey: "paymentStatus",
+      cell: ({ row }) => {
+        const status = row.getValue("paymentStatus");
+        return <StatusBadge value={status || "pending"} map={PAYMENT_STATUS_MAP} />;
+      },
+      meta: { filterVariant: "select" },
     },
 
     {

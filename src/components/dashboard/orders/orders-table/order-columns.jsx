@@ -76,6 +76,16 @@ export function buildOrderColumns({ onPay, onCancel, payingOrderId }) {
       },
     },
 
+    // ── Customer ─────────────────────────────────────
+    {
+      header: "Customer",
+      accessorKey: "user.name",
+      cell: ({ row }) => {
+        const o = row.original;
+        return <span className="text-sm font-medium min-w-32 block">{o.user?.name || "—"}</span>;
+      },
+    },
+
     // ── Item count ───────────────────────────────────
     {
       header: "Items",

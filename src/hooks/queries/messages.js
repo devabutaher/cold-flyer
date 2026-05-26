@@ -14,7 +14,7 @@ export function useMessagesQuery() {
   return useQuery({
     queryKey: messageKeys.all,
     queryFn: async () => {
-      const res = await client().get("/api/messages");
+      const res = await client().get("/messages");
       return res.data?.data?.messages || [];
     },
     placeholderData: (prev) => prev,
@@ -27,7 +27,7 @@ export function useLogMessage(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ time, name, number, channel, message }) =>
-      client().post("/api/messages", { time, name, number, channel, message }),
+      client().post("/messages", { time, name, number, channel, message }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: messageKeys.all });
       toast.success("Message sent");

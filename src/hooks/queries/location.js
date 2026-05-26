@@ -13,7 +13,7 @@ export function useLocationQuery() {
   return useQuery({
     queryKey: locationKeys.all,
     queryFn: async () => {
-      const res = await client().get("/api/location");
+      const res = await client().get("/location");
       return res.data?.data || { workers: [], todayLog: [] };
     },
     placeholderData: (prev) => prev,

@@ -229,7 +229,7 @@ This project uses **shadcn/ui** style components:
 - Checkout Components: `src/components/checkout/` — `address-picker.jsx`, `order-items-list.jsx`, `payment-method-selector.jsx`, `order-summary.jsx`, `checkout-page.jsx`
 - Auth Components: `src/components/auth/`
 - Services Components: `src/components/services/`
-- Dashboard Components: `src/components/dashboard/`
+- Dashboard Components: `src/components/dashboard/` (sub-directories: activity-log, applications, attendance, blog, booking, checkout, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, technicians, users)
 - Reviews Components: `src/components/reviews/`
 - Notifications Components: `src/components/notifications/`
 - Common Components: `src/components/common/`
@@ -274,6 +274,16 @@ Located in `src/components/ui/`:
 | SearchableSelect | Popover + search input + scrollable list — BD district/thana selector |
 | Sidebar | Dashboard sidebar |
 | Navigation Menu | Navigation menu |
+| Command | Command palette / search |
+| Dialog | Modal dialog |
+| Popover | Popover overlay |
+| ScrollArea | Scrollable area |
+| HoverCard | Hover card popup |
+| Calendar | Date picker calendar |
+| Drawer | Responsive drawer (mobile-bottom, desktop-side) |
+| Form | Form component (react-hook-form) |
+| Toggle Group | Toggle button group |
+| Sonner | Toast notifications |
 
 ## Dark Mode
 
@@ -338,43 +348,64 @@ cold-flyer/
 | `/` | Home/Landing page |
 | `/items` | All products listing |
 | `/items/ac_units` | AC units products |
+| `/items/ac_parts` | AC parts products |
 | `/items/[id]` | Product detail page |
 | `/services` | Services listing |
+| `/services/[id]` | Service detail page |
 | `/cart` | Shopping cart |
 | `/checkout/[id]` | Checkout by order ID |
+| `/order/[id]` | Order tracking by ID |
 | `/auth` | Authentication |
-| `/order` | Order tracking |
 | `/about` | About us |
 | `/faq` | FAQ |
-| `/blog` | Blog |
+| `/blog` | Blog listing |
+| `/blog/[slug]` | Blog detail page |
 | `/contact` | Contact us |
 | `/privacy` | Privacy policy |
 | `/terms` | Terms & conditions |
 | `/shipping` | Shipping info |
 | `/careers` | Careers |
+| `/recent-works` | Recent works gallery |
+| `/recent-works/[slug]` | Recent work detail |
 
 ### Dashboard Routes (`(dashboard)`)
 
 | Route | Description |
 |-------|-------------|
 | `/dashboard` | Dashboard home |
-| `/dashboard/items` | Manage products |
-| `/dashboard/items/add` | Add new product |
-| `/dashboard/orders` | Manage orders |
-| `/dashboard/services` | Manage services |
-| `/dashboard/bookings` | Manage bookings |
-| `/dashboard/users` | User management |
-| `/dashboard/analytics` | Analytics |
+| `/dashboard/activity-log` | Activity log viewer |
+| `/dashboard/analytics` | Analytics & charts |
+| `/dashboard/applications` | Job applications |
+| `/dashboard/attendance` | Attendance + GPS check-in/out |
+| `/dashboard/blogs` | Blog management |
+| `/dashboard/blogs/add` | Add new blog post |
+| `/dashboard/blogs/edit/[id]` | Edit blog post |
+| `/dashboard/bookings` | Service bookings |
+| `/dashboard/bookings/[id]` | Booking details |
+| `/dashboard/bookings/edit/[id]` | Edit booking |
+| `/dashboard/bookings/new/[serviceId]` | New booking form |
 | `/dashboard/coupons` | Coupon management |
-| `/dashboard/technicians` | Technician management |
-| `/dashboard/profile` | Profile settings |
 | `/dashboard/customers` | Customer management |
 | `/dashboard/expenses` | Expense tracking |
-| `/dashboard/attendance` | Attendance + GPS check-in/out |
+| `/dashboard/items` | Product management |
+| `/dashboard/items/add` | Add new product |
+| `/dashboard/items/edit/[id]` | Edit product |
 | `/dashboard/location` | Live worker location tracking |
-| `/dashboard/activity-log` | Activity log viewer |
-| `/dashboard/reporting` | P&L reports & duplicate detection |
 | `/dashboard/messages` | WhatsApp/SMS messaging |
+| `/dashboard/orders` | Order management |
+| `/dashboard/orders/[id]` | Order details |
+| `/dashboard/profile` | Profile settings |
+| `/dashboard/recent-works` | Recent works management |
+| `/dashboard/recent-works/add` | Add recent work |
+| `/dashboard/recent-works/edit/[id]` | Edit recent work |
+| `/dashboard/reporting` | P&L reports & duplicate detection |
+| `/dashboard/services` | Service management |
+| `/dashboard/services/add` | Add new service |
+| `/dashboard/services/edit/[id]` | Edit service |
+| `/dashboard/technicians` | Technician management |
+| `/dashboard/technicians/[id]` | Technician details |
+| `/dashboard/users` | User management |
+| `/dashboard/users/[id]` | User details |
 
 ## Component Patterns
 
@@ -465,8 +496,12 @@ pnpm format      # Format code with Prettier
 9. The `AnimatedSection` component supports: `variant`, `transition`, `delay`, `once`, `margin` props
 
 10. Next.js 16 `params` is a Promise — use `const { id } = await params` in page components
-11. BD address data at `src/data/bd-addresses.js` — 65 districts, 536 thanas, `getThanas(districtId)` helper
-12. Profile shared components: `AddressCard` (`src/components/dashboard/profile/address-card.jsx`), `AddressFormSheet` (`src/components/dashboard/profile/address-form-sheet.jsx`) — reusable in checkout
+11. `next/dynamic` in Server Components cannot use `{ ssr: false }` in Next.js 16 — use plain `dynamic(() => import(...))` without options
+12. BD address data at `src/data/bd-addresses.js` — 65 districts, 536 thanas, `getThanas(districtId)` helper
+13. Profile shared components: `AddressCard` (`src/components/dashboard/profile/address-card.jsx`), `AddressFormSheet` (`src/components/dashboard/profile/address-form-sheet.jsx`) — reusable in checkout
+14. Server actions (`lib/actions/*.js`) use `revalidatePath` for cache invalidation. Do NOT convert to `revalidateTag` — the data layer uses Axios (not native `fetch()`) and tags would be no-ops.
+15. Form initialization from props in dialog components: use `useEffect` + `// eslint-disable-next-line react-hooks/set-state-in-effect` comment. This is the accepted React 19 migration pattern.
+16. TanStack Query hooks are centralized in `src/hooks/queries/` (19 files). All mutation hooks call `invalidateQueries` on success. The server action files call `revalidatePath` independently — both mechanisms work together.
 
 ## Dashboard Booking Details
 
@@ -477,6 +512,78 @@ Located at `src/components/dashboard/booking/booking-details/`:
 | `booking-details.jsx` | Main two-column layout (`lg:grid-cols-3`) — detail body + admin actions sidebar |
 | `detail-card.jsx` | Reusable Card wrapper with icon + title for field groups |
 | `booking-detail-skeleton.jsx` | Loading skeleton matching the two-column layout |
+| `booking-header.jsx` | Top section with booking status badge, title, meta info |
+| `booking-cancel-dialog.jsx` | Cancel booking confirmation dialog |
+
+## Dashboard Table Columns
+
+All dashboard tables use TanStack React Table v8 via the shared `DataTable` component at `src/components/dashboard/table/data-table.jsx`. Column definitions use factory functions (`buildXxxColumns({ callbacks })`) returning column arrays.
+
+### Column Design Principles
+- Show sufficient identifying data without bloat
+- Core fields only — full details on dedicated detail pages
+- Every table has: checkbox selection, global search, status filter, export (CSV/Excel/JSON/PDF)
+
+### Modified Tables
+
+| Table | Columns | File |
+|-------|---------|------|
+| **Orders** | Product, Customer (added), Date, Status, Payment, Amount, Actions | `orders-table/order-columns.jsx` |
+| **Bookings** | Customer, Service, Technician (added), Date, Status, Payment Status (added), Actions | `booking/bookings-table/booking-columns.jsx` |
+| **Blogs** | Title, Author (added), Category, Featured (added), Views, Created, Actions | `blog/blog-columns.jsx` |
+| **Technicians** | Name, Email, Specialization, Status, Rating, Salary, Jobs Done, Actions (NID/Blood Group/Emergency Contact removed) | `technicians/technicians-columns.jsx` |
+| **Users** | User ID (added, `MonoCell`), User, Phone, Role (technician badge, admin/user select), Status (added, `isActive` badge), Last Login (added), Joined, Actions | `users/users-columns.jsx` |
+| **Customers** | Name, Customer ID (in PDF), Phone, Brand, Model, Unit, Service, Install Date, Amount, Status, Actions | `customers/customers-table.jsx` |
+
+### Custom UID Display
+User ID (`USR-xxxxx`) uses `MonoCell` component for monospace styling. Customer ID (`CUST-xxxxx`) shown in PDF export columns. Both fields auto-generated via `pre('save')` hooks — see BACKEND.md.
+
+### Tabs Component Fix
+
+**File:** `src/components/ui/tabs.jsx`
+
+The Radix UI `Tabs` primitive sets `data-orientation="horizontal"` attribute, NOT bare `data-horizontal`. The component used invalid Tailwind selectors (`data-horizontal:flex-col`) that never matched, so all tab layouts rendered as single-column. Fixed 11 occurrences by changing:
+
+```
+data-horizontal:  →  data-[orientation=horizontal]:
+data-vertical:    →  data-[orientation=vertical]:
+```
+
+### Link Import Naming Collision
+
+`lucide-react` exports a `Link` icon component that collides with Next.js's `Link` from `next/link`. When both are imported in the same file, the lucide icon shadows the navigation component. The fix: remove `Link` from the lucide import and add `import Link from "next/link"` separately.
+
+**Affected file:** `src/components/dashboard/users/user-details.jsx`
+
+## Dashboard Attendance Components
+
+Located at `src/components/dashboard/attendance/`:
+
+| File | Purpose |
+|------|---------|
+| `attendance-page.jsx` | Orchestrator — two-column layout, date + status filters |
+| `worker-card.jsx` | Worker check-in status card with check-in/out actions |
+| `check-in-dialog.jsx` | GPS check-in dialog with location picker |
+| `check-out-dialog.jsx` | Check-out confirmation dialog with note |
+| `attendance-utils.js` | Helper: `formatTimeAgo()`, status label/color maps |
+
+## Dashboard Messages Components
+
+Located at `src/components/dashboard/messages/`:
+
+| File | Purpose |
+|------|---------|
+| `messages-page.jsx` | Orchestrator — 3-step wizard flow (Recipients → Message → Send) with state management |
+| `step-indicator.jsx` | Visual 3-step progress bar with step labels, clickable navigation |
+| `recipients-picker.jsx` | Customer/technician import from API, manual name+phone entry, pill-list with remove |
+| `message-editor.jsx` | Template dropdown (`TEMPLATES` in constants) + textarea with `{name}` variable substitution |
+| `send-actions.jsx` | WhatsApp / SMS send buttons with per-recipient progress status |
+| `message-log.jsx` | Sent message history table fetched from API |
+| `message-constants.js` | 8 Bengali message templates, channel options, helper labels |
+
+**WhatsApp delivery note:** MVP uses `wa.me` browser links (one tab per recipient, 1.5s delay) + server-side `POST /api/messages` audit logging. No true WhatsApp Business API — no delivery tracking, no message templates, no opt-in management. To upgrade: integrate Twilio/Meta Cloud API with a dedicated service layer. SMS uses `sms:` protocol links (opens default SMS app).
+
+**Message templates:** 8 Bengali-language templates in `message-constants.js`: appointment reminder, order confirmation, payment reminder, service follow-up, promotional offer, festival greeting, general notice, technician dispatch. Templates use `{name}` placeholder replaced with each recipient's name at send time.
 
 Admin action dialogs accept `triggerClassName` and `triggerVariant` props for full-width styling:
 

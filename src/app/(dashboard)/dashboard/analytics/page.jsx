@@ -55,7 +55,7 @@ function AnalyticsContent() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin-analytics"],
     queryFn: async () => {
-      const res = await fetcher("/api/admin/analytics");
+      const res = await fetcher("/admin/analytics");
       return res?.data || {};
     },
   });

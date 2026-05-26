@@ -17,7 +17,7 @@ export function useReportQuery(year, month) {
       const params = new URLSearchParams();
       if (year) params.set("year", year);
       if (month) params.set("month", month);
-      const res = await client().get(`/api/admin/report?${params}`);
+      const res = await client().get(`/admin/report?${params}`);
       return res.data?.data || {};
     },
     placeholderData: (prev) => prev,
@@ -28,7 +28,7 @@ export function useDuplicatesQuery(field) {
   return useQuery({
     queryKey: reportKeys.duplicates(field),
     queryFn: async () => {
-      const res = await client().get(`/api/admin/report/duplicates?field=${field}`);
+      const res = await client().get(`/admin/report/duplicates?field=${field}`);
       return res.data?.data?.duplicates || [];
     },
     enabled: !!field,

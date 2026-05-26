@@ -14,7 +14,7 @@ export function useCustomersQuery() {
   return useQuery({
     queryKey: customerKeys.all,
     queryFn: async () => {
-      const res = await client().get("/api/customers");
+      const res = await client().get("/customers");
       return res.data?.data?.customers || [];
     },
     placeholderData: (prev) => prev,
@@ -27,7 +27,7 @@ export function useCreateCustomer(componentOptions = {}) {
 
   return useMutation({
     mutationFn: (data) =>
-      client().post("/api/customers", { ...data, amount: Number(data.amount) || undefined }),
+      client().post("/customers", { ...data, amount: Number(data.amount) || undefined }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customerKeys.all });
       toast.success("Customer created");
@@ -47,7 +47,7 @@ export function useUpdateCustomer(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ id, data }) =>
-      client().patch(`/api/customers/${id}`, { ...data, amount: Number(data.amount) || undefined }),
+      client().patch(`/customers/${id}`, { ...data, amount: Number(data.amount) || undefined }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customerKeys.all });
       toast.success("Customer updated");
@@ -66,7 +66,7 @@ export function useDeleteCustomer(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().delete(`/api/customers/${id}`),
+    mutationFn: (id) => client().delete(`/customers/${id}`),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customerKeys.all });
       toast.success("Customer deleted");
@@ -85,7 +85,7 @@ export function useToggleCustomerStatus(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().patch(`/api/customers/${id}/toggle`),
+    mutationFn: (id) => client().patch(`/customers/${id}/toggle`),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customerKeys.all });
       toast.success("Customer status updated");

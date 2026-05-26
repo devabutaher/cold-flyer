@@ -108,7 +108,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
                     setShowCancel(true);
                   }}
                 >
-                  <X size={13} />
+                  <X size={13} className="mr-2" />
                   Cancel Order
                 </DropdownMenuItem>
               </>

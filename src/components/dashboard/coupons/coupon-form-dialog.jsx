@@ -61,7 +61,7 @@ const fetchProducts = async (search) => {
 };
 
 const fetchServices = async (search) => {
-  const res = await getClient().get(`/api/services?search=${encodeURIComponent(search)}&limit=20`);
+  const res = await getClient().get(`/services?search=${encodeURIComponent(search)}&limit=20`);
   return res.data?.data?.services || [];
 };
 
@@ -164,7 +164,7 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
   return (
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent className="data-[size=default]:sm:max-w-[700px] w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
+      <AlertDialogContent className="data-[size=default]:sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{isEdit ? `Edit Coupon — ${coupon?.code}` : "Create Coupon"}</AlertDialogTitle>
           <AlertDialogDescription>

@@ -14,6 +14,7 @@ import { buildOrderColumns } from "./orders-table/order-columns";
 
 const mapOrderRow = (o) => ({
   order: o.orderNumber ?? o._id?.slice(-8).toUpperCase(),
+  customer: o.user?.name || "—",
   date: o.createdAt ? new Date(o.createdAt).toLocaleDateString() : "—",
   items: o.itemCount ?? 0,
   total: o.total ?? 0,
@@ -118,6 +119,7 @@ export default function OrdersPage() {
                 pdfTitle="My Orders"
                 pdfColumns={[
                   { header: "Order", accessorKey: "order", width: 1.2 },
+                  { header: "Customer", accessorKey: "customer", width: 1.5 },
                   { header: "Date", accessorKey: "date", width: 1 },
                   { header: "Items", accessorKey: "items", width: 0.6 },
                   { header: "Total", accessorKey: "total", width: 0.8 },

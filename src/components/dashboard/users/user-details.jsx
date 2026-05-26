@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Award, CalendarDays, Link, Lock, Mail, MapPin, Phone, Shield, Star, User, Calendar } from "lucide-react";
+import { ArrowLeft, Award, CalendarDays, Lock, Mail, MapPin, Phone, Shield, Star, User, Calendar } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

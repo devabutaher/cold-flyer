@@ -40,7 +40,7 @@ export default function ActivityLogTable() {
   const { data: logs = [], isLoading } = useQuery({
     queryKey: ["admin-activity"],
     queryFn: async () => {
-      const res = await getClient().get("/api/activity");
+      const res = await getClient().get("/activity");
       return res.data?.data?.logs || [];
     },
   });

@@ -119,7 +119,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
             {canCancel && (
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  <XCircle size={14} className="text-destructive" />
+                  <XCircle size={14} className="mr-2 text-destructive" />
                   Cancel Booking
                 </DropdownMenuItem>
               </AlertDialogTrigger>

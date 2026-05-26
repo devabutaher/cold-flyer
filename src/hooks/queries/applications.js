@@ -14,7 +14,7 @@ export function useApplicationsQuery() {
   return useQuery({
     queryKey: applicationKeys.all,
     queryFn: async () => {
-      const res = await client().get("/api/admin/applications");
+      const res = await client().get("/admin/applications");
       return res.data?.data?.applications || [];
     },
     placeholderData: (prev) => prev,
@@ -26,7 +26,7 @@ export function useApproveApplication(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().patch(`/api/admin/applications/${id}/approve`, {}),
+    mutationFn: (id) => client().patch(`/admin/applications/${id}/approve`, {}),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
       queryClient.invalidateQueries({ queryKey: ["technicians"] });
@@ -46,7 +46,7 @@ export function useRejectApplication(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: ({ id, notes }) => client().patch(`/api/admin/applications/${id}/reject`, { notes }),
+    mutationFn: ({ id, notes }) => client().patch(`/admin/applications/${id}/reject`, { notes }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
       toast.success("Application rejected");
@@ -65,7 +65,7 @@ export function useDeleteApplication(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().delete(`/api/admin/applications/${id}`),
+    mutationFn: (id) => client().delete(`/admin/applications/${id}`),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
       toast.success("Application deleted");

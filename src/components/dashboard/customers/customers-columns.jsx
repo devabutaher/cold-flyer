@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AvatarCell, StatusBadge, PriceCell } from "@/components/dashboard/table/table-cells";
+import { AvatarCell, StatusBadge, PriceCell, MonoCell } from "@/components/dashboard/table/table-cells";
 import { Edit, Eye, MoreHorizontal, ToggleLeft, Trash2 } from "lucide-react";
 
 export const CUSTOMER_STATUS_MAP = {
@@ -36,6 +36,12 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
           aria-label="Select row"
         />
       ),
+    },
+    {
+      header: "Customer ID",
+      accessorKey: "customerId",
+      id: "customerId",
+      cell: ({ row }) => <MonoCell value={row.original.customerId} />,
     },
     {
       header: "Name",

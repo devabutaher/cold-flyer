@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,11 +14,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const SERVICE_OPTIONS = ["Installation", "Repair", "Maintenance", "Gas Fill", "Other"];
@@ -55,20 +58,9 @@ function getInitialForm(mode, customer) {
   return INITIAL_FORM;
 }
 
-function useDialogForm(mode, entity, initialFn) {
-  const [formKey, setFormKey] = useState(0);
-  const prevOpen = useState(false);
-  const [form, setForm] = useState(() => initialFn(mode, entity));
-
-  if (prevOpen[0] !== formKey) {
-    // Track open state change via formKey
-  }
-
-  return [form, setForm, formKey, setFormKey];
-}
-
 export function CustomerFormDialog({ mode = "create", customer, open, onOpenChange, onSuccess }) {
   const [form, setForm] = useState(INITIAL_FORM);
+  const [dateOpen, setDateOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -100,10 +92,10 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
         amount: form.amount ? Number(form.amount) : undefined,
       };
       if (mode === "create") {
-        const res = await getClient().post("/api/customers", payload);
+        const res = await getClient().post("/customers", payload);
         return res.data;
       } else {
-        const res = await getClient().patch(`/api/customers/${customer._id}`, payload);
+        const res = await getClient().patch(`/customers/${customer._id}`, payload);
         return res.data;
       }
     },
@@ -125,7 +117,7 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent size="sm">
+      <AlertDialogContent>
         <form onSubmit={handleSubmit}>
           <AlertDialogHeader>
             <AlertDialogTitle>{mode === "create" ? "Add Customer" : "Edit Customer"}</AlertDialogTitle>
@@ -184,10 +176,20 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Input id="unit" value={form.unit} onChange={(e) => set("unit", e.target.value)} placeholder="Unit / Qty" />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="installDate" className="mb-1.5 block">
+              <Label className="mb-1.5 block">
                 Install Date
               </Label>
-              <Input id="installDate" type="date" value={form.installDate} onChange={(e) => set("installDate", e.target.value)} />
+              <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                <PopoverTrigger asChild>
+                  <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                    <Input readOnly value={form.installDate ? format(new Date(form.installDate + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                  <Calendar mode="single" selected={form.installDate ? new Date(form.installDate + "T00:00:00") : undefined} onSelect={(date) => { set("installDate", date ? format(date, "yyyy-MM-dd") : ""); setDateOpen(false); }} />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="col-span-2 sm:col-span-1">
               <Label htmlFor="service" className="mb-1.5 block">

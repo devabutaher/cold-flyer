@@ -14,6 +14,7 @@ import { toast } from "sonner";
 
 const mapRow = (c) => ({
   name: c.name,
+  customerId: c.customerId,
   phone: c.phone || "—",
   brand: c.brand || "—",
   model: c.model || "—",
@@ -26,6 +27,7 @@ const mapRow = (c) => ({
 
 const PDF_COLUMNS = [
   { header: "Name", accessorKey: "name", width: 2 },
+  { header: "Customer ID", accessorKey: "customerId", width: 1.5 },
   { header: "Phone", accessorKey: "phone", width: 1.5 },
   { header: "Brand", accessorKey: "brand", width: 1.2 },
   { header: "Model", accessorKey: "model", width: 1.2 },
@@ -44,13 +46,13 @@ export default function CustomersTable() {
   const { data: customers = [], isLoading } = useQuery({
     queryKey: ["admin-customers"],
     queryFn: async () => {
-      const res = await getClient().get("/api/customers");
+      const res = await getClient().get("/customers");
       return res.data?.data?.customers || [];
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => getClient().delete(`/api/customers/${id}`),
+    mutationFn: (id) => getClient().delete(`/customers/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       toast.success("Customer deleted.");
@@ -59,7 +61,7 @@ export default function CustomersTable() {
   });
 
   const toggleStatusMutation = useMutation({
-    mutationFn: (id) => getClient().patch(`/api/customers/${id}/toggle`),
+    mutationFn: (id) => getClient().patch(`/customers/${id}/toggle`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       toast.success("Customer status updated.");

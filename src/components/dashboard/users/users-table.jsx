@@ -13,17 +13,23 @@ import { useRouter } from "next/navigation";
 
 const mapRow = (u) => ({
   name: u.name || u.email,
+  userId: u.userId,
   email: u.email,
   phone: u.phone || "—",
   role: u.role,
+  isActive: u.isActive,
+  lastLogin: u.lastLogin,
   joined: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—",
 });
 
 const PDF_COLUMNS = [
   { header: "Name", accessorKey: "name", width: 2 },
+  { header: "User ID", accessorKey: "userId", width: 1.2 },
   { header: "Email", accessorKey: "email", width: 2.5 },
   { header: "Phone", accessorKey: "phone", width: 1.5 },
   { header: "Role", accessorKey: "role", width: 0.8 },
+  { header: "Status", accessorKey: "isActive", width: 0.8 },
+  { header: "Last Login", accessorKey: "lastLogin", width: 1.2 },
   { header: "Joined", accessorKey: "joined", width: 1.2 },
 ];
 

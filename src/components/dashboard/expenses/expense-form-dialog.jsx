@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,11 +14,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORY_OPTIONS = [
@@ -53,6 +56,7 @@ function getInitialForm(mode, expense) {
 
 export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange, onSuccess }) {
   const [form, setForm] = useState(INITIAL_FORM);
+  const [dateOpen, setDateOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -77,10 +81,10 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
         amount: form.amount ? Number(form.amount) : 0,
       };
       if (mode === "create") {
-        const res = await getClient().post("/api/expenses", payload);
+        const res = await getClient().post("/expenses", payload);
         return res.data;
       } else {
-        const res = await getClient().patch(`/api/expenses/${expense._id}`, payload);
+        const res = await getClient().patch(`/expenses/${expense._id}`, payload);
         return res.data;
       }
     },
@@ -102,7 +106,7 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent size="sm">
+      <AlertDialogContent>
         <form onSubmit={handleSubmit}>
           <AlertDialogHeader>
             <AlertDialogTitle>{mode === "create" ? "Add Expense" : "Edit Expense"}</AlertDialogTitle>
@@ -138,16 +142,20 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="date" className="mb-1.5 block">
+              <Label className="mb-1.5 block">
                 Date <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="date"
-                type="date"
-                value={form.date}
-                onChange={(e) => set("date", e.target.value)}
-                required
-              />
+              <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                <PopoverTrigger asChild>
+                  <div className="relative cursor-pointer" role="button" tabIndex={0}>
+                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
+                    <Input readOnly value={form.date ? format(new Date(form.date + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" required />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                  <Calendar mode="single" selected={form.date ? new Date(form.date + "T00:00:00") : undefined} onSelect={(date) => { set("date", date ? format(date, "yyyy-MM-dd") : ""); setDateOpen(false); }} />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="col-span-2">
               <Label htmlFor="category" className="mb-1.5 block">

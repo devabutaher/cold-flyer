@@ -43,7 +43,7 @@ function LocationWorkerCard({ worker }) {
 
         <div className="flex items-start gap-2 text-muted-foreground">
           <MapPin size={13} className="mt-0.5 shrink-0" />
-          <span className="text-foreground">{worker.currentLocation || "No location data"}</span>
+          <span className="text-foreground">{worker.currentLocation?.lat ? `${worker.currentLocation.lat}, ${worker.currentLocation.lng}` : worker.latestLog?.address || "No location data"}</span>
         </div>
 
         {latestLog?.lat && latestLog?.lng && (
@@ -137,7 +137,7 @@ export default function LocationPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin-location"],
     queryFn: async () => {
-      const res = await getClient().get("/api/location");
+      const res = await getClient().get("/location");
       return res.data?.data || { workers: [], todayLog: [] };
     },
   });

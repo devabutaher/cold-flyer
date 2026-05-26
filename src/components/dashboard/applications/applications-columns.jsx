@@ -47,6 +47,12 @@ export function buildApplicationColumns({ onView, onApprove, onReject, onDelete 
       cell: ({ row }) => <span className="text-sm capitalize">{row.original.position || "—"}</span>,
     },
     {
+      header: "Experience",
+      accessorKey: "experience",
+      id: "experience",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.original.experience || "—"}</span>,
+    },
+    {
       header: "Phone",
       accessorKey: "phone",
       id: "phone",
