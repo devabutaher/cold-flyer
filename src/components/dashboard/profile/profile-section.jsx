@@ -281,10 +281,7 @@ export function ProfileSection({ user }) {
                     <p className="text-xs text-muted-foreground">{t("email")}</p>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{user.email}</p>
-                      <Badge
-                        variant={user.isEmailVerified ? "secondary" : "outline"}
-                        className="text-xxs h-5 px-1.5"
-                      >
+                      <Badge variant={user.isEmailVerified ? "secondary" : "outline"} className="text-xxs h-5 px-1.5">
                         {user.isEmailVerified ? t("verified") : t("unverified")}
                       </Badge>
                     </div>

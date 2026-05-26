@@ -1,4 +1,3 @@
-
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedDiv } from "@/components/ui/animated-div";
 import { Badge } from "@/components/ui/badge";
@@ -217,15 +216,20 @@ export default async function AboutPage() {
                 {t("heroBadge")}
               </Badge>
             </AnimatedDiv>
-            <AnimatedDiv as="h1"
+            <AnimatedDiv
+              as="h1"
               className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {t.rich("heroTitle", {br: () => <br/>, primary: (chunks) => <span className="text-primary">{chunks}</span>})}
+              {t.rich("heroTitle", {
+                br: () => <br />,
+                primary: (chunks) => <span className="text-primary">{chunks}</span>,
+              })}
             </AnimatedDiv>
-            <AnimatedDiv as="p"
+            <AnimatedDiv
+              as="p"
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -264,12 +268,8 @@ export default async function AboutPage() {
               </Button>
             </div>
             <div className="md:col-span-7 space-y-6">
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {t("storyPara1")}
-              </p>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {t("storyPara2")}
-              </p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{t("storyPara1")}</p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{t("storyPara2")}</p>
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
                 <div>
                   <div className="font-sans font-extrabold text-3xl text-primary mb-1 relative inline-block">
@@ -306,9 +306,7 @@ export default async function AboutPage() {
                 {t("valuesTitle")}
               </h2>
             </div>
-            <p className="max-w-md font-medium text-muted-foreground">
-              {t("valuesDesc")}
-            </p>
+            <p className="max-w-md font-medium text-muted-foreground">{t("valuesDesc")}</p>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {values.map((value, index) => (
@@ -342,7 +340,7 @@ export default async function AboutPage() {
                 {t("statsLabel")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                {t.rich("statsTitle", {br: () => <br/>})}
+                {t.rich("statsTitle", { br: () => <br /> })}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {stats.map((stat, index) => (

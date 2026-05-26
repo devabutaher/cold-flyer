@@ -45,12 +45,28 @@ export function RecipientsPicker({
 
         <div className="flex items-end gap-2">
           <div className="flex-1">
-            <Label htmlFor="manual-name" className="mb-1.5 block text-xs">Name</Label>
-            <Input id="manual-name" value={manualName} onChange={(e) => onManualNameChange(e.target.value)} placeholder="Recipient name" className="h-9" />
+            <Label htmlFor="manual-name" className="mb-1.5 block text-xs">
+              Name
+            </Label>
+            <Input
+              id="manual-name"
+              value={manualName}
+              onChange={(e) => onManualNameChange(e.target.value)}
+              placeholder="Recipient name"
+              className="h-9"
+            />
           </div>
           <div className="flex-1">
-            <Label htmlFor="manual-phone" className="mb-1.5 block text-xs">Phone</Label>
-            <Input id="manual-phone" value={manualPhone} onChange={(e) => onManualPhoneChange(e.target.value)} placeholder="Phone number" className="h-9" />
+            <Label htmlFor="manual-phone" className="mb-1.5 block text-xs">
+              Phone
+            </Label>
+            <Input
+              id="manual-phone"
+              value={manualPhone}
+              onChange={(e) => onManualPhoneChange(e.target.value)}
+              placeholder="Phone number"
+              className="h-9"
+            />
           </div>
           <Button size="sm" onClick={onAddManual}>
             <UserPlus size={14} className="mr-1.5" />
@@ -63,7 +79,10 @@ export function RecipientsPicker({
             {recipients.map((r) => (
               <Badge key={r.phone} variant="secondary" className="gap-1.5 pr-1">
                 {r.name}
-                <button onClick={() => onRemoveRecipient(r.phone)} className="ml-0.5 hover:text-destructive transition-colors">
+                <button
+                  onClick={() => onRemoveRecipient(r.phone)}
+                  className="ml-0.5 hover:text-destructive transition-colors"
+                >
                   <X size={12} />
                 </button>
               </Badge>

@@ -18,8 +18,10 @@ import { ArrowLeft, ArrowRight, MinusCircle, Package, PlusCircle, X } from "luci
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
-const TransformComponent = dynamic(() => import("react-zoom-pan-pinch").then(m => m.TransformComponent), { ssr: false });
-const TransformWrapper = dynamic(() => import("react-zoom-pan-pinch").then(m => m.TransformWrapper), { ssr: false });
+const TransformComponent = dynamic(() => import("react-zoom-pan-pinch").then((m) => m.TransformComponent), {
+  ssr: false,
+});
+const TransformWrapper = dynamic(() => import("react-zoom-pan-pinch").then((m) => m.TransformWrapper), { ssr: false });
 
 const getAspectRatioClass = (ratio) => {
   switch (ratio) {

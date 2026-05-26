@@ -61,7 +61,10 @@ export default function CouponsTable() {
     [deleteCoupon],
   );
 
-  const columns = useMemo(() => buildCouponColumns({ onDelete: handleDelete, onEdit: setEditingCoupon }), [handleDelete]);
+  const columns = useMemo(
+    () => buildCouponColumns({ onDelete: handleDelete, onEdit: setEditingCoupon }),
+    [handleDelete],
+  );
 
   const typeOptions = ["percentage", "fixed", "free_shipping"];
   const statusOptions = ["true", "false"];

@@ -19,7 +19,7 @@ export function DesktopNav() {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
-  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), '') || '/';
+  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "") || "/";
   const mainNavLinks = getData("mainNavLinks", locale);
   const primaryLinks = getData("primaryLinks", locale);
   const moreLinks = getData("moreLinks", locale);
@@ -50,8 +50,8 @@ export function DesktopNav() {
         {primaryLinks.map((link) => {
           const isActive =
             pathWithoutLocale === link.href ||
-            pathWithoutLocale === link.href + '/' ||
-            (link.href !== '/' && pathWithoutLocale.startsWith(link.href + '/'));
+            pathWithoutLocale === link.href + "/" ||
+            (link.href !== "/" && pathWithoutLocale.startsWith(link.href + "/"));
 
           return (
             <NavigationMenuLink key={link.href} asChild>

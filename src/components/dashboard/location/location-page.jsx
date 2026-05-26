@@ -22,11 +22,7 @@ function LocationWorkerCard({ worker }) {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span
-              className={`h-2 w-2 rounded-full shrink-0 ${
-                isOnline ? "bg-green-500" : "bg-muted-foreground"
-              }`}
-            />
+            <span className={`h-2 w-2 rounded-full shrink-0 ${isOnline ? "bg-green-500" : "bg-muted-foreground"}`} />
             <CardTitle className="text-sm font-semibold">{worker.workerName}</CardTitle>
           </div>
           <Badge variant={isOnline ? "default" : "secondary"} className="text-xxs">
@@ -43,17 +39,16 @@ function LocationWorkerCard({ worker }) {
 
         <div className="flex items-start gap-2 text-muted-foreground">
           <MapPin size={13} className="mt-0.5 shrink-0" />
-          <span className="text-foreground">{worker.currentLocation?.lat ? `${worker.currentLocation.lat}, ${worker.currentLocation.lng}` : worker.latestLog?.address || "No location data"}</span>
+          <span className="text-foreground">
+            {worker.currentLocation?.lat
+              ? `${worker.currentLocation.lat}, ${worker.currentLocation.lng}`
+              : worker.latestLog?.address || "No location data"}
+          </span>
         </div>
 
         {latestLog?.lat && latestLog?.lng && (
           <div className="pt-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full gap-1.5 text-xs"
-              asChild
-            >
+            <Button variant="outline" size="sm" className="w-full gap-1.5 text-xs" asChild>
               <Link
                 href={`https://www.google.com/maps?q=${latestLog.lat},${latestLog.lng}`}
                 target="_blank"
@@ -117,11 +112,7 @@ function buildLocationLogColumns() {
         if (!l.lat || !l.lng) return <span className="text-xs text-muted-foreground">—</span>;
         return (
           <Button variant="ghost" size="xs" className="gap-1" asChild>
-            <Link
-              href={`https://www.google.com/maps?q=${l.lat},${l.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link href={`https://www.google.com/maps?q=${l.lat},${l.lng}`} target="_blank" rel="noopener noreferrer">
               <Navigation size={12} />
               Maps
             </Link>

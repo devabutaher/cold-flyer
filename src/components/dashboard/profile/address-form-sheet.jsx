@@ -14,7 +14,7 @@ import { Building2, Home, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addressSchema } from "@/validations";
 
@@ -72,21 +72,13 @@ function AddressForm({ control, errors, thanas }) {
 
       <div className="grid gap-2">
         <Label htmlFor="addr-fullName">{t("fullName")}</Label>
-        <Controller
-          name="fullName"
-          control={control}
-          render={({ field }) => <Input id="addr-fullName" {...field} />}
-        />
+        <Controller name="fullName" control={control} render={({ field }) => <Input id="addr-fullName" {...field} />} />
         {errors?.fullName && <p className="text-xs text-destructive">{errors.fullName.message}</p>}
       </div>
 
       <div className="grid gap-2">
         <Label htmlFor="addr-phone">{t("phone")}</Label>
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => <Input id="addr-phone" {...field} />}
-        />
+        <Controller name="phone" control={control} render={({ field }) => <Input id="addr-phone" {...field} />} />
         {errors?.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
       </div>
 
@@ -165,7 +157,9 @@ function AddressForm({ control, errors, thanas }) {
                 checked={field.value}
                 onCheckedChange={(checked) => field.onChange(!!checked)}
               />
-              <Label htmlFor="addr-default" className="text-sm font-normal">{t("setDefault")}</Label>
+              <Label htmlFor="addr-default" className="text-sm font-normal">
+                {t("setDefault")}
+              </Label>
             </>
           )}
         />
@@ -183,7 +177,6 @@ export function AddressFormSheet({ open, onOpenChange, address, onSaved }) {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: address ? { ...EMPTY_FORM, ...address } : EMPTY_FORM,
@@ -191,7 +184,7 @@ export function AddressFormSheet({ open, onOpenChange, address, onSaved }) {
     mode: "onTouched",
   });
 
-  const selectedDistrict = watch("district", district);
+  const selectedDistrict = useWatch({ control, name: "district", defaultValue: district });
   const thanas = getThanas(selectedDistrict);
 
   function resetForm() {

@@ -30,10 +30,7 @@ export default function BlogsTable({ isAdmin = false }) {
     [deleteBlog, checkAdminAccess],
   );
 
-  const columns = useMemo(
-    () => buildBlogColumns({ onDelete: handleDelete }),
-    [handleDelete],
-  );
+  const columns = useMemo(() => buildBlogColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const getUnique = (arr, key) => {
     const values = arr.map((item) => item[key]).filter((v) => v);

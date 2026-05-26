@@ -25,10 +25,7 @@ export function InfiniteSlider({
       }}
     >
       <div
-        className={cn(
-          "flex w-max animate-marquee",
-          direction === "horizontal" ? "flex-row" : "flex-col",
-        )}
+        className={cn("flex w-max animate-marquee", direction === "horizontal" ? "flex-row" : "flex-col")}
         style={{
           gap: `${gap}px`,
           animationDirection: reverse ? "reverse" : "normal",

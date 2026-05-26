@@ -49,7 +49,7 @@ export function NavGroup({ label, items }) {
                           isActive={hasActiveChild}
                           className={cn(
                             hasActiveChild && "bg-accent text-accent-foreground font-bold",
-                            "transition-all duration-200"
+                            "transition-all duration-200",
                           )}
                         >
                           {item.icon}
@@ -76,7 +76,7 @@ export function NavGroup({ label, items }) {
                                       className={cn(
                                         isSubActive &&
                                           "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground font-bold",
-                                        "transition-all duration-150"
+                                        "transition-all duration-150",
                                       )}
                                     >
                                       <Link href={subItem.path}>
@@ -93,10 +93,7 @@ export function NavGroup({ label, items }) {
                       </CollapsibleContent>
                     </>
                   ) : (
-                    <motion.div
-                      whileHover={{ x: 2 }}
-                      transition={{ duration: 0.15 }}
-                    >
+                    <motion.div whileHover={{ x: 2 }} transition={{ duration: 0.15 }}>
                       <SidebarMenuButton
                         asChild
                         tooltip={item.title}
@@ -104,7 +101,7 @@ export function NavGroup({ label, items }) {
                         className={cn(
                           isActive &&
                             "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground font-bold",
-                          "transition-all duration-200"
+                          "transition-all duration-200",
                         )}
                       >
                         <Link href={item.path}>

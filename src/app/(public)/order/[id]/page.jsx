@@ -209,7 +209,7 @@ export default function OrderSuccessPage() {
             <div className="mb-6 rounded-lg bg-muted p-4 text-left">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Package size={16} />
-                <span>{t("orderLabel", {number: order.orderNumber})}</span>
+                <span>{t("orderLabel", { number: order.orderNumber })}</span>
               </div>
               <p className="mt-2 text-sm">
                 Status:{" "}
@@ -232,7 +232,7 @@ export default function OrderSuccessPage() {
                   {order.paymentMethod === "cod" ? t("cashOnDelivery") : order.paymentStatus?.toUpperCase()}
                 </span>
               </p>
-              <p className="mt-2 text-lg font-bold">{t("total", {amount: order.total?.toLocaleString()})}</p>
+              <p className="mt-2 text-lg font-bold">{t("total", { amount: order.total?.toLocaleString() })}</p>
             </div>
           )}
 

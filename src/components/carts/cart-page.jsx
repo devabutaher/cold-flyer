@@ -61,11 +61,15 @@ export default function CartPage() {
         isPickup: false,
       };
 
-      const response = await getClient().post("/orders", orderData).then((r) => r.data);
+      const response = await getClient()
+        .post("/orders", orderData)
+        .then((r) => r.data);
 
       if (response.data?.order?._id) {
         const orderId = response.data.order._id;
-        const sessionResponse = await getClient().post(`/orders/${orderId}/checkout`, { provider: paymentProvider }).then((r) => r.data);
+        const sessionResponse = await getClient()
+          .post(`/orders/${orderId}/checkout`, { provider: paymentProvider })
+          .then((r) => r.data);
 
         if (sessionResponse.success) {
           clearCart();

@@ -28,9 +28,7 @@ export default async function AddBlogPage() {
     redirect("/");
   }
 
-  const AddBlogForm = await import("@/components/dashboard/blog/add-blog/add-blog-form").then(
-    (mod) => mod.default,
-  );
+  const AddBlogForm = await import("@/components/dashboard/blog/add-blog/add-blog-form").then((mod) => mod.default);
 
   return <AddBlogForm isAdmin={user.role === "admin"} />;
 }

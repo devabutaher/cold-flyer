@@ -6,11 +6,7 @@ import { motion } from "framer-motion";
 
 export function DashboardSkeleton() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex flex-1 flex-col gap-4"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-1 flex-col gap-4">
       <motion.div
         className={cn("grid grid-cols-2 gap-4 lg:grid-cols-4", "*:min-h-48 *:w-full *:rounded-md")}
         initial="hidden"
@@ -29,7 +25,7 @@ export function DashboardSkeleton() {
             }}
             className={cn(
               i === 4 && "col-span-2 min-h-114! lg:col-span-4",
-              (i === 5 || i === 6) && "col-span-2 min-h-92! lg:col-span-2"
+              (i === 5 || i === 6) && "col-span-2 min-h-92! lg:col-span-2",
             )}
           >
             <Skeleton className="h-full w-full" />

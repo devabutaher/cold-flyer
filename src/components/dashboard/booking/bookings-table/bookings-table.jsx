@@ -34,11 +34,14 @@ export default function BookingsTable({ isAdmin = false }) {
   const { data: bookings = [], isLoading: loading } = useBookingsQuery();
   const cancelBooking = useCancelBooking();
 
-  const handleCancel = useCallback(async (id, reason) => {
-    try {
-      await cancelBooking.mutateAsync({ bookingId: id, reason: reason || "Customer request" });
-    } catch {}
-  }, [cancelBooking]);
+  const handleCancel = useCallback(
+    async (id, reason) => {
+      try {
+        await cancelBooking.mutateAsync({ bookingId: id, reason: reason || "Customer request" });
+      } catch {}
+    },
+    [cancelBooking],
+  );
 
   const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel, isAdmin }), [handleCancel, isAdmin]);
 

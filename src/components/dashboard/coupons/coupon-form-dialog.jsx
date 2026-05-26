@@ -1,12 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,15 +11,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getClient } from "@/lib/http-client";
+import { couponFormSchema } from "@/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { couponFormSchema } from "@/validations";
 
 const initialForm = {
   code: "",
@@ -49,12 +48,19 @@ const initialForm = {
   excludedCategoryIds: [],
 };
 
-const CATEGORIES = [
-  "Air Conditioners", "Heaters", "Ventilation", "Refrigeration", "Parts & Accessories",
-];
+const CATEGORIES = ["Air Conditioners", "Heaters", "Ventilation", "Refrigeration", "Parts & Accessories"];
 
 const BRANDS = [
-  "Samsung", "LG", "Daikin", "Gree", "General", "Mitsubishi", "Panasonic", "Sharp", "Whirlpool", "Hitachi",
+  "Samsung",
+  "LG",
+  "Daikin",
+  "Gree",
+  "General",
+  "Mitsubishi",
+  "Panasonic",
+  "Sharp",
+  "Whirlpool",
+  "Hitachi",
 ];
 
 const fetchProducts = async (search) => {
@@ -67,7 +73,14 @@ const fetchServices = async (search) => {
   return res.data?.data?.services || [];
 };
 
-export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen, onOpenChange: controlledOnOpenChange, onSuccess, trigger }) {
+export function CouponFormDialog({
+  mode = "create",
+  coupon,
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+  onSuccess,
+  trigger,
+}) {
   const queryClient = useQueryClient();
   const [internalOpen, setInternalOpen] = useState(false);
   const [fromOpen, setFromOpen] = useState(false);
@@ -106,7 +119,6 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: getInitial(),
@@ -114,8 +126,8 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
     mode: "onTouched",
   });
 
-  const discountType = watch("discountType");
-  const applicableTo = watch("applicableTo");
+  const discountType = useWatch({ control, name: "discountType" });
+  const applicableTo = useWatch({ control, name: "applicableTo" });
 
   const handleOpenChange = (nextOpen) => {
     if (!nextOpen) reset();
@@ -145,7 +157,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
       code: formData.code,
       discountType: formData.discountType,
       discountValue: Number(formData.discountValue),
-      ...(formData.discountType === "percentage" && formData.maxDiscount ? { maxDiscount: Number(formData.maxDiscount) } : {}),
+      ...(formData.discountType === "percentage" && formData.maxDiscount
+        ? { maxDiscount: Number(formData.maxDiscount) }
+        : {}),
       minOrderValue: formData.minOrderValue ? Number(formData.minOrderValue) : 0,
       ...(formData.maxUsage ? { maxUsage: Number(formData.maxUsage) } : {}),
       validFrom: new Date(formData.validFrom),
@@ -158,7 +172,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
       firstOrderOnly: formData.firstOrderOnly,
       ...(formData.minItemCount ? { minItemCount: Number(formData.minItemCount) } : {}),
       showOnBanner: formData.showOnBanner,
-      ...(formData.excludedProductIds.length > 0 ? { excludedProductIds: formData.excludedProductIds.map((p) => p._id || p) } : {}),
+      ...(formData.excludedProductIds.length > 0
+        ? { excludedProductIds: formData.excludedProductIds.map((p) => p._id || p) }
+        : {}),
       ...(formData.excludedCategoryIds.length > 0 ? { excludedCategoryIds: formData.excludedCategoryIds } : {}),
     });
   };
@@ -166,11 +182,13 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
   return (
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent className="data-[size=default]:sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+      <AlertDialogContent className="data-[size=default]:sm:max-w-175 max-h-[90vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{isEdit ? `Edit Coupon — ${coupon?.code}` : "Create Coupon"}</AlertDialogTitle>
           <AlertDialogDescription>
-            {isEdit ? "Update coupon details including scope and conditions." : "Add a new discount coupon with optional product/service targeting."}
+            {isEdit
+              ? "Update coupon details including scope and conditions."
+              : "Add a new discount coupon with optional product/service targeting."}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -178,12 +196,19 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
           {/* Row 1: Code + Discount Type */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="coupon-code">Code <span className="text-destructive">*</span></Label>
+              <Label htmlFor="coupon-code">
+                Code <span className="text-destructive">*</span>
+              </Label>
               <Controller
                 name="code"
                 control={control}
                 render={({ field }) => (
-                  <Input id="coupon-code" {...field} placeholder="SUMMER20" onChange={(e) => field.onChange(e.target.value.toUpperCase())} />
+                  <Input
+                    id="coupon-code"
+                    {...field}
+                    placeholder="SUMMER20"
+                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                  />
                 )}
               />
               {errors.code && <p className="text-xs text-destructive">{errors.code.message}</p>}
@@ -220,7 +245,12 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                   name="discountValue"
                   control={control}
                   render={({ field }) => (
-                    <Input id="coupon-value" type="number" {...field} placeholder={discountType === "percentage" ? "20" : "500"} />
+                    <Input
+                      id="coupon-value"
+                      type="number"
+                      {...field}
+                      placeholder={discountType === "percentage" ? "20" : "500"}
+                    />
                   )}
                 />
               )}
@@ -231,9 +261,7 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
               <Controller
                 name="minOrderValue"
                 control={control}
-                render={({ field }) => (
-                  <Input id="coupon-min-order" type="number" {...field} placeholder="0" />
-                )}
+                render={({ field }) => <Input id="coupon-min-order" type="number" {...field} placeholder="0" />}
               />
             </div>
           </div>
@@ -251,15 +279,15 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                   )}
                 />
               </div>
-            ) : <div />}
+            ) : (
+              <div />
+            )}
             <div className="space-y-2">
               <Label htmlFor="coupon-usage">Max Usage</Label>
               <Controller
                 name="maxUsage"
                 control={control}
-                render={({ field }) => (
-                  <Input id="coupon-usage" type="number" {...field} placeholder="Unlimited" />
-                )}
+                render={({ field }) => <Input id="coupon-usage" type="number" {...field} placeholder="Unlimited" />}
               />
             </div>
           </div>
@@ -267,7 +295,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
           {/* Row 4: Valid From + Valid Until */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Valid From <span className="text-destructive">*</span></Label>
+              <Label>
+                Valid From <span className="text-destructive">*</span>
+              </Label>
               <Controller
                 name="validFrom"
                 control={control}
@@ -276,11 +306,23 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                     <PopoverTrigger asChild>
                       <div className="relative cursor-pointer" role="button" tabIndex={0}>
                         <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                        <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                        <Input
+                          readOnly
+                          value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
+                          placeholder="Pick a date"
+                          className="pl-10 cursor-pointer"
+                        />
                       </div>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                      <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => { field.onChange(date ? format(date, "yyyy-MM-dd") : ""); setFromOpen(false); }} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value + "T00:00:00") : undefined}
+                        onSelect={(date) => {
+                          field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                          setFromOpen(false);
+                        }}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}
@@ -288,7 +330,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
               {errors.validFrom && <p className="text-xs text-destructive">{errors.validFrom.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label>Valid Until <span className="text-destructive">*</span></Label>
+              <Label>
+                Valid Until <span className="text-destructive">*</span>
+              </Label>
               <Controller
                 name="validUntil"
                 control={control}
@@ -297,11 +341,23 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                     <PopoverTrigger asChild>
                       <div className="relative cursor-pointer" role="button" tabIndex={0}>
                         <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                        <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                        <Input
+                          readOnly
+                          value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
+                          placeholder="Pick a date"
+                          className="pl-10 cursor-pointer"
+                        />
                       </div>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                      <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => { field.onChange(date ? format(date, "yyyy-MM-dd") : ""); setUntilOpen(false); }} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value + "T00:00:00") : undefined}
+                        onSelect={(date) => {
+                          field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                          setUntilOpen(false);
+                        }}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}
@@ -396,10 +452,14 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                           <button
                             key={cat}
                             type="button"
-                            onClick={() => field.onChange(selected ? field.value.filter((c) => c !== cat) : [...field.value, cat])}
+                            onClick={() =>
+                              field.onChange(selected ? field.value.filter((c) => c !== cat) : [...field.value, cat])
+                            }
                             className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
                           >
-                            <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
+                            <div
+                              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}
+                            >
                               {selected && <span className="text-xxxs">✓</span>}
                             </div>
                             {cat}
@@ -426,10 +486,16 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                           <button
                             key={brand}
                             type="button"
-                            onClick={() => field.onChange(selected ? field.value.filter((b) => b !== brand) : [...field.value, brand])}
+                            onClick={() =>
+                              field.onChange(
+                                selected ? field.value.filter((b) => b !== brand) : [...field.value, brand],
+                              )
+                            }
                             className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
                           >
-                            <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
+                            <div
+                              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}
+                            >
                               {selected && <span className="text-xxxs">✓</span>}
                             </div>
                             {brand}
@@ -473,7 +539,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                     onChange={(e) => field.onChange(e.target.checked)}
                     className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
                   />
-                  <Label htmlFor="coupon-first-order" className="text-xs cursor-pointer">First Order Only</Label>
+                  <Label htmlFor="coupon-first-order" className="text-xs cursor-pointer">
+                    First Order Only
+                  </Label>
                 </div>
               )}
             />
@@ -489,7 +557,9 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                     onChange={(e) => field.onChange(e.target.checked)}
                     className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
                   />
-                  <Label htmlFor="coupon-show-banner" className="text-xs cursor-pointer">Show on Banner</Label>
+                  <Label htmlFor="coupon-show-banner" className="text-xs cursor-pointer">
+                    Show on Banner
+                  </Label>
                 </div>
               )}
             />
@@ -504,7 +574,11 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                 <Loader2 size={14} className="animate-spin mr-2" />
                 {isEdit ? "Saving..." : "Creating..."}
               </>
-            ) : isEdit ? "Save Changes" : "Create Coupon"}
+            ) : isEdit ? (
+              "Save Changes"
+            ) : (
+              "Create Coupon"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

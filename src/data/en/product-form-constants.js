@@ -10,7 +10,19 @@ export const CATEGORIES = [
   "Accessories",
 ];
 
-export const BRANDS = ["ColdFlyer", "Daikin", "LG", "Samsung", "Carrier", "Mitsubishi", "General", "Walton", "Minister", "Vision", "Other"];
+export const BRANDS = [
+  "ColdFlyer",
+  "Daikin",
+  "LG",
+  "Samsung",
+  "Carrier",
+  "Mitsubishi",
+  "General",
+  "Walton",
+  "Minister",
+  "Vision",
+  "Other",
+];
 
 export const TAGS = [
   { value: "Sale", label: "Sale" },

@@ -10,12 +10,7 @@ import { AnimatePresence } from "framer-motion";
 
 export function Providers({ children }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <TooltipProvider>
         <QueryProvider>
           <CartProvider>

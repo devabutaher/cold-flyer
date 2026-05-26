@@ -64,9 +64,12 @@ export default function UsersTable() {
 
   const router = useRouter();
 
-  const handleView = useCallback((user) => {
-    router.push(`/dashboard/users/${user._id}`);
-  }, [router]);
+  const handleView = useCallback(
+    (user) => {
+      router.push(`/dashboard/users/${user._id}`);
+    },
+    [router],
+  );
 
   const handleRoleChange = useCallback((id, role) => updateRole.mutate({ id, role }), [updateRole]);
   const handleDelete = useCallback((id) => deleteMutation.mutate(id), [deleteMutation]);

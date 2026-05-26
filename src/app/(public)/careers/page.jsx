@@ -26,7 +26,12 @@ export default function CareersPage() {
   const [showApplyForm, setShowApplyForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: { name: "", email: "", phone: "", experience: "", skills: "", coverLetter: "" },
     resolver: zodResolver(applicationSchema),
     mode: "onTouched",
@@ -336,9 +341,7 @@ export default function CareersPage() {
               <Controller
                 name="name"
                 control={control}
-                render={({ field }) => (
-                  <Input id="apply-name" placeholder={t("applyNamePlaceholder")} {...field} />
-                )}
+                render={({ field }) => <Input id="apply-name" placeholder={t("applyNamePlaceholder")} {...field} />}
               />
               {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
             </div>
@@ -387,9 +390,7 @@ export default function CareersPage() {
               <Controller
                 name="skills"
                 control={control}
-                render={({ field }) => (
-                  <Input id="apply-skills" placeholder={t("applySkillsPlaceholder")} {...field} />
-                )}
+                render={({ field }) => <Input id="apply-skills" placeholder={t("applySkillsPlaceholder")} {...field} />}
               />
             </div>
 

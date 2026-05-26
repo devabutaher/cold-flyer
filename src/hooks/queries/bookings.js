@@ -3,11 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getClient, extractList, extractItem } from "@/lib/http-client";
-import {
-  createBookingAction,
-  cancelBookingAction,
-  updateBookingAction,
-} from "@/lib/actions/services";
+import { createBookingAction, cancelBookingAction, updateBookingAction } from "@/lib/actions/services";
 
 const client = () => getClient();
 
@@ -116,7 +112,9 @@ export function useScheduleBooking(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ id, data }) =>
-      client().patch(`/services/bookings/${id}/schedule`, data).then((r) => r.data),
+      client()
+        .patch(`/services/bookings/${id}/schedule`, data)
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
       queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: "all" });
@@ -137,7 +135,9 @@ export function useCompleteBooking(componentOptions = {}) {
 
   return useMutation({
     mutationFn: ({ id, data }) =>
-      client().patch(`/services/bookings/${id}/complete`, data).then((r) => r.data),
+      client()
+        .patch(`/services/bookings/${id}/complete`, data)
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
       queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables.id), refetchType: "all" });
@@ -157,7 +157,10 @@ export function useConfirmBooking(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().patch(`/services/bookings/${id}/confirm`).then((r) => r.data),
+    mutationFn: (id) =>
+      client()
+        .patch(`/services/bookings/${id}/confirm`)
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
       queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables), refetchType: "all" });
@@ -177,7 +180,10 @@ export function useStartService(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().patch(`/services/bookings/${id}/start`).then((r) => r.data),
+    mutationFn: (id) =>
+      client()
+        .patch(`/services/bookings/${id}/start`)
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: bookingKeys.all, refetchType: "all" });
       queryClient.invalidateQueries({ queryKey: bookingKeys.detail(variables), refetchType: "all" });

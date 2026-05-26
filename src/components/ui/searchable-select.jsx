@@ -18,9 +18,7 @@ export function SearchableSelect({
   const inputRef = useRef(null);
   const listRef = useRef(null);
 
-  const filtered = options.filter((o) =>
-    (o.name || o.label || o).toLowerCase().includes(search.toLowerCase()),
-  );
+  const filtered = options.filter((o) => (o.name || o.label || o).toLowerCase().includes(search.toLowerCase()));
 
   const selected = options.find((o) => (o.id ?? o.value ?? o) === value);
   const display = selected?.name ?? selected?.label ?? selected ?? "";

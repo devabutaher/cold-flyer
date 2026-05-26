@@ -42,7 +42,11 @@ export function CatalogPage({
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: items = [], isLoading, error } = useQuery({
+  const {
+    data: items = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: [...queryKey, params],
     queryFn: async () => {
       const res = await fetchFn({ ...params, limit: "50" });
@@ -73,18 +77,10 @@ export function CatalogPage({
       </Suspense>
       {q && (
         <div className="mt-4">
-          <h1 className="font-sans font-bold text-2xl text-foreground">
-            {t("resultsFor", { query: q })}
-          </h1>
+          <h1 className="font-sans font-bold text-2xl text-foreground">{t("resultsFor", { query: q })}</h1>
         </div>
       )}
-      <CatalogGrid
-        items={items}
-        isLoading={isLoading}
-        error={error}
-        type={type}
-        itemLabel={itemLabel}
-      />
+      <CatalogGrid items={items} isLoading={isLoading} error={error} type={type} itemLabel={itemLabel} />
     </>
   );
 }

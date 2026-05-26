@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { AvatarCell, StatusBadge, RatingCell } from "@/components/dashboard/table/table-cells";
 import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -73,7 +78,11 @@ export function buildTechnicianColumns({ onDelete } = {}) {
       accessorKey: "salary",
       cell: ({ row }) => {
         const s = row.original.salary;
-        return s ? <span className="text-sm font-medium tabular-nums">৳{s.toLocaleString()}</span> : <span className="text-sm text-muted-foreground">—</span>;
+        return s ? (
+          <span className="text-sm font-medium tabular-nums">৳{s.toLocaleString()}</span>
+        ) : (
+          <span className="text-sm text-muted-foreground">—</span>
+        );
       },
     },
     {

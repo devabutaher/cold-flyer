@@ -40,10 +40,7 @@ function CartItem({ product, currencyPrefix, onUpdateQuantity, onRemoveProduct }
       <div className="flex flex-1 flex-col justify-between gap-3">
         <div className="flex items-start justify-between gap-2">
           <div className="w-full">
-            <Link
-              href={`/items/${slug}`}
-              className="font-semibold leading-tight text-foreground hover:text-primary"
-            >
+            <Link href={`/items/${slug}`} className="font-semibold leading-tight text-foreground hover:text-primary">
               {product.name}
             </Link>
             {product.description && (
@@ -223,7 +220,9 @@ export function Cart({
                   initial={{ opacity: 0.5 }}
                   animate={{ opacity: 1 }}
                 >
-                  <span>{t("subtotal")} ({t("itemCount", { count: products.reduce((s, p) => s + p.quantity, 0) })})</span>
+                  <span>
+                    {t("subtotal")} ({t("itemCount", { count: products.reduce((s, p) => s + p.quantity, 0) })})
+                  </span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {subtotal.toLocaleString()}
@@ -239,7 +238,9 @@ export function Cart({
                 </div>
 
                 <div className="flex justify-between text-muted-foreground">
-                  <span>{t("vat")} ({(vatRate * 100).toFixed(0)}%)</span>
+                  <span>
+                    {t("vat")} ({(vatRate * 100).toFixed(0)}%)
+                  </span>
                   <span className="font-medium text-foreground">
                     {currencyPrefix}
                     {vatAmount.toFixed(0)}
@@ -279,7 +280,7 @@ export function Cart({
                             "flex items-center gap-2.5 rounded-lg border px-3 py-2 text-left text-xs transition-colors",
                             selected
                               ? "border-primary bg-primary/5 text-foreground"
-                              : "border-border text-muted-foreground hover:border-muted-foreground/30"
+                              : "border-border text-muted-foreground hover:border-muted-foreground/30",
                           )}
                         >
                           <Icon size={14} />
@@ -307,14 +308,16 @@ export function Cart({
                   onClick={() => onCheckout(checkoutPayload)}
                   disabled={isProcessing}
                 >
-                    {isProcessing ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {t("processing")}
-                      </>
-                    ) : (
-                      t("payWith", { provider: paymentProviders.find(p => p.value === paymentProvider)?.label || "Card" })
-                    )}
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t("processing")}
+                    </>
+                  ) : (
+                    t("payWith", {
+                      provider: paymentProviders.find((p) => p.value === paymentProvider)?.label || "Card",
+                    })
+                  )}
                 </Button>
                 <Button variant="outline" className="w-full" onClick={() => onContinueShopping(checkoutPayload)}>
                   {t("continueShopping")}
@@ -335,19 +338,14 @@ export function Cart({
               </span>
             </div>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={() => onCheckout(checkoutPayload)}
-                disabled={isProcessing}
-              >
+              <Button className="w-full" size="lg" onClick={() => onCheckout(checkoutPayload)} disabled={isProcessing}>
                 {isProcessing ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     {t("processing")}
                   </>
                 ) : (
-                  t("payWith", { provider: paymentProviders.find(p => p.value === paymentProvider)?.label || "Card" })
+                  t("payWith", { provider: paymentProviders.find((p) => p.value === paymentProvider)?.label || "Card" })
                 )}
               </Button>
             </motion.div>

@@ -112,11 +112,14 @@ function Card({
       className={baseStyles}
       variants={animations.entrance.fadeUp}
       initial="hidden"
-      {...(whileInView
-        ? { whileInView: "visible", viewport: animations.inView.once }
-        : { animate: "visible" })}
+      {...(whileInView ? { whileInView: "visible", viewport: animations.inView.once } : { animate: "visible" })}
       transition={{ ...transitionTokens.normal, delay }}
-      whileHover={{ y: -3, boxShadow: isDark ? "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.2)" : "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.12)" }}
+      whileHover={{
+        y: -3,
+        boxShadow: isDark
+          ? "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.2)"
+          : "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.12)",
+      }}
       style={{
         rotateX: tiltProps.rotateX,
         rotateY: tiltProps.rotateY,

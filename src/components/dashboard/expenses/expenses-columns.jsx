@@ -51,9 +51,7 @@ export function buildExpenseColumns({ onEdit, onDelete } = {}) {
       cell: ({ row }) => {
         const date = row.original.date;
         return (
-          <span className="text-sm text-muted-foreground">
-            {date ? new Date(date).toLocaleDateString() : "—"}
-          </span>
+          <span className="text-sm text-muted-foreground">{date ? new Date(date).toLocaleDateString() : "—"}</span>
         );
       },
     },

@@ -80,9 +80,7 @@ export default function Blogs() {
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
             <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("latestInsights")}</span>
-            <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-              {t("blogTitle")}
-            </h2>
+            <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">{t("blogTitle")}</h2>
           </div>
           <Link
             href={"/blog"}

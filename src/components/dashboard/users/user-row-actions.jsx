@@ -50,7 +50,12 @@ export function UserRowActions({ user, onView, onDelete }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onView?.(user); }}>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                onView?.(user);
+              }}
+            >
               <Eye size={13} className="mr-2" />
               View Details
             </DropdownMenuItem>
@@ -79,7 +84,12 @@ export function UserRowActions({ user, onView, onDelete }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={(e) => { e.stopPropagation(); setShowDelete(false); }}>
+            <AlertDialogCancel
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDelete(false);
+              }}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

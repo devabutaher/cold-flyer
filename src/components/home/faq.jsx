@@ -115,12 +115,8 @@ export default function Faq() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
           <div className="flex flex-col justify-center">
             <div className="mb-8">
-              <span className="text-xxs font-bold uppercase tracking-widest text-primary">
-                {t("commonQuestions")}
-              </span>
-              <h2 className="mt-1 font-sans text-2xl font-extrabold text-foreground md:text-3xl">
-                {t("faqHeading")}
-              </h2>
+              <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("commonQuestions")}</span>
+              <h2 className="mt-1 font-sans text-2xl font-extrabold text-foreground md:text-3xl">{t("faqHeading")}</h2>
             </div>
 
             <AccordionPrimitive.Root

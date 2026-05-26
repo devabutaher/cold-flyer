@@ -14,7 +14,7 @@ import {
 
 export const productLinks = [
   {
-    label: "All Products",
+    label: "Shops",
     href: "/items",
     icon: <LayoutGrid />,
   },
@@ -64,6 +64,11 @@ export const primaryLinks = [
     href: "/about",
     icon: <Users />,
   },
+  {
+    label: "Blog",
+    href: "/blog",
+    icon: <FileText />,
+  },
 ];
 
 export const moreLinks = [
@@ -71,11 +76,6 @@ export const moreLinks = [
     label: "Recent Works",
     href: "/recent-works",
     icon: <Briefcase />,
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-    icon: <FileText />,
   },
   {
     label: "FAQ",
@@ -106,7 +106,7 @@ export const moreLinks = [
 
 export const mainNavLinks = [
   {
-    category: "Products",
+    category: "Shops",
     links: productLinks,
   },
 ];

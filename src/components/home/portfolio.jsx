@@ -21,9 +21,7 @@ function PortfolioItem({ project, isLarge = false }) {
       </div>
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
       <div className={`absolute ${isLarge ? "bottom-5 left-5" : "bottom-4 left-4"}`}>
-        <span className="text-primary text-xxs font-bold uppercase tracking-widest">
-          {project.cat}
-        </span>
+        <span className="text-primary text-xxs font-bold uppercase tracking-widest">{project.cat}</span>
         <h3 className="text-white font-sans font-bold text-lg">{project.title}</h3>
       </div>
     </div>

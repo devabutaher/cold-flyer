@@ -34,7 +34,10 @@ export async function generateMetadata({ params }) {
   const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${SITE_URL}${imageUrl}`;
   const description =
     product.description?.slice(0, 160) ||
-    `Buy ${product.name} at Cold Flyer. Best price in Bangladesh. ${product.category || ""} ${product.brand || ""}`.slice(0, 160);
+    `Buy ${product.name} at Cold Flyer. Best price in Bangladesh. ${product.category || ""} ${product.brand || ""}`.slice(
+      0,
+      160,
+    );
 
   return {
     title: `${product.name} | Cold Flyer AC Shop`,

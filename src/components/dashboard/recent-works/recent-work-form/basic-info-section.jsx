@@ -159,11 +159,20 @@ export function BasicInfoSection({ control, errors }) {
                   <PopoverTrigger asChild>
                     <div className="relative cursor-pointer" role="button" tabIndex={0}>
                       <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none shrink-0" />
-                      <Input readOnly value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""} placeholder="Pick a date" className="pl-10 cursor-pointer" />
+                      <Input
+                        readOnly
+                        value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
+                        placeholder="Pick a date"
+                        className="pl-10 cursor-pointer"
+                      />
                     </div>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                    <Calendar mode="single" selected={field.value ? new Date(field.value + "T00:00:00") : undefined} onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")} />
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value + "T00:00:00") : undefined}
+                      onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
+                    />
                   </PopoverContent>
                 </Popover>
               </Field>

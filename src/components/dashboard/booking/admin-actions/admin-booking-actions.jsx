@@ -80,7 +80,11 @@ export function ScheduleBookingDialog({
   const [technician, setTechnician] = useState(booking.technician?._id || "");
   const scheduleBooking = useScheduleBooking();
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       scheduledDate: booking.scheduledDate ? new Date(booking.scheduledDate).toISOString().split("T")[0] : "",
       scheduledTime: {
@@ -123,8 +127,12 @@ export function ScheduleBookingDialog({
         <div className="py-4">
           <ScheduleSection control={control} />
           {errors.scheduledDate && <p className="text-xs text-destructive mt-2">{errors.scheduledDate.message}</p>}
-          {errors.scheduledTime?.start && <p className="text-xs text-destructive mt-1">{errors.scheduledTime.start.message}</p>}
-          {errors.scheduledTime?.end && <p className="text-xs text-destructive mt-1">{errors.scheduledTime.end.message}</p>}
+          {errors.scheduledTime?.start && (
+            <p className="text-xs text-destructive mt-1">{errors.scheduledTime.start.message}</p>
+          )}
+          {errors.scheduledTime?.end && (
+            <p className="text-xs text-destructive mt-1">{errors.scheduledTime.end.message}</p>
+          )}
           {technicians.length > 0 && (
             <div className="mt-4">
               <Label>Technician</Label>

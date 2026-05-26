@@ -26,8 +26,7 @@ export function useCreateExpense(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (data) =>
-      client().post("/expenses", { ...data, amount: Number(data.amount) }),
+    mutationFn: (data) => client().post("/expenses", { ...data, amount: Number(data.amount) }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: expenseKeys.all });
       toast.success("Expense created");
@@ -46,8 +45,7 @@ export function useUpdateExpense(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: ({ id, data }) =>
-      client().patch(`/expenses/${id}`, { ...data, amount: Number(data.amount) }),
+    mutationFn: ({ id, data }) => client().patch(`/expenses/${id}`, { ...data, amount: Number(data.amount) }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: expenseKeys.all });
       toast.success("Expense updated");

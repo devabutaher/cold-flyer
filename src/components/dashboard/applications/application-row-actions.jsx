@@ -43,15 +43,26 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="sm" className="h-7 px-3 text-xs gap-1">
-                Actions<ChevronDown size={12} />
+                Actions
+                <ChevronDown size={12} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-auto min-w-40">
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onApprove?.(application); }}>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onApprove?.(application);
+                }}
+              >
                 <CheckCircle2 size={14} className="mr-2 text-green-600" />
                 Approve
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onReject?.(application); }}>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReject?.(application);
+                }}
+              >
                 <XCircle size={14} className="mr-2 text-destructive" />
                 Reject with Feedback
               </DropdownMenuItem>
@@ -72,7 +83,12 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onView?.(application); }}>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                onView?.(application);
+              }}
+            >
               <Eye size={13} className="mr-2" />
               View Details
             </DropdownMenuItem>
@@ -96,8 +112,8 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this application?</AlertDialogTitle>
             <AlertDialogDescription>
-              Application from <strong>{application.name}</strong> for{" "}
-              <strong>{application.position}</strong> will be permanently deleted.
+              Application from <strong>{application.name}</strong> for <strong>{application.position}</strong> will be
+              permanently deleted.
               {application.status === "approved" && (
                 <span className="block mt-2 text-destructive">
                   This application is already approved. Remove the technician profile first.
@@ -106,7 +122,12 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={(e) => { e.stopPropagation(); setShowDelete(false); }}>
+            <AlertDialogCancel
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDelete(false);
+              }}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

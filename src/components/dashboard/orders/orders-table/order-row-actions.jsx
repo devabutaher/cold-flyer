@@ -58,16 +58,40 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
         {canPay && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" className="h-7 px-3 text-xs gap-1" disabled={isPaying} onClick={(e) => e.stopPropagation()}>
-                {isPaying ? "Processing…" : <>Pay with<ChevronDown size={12} /></>}
+              <Button
+                size="sm"
+                className="h-7 px-3 text-xs gap-1"
+                disabled={isPaying}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {isPaying ? (
+                  "Processing…"
+                ) : (
+                  <>
+                    Pay with
+                    <ChevronDown size={12} />
+                  </>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-auto min-w-44">
-              <DropdownMenuItem className="whitespace-nowrap" onClick={(e) => { e.stopPropagation(); onPay(order._id, "stripe"); }}>
+              <DropdownMenuItem
+                className="whitespace-nowrap"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onPay(order._id, "stripe");
+                }}
+              >
                 <CreditCard size={13} className="mr-2 shrink-0" />
                 Pay with Card (Stripe)
               </DropdownMenuItem>
-              <DropdownMenuItem className="whitespace-nowrap" onClick={(e) => { e.stopPropagation(); onPay(order._id, "sslcommerz"); }}>
+              <DropdownMenuItem
+                className="whitespace-nowrap"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onPay(order._id, "sslcommerz");
+                }}
+              >
                 <Smartphone size={13} className="mr-2 shrink-0" />
                 Pay with SSLCOMMERZ
               </DropdownMenuItem>

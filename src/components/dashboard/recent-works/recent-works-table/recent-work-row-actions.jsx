@@ -60,7 +60,11 @@ export function RecentWorkRowActions({ work, isAdmin = false }) {
         <DropdownMenuContent align="end" className="w-44">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/recent-works/${work.slug}`} target="_blank" className="flex items-center w-full cursor-pointer">
+            <Link
+              href={`/recent-works/${work.slug}`}
+              target="_blank"
+              className="flex items-center w-full cursor-pointer"
+            >
               <Eye className="mr-2 h-4 w-4" />
               View Details
             </Link>

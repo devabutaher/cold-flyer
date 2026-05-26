@@ -55,7 +55,10 @@ async function proxy(request, params, method) {
           const totalLen = chunks.reduce((a, c) => a + c.length, 0);
           const body = new Uint8Array(totalLen);
           let offset = 0;
-          for (const c of chunks) { body.set(c, offset); offset += c.length; }
+          for (const c of chunks) {
+            body.set(c, offset);
+            offset += c.length;
+          }
           fetchOptions.body = body;
         } else {
           fetchOptions.body = request.body;

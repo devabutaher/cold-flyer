@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,7 @@ export default async function PrivacyPage() {
               {t("heroBadge")}
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", {br: () => <br/>})}
+              {t.rich("heroTitle", { br: () => <br /> })}
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
               Your trust is our most valuable asset. We&apos;re committed to safeguarding your personal information with
@@ -56,9 +55,7 @@ export default async function PrivacyPage() {
               </h2>
             </div>
 
-            <p className="max-w-md font-medium text-muted-foreground">
-              {t("principlesDesc")}
-            </p>
+            <p className="max-w-md font-medium text-muted-foreground">{t("principlesDesc")}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -121,9 +118,7 @@ export default async function PrivacyPage() {
                 </h2>
               </div>
 
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {t("dataDesc")}
-              </p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{t("dataDesc")}</p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
                 <div className="font-sans font-extrabold text-6xl text-primary leading-none">100%</div>

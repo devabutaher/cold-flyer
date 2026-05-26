@@ -10,17 +10,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { DISTRICTS, THANAS } from "@/data/bd-addresses";
 import { getClient } from "@/lib/http-client";
 import { useAuth } from "@/components/providers";
 import { useCart } from "@/store/cart";
 import { AddressFormSheet } from "@/components/dashboard/profile/address-form-sheet";
-import {
-  getAddressesAction, deleteAddressAction, setDefaultAddressAction,
-} from "@/lib/actions/user";
+import { getAddressesAction, deleteAddressAction, setDefaultAddressAction } from "@/lib/actions/user";
 import { AddressPicker } from "@/components/checkout/address-picker";
 import { OrderItemsList } from "@/components/checkout/order-items-list";
 import { PaymentMethodSelector } from "@/components/checkout/payment-method-selector";
@@ -110,7 +114,9 @@ export function CheckoutPage({ orderId }) {
     if (!couponInput.trim()) return;
     setCouponUpdating(true);
     try {
-      const lookup = await getClient().get(`/coupons/lookup/${couponInput}`).then((r) => r.data);
+      const lookup = await getClient()
+        .get(`/coupons/lookup/${couponInput}`)
+        .then((r) => r.data);
       if (!lookup.success || !lookup.data?.coupon) {
         throw new Error(t("invalidCoupon"));
       }
@@ -121,7 +127,9 @@ export function CheckoutPage({ orderId }) {
       if (couponInfo.minItemCount > 0 && (order?.items?.length || 0) < couponInfo.minItemCount) {
         throw new Error(`Minimum ${couponInfo.minItemCount} items required`);
       }
-      const res = await getClient().patch(`/orders/${orderId}/coupon`, { couponCode: couponInput }).then((r) => r.data);
+      const res = await getClient()
+        .patch(`/orders/${orderId}/coupon`, { couponCode: couponInput })
+        .then((r) => r.data);
       if (res.success) {
         setOrder(res.data.order);
         setCouponInput("");
@@ -138,7 +146,9 @@ export function CheckoutPage({ orderId }) {
   async function handleRemoveCoupon() {
     setCouponUpdating(true);
     try {
-      const res = await getClient().patch(`/orders/${orderId}/coupon`, { removeCoupon: true }).then((r) => r.data);
+      const res = await getClient()
+        .patch(`/orders/${orderId}/coupon`, { removeCoupon: true })
+        .then((r) => r.data);
       if (res.success) {
         setOrder(res.data.order);
         toast.success(t("couponRemoved"));
@@ -218,7 +228,10 @@ export function CheckoutPage({ orderId }) {
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-6">
-          <Link href="/cart" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/cart"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+          >
             <ChevronLeft size={16} />
             Back to Cart
           </Link>
@@ -239,7 +252,10 @@ export function CheckoutPage({ orderId }) {
                 effectiveSelectedId={effectiveSelectedId}
                 onSelect={(id) => setSelectedAddressId(id)}
                 onAdd={openAddSheet}
-                onEdit={(a) => { setEditingAddress(a); setAddressSheetOpen(true); }}
+                onEdit={(a) => {
+                  setEditingAddress(a);
+                  setAddressSheetOpen(true);
+                }}
                 onDelete={(id) => setDeleteId(id)}
                 onSetDefault={handleSetDefault}
               />
@@ -261,7 +277,13 @@ export function CheckoutPage({ orderId }) {
                       </span>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={handleRemoveCoupon} disabled={couponUpdating} className="text-destructive hover:text-destructive h-8">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRemoveCoupon}
+                    disabled={couponUpdating}
+                    className="text-destructive hover:text-destructive h-8"
+                  >
                     {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("removeCoupon")}
                   </Button>
                 </div>
@@ -277,7 +299,12 @@ export function CheckoutPage({ orderId }) {
                       className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     />
                   </div>
-                  <Button size="sm" onClick={handleApplyCoupon} disabled={!couponInput.trim() || couponUpdating} className="h-9 shrink-0">
+                  <Button
+                    size="sm"
+                    onClick={handleApplyCoupon}
+                    disabled={!couponInput.trim() || couponUpdating}
+                    className="h-9 shrink-0"
+                  >
                     {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("applyCoupon")}
                   </Button>
                 </div>

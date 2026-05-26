@@ -59,8 +59,7 @@ export function useCheckoutMutation(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: ({ workerId, note }) =>
-      client().post("/attendance/checkout", { workerId, note }),
+    mutationFn: ({ workerId, note }) => client().post("/attendance/checkout", { workerId, note }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: attendanceKeys.today() });
       queryClient.invalidateQueries({ queryKey: attendanceKeys.history() });

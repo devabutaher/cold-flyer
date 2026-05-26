@@ -143,7 +143,9 @@ export function DataTable({
                             onClick={header.column.getToggleSortingHandler()}
                           >
                             {flexRender(header.column.columnDef.header, header.getContext())}
-                            {header.column.getIsSorted() === "asc" && <ChevronUpIcon size={13} className="opacity-70" />}
+                            {header.column.getIsSorted() === "asc" && (
+                              <ChevronUpIcon size={13} className="opacity-70" />
+                            )}
                             {header.column.getIsSorted() === "desc" && (
                               <ChevronDownIcon size={13} className="opacity-70" />
                             )}
@@ -216,7 +218,13 @@ export function DataTable({
         {/* Scroll hint */}
         <div className="flex items-center justify-center gap-1.5 mt-2 text-xs text-muted-foreground md:hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-50">
-            <path d="M6 3L2 8l4 5M10 3l4 5-4 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path
+              d="M6 3L2 8l4 5M10 3l4 5-4 5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span>Swipe to see more</span>
         </div>

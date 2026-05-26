@@ -6,11 +6,7 @@ import { useTranslations } from "next-intl";
 export function TextSlider() {
   const t = useTranslations("home.announcements");
 
-  const announcements = [
-    t("freeCheckup"),
-    t("summerDiscount"),
-    t("freeDelivery"),
-  ];
+  const announcements = [t("freeCheckup"), t("summerDiscount"), t("freeDelivery")];
 
   return (
     <div className="border-b border-primary/20 bg-primary py-2 text-white relative z-50">

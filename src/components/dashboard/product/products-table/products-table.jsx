@@ -45,12 +45,15 @@ export default function ProductsTable({ isAdmin = false }) {
     return true;
   }, [isAdmin]);
 
-  const handleDelete = useCallback(async (id) => {
-    if (!checkAdminAccess()) return;
-    try {
-      await deleteProduct.mutateAsync(id);
-    } catch {}
-  }, [deleteProduct, checkAdminAccess]);
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!checkAdminAccess()) return;
+      try {
+        await deleteProduct.mutateAsync(id);
+      } catch {}
+    },
+    [deleteProduct, checkAdminAccess],
+  );
 
   const columns = useMemo(() => buildProductColumns({ onDelete: handleDelete }), [handleDelete]);
 

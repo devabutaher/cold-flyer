@@ -3,11 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getClient, extractList, extractItem } from "@/lib/http-client";
-import {
-  createProductAction,
-  updateProductAction,
-  deleteProductAction,
-} from "@/lib/actions/products";
+import { createProductAction, updateProductAction, deleteProductAction } from "@/lib/actions/products";
 import { uploadImageAction } from "@/lib/actions/upload";
 
 const client = () => getClient();

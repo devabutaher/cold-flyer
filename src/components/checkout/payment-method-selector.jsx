@@ -8,11 +8,14 @@ import { cn } from "@/lib/utils";
 export function PaymentMethodSelector({ value, onChange }) {
   const t = useTranslations("checkout");
 
-  const providers = useMemo(() => [
-    { value: "stripe", label: t("card"), icon: CreditCard },
-    { value: "sslcommerz", label: t("sslcommerz"), icon: Smartphone },
-    { value: "cod", label: t("cod"), icon: Banknote },
-  ], [t]);
+  const providers = useMemo(
+    () => [
+      { value: "stripe", label: t("card"), icon: CreditCard },
+      { value: "sslcommerz", label: t("sslcommerz"), icon: Smartphone },
+      { value: "cod", label: t("cod"), icon: Banknote },
+    ],
+    [t],
+  );
 
   return (
     <div className="grid gap-1.5">

@@ -14,21 +14,27 @@ export function MessageEditor({ template, message, onTemplateChange, onMessageCh
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label htmlFor="template" className="mb-1.5 block">Template</Label>
+          <Label htmlFor="template" className="mb-1.5 block">
+            Template
+          </Label>
           <Select value={template} onValueChange={onTemplateChange}>
             <SelectTrigger id="template" className="w-full">
               <SelectValue placeholder="Select a template..." />
             </SelectTrigger>
             <SelectContent>
               {TEMPLATES.map((t) => (
-                <SelectItem key={t.label} value={t.label}>{t.label}</SelectItem>
+                <SelectItem key={t.label} value={t.label}>
+                  {t.label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
         <div>
-          <Label htmlFor="message" className="mb-1.5 block">Message</Label>
+          <Label htmlFor="message" className="mb-1.5 block">
+            Message
+          </Label>
           <Textarea
             id="message"
             value={message}

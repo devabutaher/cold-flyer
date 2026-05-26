@@ -20,16 +20,16 @@ function ContactCard({ info }) {
             </AvatarFallback>
           </Avatar>
         </div>
-          <div className="space-y-1">
-            <h4 className="text-base font-bold">{info.title}</h4>
-            <div className="text-muted-foreground text-sm font-medium">
-              {info.description.split("\n").map((line, idx) => (
-                <p key={idx}>{line}</p>
-              ))}
-            </div>
+        <div className="space-y-1">
+          <h4 className="text-base font-bold">{info.title}</h4>
+          <div className="text-muted-foreground text-sm font-medium">
+            {info.description.split("\n").map((line, idx) => (
+              <p key={idx}>{line}</p>
+            ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -64,9 +64,7 @@ export default function Contact() {
       <div className="container">
         <div className="mb-6">
           <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("contactSectionTitle")}</span>
-          <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
-            {t("contactHeading")}
-          </h2>
+          <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">{t("contactHeading")}</h2>
         </div>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-stretch">
           <div className="flex flex-col h-full">

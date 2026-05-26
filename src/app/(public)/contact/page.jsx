@@ -57,15 +57,17 @@ export default async function ContactPage() {
                 {t("heroBadge")}
               </Badge>
             </AnimatedDiv>
-            <AnimatedDiv as="h1"
+            <AnimatedDiv
+              as="h1"
               className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {t.rich("heroHeading", {br: () => <br/>})}
+              {t.rich("heroHeading", { br: () => <br /> })}
             </AnimatedDiv>
-            <AnimatedDiv as="p"
+            <AnimatedDiv
+              as="p"
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -84,9 +86,7 @@ export default async function ContactPage() {
               <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 Contact Us
               </span>
-              <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight mb-6">
-                Send Us a Message
-              </h2>
+              <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight mb-6">Send Us a Message</h2>
               <p className="text-muted-foreground mb-10 max-w-md">
                 Fill out the form and our team will get back to you within 24 hours.
               </p>
@@ -113,7 +113,7 @@ export default async function ContactPage() {
                 <Button size="lg" className="gap-2">
                   <Send size={16} /> Send Message
                 </Button>
-                </div>
+              </div>
             </div>
 
             <div className="space-y-8">

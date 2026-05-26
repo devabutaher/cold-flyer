@@ -88,7 +88,9 @@ export default function ProductDetail({ productSlug }) {
         <div className="flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">{product.category}</span>
-            <span className="text-xs font-medium text-muted-foreground">{t("sku")}: {product.sku}</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              {t("sku")}: {product.sku}
+            </span>
           </div>
 
           <div className="mb-4">
@@ -119,7 +121,11 @@ export default function ProductDetail({ productSlug }) {
                 isOutOfStock ? "text-destructive" : isLowStock ? "text-amber-600" : "text-green-600",
               )}
             >
-              {isOutOfStock ? t("outOfStock") : isLowStock ? t("onlyUnitsLeft", { stock: product.stock }) : t("inStock")}
+              {isOutOfStock
+                ? t("outOfStock")
+                : isLowStock
+                  ? t("onlyUnitsLeft", { stock: product.stock })
+                  : t("inStock")}
             </span>
           </div>
 

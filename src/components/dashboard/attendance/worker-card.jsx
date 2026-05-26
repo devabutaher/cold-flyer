@@ -23,7 +23,9 @@ export function WorkerCard({ worker, onCheckIn, onCheckOut }) {
           ) : isCheckedIn ? (
             <Badge className="bg-green-500/10 text-green-600 border-none text-xxs">Active</Badge>
           ) : (
-            <Badge variant="outline" className="text-xxs">Pending</Badge>
+            <Badge variant="outline" className="text-xxs">
+              Pending
+            </Badge>
           )}
         </div>
       </CardHeader>

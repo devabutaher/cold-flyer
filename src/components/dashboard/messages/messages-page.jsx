@@ -148,7 +148,9 @@ export default function MessagesPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Send Messages</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Send bulk WhatsApp or SMS messages to customers and workers.</p>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Send bulk WhatsApp or SMS messages to customers and workers.
+        </p>
       </div>
 
       <StepIndicator currentStep={step} onNavigate={setStep} />

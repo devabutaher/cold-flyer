@@ -98,7 +98,9 @@ export default function ServiceDetailClient({ service }) {
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
                 <span className="font-bold text-foreground">{service.rating.toFixed(1)}</span>
-                <span className="text-sm text-muted-foreground">{ts("reviewsCount", { count: service.reviewCount || 0 })}</span>
+                <span className="text-sm text-muted-foreground">
+                  {ts("reviewsCount", { count: service.reviewCount || 0 })}
+                </span>
               </div>
             )}
             {service.duration && (
@@ -114,7 +116,9 @@ export default function ServiceDetailClient({ service }) {
           {service.bookingCount > 0 && (
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-xs font-medium text-green-600">{ts("bookingsCompleted", { count: service.bookingCount })}</span>
+              <span className="text-xs font-medium text-green-600">
+                {ts("bookingsCompleted", { count: service.bookingCount })}
+              </span>
             </div>
           )}
 

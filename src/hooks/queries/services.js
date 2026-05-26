@@ -3,11 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getClient, extractList, extractItem } from "@/lib/http-client";
-import {
-  createServiceAction,
-  updateServiceAction,
-  deleteServiceAction,
-} from "@/lib/actions/services";
+import { createServiceAction, updateServiceAction, deleteServiceAction } from "@/lib/actions/services";
 
 const client = () => getClient();
 
@@ -26,7 +22,7 @@ export function useServicesQuery(params) {
       if (params?.serviceType) query.set("serviceType", params.serviceType);
       if (params?.sort) {
         const sortMap = {
-          "Newest": "newest",
+          Newest: "newest",
           "Price: Low to High": "price_asc",
           "Price: High to Low": "price_desc",
           "Best Rated": "rating",

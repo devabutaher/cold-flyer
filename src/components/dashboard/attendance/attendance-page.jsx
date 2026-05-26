@@ -109,7 +109,11 @@ export default function AttendancePage() {
   const [checkInWorker, setCheckInWorker] = useState(null);
   const [checkOutWorker, setCheckOutWorker] = useState(null);
 
-  const { data: todayData = [], isLoading: todayLoading, refetch: refetchToday } = useQuery({
+  const {
+    data: todayData = [],
+    isLoading: todayLoading,
+    refetch: refetchToday,
+  } = useQuery({
     queryKey: ["attendance-today"],
     queryFn: async () => {
       const res = await getClient().get("/attendance/today");
@@ -184,12 +188,7 @@ export default function AttendancePage() {
           ) : (
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {todayData.map((worker) => (
-                <WorkerCard
-                  key={worker._id}
-                  worker={worker}
-                  onCheckIn={handleCheckIn}
-                  onCheckOut={handleCheckOut}
-                />
+                <WorkerCard key={worker._id} worker={worker} onCheckIn={handleCheckIn} onCheckOut={handleCheckOut} />
               ))}
             </div>
           )}

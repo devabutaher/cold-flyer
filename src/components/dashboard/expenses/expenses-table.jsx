@@ -42,10 +42,7 @@ export default function ExpensesTable() {
     },
   });
 
-  const totalAmount = useMemo(
-    () => expenses.reduce((sum, e) => sum + (e.amount || 0), 0),
-    [expenses],
-  );
+  const totalAmount = useMemo(() => expenses.reduce((sum, e) => sum + (e.amount || 0), 0), [expenses]);
 
   const deleteMutation = useMutation({
     mutationFn: (id) => getClient().delete(`/expenses/${id}`),
@@ -81,8 +78,15 @@ export default function ExpensesTable() {
   );
 
   const categoryOptions = [
-    "utilities", "salary", "rent", "maintenance", "transport",
-    "office_supplies", "marketing", "food", "other",
+    "utilities",
+    "salary",
+    "rent",
+    "maintenance",
+    "transport",
+    "office_supplies",
+    "marketing",
+    "food",
+    "other",
   ];
 
   return (

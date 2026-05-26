@@ -62,7 +62,13 @@ export default function ApplicationsTable() {
   const handleDelete = useCallback((id) => deleteMutation.mutate(id), [deleteMutation]);
 
   const columns = useMemo(
-    () => buildApplicationColumns({ onView: handleView, onApprove: handleApprove, onReject: handleReject, onDelete: handleDelete }),
+    () =>
+      buildApplicationColumns({
+        onView: handleView,
+        onApprove: handleApprove,
+        onReject: handleReject,
+        onDelete: handleDelete,
+      }),
     [handleView, handleApprove, handleReject, handleDelete],
   );
 

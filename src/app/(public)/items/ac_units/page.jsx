@@ -8,7 +8,7 @@ import { uniqueSorted } from "@/lib/utils";
 const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
 
 const SORT_MAP = {
-  "Newest": "newest",
+  Newest: "newest",
   "Price: Low to High": "price_asc",
   "Price: High to Low": "price_desc",
   "Best Rated": "rating",
@@ -34,11 +34,15 @@ function ACUnitsContent() {
       queryKey={["products", "units"]}
       fetchFn={(params) => {
         const qs = buildQuery(params).toString();
-        return getClient().get(`/products?${qs}`).then((r) => r.data);
+        return getClient()
+          .get(`/products?${qs}`)
+          .then((r) => r.data);
       }}
       fetchAllFn={() => {
         const qs = buildQuery({ limit: 200 }).toString();
-        return getClient().get(`/products?${qs}`).then((r) => r.data);
+        return getClient()
+          .get(`/products?${qs}`)
+          .then((r) => r.data);
       }}
       extractArray={(res) => extractList(res, "products")}
       buildFilterOptions={(products) => [

@@ -58,9 +58,7 @@ export default function Testimonials() {
       <div className="container">
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <span className="text-xxs font-bold uppercase tracking-widest text-primary">
-              {t("whatCustomersSay")}
-            </span>
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("whatCustomersSay")}</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               {t("testimonialsTitle")}
             </h2>

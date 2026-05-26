@@ -26,8 +26,7 @@ export function useCreateCustomer(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (data) =>
-      client().post("/customers", { ...data, amount: Number(data.amount) || undefined }),
+    mutationFn: (data) => client().post("/customers", { ...data, amount: Number(data.amount) || undefined }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customerKeys.all });
       toast.success("Customer created");

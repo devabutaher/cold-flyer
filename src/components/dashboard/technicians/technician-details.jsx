@@ -1,7 +1,20 @@
 "use client";
 
 import { useTechnicianQuery } from "@/hooks/queries/technicians";
-import { ArrowLeft, Award, CalendarDays, Car, Clock, Mail, MapPin, Phone, Star, Toolbox, User, Wrench } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  CalendarDays,
+  Car,
+  Clock,
+  Mail,
+  MapPin,
+  Phone,
+  Star,
+  Toolbox,
+  User,
+  Wrench,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -88,7 +101,9 @@ export function TechnicianDetails({ technicianId }) {
           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span>{technician.employeeId}</span>
             <span>·</span>
-            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusClass}`}>
+            <span
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusClass}`}
+            >
               {statusLabel}
             </span>
           </div>
@@ -138,7 +153,10 @@ export function TechnicianDetails({ technicianId }) {
                 {technician.specializations?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {technician.specializations.map((s, i) => (
-                      <span key={i} className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                      <span
+                        key={i}
+                        className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                      >
                         {s}
                       </span>
                     ))}
@@ -148,7 +166,8 @@ export function TechnicianDetails({ technicianId }) {
                   <div className="flex flex-wrap gap-1.5">
                     {technician.skills.map((s, i) => (
                       <span key={i} className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
-                        {s.skill}{s.level ? ` (${s.level})` : ""}
+                        {s.skill}
+                        {s.level ? ` (${s.level})` : ""}
                       </span>
                     ))}
                   </div>
@@ -220,7 +239,9 @@ export function TechnicianDetails({ technicianId }) {
             <CardContent className="pt-0 text-sm space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Rating</span>
-                <span className="font-medium tabular-nums">{technician.rating?.toFixed(1) || "—"} <span className="text-muted-foreground">/ 5</span></span>
+                <span className="font-medium tabular-nums">
+                  {technician.rating?.toFixed(1) || "—"} <span className="text-muted-foreground">/ 5</span>
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Reviews</span>
@@ -236,7 +257,9 @@ export function TechnicianDetails({ technicianId }) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Avg Response</span>
-                <span className="font-medium tabular-nums">{technician.averageResponseTime || 0} <span className="text-muted-foreground">min</span></span>
+                <span className="font-medium tabular-nums">
+                  {technician.averageResponseTime || 0} <span className="text-muted-foreground">min</span>
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -280,7 +303,9 @@ export function TechnicianDetails({ technicianId }) {
               <CardContent className="pt-0 text-sm space-y-1">
                 {technician.vehicle.type && <p className="text-muted-foreground">{technician.vehicle.type}</p>}
                 <p className="font-medium">
-                  {[technician.vehicle.make, technician.vehicle.model, technician.vehicle.year].filter(Boolean).join(" ")}
+                  {[technician.vehicle.make, technician.vehicle.model, technician.vehicle.year]
+                    .filter(Boolean)
+                    .join(" ")}
                 </p>
                 {technician.vehicle.licensePlate && (
                   <p className="font-mono text-xs text-muted-foreground">{technician.vehicle.licensePlate}</p>

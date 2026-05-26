@@ -44,18 +44,30 @@ export async function generateMetadata() {
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com"),
     title: {
-      default: locale === "bn"
-        ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
-        : "Cold Flyer | AC Products & Repair Services in Bangladesh",
+      default:
+        locale === "bn"
+          ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
+          : "Cold Flyer | AC Products & Repair Services in Bangladesh",
       template: `%s | ${siteName}`,
     },
-    description: locale === "bn"
-      ? "কোল্ড ফ্লায়ার - বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী এবং সার্ভিস প্রদানকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
-      : "Cold Flyer - Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
+    description:
+      locale === "bn"
+        ? "কোল্ড ফ্লায়ার - বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী এবং সার্ভিস প্রদানকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
+        : "Cold Flyer - Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
     keywords: [
-      "AC", "air conditioner", "AC repair", "AC service", "AC maintenance",
-      "AC installation", "split AC", "window AC", "AC parts",
-      "refrigeration", "Bangladesh", "Dhaka", "cold flyer",
+      "AC",
+      "air conditioner",
+      "AC repair",
+      "AC service",
+      "AC maintenance",
+      "AC installation",
+      "split AC",
+      "window AC",
+      "AC parts",
+      "refrigeration",
+      "Bangladesh",
+      "Dhaka",
+      "cold flyer",
     ],
     authors: [{ name: "Cold Flyer" }],
     creator: "Cold Flyer",
@@ -66,22 +78,26 @@ export async function generateMetadata() {
       locale: locale === "bn" ? "bn_BD" : "en_BD",
       url: "https://coldflyer.com",
       siteName,
-      title: locale === "bn"
-        ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
-        : "Cold Flyer | AC Products & Repair Services in Bangladesh",
-      description: locale === "bn"
-        ? "বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
-        : "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
+      title:
+        locale === "bn"
+          ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
+          : "Cold Flyer | AC Products & Repair Services in Bangladesh",
+      description:
+        locale === "bn"
+          ? "বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
+          : "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `${siteName} - AC Products & Services` }],
     },
     twitter: {
       card: "summary_large_image",
-      title: locale === "bn"
-        ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
-        : "Cold Flyer | AC Products & Repair Services in Bangladesh",
-      description: locale === "bn"
-        ? "বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
-        : "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
+      title:
+        locale === "bn"
+          ? "কোল্ড ফ্লায়ার | এসি পণ্য ও সার্ভিস বাংলাদেশ"
+          : "Cold Flyer | AC Products & Repair Services in Bangladesh",
+      description:
+        locale === "bn"
+          ? "বাংলাদেশের শীর্ষস্থানীয় এসি সরবরাহকারী। এসি ইউনিট ও যন্ত্রাংশ কিনুন, মেরামত ও মেইনটেন্যান্স সার্ভিস বুক করুন।"
+          : "Leading AC supplier and service provider in Bangladesh. Shop AC units & parts, book repair & maintenance services.",
       images: ["/og-image.png"],
       creator: "@coldflyer",
     },
@@ -108,7 +124,8 @@ export default async function RootLayout({ children }) {
       <head>
         <link rel="canonical" href="https://coldflyer.com" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#d4600a" />{/* TODO: replace with CSS variable when supported */}
+        <meta name="theme-color" content="#d4600a" />
+        {/* TODO: replace with CSS variable when supported */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Cold Flyer" />

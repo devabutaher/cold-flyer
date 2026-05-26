@@ -4,7 +4,10 @@ const DISCOUNT_TYPE_ENUM = ["percentage", "fixed", "free_shipping"];
 const APPLICABLE_TO_ENUM = ["all", "products", "categories", "brands", "services"];
 
 export const couponFormSchema = z.object({
-  code: z.string().min(1, "Code is required").transform((v) => v.toUpperCase()),
+  code: z
+    .string()
+    .min(1, "Code is required")
+    .transform((v) => v.toUpperCase()),
   discountType: z.enum(DISCOUNT_TYPE_ENUM),
   discountValue: z.coerce.number().min(1, "Value is required"),
   maxDiscount: z.coerce.number().optional(),

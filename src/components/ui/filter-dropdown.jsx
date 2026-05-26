@@ -47,20 +47,10 @@ function FilterDropdown({ options, value, onChange, placeholder }) {
           position="popper"
           sideOffset={4}
         >
-          <motion.div
-            variants={dropdownVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <motion.div variants={dropdownVariants} initial="hidden" animate="visible">
             <SelectPrimitive.Viewport className="p-1">
               {normalizedOptions.map((option, i) => (
-                <motion.div
-                  key={option.value}
-                  custom={i}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
+                <motion.div key={option.value} custom={i} variants={itemVariants} initial="hidden" animate="visible">
                   <SelectPrimitive.Item
                     value={option.value}
                     className={cn(

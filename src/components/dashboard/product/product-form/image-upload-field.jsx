@@ -66,7 +66,7 @@ export function ImageUploadField({ value = [], onChange }) {
         {value.map((item, index) => (
           <div key={index} className="relative w-24 h-24">
             <div className="relative w-full h-full rounded-lg overflow-hidden border">
-              {(item.preview || item.url) ? (
+              {item.preview || item.url ? (
                 <Image
                   src={item.preview || item.url}
                   alt={`Image ${index + 1}`}

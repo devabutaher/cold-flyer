@@ -7,7 +7,15 @@ import { useAuth } from "@/components/providers";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/ui/logo";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { getData } from "@/data";
 import { MenuIcon, Package, XIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";

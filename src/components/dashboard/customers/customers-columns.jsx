@@ -83,9 +83,7 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
       cell: ({ row }) => {
         const date = row.getValue("installDate");
         return (
-          <span className="text-sm text-muted-foreground">
-            {date ? new Date(date).toLocaleDateString() : "—"}
-          </span>
+          <span className="text-sm text-muted-foreground">{date ? new Date(date).toLocaleDateString() : "—"}</span>
         );
       },
     },

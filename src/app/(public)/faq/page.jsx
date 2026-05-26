@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,11 +43,9 @@ export default async function FAQPage() {
               {t("heroBadge")}
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", {br: () => <br/>})}
+              {t.rich("heroTitle", { br: () => <br /> })}
             </h1>
-            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              {t("heroSub")}
-            </p>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{t("heroSub")}</p>
           </div>
         </div>
       </section>
@@ -168,12 +165,10 @@ export default async function FAQPage() {
                 {t("contactInfo.title")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                {t.rich("contactInfo.sub", {br: () => <br/>})}
+                {t.rich("contactInfo.sub", { br: () => <br /> })}
               </h2>
 
-              <p className="text-lg text-muted-foreground mb-8">
-                {t("contactInfo.supportDesc")}
-              </p>
+              <p className="text-lg text-muted-foreground mb-8">{t("contactInfo.supportDesc")}</p>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-4">

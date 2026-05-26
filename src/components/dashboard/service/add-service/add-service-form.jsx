@@ -79,7 +79,7 @@ export default function AddServiceForm({ isAdmin = false }) {
             return null;
           }
           return result.data;
-        })
+        }),
       );
       const validImages = uploadedImages.filter(Boolean);
 

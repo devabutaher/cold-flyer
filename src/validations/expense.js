@@ -1,6 +1,17 @@
 import { z } from "zod";
 
-const CATEGORY_ENUM = ["rent", "utilities", "equipment", "transport", "salary", "marketing", "other", "maintenance", "office_supplies", "food"];
+const CATEGORY_ENUM = [
+  "rent",
+  "utilities",
+  "equipment",
+  "transport",
+  "salary",
+  "marketing",
+  "other",
+  "maintenance",
+  "office_supplies",
+  "food",
+];
 
 export const expenseFormSchema = z.object({
   item: z.string().min(1, "Item description is required"),

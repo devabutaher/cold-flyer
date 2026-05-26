@@ -15,11 +15,12 @@ const SCOPE_LABELS = {
 };
 
 function CouponCard({ coupon, t, onCopyCode }) {
-  const discountLabel = coupon.discountType === "percentage"
-    ? `${coupon.discountValue}% OFF`
-    : coupon.discountType === "fixed"
-      ? `৳${coupon.discountValue} OFF`
-      : "Free Shipping";
+  const discountLabel =
+    coupon.discountType === "percentage"
+      ? `${coupon.discountValue}% OFF`
+      : coupon.discountType === "fixed"
+        ? `৳${coupon.discountValue} OFF`
+        : "Free Shipping";
 
   return (
     <div className="flex shrink-0 w-[260px] flex-col justify-between gap-2 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-3.5">
@@ -30,9 +31,7 @@ function CouponCard({ coupon, t, onCopyCode }) {
             <span className="text-xxs text-primary-foreground/60">Min ৳{coupon.minOrderValue.toLocaleString()}</span>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug line-clamp-2">
-          {coupon.description}
-        </p>
+        <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug line-clamp-2">{coupon.description}</p>
         {coupon.applicableTo && coupon.applicableTo !== "all" && (
           <span className="mt-1 inline-block rounded bg-primary-foreground/10 px-1.5 py-0.5 text-xxxs font-medium text-primary-foreground/60 uppercase tracking-wider">
             {SCOPE_LABELS[coupon.applicableTo] || "Limited items"}
@@ -102,7 +101,12 @@ export default function OfferBanner() {
     return (
       <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" preserveAspectRatio="none">
+          <svg
+            className="absolute inset-0 h-full w-full"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            preserveAspectRatio="none"
+          >
             <circle cx="92%" cy="50%" r="80" fill="white" fillOpacity="0.06" />
             <circle cx="80%" cy="-10%" r="55" fill="white" fillOpacity="0.05" />
             <circle cx="5%" cy="80%" r="45" fill="white" fillOpacity="0.05" />
@@ -131,10 +135,17 @@ export default function OfferBanner() {
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <Button size="md" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4">
+              <Button
+                size="md"
+                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4"
+              >
                 {t("shopNow")}
               </Button>
-              <Button size="md" variant="outline" className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground font-bold text-xs h-8 px-4">
+              <Button
+                size="md"
+                variant="outline"
+                className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground font-bold text-xs h-8 px-4"
+              >
                 {t("allDeals")}
               </Button>
             </div>
@@ -147,7 +158,12 @@ export default function OfferBanner() {
   return (
     <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" preserveAspectRatio="none">
+        <svg
+          className="absolute inset-0 h-full w-full"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          preserveAspectRatio="none"
+        >
           <circle cx="92%" cy="50%" r="80" fill="white" fillOpacity="0.06" />
           <circle cx="80%" cy="-10%" r="55" fill="white" fillOpacity="0.05" />
           <circle cx="5%" cy="80%" r="45" fill="white" fillOpacity="0.05" />
@@ -161,12 +177,13 @@ export default function OfferBanner() {
             <Badge className="bg-background/20 text-primary-foreground uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
               {t("limitedTime")}
             </Badge>
-            <h2 className="mt-1 text-lg font-extrabold text-primary-foreground md:text-xl">
-              {t("activeOffers")}
-            </h2>
+            <h2 className="mt-1 text-lg font-extrabold text-primary-foreground md:text-xl">{t("activeOffers")}</h2>
           </div>
           <div className="flex gap-2">
-            <Button size="md" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4">
+            <Button
+              size="md"
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold text-xs h-8 px-4"
+            >
               {t("shopNow")}
             </Button>
           </div>

@@ -121,7 +121,7 @@ export default function EditServiceForm({ service, isAdmin = false }) {
             return result.data;
           }
           return { url: img.url };
-        })
+        }),
       );
       const validImages = uploadedImages.filter(Boolean);
 

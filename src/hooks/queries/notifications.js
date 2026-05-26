@@ -33,7 +33,10 @@ export function useMarkNotificationRead(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: (id) => client().patch(`/users/notifications/${id}/read`).then((r) => r.data),
+    mutationFn: (id) =>
+      client()
+        .patch(`/users/notifications/${id}/read`)
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       userOnSuccess?.(data, variables, context);
@@ -50,7 +53,10 @@ export function useMarkAllNotificationsRead(componentOptions = {}) {
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
 
   return useMutation({
-    mutationFn: () => client().patch("/users/notifications/read-all").then((r) => r.data),
+    mutationFn: () =>
+      client()
+        .patch("/users/notifications/read-all")
+        .then((r) => r.data),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       userOnSuccess?.(data, variables, context);

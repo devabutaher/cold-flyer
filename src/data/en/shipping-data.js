@@ -13,7 +13,8 @@ export const shippingOptions = [
     title: "Express Shipping",
     time: "2-4 Business Days",
     price: "BDT 1,500",
-    description: "Fast delivery for time-sensitive orders within Dhaka and major city divisions. Includes priority handling.",
+    description:
+      "Fast delivery for time-sensitive orders within Dhaka and major city divisions. Includes priority handling.",
   },
   {
     icon: Globe,
@@ -27,15 +28,28 @@ export const shippingOptions = [
     title: "Freight Shipping",
     time: "5-10 Business Days",
     price: "Quote-Based",
-    description: "For large equipment and bulk orders. Includes loading dock delivery across Bangladesh industrial zones.",
+    description:
+      "For large equipment and bulk orders. Includes loading dock delivery across Bangladesh industrial zones.",
   },
 ];
 
 export const process = [
   { step: "01", title: "Order Processing", desc: "We verify and prepare your items within 24-48 hours." },
-  { step: "02", title: "Packaging", desc: "Industrial-grade packaging ensures safe transport in all weather conditions." },
-  { step: "03", title: "Shipment", desc: "Your order is dispatched via our trusted delivery partners across Bangladesh." },
-  { step: "04", title: "Track & Deliver", desc: "Real-time tracking via SMS and email until final delivery to your doorstep." },
+  {
+    step: "02",
+    title: "Packaging",
+    desc: "Industrial-grade packaging ensures safe transport in all weather conditions.",
+  },
+  {
+    step: "03",
+    title: "Shipment",
+    desc: "Your order is dispatched via our trusted delivery partners across Bangladesh.",
+  },
+  {
+    step: "04",
+    title: "Track & Deliver",
+    desc: "Real-time tracking via SMS and email until final delivery to your doorstep.",
+  },
 ];
 
 export const returns = [

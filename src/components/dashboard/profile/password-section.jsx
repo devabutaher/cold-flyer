@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { changePasswordAction } from "@/lib/actions/user";
 import { useAuth } from "@/components/providers";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordChangeSchema } from "@/validations";
 
@@ -30,7 +30,6 @@ export function PasswordSection({ userProvider }) {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
@@ -38,8 +37,8 @@ export function PasswordSection({ userProvider }) {
     mode: "onTouched",
   });
 
-  const newPassword = watch("newPassword");
-  const confirmPassword = watch("confirmPassword");
+  const newPassword = useWatch({ control, name: "newPassword" });
+  const confirmPassword = useWatch({ control, name: "confirmPassword" });
 
   if (userProvider === "google") return null;
 
@@ -133,9 +132,7 @@ export function PasswordSection({ userProvider }) {
               <Controller
                 name="newPassword"
                 control={control}
-                render={({ field }) => (
-                  <Input id="new-password" type={showNew ? "text" : "password"} {...field} />
-                )}
+                render={({ field }) => <Input id="new-password" type={showNew ? "text" : "password"} {...field} />}
               />
               <button
                 type="button"

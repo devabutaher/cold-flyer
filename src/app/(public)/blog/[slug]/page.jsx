@@ -181,15 +181,11 @@ export default async function BlogDetailPage({ params }) {
         <div className="container py-12 md:py-16">
           <div className="max-w-3xl mx-auto">
             {blog.excerpt && (
-              <p className="text-lg text-muted-foreground font-medium leading-relaxed mb-8">
-                {blog.excerpt}
-              </p>
+              <p className="text-lg text-muted-foreground font-medium leading-relaxed mb-8">{blog.excerpt}</p>
             )}
 
             <div className="prose prose-lg max-w-none dark:prose-invert">
-              {blog.content?.split("\n").map((paragraph, i) => (
-                paragraph.trim() ? <p key={i}>{paragraph}</p> : null
-              ))}
+              {blog.content?.split("\n").map((paragraph, i) => (paragraph.trim() ? <p key={i}>{paragraph}</p> : null))}
             </div>
 
             {blog.tags?.length > 0 && (
@@ -220,9 +216,7 @@ export default async function BlogDetailPage({ params }) {
         {featuredBlogs.length > 0 && (
           <section className="bg-card py-16">
             <div className="container">
-              <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mb-8">
-                Related Articles
-              </h2>
+              <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {featuredBlogs.map((related) => (
                   <Link
@@ -252,9 +246,7 @@ export default async function BlogDetailPage({ params }) {
                       <h3 className="font-sans font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {related.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                        {related.excerpt}
-                      </p>
+                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{related.excerpt}</p>
                     </div>
                   </Link>
                 ))}

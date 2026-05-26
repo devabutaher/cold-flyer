@@ -202,13 +202,9 @@ export function OrderDetails({ orderId }) {
                   <p className="font-medium text-foreground">{order.shippingAddress.fullName}</p>
                 )}
                 {order.shippingAddress.phone && <p>{order.shippingAddress.phone}</p>}
-                {order.shippingAddress.address && (
-                  <p>{order.shippingAddress.address}</p>
-                )}
+                {order.shippingAddress.address && <p>{order.shippingAddress.address}</p>}
                 {(order.shippingAddress.thana || order.shippingAddress.district) && (
-                  <p>
-                    {[order.shippingAddress.thana, order.shippingAddress.district].filter(Boolean).join(", ")}
-                  </p>
+                  <p>{[order.shippingAddress.thana, order.shippingAddress.district].filter(Boolean).join(", ")}</p>
                 )}
                 {order.shippingAddress.instructions && (
                   <p className="mt-1 text-xs italic">Note: {order.shippingAddress.instructions}</p>
@@ -253,12 +249,8 @@ export function OrderDetails({ orderId }) {
               </CardHeader>
               <CardContent className="pt-0 text-sm space-y-1">
                 <p className="font-medium">{order.user.name || "—"}</p>
-                {order.user.email && (
-                  <p className="text-muted-foreground">{order.user.email}</p>
-                )}
-                {order.user.phone && (
-                  <p className="text-muted-foreground">{order.user.phone}</p>
-                )}
+                {order.user.email && <p className="text-muted-foreground">{order.user.email}</p>}
+                {order.user.phone && <p className="text-muted-foreground">{order.user.phone}</p>}
               </CardContent>
             </Card>
           )}

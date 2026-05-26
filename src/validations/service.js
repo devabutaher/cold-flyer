@@ -2,8 +2,14 @@ import { z } from "zod";
 
 const CATEGORY_ENUM = ["installation", "maintenance", "repair", "support"];
 const SERVICE_TYPE_ENUM = [
-  "installation", "preventative_care", "efficiency_tuning",
-  "rapid_response", "repair", "consultation", "emergency", "inspection",
+  "installation",
+  "preventative_care",
+  "efficiency_tuning",
+  "rapid_response",
+  "repair",
+  "consultation",
+  "emergency",
+  "inspection",
 ];
 const PRICE_TYPE_ENUM = ["fixed", "hourly", "quote"];
 

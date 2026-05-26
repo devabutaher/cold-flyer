@@ -33,7 +33,9 @@ export default function OrdersPage() {
   const handlePay = async (orderId, provider = "stripe") => {
     setPayingOrderId(orderId);
     try {
-      const res = await getClient().post(`/orders/${orderId}/checkout`, { provider }).then((r) => r.data);
+      const res = await getClient()
+        .post(`/orders/${orderId}/checkout`, { provider })
+        .then((r) => r.data);
       if (res.success && res.data?.checkoutUrl) {
         router.push(res.data.checkoutUrl);
       }

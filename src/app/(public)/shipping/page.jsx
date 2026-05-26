@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getData } from "@/data";
@@ -34,11 +33,9 @@ export default async function ShippingPage() {
               Delivery & Returns
             </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", {br: () => <br/>})}
+              {t.rich("heroTitle", { br: () => <br /> })}
             </h1>
-            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              {t("heroDesc")}
-            </p>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{t("heroDesc")}</p>
           </div>
         </div>
       </section>
@@ -56,9 +53,7 @@ export default async function ShippingPage() {
               </h2>
             </div>
 
-            <p className="max-w-md font-medium text-muted-foreground">
-              {t("optionsDesc")}
-            </p>
+            <p className="max-w-md font-medium text-muted-foreground">{t("optionsDesc")}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -100,9 +95,7 @@ export default async function ShippingPage() {
                 </h2>
               </div>
 
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {t("processDesc")}
-              </p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{t("processDesc")}</p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
                 <div className="font-sans font-extrabold text-6xl text-primary leading-none">24/7</div>
@@ -191,9 +184,7 @@ export default async function ShippingPage() {
                 Return Restrictions
               </h2>
 
-              <p className="text-lg text-muted-foreground mb-8">
-                {t("restrictionsDesc")}
-              </p>
+              <p className="text-lg text-muted-foreground mb-8">{t("restrictionsDesc")}</p>
 
               <ul className="space-y-4">
                 {restrictions.map((item, index) => (

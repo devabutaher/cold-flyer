@@ -49,9 +49,7 @@ export default function ServicesPageContent() {
 
   return (
     <div>
-      <p className="text-xs text-muted-foreground mb-4 font-medium">
-        {t("serviceCount", { count: services.length })}
-      </p>
+      <p className="text-xs text-muted-foreground mb-4 font-medium">{t("serviceCount", { count: services.length })}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {services.map((service) => (
           <CatalogCard key={service._id || service.id} item={service} type="service" />

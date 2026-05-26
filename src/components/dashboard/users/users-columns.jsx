@@ -3,7 +3,6 @@ import { AvatarCell, StatusBadge, MonoCell } from "@/components/dashboard/table/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserRowActions } from "./user-row-actions";
 
-
 export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
   return [
     {
@@ -97,7 +96,9 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
         const date = row.getValue("lastLogin");
         return (
           <span className="text-sm text-muted-foreground">
-            {date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—"}
+            {date
+              ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+              : "—"}
           </span>
         );
       },
@@ -117,13 +118,7 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
       size: 52,
       enableSorting: false,
       header: "",
-      cell: ({ row }) => (
-        <UserRowActions
-          user={row.original}
-          onView={onView}
-          onDelete={onDelete}
-        />
-      ),
+      cell: ({ row }) => <UserRowActions user={row.original} onView={onView} onDelete={onDelete} />,
     },
   ];
 }

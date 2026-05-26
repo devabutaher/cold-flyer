@@ -43,7 +43,8 @@ export const services = [
     id: "service-5",
     name: "AC Gas Refill",
     sub: "Restore cooling efficiency",
-    description: "Accurate refrigerant refill services to improve cooling performance and reduce compressor stress. Eco-friendly refrigerants used.",
+    description:
+      "Accurate refrigerant refill services to improve cooling performance and reduce compressor stress. Eco-friendly refrigerants used.",
     img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=1200&q=80",
     features: ["Leak Detection", "Eco-friendly Refrigerants"],
   },

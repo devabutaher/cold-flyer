@@ -70,7 +70,7 @@ export default function EditProductForm({ product, isAdmin = false }) {
               return null;
             }
             return result.data;
-          })
+          }),
         );
         uploadedImages = [...uploadedImages, ...newUploaded.filter(Boolean)];
       }

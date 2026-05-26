@@ -7,13 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { sendVerificationCodeAction, verifyEmailAction } from "@/lib/actions/user";
 
 export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
@@ -75,11 +69,7 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
         <div className="space-y-5">
           <div className="flex justify-center py-4">
             <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
-              {step === "sent" ? (
-                <Mail className="size-7 text-primary" />
-              ) : (
-                <Send className="size-7 text-primary" />
-              )}
+              {step === "sent" ? <Mail className="size-7 text-primary" /> : <Send className="size-7 text-primary" />}
             </div>
           </div>
 
@@ -103,21 +93,13 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
           <div className="flex flex-col gap-2">
             {step === "idle" ? (
               <Button className="w-full" onClick={handleSendCode} disabled={sending}>
-                {sending ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <Send className="size-4" />
-                )}
+                {sending ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
                 {sending ? t("sending") : "Send Code"}
               </Button>
             ) : (
               <>
                 <Button className="w-full" onClick={handleVerify} disabled={verifying || code.length < 6}>
-                  {verifying ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Check className="size-4" />
-                  )}
+                  {verifying ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
                   {verifying ? t("saving") : t("confirm")}
                 </Button>
                 <Button variant="ghost" size="sm" onClick={handleSendCode} disabled={sending} className="text-xs">

@@ -26,7 +26,6 @@ export default function AuthPage() {
     handleSubmit,
     errors,
     setShowPassword,
-    setShowAdminHint,
     handleTabSwitch,
     onSubmit,
     forgotPasswordMode,
@@ -196,32 +195,6 @@ export default function AuthPage() {
             ))}
           </div>
 
-          <div className="mb-4">
-            <button
-              type="button"
-              onClick={() => setShowAdminHint((p) => !p)}
-              className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1"
-            >
-              <Shield size={12} />
-              {showAdminHint ? t("hideAdminInfo") : t("areYouAdmin")}
-            </button>
-
-            {showAdminHint && (
-              <motion.div
-                className="mt-2 p-3 rounded-md bg-amber-500/10 border border-amber-500/30 text-sm"
-                variants={animations.entrance.fadeIn}
-                initial="hidden"
-                animate="visible"
-              >
-                <p className="text-amber-600 font-medium flex items-center gap-1">
-                  <Crown size={14} />
-                  {t("adminAccessTitle")}
-                </p>
-                <p className="text-muted-foreground text-xs mt-1">{t("adminAccessDesc")}</p>
-              </motion.div>
-            )}
-          </div>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {!isSignIn && (
               <div>
@@ -270,15 +243,6 @@ export default function AuthPage() {
                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                   {t("password")}
                 </label>
-                {isSignIn && (
-                  <button
-                    type="button"
-                    onClick={() => setForgotPasswordMode(true)}
-                    className="text-xs font-bold uppercase tracking-widest text-primary/80 hover:text-primary transition-colors"
-                  >
-                    {t("forgotPassword")}
-                  </button>
-                )}
               </div>
               <div className="relative">
                 <Input
@@ -313,6 +277,15 @@ export default function AuthPage() {
                 t("createAccountButton")
               )}
             </Button>
+            {isSignIn && (
+              <button
+                type="button"
+                onClick={() => setForgotPasswordMode(true)}
+                className="text-xs font-bold uppercase tracking-widest text-primary/80 hover:text-primary transition-colors"
+              >
+                {t("forgotPassword")}
+              </button>
+            )}
           </form>
 
           <div className="flex items-center gap-3 my-5">

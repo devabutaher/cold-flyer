@@ -13,9 +13,7 @@ function ServiceCard({ service, index, t }) {
         size={72}
         className="absolute right-4 bottom-3 text-primary opacity-[0.05] group-hover:opacity-[0.08] transition-opacity"
       />
-      <div
-        className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4"
-      >
+      <div className="w-11 h-11 rounded-md bg-accent flex items-center justify-center mb-4">
         <service.icon size={22} className="text-accent-foreground" />
       </div>
       <h3 className="font-sans font-bold text-lg text-foreground mb-2">{service.title}</h3>

@@ -8,7 +8,7 @@ import { uniqueSorted } from "@/lib/utils";
 const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
 
 const SORT_MAP = {
-  "Newest": "newest",
+  Newest: "newest",
   "Price: Low to High": "price_asc",
   "Price: High to Low": "price_desc",
   "Best Rated": "rating",
@@ -29,9 +29,15 @@ function ItemsContent() {
         if (params?.page) query.set("page", String(params.page));
         if (params?.limit) query.set("limit", String(params.limit));
         const qs = query.toString();
-        return getClient().get(`/products${qs ? `?${qs}` : ""}`).then((r) => r.data);
+        return getClient()
+          .get(`/products${qs ? `?${qs}` : ""}`)
+          .then((r) => r.data);
       }}
-      fetchAllFn={() => getClient().get("/products?limit=200").then((r) => r.data)}
+      fetchAllFn={() =>
+        getClient()
+          .get("/products?limit=200")
+          .then((r) => r.data)
+      }
       extractArray={(res) => extractList(res, "products")}
       buildFilterOptions={(products) => [
         {

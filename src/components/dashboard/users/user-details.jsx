@@ -67,8 +67,8 @@ export function UserDetails({ userId }) {
     user.role === "admin"
       ? "bg-primary/10 text-primary"
       : user.role === "technician"
-      ? "bg-blue-500/10 text-blue-600"
-      : "bg-muted text-muted-foreground";
+        ? "bg-blue-500/10 text-blue-600"
+        : "bg-muted text-muted-foreground";
 
   const statusLabel = user.isActive ? "Active" : "Inactive";
   const statusClass = user.isActive ? "bg-green-500/10 text-green-600" : "bg-destructive/10 text-destructive";
@@ -89,10 +89,14 @@ export function UserDetails({ userId }) {
           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span>{user.email}</span>
             <span>·</span>
-            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${roleClass}`}>
+            <span
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${roleClass}`}
+            >
               {roleLabel}
             </span>
-            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusClass}`}>
+            <span
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusClass}`}
+            >
               {statusLabel}
             </span>
           </div>
@@ -138,7 +142,9 @@ export function UserDetails({ userId }) {
                 </div>
                 {user.userId && (
                   <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground shrink-0 w-3.5 flex justify-center text-xs font-semibold">#</span>
+                    <span className="text-muted-foreground shrink-0 w-3.5 flex justify-center text-xs font-semibold">
+                      #
+                    </span>
                     <span className="font-mono text-xs">{user.userId}</span>
                   </div>
                 )}
@@ -173,9 +179,7 @@ export function UserDetails({ userId }) {
                           <p>{[addr.district, addr.thana].filter(Boolean).join(", ")}</p>
                         )}
                         {addr.address && <p>{addr.address}</p>}
-                        {addr.instructions && (
-                          <p className="text-xs italic">Note: {addr.instructions}</p>
-                        )}
+                        {addr.instructions && <p className="text-xs italic">Note: {addr.instructions}</p>}
                       </div>
                     </div>
                   ))}
@@ -260,11 +264,15 @@ export function UserDetails({ userId }) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Member Since</span>
-                <span className="tabular-nums">{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "—"}</span>
+                <span className="tabular-nums">
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "—"}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Last Updated</span>
-                <span className="tabular-nums">{user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : "—"}</span>
+                <span className="tabular-nums">
+                  {user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : "—"}
+                </span>
               </div>
               {user.technicianProfile && (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-2.5 text-xs text-blue-700">

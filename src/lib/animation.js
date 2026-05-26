@@ -48,8 +48,8 @@ export const animations = {
       hover: { y: -4 },
     },
     glow: {
-        rest: { boxShadow: "0 0 0 0 oklch(0.6460 0.2220 41.1160 / 0)" },
-        hover: { boxShadow: "0 0 20px 0 oklch(0.6460 0.2220 41.1160 / 0.2)" },
+      rest: { boxShadow: "0 0 0 0 oklch(0.6460 0.2220 41.1160 / 0)" },
+      hover: { boxShadow: "0 0 20px 0 oklch(0.6460 0.2220 41.1160 / 0.2)" },
     },
     scale: {
       rest: { scale: 1 },

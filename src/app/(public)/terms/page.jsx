@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { getData } from "@/data";
 import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
@@ -30,13 +29,13 @@ export default async function TermsPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">{t("heroBadge")}</Badge>
+            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
+              {t("heroBadge")}
+            </Badge>
             <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", {br: () => <br/>})}
+              {t.rich("heroTitle", { br: () => <br /> })}
             </h1>
-            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              {t("heroDesc")}
-            </p>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{t("heroDesc")}</p>
           </div>
         </div>
       </section>
@@ -47,12 +46,12 @@ export default async function TermsPage() {
           <div className="flex flex-col sm:flex-row items-center gap-4 text-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
               <FileText size={16} />
-              <span>{t("lastUpdated", {date: "April 29, 2026"})}</span>
+              <span>{t("lastUpdated", { date: "April 29, 2026" })}</span>
             </div>
             <div className="hidden sm:block w-1 h-1 rounded-full bg-border" />
             <div className="flex items-center gap-2 text-primary font-medium">
               <Scale size={16} />
-              <span>{t("version", {ver: "2.1"})}</span>
+              <span>{t("version", { ver: "2.1" })}</span>
             </div>
           </div>
         </div>
@@ -88,9 +87,7 @@ export default async function TermsPage() {
                     <AlertTriangle size={18} className="text-destructive shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-sans font-extrabold text-sm mb-1">{t("noticeTitle")}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {t("noticeDesc")}
-                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{t("noticeDesc")}</p>
                     </div>
                   </div>
                 </div>

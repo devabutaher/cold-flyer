@@ -22,9 +22,7 @@ export function OrderItemsList({ items }) {
             <p className="truncate text-sm font-medium text-foreground">{item.name}</p>
             <p className="text-xs text-muted-foreground">{t("qty", { count: item.quantity })}</p>
           </div>
-          <p className="text-sm font-semibold text-foreground">
-            ৳{(item.price * item.quantity).toLocaleString()}
-          </p>
+          <p className="text-sm font-semibold text-foreground">৳{(item.price * item.quantity).toLocaleString()}</p>
         </div>
       ))}
     </div>

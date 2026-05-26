@@ -32,18 +32,21 @@ export function SearchableMultiSelect({ label, value = [], onChange, fetchFn, pl
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const fetchOptions = useCallback(async (q) => {
-    if (!open) return;
-    setLoading(true);
-    try {
-      const results = await fetchFn(q);
-      setOptions(results);
-    } catch {
-      setOptions([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [open, fetchFn]);
+  const fetchOptions = useCallback(
+    async (q) => {
+      if (!open) return;
+      setLoading(true);
+      try {
+        const results = await fetchFn(q);
+        setOptions(results);
+      } catch {
+        setOptions([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [open, fetchFn],
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -80,10 +83,16 @@ export function SearchableMultiSelect({ label, value = [], onChange, fetchFn, pl
               const idStr = (typeof v === "object" ? v._id || v : v).toString();
               const name = typeof v === "object" ? v.name || v.label || idStr : idStr;
               return (
-                <span key={idStr} className="inline-flex items-center gap-1 rounded bg-secondary px-1.5 py-0.5 text-xs font-medium">
+                <span
+                  key={idStr}
+                  className="inline-flex items-center gap-1 rounded bg-secondary px-1.5 py-0.5 text-xs font-medium"
+                >
                   {name}
                   <button
-                    onClick={(e) => { e.stopPropagation(); remove(idStr); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      remove(idStr);
+                    }}
                     className="text-muted-foreground hover:text-foreground"
                   >
                     <X size={12} />
@@ -124,7 +133,9 @@ export function SearchableMultiSelect({ label, value = [], onChange, fetchFn, pl
                       onClick={() => toggle(opt)}
                       className="flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-accent text-left"
                     >
-                      <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${isSelected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
+                      <div
+                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${isSelected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}
+                      >
                         {isSelected && <Check size={10} />}
                       </div>
                       <span>{opt.name || opt.label || opt}</span>

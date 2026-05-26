@@ -2,14 +2,14 @@ import { cn } from "@/lib/utils";
 
 function Skeleton({ className, ...props }) {
   return (
-    <div 
-      data-slot="skeleton" 
+    <div
+      data-slot="skeleton"
       className={cn(
-        "relative overflow-hidden rounded-md bg-muted", 
+        "relative overflow-hidden rounded-md bg-muted",
         "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-linear-to-r before:from-transparent before:via-background/20 before:to-transparent",
-        className
-      )} 
-      {...props} 
+        className,
+      )}
+      {...props}
     />
   );
 }

@@ -6,22 +6,9 @@ import { getClient } from "@/lib/http-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -40,7 +27,7 @@ import {
 
 /* ── KPI Card ──────────────────────────────────────────── */
 function KpiCard({ title, value, icon: Icon, isCurrency = true, positive }) {
-  const isPositive = positive ?? (value >= 0);
+  const isPositive = positive ?? value >= 0;
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -79,7 +66,7 @@ function SimpleTable({ columns, data }) {
             <TableRow key={row._id || i} className="border-b border-border/60">
               {columns.map((col) => (
                 <TableCell key={col.accessorKey} className="text-sm whitespace-nowrap">
-                  {col.cell ? col.cell(row) : row[col.accessorKey] ?? "—"}
+                  {col.cell ? col.cell(row) : (row[col.accessorKey] ?? "—")}
                 </TableCell>
               ))}
             </TableRow>
@@ -178,9 +165,7 @@ export default function ReportingPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Reporting</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Monthly financial and operational report.
-        </p>
+        <p className="text-sm text-muted-foreground mt-0.5">Monthly financial and operational report.</p>
       </div>
 
       {/* ── Filters ── */}
@@ -243,30 +228,10 @@ export default function ReportingPage() {
         </div>
       ) : (
         <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-          <KpiCard
-            title="Total Revenue"
-            value={kpis.totalRevenue}
-            icon={TrendingUp}
-            positive={true}
-          />
-          <KpiCard
-            title="Total Expenses"
-            value={kpis.totalExpenses}
-            icon={TrendingDown}
-            positive={false}
-          />
-          <KpiCard
-            title="Total Salary"
-            value={kpis.totalSalary}
-            icon={Users}
-            positive={false}
-          />
-          <KpiCard
-            title="Net Profit"
-            value={kpis.netProfit}
-            icon={DollarSign}
-            positive={kpis.netProfit >= 0}
-          />
+          <KpiCard title="Total Revenue" value={kpis.totalRevenue} icon={TrendingUp} positive={true} />
+          <KpiCard title="Total Expenses" value={kpis.totalExpenses} icon={TrendingDown} positive={false} />
+          <KpiCard title="Total Salary" value={kpis.totalSalary} icon={Users} positive={false} />
+          <KpiCard title="Net Profit" value={kpis.netProfit} icon={DollarSign} positive={kpis.netProfit >= 0} />
         </div>
       )}
 
@@ -346,9 +311,7 @@ export default function ReportingPage() {
                 {
                   header: "Category",
                   accessorKey: "category",
-                  cell: (row) => (
-                    <span className="capitalize">{(row.category || "").replace(/_/g, " ")}</span>
-                  ),
+                  cell: (row) => <span className="capitalize">{(row.category || "").replace(/_/g, " ")}</span>,
                 },
                 {
                   header: "Amount",
@@ -358,8 +321,7 @@ export default function ReportingPage() {
                 {
                   header: "Date",
                   accessorKey: "date",
-                  cell: (row) =>
-                    row.date ? new Date(row.date).toLocaleDateString() : "—",
+                  cell: (row) => (row.date ? new Date(row.date).toLocaleDateString() : "—"),
                 },
               ]}
               data={expenses}
@@ -388,8 +350,7 @@ export default function ReportingPage() {
                 {
                   header: "Salary",
                   accessorKey: "salary",
-                  cell: (row) =>
-                    row.salary ? `৳${row.salary.toLocaleString()}` : "—",
+                  cell: (row) => (row.salary ? `৳${row.salary.toLocaleString()}` : "—"),
                 },
               ]}
               data={activeWorkers}

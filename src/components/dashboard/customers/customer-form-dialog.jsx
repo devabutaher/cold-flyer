@@ -64,7 +64,12 @@ function getInitialForm(mode, customer) {
 export function CustomerFormDialog({ mode = "create", customer, open, onOpenChange, onSuccess }) {
   const [dateOpen, setDateOpen] = useState(false);
 
-  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: INITIAL_FORM,
     resolver: zodResolver(customerFormSchema),
     mode: "onTouched",
@@ -126,9 +131,7 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="name"
                 control={control}
-                render={({ field }) => (
-                  <Input id="name" {...field} placeholder="Customer name" />
-                )}
+                render={({ field }) => <Input id="name" {...field} placeholder="Customer name" />}
               />
               {errors.name && <p className="text-xs text-destructive mt-1">{errors.name.message}</p>}
             </div>
@@ -139,71 +142,69 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="phone"
                 control={control}
-                render={({ field }) => (
-                  <Input id="phone" {...field} placeholder="Phone number" />
-                )}
+                render={({ field }) => <Input id="phone" {...field} placeholder="Phone number" />}
               />
               {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone.message}</p>}
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="email" className="mb-1.5 block">Email</Label>
+              <Label htmlFor="email" className="mb-1.5 block">
+                Email
+              </Label>
               <Controller
                 name="email"
                 control={control}
-                render={({ field }) => (
-                  <Input id="email" type="email" {...field} placeholder="Email address" />
-                )}
+                render={({ field }) => <Input id="email" type="email" {...field} placeholder="Email address" />}
               />
               {errors.email && <p className="text-xs text-destructive mt-1">{errors.email.message}</p>}
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="company" className="mb-1.5 block">Company</Label>
+              <Label htmlFor="company" className="mb-1.5 block">
+                Company
+              </Label>
               <Controller
                 name="company"
                 control={control}
-                render={({ field }) => (
-                  <Input id="company" {...field} placeholder="Company name" />
-                )}
+                render={({ field }) => <Input id="company" {...field} placeholder="Company name" />}
               />
             </div>
             <div className="col-span-2">
-              <Label htmlFor="address" className="mb-1.5 block">Address</Label>
+              <Label htmlFor="address" className="mb-1.5 block">
+                Address
+              </Label>
               <Controller
                 name="address"
                 control={control}
-                render={({ field }) => (
-                  <Input id="address" {...field} placeholder="Full address" />
-                )}
+                render={({ field }) => <Input id="address" {...field} placeholder="Full address" />}
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="brand" className="mb-1.5 block">Brand</Label>
+              <Label htmlFor="brand" className="mb-1.5 block">
+                Brand
+              </Label>
               <Controller
                 name="brand"
                 control={control}
-                render={({ field }) => (
-                  <Input id="brand" {...field} placeholder="AC brand" />
-                )}
+                render={({ field }) => <Input id="brand" {...field} placeholder="AC brand" />}
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="model" className="mb-1.5 block">Model</Label>
+              <Label htmlFor="model" className="mb-1.5 block">
+                Model
+              </Label>
               <Controller
                 name="model"
                 control={control}
-                render={({ field }) => (
-                  <Input id="model" {...field} placeholder="AC model" />
-                )}
+                render={({ field }) => <Input id="model" {...field} placeholder="AC model" />}
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="unit" className="mb-1.5 block">Unit</Label>
+              <Label htmlFor="unit" className="mb-1.5 block">
+                Unit
+              </Label>
               <Controller
                 name="unit"
                 control={control}
-                render={({ field }) => (
-                  <Input id="unit" {...field} placeholder="Unit / Qty" />
-                )}
+                render={({ field }) => <Input id="unit" {...field} placeholder="Unit / Qty" />}
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
@@ -252,7 +253,9 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
                     </SelectTrigger>
                     <SelectContent>
                       {SERVICE_OPTIONS.map((opt) => (
-                        <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -261,20 +264,22 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               {errors.service && <p className="text-xs text-destructive mt-1">{errors.service.message}</p>}
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="amount" className="mb-1.5 block">Amount</Label>
+              <Label htmlFor="amount" className="mb-1.5 block">
+                Amount
+              </Label>
               <Controller
                 name="amount"
                 control={control}
-                render={({ field }) => (
-                  <Input id="amount" type="number" {...field} placeholder="0" />
-                )}
+                render={({ field }) => <Input id="amount" type="number" {...field} placeholder="0" />}
               />
               {errors.amount && <p className="text-xs text-destructive mt-1">{errors.amount.message}</p>}
             </div>
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel type="button" disabled={mutation.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel type="button" disabled={mutation.isPending}>
+              Cancel
+            </AlertDialogCancel>
             <Button type="submit" disabled={mutation.isPending}>
               {mutation.isPending && <Loader2 size={14} className="mr-1.5 animate-spin" />}
               {mode === "create" ? "Create" : "Save Changes"}

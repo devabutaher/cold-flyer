@@ -54,7 +54,17 @@ function CartContent() {
   const ct = useTranslations("cart");
   const router = useRouter();
   const { backendUser } = useAuth();
-  const { items, updateQuantity, removeItem, clearCart, coupon, couponLoading, applyCoupon, setCouponLoading, removeCoupon } = useCart();
+  const {
+    items,
+    updateQuantity,
+    removeItem,
+    clearCart,
+    coupon,
+    couponLoading,
+    applyCoupon,
+    setCouponLoading,
+    removeCoupon,
+  } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
@@ -68,31 +78,37 @@ function CartContent() {
 
   useEffect(() => {
     if (!coupon) {
-      getClient().get("/coupons?limit=4").then((r) => {
-        if (r.data?.success && r.data?.data?.coupons) {
-          setAvailableCoupons(r.data.data.coupons);
-        }
-      }).catch(() => {});
+      getClient()
+        .get("/coupons?limit=4")
+        .then((r) => {
+          if (r.data?.success && r.data?.data?.coupons) {
+            setAvailableCoupons(r.data.data.coupons);
+          }
+        })
+        .catch(() => {});
     }
   }, [coupon]);
 
   useEffect(() => {
     if (coupon || items.length === 0) return;
     const timer = setTimeout(() => {
-      getClient().post("/coupons/auto-apply", {
-        subtotal,
-        itemCount: items.length,
-        items: items.map((item) => ({
-          product: { _id: item.productRef || item.productId },
-          price: item.price,
-          quantity: item.quantity,
-        })),
-      }).then((r) => {
-        if (r.data?.success && r.data?.data?.coupon) {
-          applyCoupon(r.data.data.coupon);
-          toast.success(`Coupon ${r.data.data.coupon.code} auto-applied!`);
-        }
-      }).catch(() => {});
+      getClient()
+        .post("/coupons/auto-apply", {
+          subtotal,
+          itemCount: items.length,
+          items: items.map((item) => ({
+            product: { _id: item.productRef || item.productId },
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        })
+        .then((r) => {
+          if (r.data?.success && r.data?.data?.coupon) {
+            applyCoupon(r.data.data.coupon);
+            toast.success(`Coupon ${r.data.data.coupon.code} auto-applied!`);
+          }
+        })
+        .catch(() => {});
     }, 500);
     return () => clearTimeout(timer);
   }, [items.length, subtotal, items, coupon, applyCoupon]);
@@ -102,7 +118,9 @@ function CartContent() {
     setCouponError("");
     setCouponLoading(true);
     try {
-      const lookup = await getClient().get(`/coupons/lookup/${couponCode}`).then((r) => r.data);
+      const lookup = await getClient()
+        .get(`/coupons/lookup/${couponCode}`)
+        .then((r) => r.data);
       if (!lookup.success || !lookup.data?.coupon) {
         throw new Error(ct("invalidCoupon"));
       }
@@ -119,15 +137,17 @@ function CartContent() {
         );
         if (!hasMatch) throw new Error("This coupon does not apply to items in your cart");
       }
-      const res = await getClient().patch("/cart/apply-coupon", {
-        code: couponCode,
-        items: items.map((item) => ({
-          productRef: item.productRef || item.productId,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-      }).then((r) => r.data);
+      const res = await getClient()
+        .patch("/cart/apply-coupon", {
+          code: couponCode,
+          items: items.map((item) => ({
+            productRef: item.productRef || item.productId,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        })
+        .then((r) => r.data);
       if (res.success) {
         applyCoupon(res.data.coupon);
         toast.success(ct("couponApplied"));
@@ -178,7 +198,9 @@ function CartContent() {
         ...(coupon?.code && { couponCode: coupon.code }),
       };
 
-      const response = await getClient().post("/orders", orderData).then((r) => r.data);
+      const response = await getClient()
+        .post("/orders", orderData)
+        .then((r) => r.data);
 
       if (response.success && response.data?.order?._id) {
         router.push(`/checkout/${response.data.order._id}`);
@@ -247,7 +269,9 @@ function CartContent() {
                     <p className="text-sm font-bold text-foreground">
                       ৳{(product.price * product.quantity).toLocaleString()}
                     </p>
-                    <p className="text-xs text-muted-foreground">৳{product.price.toLocaleString()} {t("each")}</p>
+                    <p className="text-xs text-muted-foreground">
+                      ৳{product.price.toLocaleString()} {t("each")}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -267,7 +291,10 @@ function CartContent() {
 
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-muted-foreground">
-            <span>{t('subtotal', { count: items.reduce((s, p) => s + p.quantity, 0) })} ({items.reduce((s, p) => s + p.quantity, 0)} items)</span>
+            <span>
+              {t("subtotal", { count: items.reduce((s, p) => s + p.quantity, 0) })} (
+              {items.reduce((s, p) => s + p.quantity, 0)} items)
+            </span>
             <span className="font-medium text-foreground">৳{subtotal.toLocaleString()}</span>
           </div>
 
@@ -309,7 +336,10 @@ function CartContent() {
                 <input
                   type="text"
                   value={couponCode}
-                  onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(""); }}
+                  onChange={(e) => {
+                    setCouponCode(e.target.value.toUpperCase());
+                    setCouponError("");
+                  }}
                   placeholder={t("couponPlaceholder")}
                   className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 />
@@ -323,7 +353,13 @@ function CartContent() {
                 {couponLoading ? <Loader2 size={14} className="animate-spin" /> : ct("applyCoupon")}
               </Button>
               {couponCode && (
-                <button onClick={() => { setCouponCode(""); setCouponError(""); }} className="text-xs text-muted-foreground hover:text-foreground shrink-0">
+                <button
+                  onClick={() => {
+                    setCouponCode("");
+                    setCouponError("");
+                  }}
+                  className="text-xs text-muted-foreground hover:text-foreground shrink-0"
+                >
                   <X size={14} />
                 </button>
               )}
@@ -334,20 +370,29 @@ function CartContent() {
 
         {!coupon && availableCoupons.length > 0 && (
           <div className="mb-4">
-            <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{ct("availableOffers")}</p>
+            <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              {ct("availableOffers")}
+            </p>
             <div className="space-y-2">
               {availableCoupons.map((c) => {
                 const eligible = c.minOrderValue <= subtotal;
-                const label = c.discountType === "percentage"
-                  ? `${c.discountValue}% OFF`
-                  : c.discountType === "fixed"
-                    ? `৳${c.discountValue} OFF`
-                    : "Free Shipping";
-                const scopeLabel = c.applicableTo && c.applicableTo !== "all"
-                  ? ({ products: "Products", services: "Services", categories: "Categories", brands: "Brands" }[c.applicableTo] || "Selected")
-                  : null;
+                const label =
+                  c.discountType === "percentage"
+                    ? `${c.discountValue}% OFF`
+                    : c.discountType === "fixed"
+                      ? `৳${c.discountValue} OFF`
+                      : "Free Shipping";
+                const scopeLabel =
+                  c.applicableTo && c.applicableTo !== "all"
+                    ? { products: "Products", services: "Services", categories: "Categories", brands: "Brands" }[
+                        c.applicableTo
+                      ] || "Selected"
+                    : null;
                 return (
-                  <div key={c.code} className={`flex items-center justify-between rounded-lg border px-3 py-2 ${eligible ? "border-border bg-card" : "border-dashed border-muted-foreground/30 opacity-60"}`}>
+                  <div
+                    key={c.code}
+                    className={`flex items-center justify-between rounded-lg border px-3 py-2 ${eligible ? "border-border bg-card" : "border-dashed border-muted-foreground/30 opacity-60"}`}
+                  >
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-2">
                         <Tag size={12} className="shrink-0 text-muted-foreground" />
@@ -362,7 +407,9 @@ function CartContent() {
                       {(scopeLabel || c.firstOrderOnly) && (
                         <div className="flex items-center gap-1.5 mt-0.5 ml-5">
                           {scopeLabel && (
-                            <span className="text-xxxs uppercase tracking-wider text-muted-foreground/50">{scopeLabel} only</span>
+                            <span className="text-xxxs uppercase tracking-wider text-muted-foreground/50">
+                              {scopeLabel} only
+                            </span>
                           )}
                           {c.firstOrderOnly && (
                             <span className="text-xxxs uppercase tracking-wider text-green-600/70">First order</span>

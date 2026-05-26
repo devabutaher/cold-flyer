@@ -79,7 +79,9 @@ export function buildBlogColumns({ onDelete } = {}) {
       cell: ({ row }) => {
         const featured = row.getValue("featured");
         return (
-          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wider ${featured ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+          <span
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wider ${featured ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+          >
             {featured ? "Featured" : "Hidden"}
           </span>
         );
