@@ -38,7 +38,7 @@ export default function Services() {
     <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-background" id="services">
       <div className="container">
         <div className="mb-9">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("home.ourExpertise")}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("home.ourExpertise")}</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
             {t("home.worldClassServices")}
           </h2>

@@ -1,7 +1,7 @@
-"use client";
-
 import ProtectedRoute from "@/components/auth/protected-routes";
-import ServicesTable from "@/components/dashboard/service/services-table/services-table";
+import dynamic from "next/dynamic";
+
+const ServicesTable = dynamic(() => import("@/components/dashboard/service/services-table/services-table"));
 
 export default function ServicesPage() {
   return (

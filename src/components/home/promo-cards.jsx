@@ -26,7 +26,7 @@ function PromoCard({ card, index }) {
       </div>
 
       <span
-        className={`text-[10px] font-bold uppercase tracking-widest ${card.accent ? "text-white/70" : "text-primary"}`}
+        className={`text-xxs font-bold uppercase tracking-widest ${card.accent ? "text-white/70" : "text-primary"}`}
       >
         {card.tag}
       </span>

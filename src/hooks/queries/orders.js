@@ -97,6 +97,7 @@ export function useVerifyPayment(componentOptions = {}) {
       }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.orderId) });
       toast.success("Payment verified successfully");
       userOnSuccess?.(data, variables, context);
     },

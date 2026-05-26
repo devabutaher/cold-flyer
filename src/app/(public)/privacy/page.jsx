@@ -1,15 +1,14 @@
-"use client";
 
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, ShieldCheck, User } from "lucide-react";
 import { getData } from "@/data";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
-export default function PrivacyPage() {
-  const locale = useLocale();
-  const t = useTranslations("privacy");
+export default async function PrivacyPage() {
+  const locale = await getLocale();
+  const t = await getTranslations("privacy");
   const principles = getData("principles", locale);
   const dataTypes = getData("dataTypes", locale);
   const timeline = getData("timeline", locale);
@@ -49,7 +48,7 @@ export default function PrivacyPage() {
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
-              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 Our Commitment
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
@@ -197,7 +196,7 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 Your Control
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">

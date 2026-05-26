@@ -39,19 +39,30 @@ const INITIAL_FORM = {
   category: "",
 };
 
+function getInitialForm(mode, expense) {
+  if (mode === "edit" && expense) {
+    return {
+      item: expense.item || "",
+      amount: expense.amount?.toString() || "",
+      date: expense.date ? expense.date.slice(0, 10) : "",
+      category: expense.category || "",
+    };
+  }
+  return INITIAL_FORM;
+}
+
 export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange, onSuccess }) {
   const [form, setForm] = useState(INITIAL_FORM);
 
   useEffect(() => {
-    if (mode === "edit" && expense) {
-      setForm({
+    if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setForm(mode === "edit" && expense ? {
         item: expense.item || "",
         amount: expense.amount?.toString() || "",
         date: expense.date ? expense.date.slice(0, 10) : "",
         category: expense.category || "",
-      });
-    } else {
-      setForm(INITIAL_FORM);
+      } : INITIAL_FORM);
     }
   }, [mode, expense, open]);
 

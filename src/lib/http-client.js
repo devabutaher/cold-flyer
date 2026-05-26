@@ -36,6 +36,15 @@ export function createServerClient(cookieStore) {
   });
 }
 
+export function getServerFetchHeaders(cookieStore) {
+  const token = cookieStore.get("accessToken")?.value;
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
+export const API_BACKEND_URL = BACKEND_URL;
+
 export function dataOrThrow(response) {
   return response.data;
 }

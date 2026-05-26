@@ -27,31 +27,31 @@ function CouponCard({ coupon, t, onCopyCode }) {
         <div className="flex items-center gap-2">
           <span className="text-lg font-black text-primary-foreground">{discountLabel}</span>
           {coupon.minOrderValue > 0 && (
-            <span className="text-[10px] text-primary-foreground/60">Min ৳{coupon.minOrderValue.toLocaleString()}</span>
+            <span className="text-xxs text-primary-foreground/60">Min ৳{coupon.minOrderValue.toLocaleString()}</span>
           )}
         </div>
         <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug line-clamp-2">
           {coupon.description}
         </p>
         {coupon.applicableTo && coupon.applicableTo !== "all" && (
-          <span className="mt-1 inline-block rounded bg-primary-foreground/10 px-1.5 py-0.5 text-[9px] font-medium text-primary-foreground/60 uppercase tracking-wider">
+          <span className="mt-1 inline-block rounded bg-primary-foreground/10 px-1.5 py-0.5 text-xxxs font-medium text-primary-foreground/60 uppercase tracking-wider">
             {SCOPE_LABELS[coupon.applicableTo] || "Limited items"}
           </span>
         )}
         {coupon.firstOrderOnly && (
-          <span className="mt-1 ml-1 inline-block rounded bg-green-500/20 px-1.5 py-0.5 text-[9px] font-medium text-green-300 uppercase tracking-wider">
+          <span className="mt-1 ml-1 inline-block rounded bg-green-500/20 px-1.5 py-0.5 text-xxxs font-medium text-green-300 uppercase tracking-wider">
             First order
           </span>
         )}
       </div>
       <div className="flex items-center justify-between gap-2 mt-1">
         <div className="flex items-center gap-1 rounded bg-primary-foreground/15 px-2 py-1">
-          <span className="text-[10px] font-bold text-primary-foreground/60">{t("useCode")}</span>
+          <span className="text-xxs font-bold text-primary-foreground/60">{t("useCode")}</span>
           <span className="text-xs font-extrabold tracking-wider text-primary-foreground">{coupon.code}</span>
         </div>
         <button
           onClick={() => onCopyCode(coupon.code)}
-          className="rounded bg-primary-foreground/20 px-2 py-1 text-[10px] font-bold text-primary-foreground hover:bg-primary-foreground/30 transition-colors"
+          className="rounded bg-primary-foreground/20 px-2 py-1 text-xxs font-bold text-primary-foreground hover:bg-primary-foreground/30 transition-colors"
         >
           {t("copyCode")}
         </button>
@@ -113,7 +113,7 @@ export default function OfferBanner() {
           <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col items-center gap-1.5 md:flex-row md:items-start md:gap-3 text-center md:text-left">
               <div>
-                <Badge className="shrink-0 bg-background/20 text-primary-foreground uppercase text-[10px] font-bold tracking-widest px-2.5 py-0.5">
+                <Badge className="shrink-0 bg-background/20 text-primary-foreground uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
                   {t("limitedTime")}
                 </Badge>
                 <div>
@@ -122,7 +122,7 @@ export default function OfferBanner() {
                       {t("summerSale")}
                     </span>
                     <span className="text-lg font-black text-primary-foreground/90 md:text-xl">{t("twentyOff")}</span>
-                    <span className="hidden md:inline-flex items-center rounded border-2 border-green-400 bg-green-500 px-1.5 py-px text-[9px] font-bold text-white rotate-2 leading-none">
+                    <span className="hidden md:inline-flex items-center rounded border-2 border-green-400 bg-green-500 px-1.5 py-px text-xxxs font-bold text-white rotate-2 leading-none">
                       {t("exclusive")}
                     </span>
                   </div>
@@ -158,7 +158,7 @@ export default function OfferBanner() {
       <div className="relative z-10 px-5 py-4 sm:px-7 sm:py-5 md:px-10 md:py-6">
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <Badge className="bg-background/20 text-primary-foreground uppercase text-[10px] font-bold tracking-widest px-2.5 py-0.5">
+            <Badge className="bg-background/20 text-primary-foreground uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
               {t("limitedTime")}
             </Badge>
             <h2 className="mt-1 text-lg font-extrabold text-primary-foreground md:text-xl">

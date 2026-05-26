@@ -56,7 +56,7 @@ export function NotificationDropdown() {
         <Button aria-label={t("notifications")} size="icon-sm" variant="outline" className="relative">
           <BellIcon />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground px-1">
+            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive text-xxs font-bold text-destructive-foreground px-1">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -111,7 +111,7 @@ export function NotificationDropdown() {
                     {!n.isRead && <span className="h-2 w-2 shrink-0 rounded-full bg-destructive" />}
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2 pl-6">{n.message}</p>
-                  <span className="text-[10px] text-muted-foreground pl-6 mt-0.5">
+                  <span className="text-xxs text-muted-foreground pl-6 mt-0.5">
                     {formatDate(n.createdAt, locale, {
                       month: "short",
                       day: "numeric",

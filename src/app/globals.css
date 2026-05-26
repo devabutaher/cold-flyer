@@ -141,6 +141,9 @@
     --color-sidebar-ring: var(--sidebar-ring);
     --color-inverted: var(--inverted);
     --color-inverted-foreground: var(--inverted-foreground);
+    --color-theme: var(--primary);
+    --font-size-xxs: 0.625rem;
+    --font-size-xxxs: 0.5625rem;
 
     --font-sans: var(--font-sans);
     --font-heading: var(--font-heading);

@@ -139,7 +139,7 @@ export function CatalogFilters({
           <ListFilter size={14} className="mr-1.5" />
           {t("filters")}
           {activeFilterCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center px-1">
+            <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 rounded-full bg-primary text-xxs font-bold text-primary-foreground flex items-center justify-center px-1">
               {activeFilterCount}
             </span>
           )}
@@ -150,7 +150,7 @@ export function CatalogFilters({
       <div className="hidden lg:flex items-center gap-3">
         <div className="flex items-center gap-2 text-muted-foreground">
           <ListFilter size={15} strokeWidth={2.5} />
-          <span className="text-[10px] font-black uppercase tracking-widest">{t("filters")}</span>
+          <span className="text-xxs font-black uppercase tracking-widest">{t("filters")}</span>
         </div>
         <div className="flex items-center gap-2">
           {filterOptions.map((filter) => (

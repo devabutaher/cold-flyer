@@ -22,7 +22,7 @@ export default function ProductCarousel({ title, tag, items, catalogLabel, catal
       <div>
         <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">
               {tag}
             </span>
 

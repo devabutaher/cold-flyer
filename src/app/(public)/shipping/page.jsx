@@ -1,15 +1,14 @@
-"use client";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getData } from "@/data";
 import { Clock, Package } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-export default function ShippingPage() {
-  const locale = useLocale();
-  const t = useTranslations("shipping");
+export default async function ShippingPage() {
+  const locale = await getLocale();
+  const t = await getTranslations("shipping");
   const shippingOptions = getData("shippingOptions", locale);
   const process = getData("process", locale);
   const returns = getData("returns", locale);
@@ -49,7 +48,7 @@ export default function ShippingPage() {
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
-              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 Delivery Methods
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
@@ -185,7 +184,7 @@ export default function ShippingPage() {
             </div>
 
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 Important Info
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">

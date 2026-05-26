@@ -1,7 +1,7 @@
-"use client";
-
 import ProtectedRoute from "@/components/auth/protected-routes";
-import ProductsTable from "@/components/dashboard/product/products-table/products-table";
+import dynamic from "next/dynamic";
+
+const ProductsTable = dynamic(() => import("@/components/dashboard/product/products-table/products-table"));
 
 export default function ProductsPage() {
   return (

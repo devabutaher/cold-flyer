@@ -246,7 +246,7 @@ export default async function BlogDetailPage({ params }) {
                       )}
                     </div>
                     <div className="p-5">
-                      <Badge variant="secondary" className="text-[10px] uppercase tracking-wider mb-2">
+                      <Badge variant="secondary" className="text-xxs uppercase tracking-wider mb-2">
                         {related.category}
                       </Badge>
                       <h3 className="font-sans font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">

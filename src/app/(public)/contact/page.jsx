@@ -1,13 +1,11 @@
-"use client";
-
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { AnimatedDiv } from "@/components/ui/animated-div";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { motion } from "framer-motion";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
 const contactMethods = [
@@ -37,8 +35,8 @@ const contactMethods = [
   },
 ];
 
-export default function ContactPage() {
-  const t = useTranslations("contact");
+export default async function ContactPage() {
+  const t = await getTranslations("contact");
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -54,27 +52,27 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
                 {t("heroBadge")}
               </Badge>
-            </motion.div>
-            <motion.h1
+            </AnimatedDiv>
+            <AnimatedDiv as="h1"
               className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               {t.rich("heroHeading", {br: () => <br/>})}
-            </motion.h1>
-            <motion.p
+            </AnimatedDiv>
+            <AnimatedDiv as="p"
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {t("heroDesc")}
-            </motion.p>
+            </AnimatedDiv>
           </div>
         </div>
       </AnimatedSection>
@@ -83,7 +81,7 @@ export default function ContactPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
             <div>
-              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 Contact Us
               </span>
               <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight mb-6">
@@ -93,7 +91,7 @@ export default function ContactPage() {
                 Fill out the form and our team will get back to you within 24 hours.
               </p>
 
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">{t("name")}</label>
@@ -115,14 +113,14 @@ export default function ContactPage() {
                 <Button size="lg" className="gap-2">
                   <Send size={16} /> Send Message
                 </Button>
-              </form>
+                </div>
             </div>
 
             <div className="space-y-8">
               {contactMethods.map((method, i) => {
                 const Icon = method.icon;
                 return (
-                  <motion.div
+                  <AnimatedDiv
                     key={method.title}
                     className="flex items-start gap-5 p-6 bg-card rounded-xl"
                     initial={{ opacity: 0, x: 20 }}
@@ -138,7 +136,7 @@ export default function ContactPage() {
                       <p className="text-foreground font-medium">{method.detail}</p>
                       <p className="text-sm text-muted-foreground mt-0.5">{method.sub}</p>
                     </div>
-                  </motion.div>
+                  </AnimatedDiv>
                 );
               })}
             </div>
@@ -149,7 +147,7 @@ export default function ContactPage() {
       <AnimatedSection className="py-28 bg-secondary/40">
         <div className="container">
           <div className="text-center mb-16">
-            <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+            <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
               Our Location
             </span>
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{t("locationTitle")}</h2>

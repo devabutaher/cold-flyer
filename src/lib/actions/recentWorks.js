@@ -1,12 +1,12 @@
 "use server";
 
-import { createServerClient } from "@/lib/http-client";
+import { revalidateTag } from "next/cache";
+import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 import { cookies } from "next/headers";
 
 export async function getRecentWorksServer(params) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
     const query = new URLSearchParams();
     if (params?.q) query.set("search", String(params.q));
     if (params?.category) query.set("category", String(params.category));
@@ -15,8 +15,12 @@ export async function getRecentWorksServer(params) {
     if (params?.page) query.set("page", String(params.page));
     if (params?.limit) query.set("limit", String(params.limit));
     const qs = query.toString();
-    const res = await client.get(`/api/recent-works${qs ? `?${qs}` : ""}`);
-    return res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/recent-works${qs ? `?${qs}` : ""}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["recent-works"] },
+    });
+    const data = await res.json();
+    return data;
   } catch {
     return { data: { recentWorks: [] } };
   }
@@ -25,9 +29,12 @@ export async function getRecentWorksServer(params) {
 export async function getRecentWorkBySlugServer(slug) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get(`/api/recent-works/slug/${slug}`);
-    return res.data?.data?.recentWork || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/recent-works/slug/${slug}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["recent-works"] },
+    });
+    const data = await res.json();
+    return data?.data?.recentWork || data;
   } catch {
     return null;
   }
@@ -38,6 +45,7 @@ export async function createRecentWorkAction(workData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/recent-works", workData);
+    revalidateTag("recent-works");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -53,6 +61,7 @@ export async function updateRecentWorkAction(id, workData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/recent-works/${id}`, workData);
+    revalidateTag("recent-works");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -68,6 +77,7 @@ export async function deleteRecentWorkAction(id) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/recent-works/${id}`);
+    revalidateTag("recent-works");
     return { success: true };
   } catch (error) {
     return {

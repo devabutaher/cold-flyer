@@ -1,14 +1,18 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { createServerClient } from "@/lib/http-client";
+import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 
 export async function getOrdersServer() {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get("/api/orders");
-    return res.data?.data?.orders || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/orders`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["orders"] },
+    });
+    const data = await res.json();
+    return data?.data?.orders || data;
   } catch {
     return [];
   }
@@ -17,9 +21,12 @@ export async function getOrdersServer() {
 export async function getOrderByIdServer(id) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get(`/api/orders/${id}`);
-    return res.data?.data?.order || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/orders/${id}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["orders", "order-detail"] },
+    });
+    const data = await res.json();
+    return data?.data?.order || data;
   } catch {
     return null;
   }
@@ -30,6 +37,7 @@ export async function createOrderAction(orderData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/orders", orderData);
+    revalidateTag("orders");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -45,6 +53,7 @@ export async function cancelOrderAction(orderId, reason) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.patch(`/api/orders/${orderId}/cancel`, { reason });
+    revalidateTag("orders");
     return { success: true };
   } catch (error) {
     return {
@@ -59,6 +68,8 @@ export async function verifyPaymentAction(orderId, sessionId) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.post(`/api/orders/${orderId}/verify-payment`, { sessionId });
+    revalidateTag("orders");
+    revalidateTag("order-detail");
     return { success: true };
   } catch (error) {
     return {

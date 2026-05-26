@@ -123,7 +123,7 @@ export function Cart({
     <div className="min-h-screen bg-background">
       <div className="container py-6 pb-28 lg:py-10 lg:pb-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("myCart")}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("myCart")}</span>
           <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">{t("pageTitle")}</h1>
         </div>
 

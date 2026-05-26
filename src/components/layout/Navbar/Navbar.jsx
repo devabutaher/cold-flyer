@@ -41,7 +41,7 @@ function CartIcon() {
             exit={{ scale: 0 }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
           >
-            <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-[10px] leading-none">
+            <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-xxs leading-none">
               {itemCount > 99 ? "99+" : itemCount}
             </Badge>
           </motion.div>

@@ -10,6 +10,9 @@
     "servicesLoadFailed": "Failed to load services",
     "retry": "Try Again",
     "goHome": "Go Home",
-    "goBack": "Go Back"
+    "goBack": "Go Back",
+    "dashboardError": "Dashboard error",
+    "unexpectedError": "An unexpected error occurred in the dashboard",
+    "tryAgain": "Try again"
   }
 }

@@ -1,7 +1,7 @@
-"use client";
-
 import ProtectedRoute from "@/components/auth/protected-routes";
-import LocationPageComponent from "@/components/dashboard/location/location-page";
+import dynamic from "next/dynamic";
+
+const LocationPageComponent = dynamic(() => import("@/components/dashboard/location/location-page"));
 
 export default function LocationPage() {
   return (

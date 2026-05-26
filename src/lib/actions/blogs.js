@@ -1,12 +1,12 @@
 "use server";
 
-import { createServerClient } from "@/lib/http-client";
+import { revalidateTag } from "next/cache";
+import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 import { cookies } from "next/headers";
 
 export async function getBlogsServer(params) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
     const query = new URLSearchParams();
     if (params?.q) query.set("search", String(params.q));
     if (params?.category) query.set("category", String(params.category));
@@ -15,8 +15,12 @@ export async function getBlogsServer(params) {
     if (params?.page) query.set("page", String(params.page));
     if (params?.limit) query.set("limit", String(params.limit));
     const qs = query.toString();
-    const res = await client.get(`/api/blogs${qs ? `?${qs}` : ""}`);
-    return res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/blogs${qs ? `?${qs}` : ""}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["blogs"] },
+    });
+    const data = await res.json();
+    return data;
   } catch {
     return { data: { blogs: [] } };
   }
@@ -25,9 +29,12 @@ export async function getBlogsServer(params) {
 export async function getBlogBySlugServer(slug) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get(`/api/blogs/slug/${slug}`);
-    return res.data?.data?.blog || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/blogs/slug/${slug}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["blogs", "blog-detail"] },
+    });
+    const data = await res.json();
+    return data?.data?.blog || data;
   } catch {
     return null;
   }
@@ -38,6 +45,7 @@ export async function createBlogAction(blogData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/blogs", blogData);
+    revalidateTag("blogs");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -53,6 +61,8 @@ export async function updateBlogAction(id, blogData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/blogs/${id}`, blogData);
+    revalidateTag("blogs");
+    revalidateTag("blog-detail");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -68,6 +78,8 @@ export async function deleteBlogAction(id) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/blogs/${id}`);
+    revalidateTag("blogs");
+    revalidateTag("blog-detail");
     return { success: true };
   } catch (error) {
     return {

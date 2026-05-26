@@ -1,7 +1,7 @@
-"use client";
-
 import ProtectedRoute from "@/components/auth/protected-routes";
-import MessagesPageComponent from "@/components/dashboard/messages/messages-page";
+import dynamic from "next/dynamic";
+
+const MessagesPageComponent = dynamic(() => import("@/components/dashboard/messages/messages-page"));
 
 export default function MessagesPage() {
   return (

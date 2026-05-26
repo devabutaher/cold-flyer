@@ -1,7 +1,7 @@
-"use client";
-
 import ProtectedRoute from "@/components/auth/protected-routes";
-import ReportingPageComponent from "@/components/dashboard/reporting/reporting-page";
+import dynamic from "next/dynamic";
+
+const ReportingPageComponent = dynamic(() => import("@/components/dashboard/reporting/reporting-page"));
 
 export default function ReportingPage() {
   return (

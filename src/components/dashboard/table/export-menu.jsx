@@ -103,7 +103,7 @@ export function ExportMenu({ table, filename = "export", mapRow = identity, pdfT
         <Button variant="outline" size="sm" className="h-9 gap-2" disabled={isLoading}>
           {isLoading ? <Loader2 size={14} className="animate-spin" /> : <DownloadIcon size={14} />}
           Export
-          {selectedCount > 0 && <Badge className="ml-0.5 h-4 min-w-4 px-1 text-[10px]">{selectedCount}</Badge>}
+          {selectedCount > 0 && <Badge className="ml-0.5 h-4 min-w-4 px-1 text-xxs">{selectedCount}</Badge>}
         </Button>
       </DropdownMenuTrigger>
 

@@ -29,7 +29,7 @@ function LocationWorkerCard({ worker }) {
             />
             <CardTitle className="text-sm font-semibold">{worker.workerName}</CardTitle>
           </div>
-          <Badge variant={isOnline ? "default" : "secondary"} className="text-[10px]">
+          <Badge variant={isOnline ? "default" : "secondary"} className="text-xxs">
             {isOnline ? "Online" : "Offline"}
           </Badge>
         </div>

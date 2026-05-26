@@ -81,7 +81,7 @@ export function StatusBadge({ value, map = {} }) {
   };
   if (!value) return <span className="text-muted-foreground text-xs">—</span>;
   return (
-    <Badge className={cn("border-none text-[10px] font-semibold tracking-wide", cfg.className)}>
+    <Badge className={cn("border-none text-xxs font-semibold tracking-wide", cfg.className)}>
       {cfg.label ?? value}
     </Badge>
   );

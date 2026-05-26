@@ -318,7 +318,7 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                         className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
                       >
                         <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
-                          {selected && <span className="text-[9px]">✓</span>}
+                          {selected && <span className="text-xxxs">✓</span>}
                         </div>
                         {cat}
                       </button>
@@ -342,7 +342,7 @@ export function CouponFormDialog({ mode = "create", coupon, open: controlledOpen
                         className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs text-left transition-colors ${selected ? "border-primary bg-primary/10 text-primary" : "border-input hover:border-primary/30"}`}
                       >
                         <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input"}`}>
-                          {selected && <span className="text-[9px]">✓</span>}
+                          {selected && <span className="text-xxxs">✓</span>}
                         </div>
                         {brand}
                       </button>

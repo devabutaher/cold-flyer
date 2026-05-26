@@ -35,7 +35,7 @@ function WorkCard({ work }) {
         </div>
       </Link>
       <div className="p-5">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{category}</span>
+        <span className="text-xxs font-bold uppercase tracking-widest text-primary">{category}</span>
         <Link href={`/recent-works/${work.slug}`}>
           <h3 className="font-sans font-bold text-foreground text-base mt-1 mb-3 leading-snug group-hover:text-primary transition-colors">
             {work.title}
@@ -76,7 +76,7 @@ export default function RecentWorks() {
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Our Portfolio</span>
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">Our Portfolio</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">Recent Works.</h2>
           </div>
           <Link

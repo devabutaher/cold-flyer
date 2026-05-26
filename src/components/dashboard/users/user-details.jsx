@@ -149,7 +149,7 @@ export function UserDetails({ userId }) {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium">{addr.label || "Address"}</span>
                         {addr.isDefault && (
-                          <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600">
+                          <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xxs font-medium text-green-600">
                             Default
                           </span>
                         )}

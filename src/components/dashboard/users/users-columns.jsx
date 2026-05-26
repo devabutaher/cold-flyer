@@ -66,7 +66,7 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
               </SelectContent>
             </Select>
             {isTechnician && (
-              <div className="flex items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+              <div className="flex items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-xxs font-medium text-primary">
                 Technician
               </div>
             )}

@@ -108,7 +108,7 @@ export default async function RootLayout({ children }) {
       <head>
         <link rel="canonical" href="https://coldflyer.com" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#d4600a" />
+        <meta name="theme-color" content="#d4600a" />{/* TODO: replace with CSS variable when supported */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Cold Flyer" />
@@ -116,7 +116,7 @@ export default async function RootLayout({ children }) {
         <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body
-        className={`${fontHeading.variable} ${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} ${fontBengali.variable} antialiased`}
+        className={`${fontHeading.variable} ${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} ${fontBengali.variable} antialiased overflow-x-hidden`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>

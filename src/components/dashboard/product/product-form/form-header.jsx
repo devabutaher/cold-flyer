@@ -30,7 +30,7 @@ export function FormHeader({ completedSections = 0, title }) {
             <li key={step.id} className="flex items-center gap-1">
               <span
                 className={cn(
-                  "flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
+                  "flex h-5 w-5 items-center justify-center rounded-full text-xxs font-medium transition-colors",
                   done && "bg-primary text-primary-foreground",
                   active && "border-2 border-primary text-primary",
                   !done && !active && "border border-border text-muted-foreground",

@@ -1,4 +1,3 @@
-"use client";
 
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -17,11 +16,11 @@ import {
   Wrench,
 } from "lucide-react";
 import { getData } from "@/data";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
-export default function FAQPage() {
-  const locale = useLocale();
-  const t = useTranslations("faq");
+export default async function FAQPage() {
+  const locale = await getLocale();
+  const t = await getTranslations("faq");
   const categories = getData("categories", locale);
   const contactInfo = getData("contactInfo", locale);
   return (
@@ -122,7 +121,7 @@ export default function FAQPage() {
       <section className="py-28 bg-secondary/40">
         <div className="container">
           <div className="text-center mb-20">
-            <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+            <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
               {t("comprehensiveAnswers")}
             </span>
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{t("browseCategory")}</h2>
@@ -165,7 +164,7 @@ export default function FAQPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 {t("contactInfo.title")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">

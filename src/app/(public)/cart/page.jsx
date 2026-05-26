@@ -354,7 +354,7 @@ function CartContent() {
                         <span className="text-sm font-bold text-foreground truncate">{label}</span>
                         <span className="text-xs font-mono text-muted-foreground">{c.code}</span>
                         {c.minOrderValue > 0 && (
-                          <span className="text-[10px] text-muted-foreground/60 hidden sm:inline">
+                          <span className="text-xxs text-muted-foreground/60 hidden sm:inline">
                             Min ৳{c.minOrderValue.toLocaleString()}
                           </span>
                         )}
@@ -362,10 +362,10 @@ function CartContent() {
                       {(scopeLabel || c.firstOrderOnly) && (
                         <div className="flex items-center gap-1.5 mt-0.5 ml-5">
                           {scopeLabel && (
-                            <span className="text-[9px] uppercase tracking-wider text-muted-foreground/50">{scopeLabel} only</span>
+                            <span className="text-xxxs uppercase tracking-wider text-muted-foreground/50">{scopeLabel} only</span>
                           )}
                           {c.firstOrderOnly && (
-                            <span className="text-[9px] uppercase tracking-wider text-green-600/70">First order</span>
+                            <span className="text-xxxs uppercase tracking-wider text-green-600/70">First order</span>
                           )}
                         </div>
                       )}
@@ -382,7 +382,7 @@ function CartContent() {
                         {ct("applyCoupon")}
                       </Button>
                     ) : (
-                      <span className="text-[10px] text-muted-foreground/50 shrink-0">{ct("notEligible")}</span>
+                      <span className="text-xxs text-muted-foreground/50 shrink-0">{ct("notEligible")}</span>
                     )}
                   </div>
                 );
@@ -443,7 +443,7 @@ export default function CartPage() {
     <div className="min-h-screen bg-background">
       <div className="container py-10">
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
           <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl md:text-4xl">{t("pageHeading")}</h1>
         </div>
 

@@ -63,7 +63,7 @@ export default function Contact() {
     <AnimatedSection className="bg-muted py-10 sm:py-16" id="contact">
       <div className="container">
         <div className="mb-6">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("contactSectionTitle")}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("contactSectionTitle")}</span>
           <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
             {t("contactHeading")}
           </h2>

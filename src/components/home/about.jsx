@@ -41,7 +41,7 @@ export default function About() {
             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
           </div>
           <div className="order-1 md:order-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("whyChooseUs")}</span>
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("whyChooseUs")}</span>
             <h2 className="font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl text-foreground leading-tight mt-2 mb-6">
               Engineering Comfort with <span className="text-primary">Uncompromising Precision.</span>
             </h2>

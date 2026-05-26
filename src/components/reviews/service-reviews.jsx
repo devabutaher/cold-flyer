@@ -69,7 +69,7 @@ export function ServiceReviews({ serviceId }) {
               </div>
             </div>
             {review.comment && <p className="text-sm text-muted-foreground pl-9">{review.comment}</p>}
-            <p className="text-[10px] text-muted-foreground pl-9 mt-1">
+            <p className="text-xxs text-muted-foreground pl-9 mt-1">
               {formatDate(review.createdAt, locale, {
                 month: "short",
                 day: "numeric",

@@ -12,7 +12,7 @@ export default function BrandsStrip() {
 
   return (
     <AnimatedSection className="py-10 bg-background border-y border-border" variant="fadeIn">
-      <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-6">
+      <p className="text-center text-xxs uppercase tracking-widest text-muted-foreground font-bold mb-6">
         {t("trustedByLeaders")}
       </p>
       <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">

@@ -21,7 +21,7 @@ function PortfolioItem({ project, isLarge = false }) {
       </div>
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
       <div className={`absolute ${isLarge ? "bottom-5 left-5" : "bottom-4 left-4"}`}>
-        <span className="text-primary text-[10px] font-bold uppercase tracking-widest">
+        <span className="text-primary text-xxs font-bold uppercase tracking-widest">
           {project.cat}
         </span>
         <h3 className="text-white font-sans font-bold text-lg">{project.title}</h3>
@@ -43,7 +43,7 @@ export default function Portfolio() {
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("precisionPortfolio")}</span>
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("precisionPortfolio")}</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               {t("recent")} <span className="text-primary">{t("works")}</span>
             </h2>

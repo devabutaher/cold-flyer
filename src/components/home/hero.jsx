@@ -35,7 +35,7 @@ function SlideContent({ slide, index, t }) {
           },
         }}
       >
-        <Badge className="mb-3 sm:mb-4 md:mb-5 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm text-[10px] sm:text-xs">
+        <Badge className="mb-3 sm:mb-4 md:mb-5 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm text-xxs sm:text-xs">
           {slide.badge}
         </Badge>
       </motion.div>

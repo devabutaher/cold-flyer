@@ -36,12 +36,44 @@ const INITIAL_FORM = {
   amount: "",
 };
 
+function getInitialForm(mode, customer) {
+  if (mode === "edit" && customer) {
+    return {
+      name: customer.name || "",
+      phone: customer.phone || "",
+      email: customer.email || "",
+      company: customer.company || "",
+      address: customer.address || "",
+      brand: customer.brand || "",
+      model: customer.model || "",
+      unit: customer.unit || "",
+      installDate: customer.installDate ? customer.installDate.slice(0, 10) : "",
+      service: customer.service || "",
+      amount: customer.amount?.toString() || "",
+    };
+  }
+  return INITIAL_FORM;
+}
+
+function useDialogForm(mode, entity, initialFn) {
+  const [formKey, setFormKey] = useState(0);
+  const prevOpen = useState(false);
+  const [form, setForm] = useState(() => initialFn(mode, entity));
+
+  if (prevOpen[0] !== formKey) {
+    // Track open state change via formKey
+  }
+
+  return [form, setForm, formKey, setFormKey];
+}
+
 export function CustomerFormDialog({ mode = "create", customer, open, onOpenChange, onSuccess }) {
   const [form, setForm] = useState(INITIAL_FORM);
 
   useEffect(() => {
-    if (mode === "edit" && customer) {
-      setForm({
+    if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setForm(mode === "edit" && customer ? {
         name: customer.name || "",
         phone: customer.phone || "",
         email: customer.email || "",
@@ -53,9 +85,7 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
         installDate: customer.installDate ? customer.installDate.slice(0, 10) : "",
         service: customer.service || "",
         amount: customer.amount?.toString() || "",
-      });
-    } else {
-      setForm(INITIAL_FORM);
+      } : INITIAL_FORM);
     }
   }, [mode, customer, open]);
 

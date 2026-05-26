@@ -96,7 +96,7 @@ export default function AuthPage() {
                 className="space-y-4"
               >
                 <div>
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
+                  <label className="text-xxs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                     {t("emailLabel")}
                   </label>
                   <div className="relative">
@@ -225,7 +225,7 @@ export default function AuthPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {!isSignIn && (
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
+                <label className="text-xxs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                   {t("name")}
                 </label>
                 <Input
@@ -239,7 +239,7 @@ export default function AuthPage() {
 
             {!isSignIn && (
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
+                <label className="text-xxs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                   {t("phone")} (<span className="font-medium">{t("phoneOptional")}</span>)
                 </label>
                 <Input
@@ -253,7 +253,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
+              <label className="text-xxs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                 {t("emailLabel")}
               </label>
               <Input
@@ -267,14 +267,14 @@ export default function AuthPage() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                <label className="text-xxs font-bold uppercase tracking-widest text-muted-foreground">
                   {t("password")}
                 </label>
                 {isSignIn && (
                   <button
                     type="button"
                     onClick={() => setForgotPasswordMode(true)}
-                    className="text-[10px] font-bold uppercase tracking-widest text-primary/80 hover:text-primary transition-colors"
+                    className="text-xxs font-bold uppercase tracking-widest text-primary/80 hover:text-primary transition-colors"
                   >
                     {t("forgotPassword")}
                   </button>
@@ -317,7 +317,7 @@ export default function AuthPage() {
 
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-border" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            <span className="text-xxs font-bold uppercase tracking-widest text-muted-foreground">
               {t("orContinueWith")}
             </span>
             <div className="flex-1 h-px bg-border" />

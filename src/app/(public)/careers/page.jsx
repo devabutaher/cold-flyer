@@ -174,7 +174,7 @@ export default function CareersPage() {
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
-              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 What We Offer
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
@@ -281,7 +281,7 @@ export default function CareersPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 How It Works
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">

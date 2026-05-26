@@ -37,7 +37,7 @@ function BlogCard({ blog, t }) {
         </div>
       </Link>
       <div className="p-5">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{category}</span>
+        <span className="text-xxs font-bold uppercase tracking-widest text-primary">{category}</span>
         <Link href={`/blog/${blogSlug}`}>
           <h3 className="font-sans font-bold text-foreground text-base mt-1 mb-3 leading-snug group-hover:text-primary transition-colors">
             {blog.title}
@@ -79,7 +79,7 @@ export default function Blogs() {
       <div className="container">
         <div className="flex items-end justify-between mb-8">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("latestInsights")}</span>
+            <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("latestInsights")}</span>
             <h2 className="font-sans font-extrabold text-2xl md:text-3xl text-foreground mt-1">
               {t("blogTitle")}
             </h2>

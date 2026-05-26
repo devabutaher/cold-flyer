@@ -1,11 +1,11 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/components/providers";
 import { StatsCards } from "@/components/dashboard/stats/stats-cards";
 import { RecentOrders, TopProducts } from "@/components/dashboard/stats/dashboard-cards";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getClient } from "@/lib/http-client";
-import { useAuth } from "@/components/providers";
 
 export default function DashboardClient() {
   const { backendUser } = useAuth();

@@ -225,7 +225,7 @@ export function CheckoutPage({ orderId }) {
         </div>
 
         <div className="mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary">{t("pageTitle")}</span>
           <h1 className="mt-1 text-2xl font-extrabold text-foreground sm:text-3xl">
             {t("orderNumber", { number: order.orderNumber })}
           </h1>

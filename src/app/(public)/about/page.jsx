@@ -1,11 +1,10 @@
-"use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { AnimatedDiv } from "@/components/ui/animated-div";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
 const values = [
@@ -89,7 +88,7 @@ function ValueCard({ value, index }) {
   const isForegroundHover = value.hover === "bg-foreground";
 
   return (
-    <motion.div
+    <AnimatedDiv
       className={`group rounded-xl bg-card p-10 transition-all duration-500 ${value.wide ? "md:col-span-2" : ""} ${
         isPrimaryHover ? "hover:bg-primary" : isForegroundHover ? "hover:bg-foreground" : "hover:shadow-lg"
       }`}
@@ -152,13 +151,13 @@ function ValueCard({ value, index }) {
           </p>
         </>
       )}
-    </motion.div>
+    </AnimatedDiv>
   );
 }
 
 function TeamCard({ member, index }) {
   return (
-    <motion.div
+    <AnimatedDiv
       className="group"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -176,14 +175,14 @@ function TeamCard({ member, index }) {
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
       <h4 className="font-sans font-extrabold text-xl text-foreground">{member.name}</h4>
-      <p className="text-primary font-extrabold uppercase tracking-widest text-[10px] mt-0.5">{member.role}</p>
-    </motion.div>
+      <p className="text-primary font-extrabold uppercase tracking-widest text-xxs mt-0.5">{member.role}</p>
+    </AnimatedDiv>
   );
 }
 
 function StatItem({ stat, index }) {
   return (
-    <motion.div
+    <AnimatedDiv
       className="p-7 border-l-2 border-primary bg-background/5"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -192,12 +191,12 @@ function StatItem({ stat, index }) {
     >
       <div className="font-sans font-extrabold text-4xl mb-1.5">{stat.value}</div>
       <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">{stat.label}</div>
-    </motion.div>
+    </AnimatedDiv>
   );
 }
 
-export default function AboutPage() {
-  const t = useTranslations("about");
+export default async function AboutPage() {
+  const t = await getTranslations("about");
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -213,27 +212,27 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
                 {t("heroBadge")}
               </Badge>
-            </motion.div>
-            <motion.h1
+            </AnimatedDiv>
+            <AnimatedDiv as="h1"
               className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               {t.rich("heroTitle", {br: () => <br/>, primary: (chunks) => <span className="text-primary">{chunks}</span>})}
-            </motion.h1>
-            <motion.p
+            </AnimatedDiv>
+            <AnimatedDiv as="p"
               className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {t("heroSub")}
-            </motion.p>
+            </AnimatedDiv>
           </div>
         </div>
       </AnimatedSection>
@@ -248,7 +247,7 @@ export default function AboutPage() {
                   {t("storyTitle")}
                 </h2>
               </div>
-              <motion.div
+              <AnimatedDiv
                 className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -259,7 +258,7 @@ export default function AboutPage() {
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
                   {t("storyYears")}
                 </div>
-              </motion.div>
+              </AnimatedDiv>
               <Button size="lg" className="gap-2">
                 {t("storyButton")} <ArrowRight size={16} />
               </Button>
@@ -300,7 +299,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
-              <span className="mb-3 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-primary">
+              <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
                 {t("valuesLabel")}
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
@@ -339,7 +338,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
+              <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
                 {t("statsLabel")}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
@@ -351,7 +350,7 @@ export default function AboutPage() {
                 ))}
               </div>
             </div>
-            <motion.div
+            <AnimatedDiv
               className="relative group"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -368,7 +367,7 @@ export default function AboutPage() {
                   className="object-cover opacity-80"
                 />
               </div>
-            </motion.div>
+            </AnimatedDiv>
           </div>
         </div>
       </AnimatedSection>

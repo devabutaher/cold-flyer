@@ -1,13 +1,15 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { createServerClient } from "@/lib/http-client";
+import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 
 export async function updateProfileAction(data) {
   try {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch("/api/users/profile", data);
+    revalidateTag("user-profile");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -20,9 +22,12 @@ export async function updateProfileAction(data) {
 export async function getAddressesAction() {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get("/api/users/addresses");
-    return { success: true, addresses: res.data?.data?.addresses || [] };
+    const res = await fetch(`${API_BACKEND_URL}/api/users/addresses`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["user-profile"] },
+    });
+    const data = await res.json();
+    return { success: true, addresses: data?.data?.addresses || [] };
   } catch {
     return { success: false, addresses: [] };
   }
@@ -33,6 +38,7 @@ export async function addAddressAction(data) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/users/addresses", data);
+    revalidateTag("user-profile");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -47,6 +53,7 @@ export async function updateAddressAction(id, data) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/users/addresses/${id}`, data);
+    revalidateTag("user-profile");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -61,6 +68,7 @@ export async function deleteAddressAction(id) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/users/addresses/${id}`);
+    revalidateTag("user-profile");
     return { success: true };
   } catch (error) {
     return {
@@ -75,6 +83,7 @@ export async function setDefaultAddressAction(id) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/users/default-address/${id}`);
+    revalidateTag("user-profile");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -103,6 +112,7 @@ export async function verifyEmailAction(code) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/auth/verify-email", { code });
+    revalidateTag("user-profile");
     return { success: true, message: res.data?.message || "Email verified" };
   } catch (error) {
     return {

@@ -1,14 +1,13 @@
-"use client";
 
 import { Badge } from "@/components/ui/badge";
 import { getData } from "@/data";
 import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-export default function TermsPage() {
-  const locale = useLocale();
-  const t = useTranslations("terms");
+export default async function TermsPage() {
+  const locale = await getLocale();
+  const t = await getTranslations("terms");
   const { sections, lastUpdated, version } = {
     sections: getData("sections", locale),
     lastUpdated: getData("lastUpdated", locale),

@@ -1,12 +1,12 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { createServerClient } from "@/lib/http-client";
+import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 
 export async function getProductsServer(params) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
     const query = new URLSearchParams();
     if (params?.q) query.set("search", String(params.q));
     if (params?.category && params.category !== "All Categories") query.set("category", String(params.category));
@@ -16,8 +16,12 @@ export async function getProductsServer(params) {
     if (params?.page) query.set("page", String(params.page));
     if (params?.limit) query.set("limit", String(params.limit));
     const qs = query.toString();
-    const res = await client.get(`/api/products${qs ? `?${qs}` : ""}`);
-    return res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/products${qs ? `?${qs}` : ""}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["products"] },
+    });
+    const data = await res.json();
+    return data;
   } catch {
     return { data: { products: [] } };
   }
@@ -26,9 +30,12 @@ export async function getProductsServer(params) {
 export async function getProductBySlugServer(slug) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get(`/api/products/slug/${slug}`);
-    return res.data?.data?.product || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/products/slug/${slug}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["products", "product-detail"] },
+    });
+    const data = await res.json();
+    return data?.data?.product || data;
   } catch {
     return null;
   }
@@ -37,9 +44,12 @@ export async function getProductBySlugServer(slug) {
 export async function getProductByIdServer(id) {
   try {
     const cookieStore = await cookies();
-    const client = createServerClient(cookieStore);
-    const res = await client.get(`/api/products/${id}`);
-    return res.data?.data?.product || res.data;
+    const res = await fetch(`${API_BACKEND_URL}/api/products/${id}`, {
+      headers: getServerFetchHeaders(cookieStore),
+      next: { tags: ["products"] },
+    });
+    const data = await res.json();
+    return data?.data?.product || data;
   } catch {
     return null;
   }
@@ -50,6 +60,7 @@ export async function createProductAction(productData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/products", productData);
+    revalidateTag("products");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -65,6 +76,8 @@ export async function updateProductAction(id, productData) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/products/${id}`, productData);
+    revalidateTag("products");
+    revalidateTag("product-detail");
     return { success: true, data: res.data };
   } catch (error) {
     return {
@@ -80,6 +93,7 @@ export async function deleteProductAction(id) {
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/products/${id}`);
+    revalidateTag("products");
     return { success: true };
   } catch (error) {
     return {
@@ -88,5 +102,3 @@ export async function deleteProductAction(id) {
     };
   }
 }
-
-
