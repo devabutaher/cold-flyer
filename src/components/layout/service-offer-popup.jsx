@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Snowflake, CheckCircle2, ArrowRight, Phone } from "lucide-react";
+import { Snowflake, ArrowRight, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -13,18 +13,10 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
-const PHONE_NUMBER = "09612-345678";
 const STORAGE_KEY = "service-offer-dismissed";
-const DISMISS_DAYS = 7;
-const SHOW_DELAY_MS = 10000;
-
-const OFFERS = [
-  { key: "1", icon: CheckCircle2 },
-  { key: "2", icon: CheckCircle2 },
-  { key: "3", icon: CheckCircle2 },
-];
+const DISMISS_DAYS = 1;
+const SHOW_DELAY_MS = 30000;
 
 export function ServiceOfferPopup() {
   const t = useTranslations("common");
@@ -51,53 +43,30 @@ export function ServiceOfferPopup() {
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) handleDismiss(); setOpen(o); }}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-sm">
         <DialogHeader className="items-center text-center sm:text-center">
-          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-            <Snowflake size={28} className="text-primary" />
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <Snowflake size={24} className="text-primary" />
           </div>
-          <DialogTitle className="text-xl">{t("serviceOfferTitle")}</DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogTitle className="text-lg">{t("serviceOfferTitle")}</DialogTitle>
+          <DialogDescription>
             {t("serviceOfferSubtitle")}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-3 py-2">
-          {OFFERS.map((offer) => (
-            <div
-              key={offer.key}
-              className="flex items-start gap-3 rounded-lg border border-border bg-muted/50 p-3"
-            >
-              <offer.icon
-                size={20}
-                className="mt-0.5 shrink-0 text-primary"
-              />
-              <div>
-                <p className="text-sm font-semibold">
-                  {t(`serviceOffer${offer.key}Title`)}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {t(`serviceOffer${offer.key}Desc`)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <p className="text-center text-xs text-muted-foreground">
-          {t("serviceOfferTrust")}
-        </p>
-
-        <Link href="/services" onClick={handleDismiss}>
-          <Button size="lg" className="w-full gap-2">
-            {t("bookService")}
-            <ArrowRight size={16} />
-          </Button>
-        </Link>
-
-        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <Phone size={14} />
-          <span>{t("orCallUs", { number: PHONE_NUMBER })}</span>
+        <div className="flex gap-3 pt-1">
+          <Link href="/services" onClick={handleDismiss} className="flex-1">
+            <Button size="lg" className="w-full gap-2">
+              {t("bookService")}
+              <ArrowRight size={16} />
+            </Button>
+          </Link>
+          <Link href="/contact" onClick={handleDismiss} className="flex-1">
+            <Button size="lg" variant="outline" className="w-full gap-2">
+              <Phone size={16} />
+              {t("contactUs")}
+            </Button>
+          </Link>
         </div>
       </DialogContent>
     </Dialog>

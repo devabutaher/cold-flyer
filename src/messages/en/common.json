@@ -150,16 +150,9 @@
     "activeOffers": "Active Offers",
     "callUs": "Call Us",
     "chatOnWhatsApp": "Chat on WhatsApp",
-    "serviceOfferTitle": "Beat the Heat This Summer",
-    "serviceOfferSubtitle": "Pre-Season AC Service Offers",
-    "serviceOffer1Title": "Free AC Checkup",
-    "serviceOffer1Desc": "For first-time customers. Comprehensive system inspection.",
-    "serviceOffer2Title": "Up to 25% OFF Installation",
-    "serviceOffer2Desc": "On all premium AC units. Limited pre-season pricing.",
-    "serviceOffer3Title": "20% Off Maintenance",
-    "serviceOffer3Desc": "First annual service plan. Book before the rush.",
-    "serviceOfferTrust": "Certified Technicians • 15k+ Units • 10-Year Warranty",
+    "serviceOfferTitle": "Need AC Service?",
+    "serviceOfferSubtitle": "Expert AC repair, installation and maintenance.",
     "bookService": "Book a Service",
-    "orCallUs": "Or call us: {number}"
+    "contactUs": "Contact Us"
   }
 }

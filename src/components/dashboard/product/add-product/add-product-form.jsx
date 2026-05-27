@@ -10,7 +10,6 @@ import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
 import {
   BasicInfoSection,
   FeaturesSection,
@@ -35,8 +34,7 @@ function useCompletedSections(control) {
 }
 
 export default function AddProductForm({ isAdmin = false }) {
-  const locale = useLocale();
-  const DEFAULT_FORM_VALUES = getData("DEFAULT_FORM_VALUES", locale);
+  const DEFAULT_FORM_VALUES = getData("DEFAULT_FORM_VALUES", "en");
   const initialValues = {
     ...DEFAULT_FORM_VALUES,
     name: "",

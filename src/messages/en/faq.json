@@ -22,14 +22,23 @@
       "returnsWarranty": "Returns & Warranty",
       "accountSupport": "Account & Support"
     },
+    "comprehensiveAnswers": "Comprehensive Answers",
+    "browseCategory": "Browse by Category",
+    "cantFind": "Can't find what you're looking for?",
+    "contactTeam": "Contact our team",
     "contactInfo": {
       "title": "Still Have Questions?",
       "sub": "Our support team is ready to help you.",
+      "supportDesc": "Our dedicated support team is here to help you with any questions or concerns.",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "hoursLabel": "Hours",
       "email": "support@coldflyer.com",
       "phone": "09612-345678",
       "hours": "Sat-Thu, 9AM-8PM",
       "cta": "Contact Us"
     },
+    "ctaDesc": "Browse our catalog or get a personalized quote today.",
     "questions": [
       {
         "q": "What types of AC systems do you offer?",

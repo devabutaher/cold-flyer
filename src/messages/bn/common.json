@@ -152,16 +152,9 @@
     "activeOffers": "সক্রিয় অফার",
     "callUs": "কল করুন",
     "chatOnWhatsApp": "হোয়াটসঅ্যাপে চ্যাট করুন",
-    "serviceOfferTitle": "এই গ্রীষ্মে শীতল থাকুন",
-    "serviceOfferSubtitle": "প্রি-সিজন এসি সার্ভিস অফার",
-    "serviceOffer1Title": "ফ্রি এসি চেকআপ",
-    "serviceOffer1Desc": "প্রথমবার গ্রাহকদের জন্য। সম্পূর্ণ সিস্টেম পরিদর্শন।",
-    "serviceOffer2Title": "ইনস্টলেশনে ২৫% পর্যন্ত ছাড়",
-    "serviceOffer2Desc": "সব প্রিমিয়াম এসি ইউনিটে। সীমিত প্রি-সিজন মূল্য।",
-    "serviceOffer3Title": "মেইনটেন্যান্সে ২০% ছাড়",
-    "serviceOffer3Desc": "প্রথম বার্ষিক সার্ভিস প্ল্যান। ভিড়ের আগে বুক করুন।",
-    "serviceOfferTrust": "সার্টিফাইড টেকনিশিয়ান • ১৫হাজার+ ইউনিট • ১০ বছর ওয়ারেন্টি",
+    "serviceOfferTitle": "এসি সার্ভিস প্রয়োজন?",
+    "serviceOfferSubtitle": "বিশেষজ্ঞ এসি মেরামত, ইনস্টলেশন ও রক্ষণাবেক্ষণ।",
     "bookService": "একটি সেবা বুক করুন",
-    "orCallUs": "অথবা কল করুন: {number}"
+    "contactUs": "যোগাযোগ করুন"
   }
 }

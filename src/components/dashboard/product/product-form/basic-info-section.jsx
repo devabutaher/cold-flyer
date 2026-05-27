@@ -7,17 +7,15 @@ import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getData } from "@/data";
-import { useLocale } from "next-intl";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
 
 export function BasicInfoSection({ control }) {
-  const locale = useLocale();
-  const BRANDS = getData("BRANDS", locale);
-  const CATEGORIES = getData("CATEGORIES", locale);
-  const TAGS = getData("TAGS", locale);
-  const WARRANTIES = getData("WARRANTIES", locale);
+  const BRANDS = getData("BRANDS", "en");
+  const CATEGORIES = getData("CATEGORIES", "en");
+  const TAGS = getData("TAGS", "en");
+  const WARRANTIES = getData("WARRANTIES", "en");
   return (
     <Card>
       <CardHeader>

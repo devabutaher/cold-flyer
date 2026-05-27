@@ -1,9 +1,9 @@
-import { Providers } from "@/components/providers";
+import { NextIntlProvider, Providers } from "@/components/providers";
+import Script from "next/script";
 import "./globals.css";
 
-import { DM_Sans, Outfit, Lora, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { DM_Sans, Geist_Mono, Lora, Noto_Sans_Bengali, Outfit } from "next/font/google";
 
 const fontHeading = DM_Sans({
   subsets: ["latin"],
@@ -76,7 +76,7 @@ export async function generateMetadata() {
     openGraph: {
       type: "website",
       locale: locale === "bn" ? "bn_BD" : "en_BD",
-      url: "https://coldflyer.com",
+      url: "https://coldflyer.vercel.app",
       siteName,
       title:
         locale === "bn"
@@ -122,7 +122,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale === "bn" ? "bn-BD" : "en-BD"} dir="ltr" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://coldflyer.com" />
+        <link rel="canonical" href="https://coldflyer.vercel.app" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#d4600a" />
         {/* TODO: replace with CSS variable when supported */}
@@ -135,9 +135,25 @@ export default async function RootLayout({ children }) {
       <body
         className={`${fontHeading.variable} ${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} ${fontBengali.variable} antialiased overflow-x-hidden`}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
-        </NextIntlClientProvider>
+        </NextIntlProvider>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

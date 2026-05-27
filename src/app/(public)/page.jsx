@@ -7,7 +7,6 @@ import Services from "@/components/home/services";
 import StatsStrip from "@/components/home/stats-strip";
 import dynamic from "next/dynamic";
 
-const Portfolio = dynamic(() => import("@/components/home/portfolio"));
 const Testimonials = dynamic(() => import("@/components/home/testimonials"));
 const Faq = dynamic(() => import("@/components/home/faq"));
 const Contact = dynamic(() => import("@/components/home/contact"));
@@ -34,7 +33,6 @@ export default function Home() {
       <About />
       <StatsStrip />
       <BrandsStrip />
-      <Portfolio loading={<SectionSkeleton />} />
       <Testimonials loading={<SectionSkeleton />} />
       <Faq loading={<SectionSkeleton />} />
       <Contact loading={<SectionSkeleton />} />

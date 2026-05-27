@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCancelOrder, useOrdersQuery } from "@/hooks/queries/orders";
+import { useCancelOrder, useAdminOrdersQuery } from "@/hooks/queries/orders";
 import { getClient } from "@/lib/http-client";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const mapOrderRow = (o) => ({
 export default function OrdersPage() {
   const router = useRouter();
   const [payingOrderId, setPayingOrderId] = useState(null);
-  const { data: ordersData = [], isLoading: loading, refetch } = useOrdersQuery();
+  const { data: ordersData = [], isLoading: loading, refetch } = useAdminOrdersQuery();
   const cancelOrder = useCancelOrder();
   const orders = ordersData ?? [];
 

@@ -23,6 +23,17 @@ export function useOrdersQuery() {
   });
 }
 
+export function useAdminOrdersQuery(params = {}) {
+  return useQuery({
+    queryKey: [...orderKeys.all, "admin", params],
+    queryFn: async () => {
+      const res = await client().get("/admin/orders", { params });
+      return extractList(res, "orders");
+    },
+    placeholderData: (previousData) => previousData,
+  });
+}
+
 export function useOrderQuery(id) {
   return useQuery({
     queryKey: orderKeys.detail(id),

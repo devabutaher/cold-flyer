@@ -303,7 +303,7 @@ cold-flyer/
 │   ├── app/                    # Next.js App Router pages
 │   │   ├── (public)/           # Public routes
 │   │   ├── (dashboard)/        # Dashboard routes
-│   │   ├── api/[...path]/      # API proxy → backend
+│   │   ├── api/[...path]/      # API proxy → backend (forwards Set-Cookie via getSetCookie())
 │   │   ├── layout.jsx          # Root layout
 │   │   ├── globals.css         # Global styles + theme
 │   │   └── not-found.jsx       # 404 page
@@ -332,7 +332,7 @@ cold-flyer/
 │   │   ├── animation.js        # Animation presets
 │   │   └── http-client.js      # Axios client (cookies via withCredentials)
 │   ├── store/                  # Zustand stores (cart.js)
-│   └── proxy.js                # Middleware (JWT guard)
+│   └── proxy.js                # Edge proxy (Next.js 16 convention, replaces middleware.js — JWT guard + RBAC redirect)
 ├── components.json            # shadcn configuration
 ├── next.config.mjs
 ├── jsconfig.json              # @/* → ./src/*
@@ -367,6 +367,7 @@ cold-flyer/
 | `/careers` | Careers |
 | `/recent-works` | Recent works gallery |
 | `/recent-works/[slug]` | Recent work detail |
+| `/book/[serviceId]` | Public booking (no auth required — guest mode with inline address + customer info) |
 
 ### Dashboard Routes (`(dashboard)`)
 
@@ -502,6 +503,8 @@ pnpm format      # Format code with Prettier
 14. Server actions (`lib/actions/*.js`) use `revalidatePath` for cache invalidation. Do NOT convert to `revalidateTag` — the data layer uses Axios (not native `fetch()`) and tags would be no-ops.
 15. Form initialization from props in dialog components: use `useEffect` + `// eslint-disable-next-line react-hooks/set-state-in-effect` comment. This is the accepted React 19 migration pattern.
 16. TanStack Query hooks are centralized in `src/hooks/queries/` (19 files). All mutation hooks call `invalidateQueries` on success. The server action files call `revalidatePath` independently — both mechanisms work together.
+17. Auth page `src/app/(public)/auth/page.jsx` uses `force-dynamic` + `<Suspense>` boundary around `AuthPageComponent` (which calls `useSearchParams()`). This ensures the `?redirect` query param is available after login in production. Without this, statically rendered pages may not have search params at hydration time.
+18. API proxy `src/app/api/[...path]/route.js` forwards `Set-Cookie` headers using `response.headers.getSetCookie()` (Node 20+ API). This correctly handles multiple cookies, unlike `Headers.forEach()` which can mangle them. Requires Node >= 20.
 
 ## Dashboard Booking Details
 
@@ -509,7 +512,7 @@ Located at `src/components/dashboard/booking/booking-details/`:
 
 | File | Purpose |
 |------|---------|
-| `booking-details.jsx` | Main two-column layout (`lg:grid-cols-3`) — detail body + admin actions sidebar |
+| `booking-details.jsx` | Main two-column layout (`lg:grid-cols-3`) — detail body + admin actions sidebar. Shows AC Unit card (brand, model, ton, gasType, acType) + guest customer info when no user |
 | `detail-card.jsx` | Reusable Card wrapper with icon + title for field groups |
 | `booking-detail-skeleton.jsx` | Loading skeleton matching the two-column layout |
 | `booking-header.jsx` | Top section with booking status badge, title, meta info |
@@ -533,7 +536,7 @@ All dashboard tables use TanStack React Table v8 via the shared `DataTable` comp
 | **Blogs** | Title, Author (added), Category, Featured (added), Views, Created, Actions | `blog/blog-columns.jsx` |
 | **Technicians** | Name, Email, Specialization, Status, Rating, Salary, Jobs Done, Actions (NID/Blood Group/Emergency Contact removed) | `technicians/technicians-columns.jsx` |
 | **Users** | User ID (added, `MonoCell`), User, Phone, Role (technician badge, admin/user select), Status (added, `isActive` badge), Last Login (added), Joined, Actions | `users/users-columns.jsx` |
-| **Customers** | Name, Customer ID (in PDF), Phone, Brand, Model, Unit, Service, Install Date, Amount, Status, Actions | `customers/customers-table.jsx` |
+| **Customers** | Name, Customer ID (in PDF), Phone, Brand, Model, Unit, Ton (added), Gas Type (added), Service, Install Date, Amount, Bookings (added), Status, Actions | `customers/customers-table.jsx` |
 
 ### Custom UID Display
 User ID (`USR-xxxxx`) uses `MonoCell` component for monospace styling. Customer ID (`CUST-xxxxx`) shown in PDF export columns. Both fields auto-generated via `pre('save')` hooks — see BACKEND.md.

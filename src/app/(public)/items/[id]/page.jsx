@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
-import { getProductSchema, getBreadcrumbSchema } from "@/lib/seo";
-import { sanitizeForRSC } from "@/lib/utils";
 import { ProductDetailClient } from "@/components/detail/product-detail.client";
+import { getBreadcrumbSchema, getProductSchema } from "@/lib/seo";
+import { sanitizeForRSC } from "@/lib/utils";
+import { notFound } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
 
 async function fetchProduct(slug) {
   try {

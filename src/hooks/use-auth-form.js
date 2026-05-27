@@ -84,7 +84,7 @@ export function useAuthForm() {
           await googleAuth(response.credential);
           const user = await refreshUser();
           toast.success(t("signedInGoogle"));
-          router.push(searchParams.get("redirect") || (["admin", "moderator", "worker"].includes(user?.role) ? "/dashboard" : "/"));
+          router.push(searchParams.get("redirect") || "/dashboard");
         } catch (err) {
           setAuthError(err.message || t("googleSignInFailedFallback"));
         } finally {
@@ -125,7 +125,9 @@ export function useAuthForm() {
       } else {
         toast.success(t("welcomeNew"));
       }
-      router.push(searchParams.get("redirect") || (["admin", "moderator", "worker"].includes(user?.role) ? "/dashboard" : "/"));
+      router.push(
+        searchParams.get("redirect") || (["admin", "moderator", "worker"].includes(user?.role) ? "/dashboard" : "/"),
+      );
     } catch (err) {
       setAuthError(err.message);
     } finally {

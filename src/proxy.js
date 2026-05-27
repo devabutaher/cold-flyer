@@ -22,12 +22,14 @@ const roleRouteAccess = {
     "/dashboard/profile",
   ],
   worker: ["/dashboard", "/dashboard/orders", "/dashboard/bookings", "/dashboard/attendance", "/dashboard/profile"],
-  customer: ["/dashboard/orders", "/dashboard/bookings", "/dashboard/profile"],
+  customer: ["/dashboard", "/dashboard/orders", "/dashboard/bookings", "/dashboard/profile"],
 };
 
 function isPathAllowed(pathname, allowedPrefixes) {
   if (allowedPrefixes === null) return true;
-  return allowedPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(prefix + "/") || pathname.startsWith(prefix + "/"));
+  return allowedPrefixes.some(
+    (prefix) => pathname === prefix || pathname.startsWith(prefix + "/") || pathname.startsWith(prefix + "/"),
+  );
 }
 
 export async function proxy(request) {
@@ -66,7 +68,8 @@ export async function proxy(request) {
       });
       const data = await verifyRes.json();
       if (data?.data?.authenticated) {
-        return NextResponse.redirect(new URL("/", request.url));
+        const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
+        return NextResponse.redirect(new URL(redirectTo, request.url));
       }
     } catch {}
   }
@@ -77,10 +80,6 @@ export async function proxy(request) {
 
     if (isProtected) {
       const allowedPrefixes = roleRouteAccess[role];
-
-      if (!allowedPrefixes) {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
 
       if (!isPathAllowed(pathname, allowedPrefixes)) {
         return NextResponse.redirect(new URL("/", request.url));

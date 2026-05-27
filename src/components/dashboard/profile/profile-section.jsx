@@ -170,7 +170,7 @@ export function ProfileSection({ user }) {
             <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
               <Pencil className="size-3.5" />
               {t("edit")}
-            </Button>
+                    </Button>
           ) : (
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={handleCancel}>

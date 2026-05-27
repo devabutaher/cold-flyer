@@ -20,15 +20,24 @@ export function AnimatedSection({
   margin = "-60px",
   as = "section",
   id,
+  ref: externalRef,
   ...props
 }) {
-  const { ref, inView } = useInView({ once, margin });
+  const { ref: internalRef, inView } = useInView({ once, margin });
   const Component = as;
   const animClass = `animate-in-${variantMap[variant] || variant}`;
 
+  const mergedRef = (node) => {
+    internalRef.current = node;
+    if (externalRef) {
+      if (typeof externalRef === "function") externalRef(node);
+      else externalRef.current = node;
+    }
+  };
+
   return (
     <Component
-      ref={ref}
+      ref={mergedRef}
       id={id}
       className={cn(animClass, className)}
       data-in-view={inView || undefined}
