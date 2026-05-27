@@ -67,7 +67,7 @@ export function SelectWithOther({
   return (
     <div className={cn("w-full space-y-2", className)}>
       <Select
-        value={isOther ? OTHER_VALUE : (optionValues.includes(value) ? value : "")}
+        value={isOther ? OTHER_VALUE : optionValues.includes(value) ? value : ""}
         onValueChange={handleSelectChange}
         disabled={disabled}
       >
@@ -86,14 +86,7 @@ export function SelectWithOther({
           <SelectItem value={OTHER_VALUE}>{otherLabel}</SelectItem>
         </SelectContent>
       </Select>
-      {isOther && (
-        <Input
-          value={customText}
-          onChange={handleCustomInput}
-          placeholder={otherPlaceholder}
-          autoFocus
-        />
-      )}
+      {isOther && <Input value={customText} onChange={handleCustomInput} placeholder={otherPlaceholder} autoFocus />}
     </div>
   );
 }

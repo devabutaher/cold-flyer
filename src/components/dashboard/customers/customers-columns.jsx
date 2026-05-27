@@ -85,9 +85,7 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
     {
       header: "Bookings",
       accessorKey: "bookingCount",
-      cell: ({ row }) => (
-        <span className="text-sm font-mono">{row.getValue("bookingCount") ?? 0}</span>
-      ),
+      cell: ({ row }) => <span className="text-sm font-mono">{row.getValue("bookingCount") ?? 0}</span>,
     },
     {
       header: "Service",

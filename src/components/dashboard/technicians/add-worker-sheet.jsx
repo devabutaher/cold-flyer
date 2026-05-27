@@ -67,11 +67,7 @@ export function AddWorkerSheet({ open, onOpenChange }) {
         <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4">
           <div className="grid gap-2">
             <Label htmlFor="name">Name</Label>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => <Input id="name" {...field} />}
-            />
+            <Controller name="name" control={control} render={({ field }) => <Input id="name" {...field} />} />
             {errors?.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
           </div>
 
@@ -87,11 +83,7 @@ export function AddWorkerSheet({ open, onOpenChange }) {
 
           <div className="grid gap-2">
             <Label htmlFor="phone">Phone</Label>
-            <Controller
-              name="phone"
-              control={control}
-              render={({ field }) => <Input id="phone" {...field} />}
-            />
+            <Controller name="phone" control={control} render={({ field }) => <Input id="phone" {...field} />} />
             {errors?.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
           </div>
 
@@ -110,9 +102,7 @@ export function AddWorkerSheet({ open, onOpenChange }) {
             <Controller
               name="specializations"
               control={control}
-              render={({ field }) => (
-                <Input id="specializations" placeholder="e.g. Installation, Repair" {...field} />
-              )}
+              render={({ field }) => <Input id="specializations" placeholder="e.g. Installation, Repair" {...field} />}
             />
             {errors?.specializations && <p className="text-xs text-destructive">{errors.specializations.message}</p>}
           </div>

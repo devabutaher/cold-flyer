@@ -29,6 +29,7 @@ export function getProductInitialValues(product) {
     productType: product.productType || "unit",
     warranty: product.warranty || "",
     tag: product.tag || "None",
+    featured: product.featured || false,
     features: product.features?.join("\n") || "",
     inBox: product.inBox?.join("\n") || "",
     images: (product.images || []).filter((img) => img?.url).map((img) => ({ url: img.url, preview: img.url })),

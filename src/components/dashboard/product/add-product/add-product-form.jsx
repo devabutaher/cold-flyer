@@ -2,8 +2,8 @@
 
 import { useCreateProduct } from "@/hooks/queries/products";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { productFormSchema } from "@/validations";
 import { generateSlug, parseListInput, parseSpecs } from "@/lib/utils";
+import { productFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -47,6 +47,7 @@ export default function AddProductForm({ isAdmin = false }) {
     description: "",
     warranty: "",
     tag: "None",
+    featured: false,
     features: "",
     inBox: "",
     images: [],
@@ -113,6 +114,7 @@ export default function AddProductForm({ isAdmin = false }) {
         warranty: values.warranty || undefined,
         tag: values.tag && values.tag !== "None" ? values.tag : undefined,
         onSale: values.tag === "Sale",
+        featured: values.featured || false,
         features: features.length > 0 ? features : undefined,
         inBox: inBox.length > 0 ? inBox : undefined,
         images: validImages.length > 0 ? validImages : undefined,

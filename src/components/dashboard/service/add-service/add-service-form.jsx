@@ -2,8 +2,8 @@
 
 import { useCreateService } from "@/hooks/queries/services";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { serviceFormSchema } from "@/validations";
 import { generateSlug, parseListInput } from "@/lib/utils";
+import { serviceFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -37,6 +37,7 @@ const initialValues = {
   priceType: "fixed",
   description: "",
   basePrice: "",
+  isFeatured: false,
   includes: "",
   exclusions: "",
   requirements: "",
@@ -96,6 +97,7 @@ export default function AddServiceForm({ isAdmin = false }) {
         serviceType: values.serviceType,
         priceType: values.priceType || "fixed",
         basePrice: Number(values.basePrice),
+        isFeatured: values.isFeatured || false,
         includes: includes.length > 0 ? includes : undefined,
         exclusions: exclusions.length > 0 ? exclusions : undefined,
         requirements: requirements.length > 0 ? requirements : undefined,

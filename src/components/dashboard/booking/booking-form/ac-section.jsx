@@ -9,9 +9,22 @@ import { Wrench } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 const AC_BRAND_OPTIONS = [
-  "General (Gree)", "Walton", "Singer", "Samsung", "LG", "Panasonic",
-  "Sharp", "Midea", "Toshiba", "Hitachi", "Daikin", "Mitsubishi",
-  "Haier", "Electra", "Minister", "Vision",
+  "General (Gree)",
+  "Walton",
+  "Singer",
+  "Samsung",
+  "LG",
+  "Panasonic",
+  "Sharp",
+  "Midea",
+  "Toshiba",
+  "Hitachi",
+  "Daikin",
+  "Mitsubishi",
+  "Haier",
+  "Electra",
+  "Minister",
+  "Vision",
 ];
 const AC_TON_OPTIONS = ["1", "1.5", "2", "2.5", "3", "5"];
 const GAS_TYPE_OPTIONS = ["R32", "R410A", "R22", "R290"];
@@ -71,14 +84,16 @@ export function AcSection({ control }) {
             defaultValue=""
             render={({ field }) => (
               <Field>
-                <FieldLabel>Unit</FieldLabel>
+                <FieldLabel>Ton</FieldLabel>
                 <Select value={field.value ?? ""} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select ton" />
                   </SelectTrigger>
                   <SelectContent>
                     {AC_TON_OPTIONS.map((t) => (
-                      <SelectItem key={t} value={t}>{t} Ton</SelectItem>
+                      <SelectItem key={t} value={t}>
+                        {t} Ton
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

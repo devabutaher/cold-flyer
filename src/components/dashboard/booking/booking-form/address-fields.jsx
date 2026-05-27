@@ -54,23 +54,23 @@ export function AddressFields({ control, namePrefix = "" }) {
         />
       </div>
 
-        <Controller
-          name={addressName}
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <Field>
-              <FieldLabel>Address</FieldLabel>
-              <textarea
-                {...field}
-                value={field.value ?? ""}
-                placeholder="Street, building, area"
-                className="flex min-h-20 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
-                rows={3}
-              />
-            </Field>
-          )}
-        />
+      <Controller
+        name={addressName}
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <Field>
+            <FieldLabel>Address</FieldLabel>
+            <textarea
+              {...field}
+              value={field.value ?? ""}
+              placeholder="Street, building, area"
+              className="flex min-h-20 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
+              rows={3}
+            />
+          </Field>
+        )}
+      />
     </div>
   );
 }

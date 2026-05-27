@@ -43,7 +43,10 @@ export default function BookingsTable({ isAdmin = false, userRole }) {
     [cancelBooking],
   );
 
-  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel, isAdmin, userRole }), [handleCancel, isAdmin, userRole]);
+  const columns = useMemo(
+    () => buildBookingColumns({ onCancel: handleCancel, isAdmin, userRole }),
+    [handleCancel, isAdmin, userRole],
+  );
 
   const paymentStatusOptions = useMemo(() => {
     const values = [...new Set(bookings.map((b) => b.paymentStatus).filter(Boolean))];
@@ -59,7 +62,17 @@ export default function BookingsTable({ isAdmin = false, userRole }) {
       defaultSort={[]}
       emptyMessage="No bookings found. Browse services to book one."
       emptyIcon={<ClipboardList size={40} />}
-      searchFields={["bookingNumber", "service.name", "user.name", "user.email", "user.phone", "technician.user.name", "technician.employeeId", "status", "paymentStatus"]}
+      searchFields={[
+        "bookingNumber",
+        "service.name",
+        "user.name",
+        "user.email",
+        "user.phone",
+        "technician.user.name",
+        "technician.employeeId",
+        "status",
+        "paymentStatus",
+      ]}
       toolbar={(table) => (
         <TableToolbar
           table={table}

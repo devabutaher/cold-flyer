@@ -5,13 +5,7 @@ import { Snowflake, ArrowRight, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "service-offer-dismissed";
@@ -42,16 +36,20 @@ export function ServiceOfferPopup() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) handleDismiss(); setOpen(o); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        if (!o) handleDismiss();
+        setOpen(o);
+      }}
+    >
       <DialogContent className="sm:max-w-sm">
         <DialogHeader className="items-center text-center sm:text-center">
           <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
             <Snowflake size={24} className="text-primary" />
           </div>
           <DialogTitle className="text-lg">{t("serviceOfferTitle")}</DialogTitle>
-          <DialogDescription>
-            {t("serviceOfferSubtitle")}
-          </DialogDescription>
+          <DialogDescription>{t("serviceOfferSubtitle")}</DialogDescription>
         </DialogHeader>
 
         <div className="flex gap-3 pt-1">

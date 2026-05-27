@@ -2,8 +2,8 @@
 
 import { useUpdateProduct } from "@/hooks/queries/products";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { getProductInitialValues, productFormSchema } from "@/validations";
 import { parseListInput, parseSpecs } from "@/lib/utils";
+import { getProductInitialValues, productFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -93,6 +93,7 @@ export default function EditProductForm({ product, isAdmin = false }) {
         warranty: values.warranty || undefined,
         tag: values.tag && values.tag !== "None" ? values.tag : undefined,
         onSale: values.tag === "Sale",
+        featured: values.featured || false,
         features: features.length > 0 ? features : undefined,
         inBox: inBox.length > 0 ? inBox : undefined,
         images: uploadedImages.length > 0 ? uploadedImages : undefined,

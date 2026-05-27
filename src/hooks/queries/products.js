@@ -1,10 +1,10 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { getClient, extractList, extractItem } from "@/lib/http-client";
-import { createProductAction, updateProductAction, deleteProductAction } from "@/lib/actions/products";
+import { createProductAction, deleteProductAction, updateProductAction } from "@/lib/actions/products";
 import { uploadImageAction } from "@/lib/actions/upload";
+import { extractItem, extractList, getClient } from "@/lib/http-client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const client = () => getClient();
 
@@ -138,6 +138,21 @@ export function useUploadImage(componentOptions = {}) {
       userOnError?.(error, variables, context);
     },
     ...rest,
+  });
+}
+
+export function useFeaturedProductsQuery(params) {
+  return useQuery({
+    queryKey: ["products", "featured", params || {}],
+    queryFn: async () => {
+      const query = new URLSearchParams();
+      if (params?.productType) query.set("productType", params.productType);
+      if (params?.limit) query.set("limit", String(params.limit));
+      const endpoint = query.toString() ? `/products/featured?${query}` : "/products/featured";
+      const res = await client().get(endpoint);
+      return extractList(res, "products");
+    },
+    placeholderData: (previousData) => previousData,
   });
 }
 

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProductsQuery } from "@/hooks/queries/products";
+import { useFeaturedProductsQuery } from "@/hooks/queries/products";
 import { useFeaturedServicesQuery } from "@/hooks/queries/services";
 import { CheckCircle, Wrench } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -100,8 +100,8 @@ export default function ShopSection() {
   const t = useTranslations("home");
 
   const { data: featuredServices = [], isLoading: loadingServices } = useFeaturedServicesQuery();
-  const { data: acUnits = [], isLoading: loadingUnits } = useProductsQuery({ productType: "unit", limit: 10 });
-  const { data: parts = [], isLoading: loadingParts } = useProductsQuery({ productType: "part", limit: 10 });
+  const { data: acUnits = [], isLoading: loadingUnits } = useFeaturedProductsQuery({ productType: "unit", limit: 10 });
+  const { data: parts = [], isLoading: loadingParts } = useFeaturedProductsQuery({ productType: "part", limit: 10 });
 
   return (
     <div>

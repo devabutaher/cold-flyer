@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { SelectWithOther } from "@/components/ui/select-with-other";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Info } from "lucide-react";
+import { Info, Star } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
 
@@ -118,6 +119,20 @@ export function ServiceBasicInfoSection({ control }) {
             </Field>
           )}
         />
+
+        <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-4 py-3">
+          <Star className="h-5 w-5 text-amber-500 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-foreground">Featured service</p>
+            <p className="text-xs text-muted-foreground">Show this service on the homepage carousel</p>
+          </div>
+          <Controller
+            name="isFeatured"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => <Switch checked={field.value || false} onCheckedChange={field.onChange} />}
+          />
+        </div>
 
         <Controller
           name="images"

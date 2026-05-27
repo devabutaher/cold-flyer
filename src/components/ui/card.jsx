@@ -7,22 +7,28 @@ import { useRef, useCallback } from "react";
 function useTilt(enabled) {
   const rafRef = useRef(null);
 
-  const onMouseMove = useCallback((e) => {
-    if (!enabled) return;
-    cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * -8;
-      e.currentTarget.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
-    });
-  }, [enabled]);
+  const onMouseMove = useCallback(
+    (e) => {
+      if (!enabled) return;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * -8;
+        e.currentTarget.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+      });
+    },
+    [enabled],
+  );
 
-  const onMouseLeave = useCallback((e) => {
-    if (!enabled) return;
-    cancelAnimationFrame(rafRef.current);
-    e.currentTarget.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
-  }, [enabled]);
+  const onMouseLeave = useCallback(
+    (e) => {
+      if (!enabled) return;
+      cancelAnimationFrame(rafRef.current);
+      e.currentTarget.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
+    },
+    [enabled],
+  );
 
   return { onMouseMove, onMouseLeave };
 }
@@ -30,15 +36,18 @@ function useTilt(enabled) {
 function useShimmerHandler(enabled) {
   const rafRef = useRef(null);
 
-  const onMouseMove = useCallback((e) => {
-    if (!enabled) return;
-    cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-      e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-    });
-  }, [enabled]);
+  const onMouseMove = useCallback(
+    (e) => {
+      if (!enabled) return;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+        e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+      });
+    },
+    [enabled],
+  );
 
   const onMouseLeave = useCallback(() => {
     if (!enabled) return;

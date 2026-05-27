@@ -140,7 +140,19 @@ export default function CustomersTable() {
         defaultSort={[]}
         emptyMessage="No customers found."
         emptyIcon={<Users size={40} />}
-        searchFields={["customerId", "name", "phone", "email", "brand", "model", "unit", "acTon", "gasType", "service", "status"]}
+        searchFields={[
+          "customerId",
+          "name",
+          "phone",
+          "email",
+          "brand",
+          "model",
+          "unit",
+          "acTon",
+          "gasType",
+          "service",
+          "status",
+        ]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

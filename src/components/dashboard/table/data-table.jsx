@@ -101,7 +101,11 @@ export function DataTable({
       const value = getNestedValue(row.original, field);
       if (value == null) return false;
       if (Array.isArray(value)) {
-        return value.some((v) => String(v ?? "").toLowerCase().includes(search));
+        return value.some((v) =>
+          String(v ?? "")
+            .toLowerCase()
+            .includes(search),
+        );
       }
       return String(value).toLowerCase().includes(search);
     });

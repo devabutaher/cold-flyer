@@ -1,11 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -20,11 +16,14 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectWithOther } from "@/components/ui/select-with-other";
 import { getClient } from "@/lib/http-client";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { customerFormSchema } from "@/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const SERVICE_OPTIONS = ["Installation", "Repair", "Maintenance", "Gas Fill"];
 
@@ -205,7 +204,7 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
             </div>
             <div className="col-span-2 sm:col-span-1">
               <Label htmlFor="unit" className="mb-1.5 block">
-                Unit
+                Qty
               </Label>
               <Controller
                 name="unit"

@@ -120,14 +120,14 @@ export default function ActivityLogTable() {
   );
 
   return (
-      <DataTable
-        columns={columns}
-        data={logs}
-        loading={isLoading}
-        rowCount="logs"
-        defaultSort={[{ id: "date", desc: true }]}
-        emptyMessage="No activity logs found."
-        searchFields={["user.name", "userUID", "action", "type", "date", "time"]}
+    <DataTable
+      columns={columns}
+      data={logs}
+      loading={isLoading}
+      rowCount="logs"
+      defaultSort={[{ id: "date", desc: true }]}
+      emptyMessage="No activity logs found."
+      searchFields={["user.name", "userUID", "action", "type", "date", "time"]}
       emptyIcon={<History size={40} />}
       toolbar={(table) => (
         <TableToolbar

@@ -48,115 +48,115 @@ export function ServiceDetailsSection({ control }) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Controller
-              name="acBrand"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel>Brand</FieldLabel>
-                  <SelectWithOther
-                    options={AC_BRAND_OPTIONS}
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    placeholder="Select AC brand"
-                  />
-                </Field>
-              )}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Controller
+            name="acBrand"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Brand</FieldLabel>
+                <SelectWithOther
+                  options={AC_BRAND_OPTIONS}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select AC brand"
+                />
+              </Field>
+            )}
+          />
 
-            <Controller
-              name="acModel"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel>Model</FieldLabel>
-                  <Input {...field} value={field.value ?? ""} placeholder="AC model number" />
-                </Field>
-              )}
-            />
-          </div>
+          <Controller
+            name="acModel"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Model</FieldLabel>
+                <Input {...field} value={field.value ?? ""} placeholder="AC model number" />
+              </Field>
+            )}
+          />
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Controller
-              name="acTon"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel>Unit</FieldLabel>
-                  <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select ton" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {AC_TON_OPTIONS.map((t) => (
-                        <SelectItem key={t} value={t}>
-                          {t} Ton
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Field>
-              )}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Controller
+            name="acTon"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Ton</FieldLabel>
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select ton" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {AC_TON_OPTIONS.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t} Ton
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
+          />
 
-            <Controller
-              name="acGasType"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel>Gas Type</FieldLabel>
-                  <SelectWithOther
-                    options={GAS_TYPE_OPTIONS}
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    placeholder="Select gas type"
-                  />
-                </Field>
-              )}
-            />
-          </div>
+          <Controller
+            name="acGasType"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Gas Type</FieldLabel>
+                <SelectWithOther
+                  options={GAS_TYPE_OPTIONS}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select gas type"
+                />
+              </Field>
+            )}
+          />
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Controller
-              name="acType"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel>AC Type</FieldLabel>
-                  <SelectWithOther
-                    options={AC_TYPE_OPTIONS}
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    placeholder="Select AC type"
-                  />
-                </Field>
-              )}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Controller
+            name="acType"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>AC Type</FieldLabel>
+                <SelectWithOther
+                  options={AC_TYPE_OPTIONS}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select AC type"
+                />
+              </Field>
+            )}
+          />
 
-            <Controller
-              name="propertyType"
-              control={control}
-              defaultValue="residential"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Property Type</FieldLabel>
-                  <SelectWithOther
-                    options={PROPERTY_TYPE_OPTIONS}
-                    value={field.value ?? "residential"}
-                    onChange={field.onChange}
-                    placeholder="Select type"
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-          </div>
+          <Controller
+            name="propertyType"
+            control={control}
+            defaultValue="residential"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Property Type</FieldLabel>
+                <SelectWithOther
+                  options={PROPERTY_TYPE_OPTIONS}
+                  value={field.value ?? "residential"}
+                  onChange={field.onChange}
+                  placeholder="Select type"
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+        </div>
 
         <Controller
           name="issues"

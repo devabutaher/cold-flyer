@@ -86,53 +86,53 @@ export default function UsersTable() {
 
   return (
     <>
-    <DataTable
-      columns={columns}
-      data={users}
-      loading={isLoading}
-      rowCount="users"
-      defaultSort={[]}
-      emptyMessage="No users found."
-      emptyIcon={<Users size={40} />}
-      searchFields={["userId", "name", "email", "phone", "role"]}
-      toolbar={(table) => (
-        <TableToolbar
-          table={table}
-          searchPlaceholder="Search users..."
-          selectedLabel="users"
-          filters={[
-            {
-              columnId: "role",
-              placeholder: "All Roles",
-              allLabel: "All Roles",
-              options: roleOptions,
-            },
-            {
-              columnId: "isActive",
-              placeholder: "All Statuses",
-              allLabel: "All Statuses",
-              options: ["true", "false"],
-            },
-          ]}
-          actions={
-            <>
-              <Button onClick={() => setAddSheetOpen(true)}>
-                <Plus className="mr-1 size-4" />
-                Add User
-              </Button>
-              <ExportMenu
-                table={table}
-                filename="users"
-                mapRow={mapRow}
-                pdfTitle="ColdFlyer — Users Report"
-                pdfColumns={PDF_COLUMNS}
-              />
-            </>
-          }
-        />
-      )}
-    />
-    <AddUserSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
-  </>
+      <DataTable
+        columns={columns}
+        data={users}
+        loading={isLoading}
+        rowCount="users"
+        defaultSort={[]}
+        emptyMessage="No users found."
+        emptyIcon={<Users size={40} />}
+        searchFields={["userId", "name", "email", "phone", "role"]}
+        toolbar={(table) => (
+          <TableToolbar
+            table={table}
+            searchPlaceholder="Search users..."
+            selectedLabel="users"
+            filters={[
+              {
+                columnId: "role",
+                placeholder: "All Roles",
+                allLabel: "All Roles",
+                options: roleOptions,
+              },
+              {
+                columnId: "isActive",
+                placeholder: "All Statuses",
+                allLabel: "All Statuses",
+                options: ["true", "false"],
+              },
+            ]}
+            actions={
+              <>
+                <Button onClick={() => setAddSheetOpen(true)}>
+                  <Plus className="mr-1 size-4" />
+                  Add User
+                </Button>
+                <ExportMenu
+                  table={table}
+                  filename="users"
+                  mapRow={mapRow}
+                  pdfTitle="ColdFlyer — Users Report"
+                  pdfColumns={PDF_COLUMNS}
+                />
+              </>
+            }
+          />
+        )}
+      />
+      <AddUserSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
+    </>
   );
 }

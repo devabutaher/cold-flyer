@@ -1,21 +1,21 @@
 "use client";
 
-import { useCreateService, useUpdateService } from "@/hooks/queries/services";
+import { useUpdateService } from "@/hooks/queries/services";
 import { uploadImageAction } from "@/lib/actions/upload";
-import { serviceFormSchema } from "@/validations";
 import { generateSlug, parseListInput } from "@/lib/utils";
+import { serviceFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import {
   ServiceBasicInfoSection,
+  ServiceDetailsSection,
   ServiceFormActions,
   ServiceFormHeader,
   ServicePricingSection,
-  ServiceDetailsSection,
 } from "../service-form";
 
 function useCompletedSections(control) {
@@ -59,6 +59,7 @@ function getInitialValues(service) {
       priceType: "fixed",
       description: "",
       basePrice: "",
+      isFeatured: false,
       includes: "",
       exclusions: "",
       requirements: "",
@@ -74,6 +75,7 @@ function getInitialValues(service) {
     priceType: service.priceType || "fixed",
     description: service.description || "",
     basePrice: service.basePrice != null ? String(service.basePrice) : "",
+    isFeatured: service.isFeatured || false,
     includes: Array.isArray(service.includes) ? service.includes.join("\n") : "",
     exclusions: Array.isArray(service.exclusions) ? service.exclusions.join("\n") : "",
     requirements: Array.isArray(service.requirements) ? service.requirements.join("\n") : "",
@@ -138,6 +140,7 @@ export default function EditServiceForm({ service, isAdmin = false }) {
         serviceType: values.serviceType,
         priceType: values.priceType || "fixed",
         basePrice: Number(values.basePrice),
+        isFeatured: values.isFeatured || false,
         includes: includes.length > 0 ? includes : undefined,
         exclusions: exclusions.length > 0 ? exclusions : undefined,
         requirements: requirements.length > 0 ? requirements : undefined,
