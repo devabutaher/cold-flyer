@@ -38,7 +38,7 @@ export default async function EditServicePage({ params }) {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
@@ -55,5 +55,5 @@ export default async function EditServicePage({ params }) {
     return <p className="text-muted-foreground">Service not found</p>;
   }
 
-  return <EditServiceForm service={service} isAdmin={user.role === "admin"} />;
+  return <EditServiceForm service={service} isAdmin={true} />;
 }

@@ -2,7 +2,33 @@ import { NextResponse } from "next/server";
 
 const protectedRoutes = ["/dashboard"];
 const authRoutes = ["/auth"];
-const adminRoutes = ["/dashboard/users", "/dashboard/analytics", "/dashboard/technicians", "/dashboard/coupons"];
+
+const roleRouteAccess = {
+  admin: null,
+  moderator: [
+    "/dashboard",
+    "/dashboard/items",
+    "/dashboard/services",
+    "/dashboard/blogs",
+    "/dashboard/recent-works",
+    "/dashboard/orders",
+    "/dashboard/bookings",
+    "/dashboard/users",
+    "/dashboard/technicians",
+    "/dashboard/customers",
+    "/dashboard/coupons",
+    "/dashboard/messages",
+    "/dashboard/applications",
+    "/dashboard/profile",
+  ],
+  worker: ["/dashboard", "/dashboard/orders", "/dashboard/bookings", "/dashboard/attendance", "/dashboard/profile"],
+  customer: ["/dashboard/orders", "/dashboard/bookings", "/dashboard/profile"],
+};
+
+function isPathAllowed(pathname, allowedPrefixes) {
+  if (allowedPrefixes === null) return true;
+  return allowedPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(prefix + "/") || pathname.startsWith(prefix + "/"));
+}
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl;
@@ -11,7 +37,6 @@ export async function proxy(request) {
 
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAuth = authRoutes.some((route) => pathname.startsWith(route));
-  const isAdmin = adminRoutes.some((route) => pathname.startsWith(route));
 
   let tokenPayload = null;
   let tokenExpired = false;
@@ -47,10 +72,19 @@ export async function proxy(request) {
   }
 
   if (isAuthenticated) {
-    response.headers.set("x-user-role", tokenPayload.role || "user");
+    const role = tokenPayload.role || "customer";
+    response.headers.set("x-user-role", role);
 
-    if (isAdmin && tokenPayload.role !== "admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+    if (isProtected) {
+      const allowedPrefixes = roleRouteAccess[role];
+
+      if (!allowedPrefixes) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+
+      if (!isPathAllowed(pathname, allowedPrefixes)) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
     }
   }
 

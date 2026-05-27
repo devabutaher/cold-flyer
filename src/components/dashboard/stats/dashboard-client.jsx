@@ -9,7 +9,8 @@ import { getClient } from "@/lib/http-client";
 
 export default function DashboardClient() {
   const { backendUser } = useAuth();
-  const isAdmin = backendUser?.role === "admin";
+  const userRole = backendUser?.role;
+  const isAdmin = userRole === "admin";
 
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
@@ -22,14 +23,17 @@ export default function DashboardClient() {
   });
 
   if (!isAdmin) {
+    const roleLabel = { moderator: "Moderator", worker: "Worker", customer: "Customer" }[userRole] || "User";
     return (
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Welcome back, {backendUser?.name}</p>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Welcome back, {backendUser?.name} <span className="text-xs ml-1 text-primary">({roleLabel})</span>
+          </p>
         </div>
         <div className="rounded-lg border border-dashed p-8 text-center">
-          <p className="text-muted-foreground">Your personalized stats will appear here soon.</p>
+          <p className="text-muted-foreground">Use the sidebar to navigate to your available sections.</p>
         </div>
       </div>
     );

@@ -5,7 +5,7 @@ const ServicesTable = dynamic(() => import("@/components/dashboard/service/servi
 
 export default function ServicesPage() {
   return (
-    <ProtectedRoute requiredRole="admin">
+    <ProtectedRoute requiredRole={["admin", "moderator"]}>
       <div className="space-y-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">All Services</h1>

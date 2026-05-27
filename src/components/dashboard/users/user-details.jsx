@@ -62,13 +62,15 @@ export function UserDetails({ userId }) {
     );
   }
 
-  const roleLabel = user.role === "admin" ? "Admin" : user.role === "technician" ? "Worker" : "User";
-  const roleClass =
-    user.role === "admin"
-      ? "bg-primary/10 text-primary"
-      : user.role === "technician"
-        ? "bg-blue-500/10 text-blue-600"
-        : "bg-muted text-muted-foreground";
+  const roleLabels = { admin: "Admin", moderator: "Moderator", worker: "Worker", customer: "Customer" };
+  const roleClasses = {
+    admin: "bg-primary/10 text-primary",
+    moderator: "bg-purple-500/10 text-purple-600",
+    worker: "bg-blue-500/10 text-blue-600",
+    customer: "bg-muted text-muted-foreground",
+  };
+  const roleLabel = roleLabels[user.role] || user.role;
+  const roleClass = roleClasses[user.role] || "bg-muted text-muted-foreground";
 
   const statusLabel = user.isActive ? "Active" : "Inactive";
   const statusClass = user.isActive ? "bg-green-500/10 text-green-600" : "bg-destructive/10 text-destructive";

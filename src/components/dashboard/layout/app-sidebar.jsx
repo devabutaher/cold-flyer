@@ -20,15 +20,12 @@ import { NavGroup } from "./nav-group";
 export function AppSidebar() {
   const pathname = usePathname();
   const { backendUser } = useAuth();
-  const isAdmin = backendUser?.role === "admin";
-
-  const adminOnlyPaths = ["/dashboard/items", "/dashboard/services", "/dashboard/blogs", "/dashboard/recent-works"];
+  const userRole = backendUser?.role;
 
   const visibleGroups = navGroups
-    .filter((group) => isAdmin || group.label !== "Admin")
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) => isAdmin || !adminOnlyPaths.includes(item.path)),
+      items: group.items.filter((item) => item.roles?.includes(userRole)),
     }))
     .filter((group) => group.items.length > 0);
 
@@ -46,7 +43,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {isAdmin && (
+        {["admin", "moderator"].includes(userRole) && (
           <SidebarGroup className="space-y-2">
             <SidebarMenuItem className="flex items-center gap-2">
               <Link href="/dashboard/items/add" className="w-full">

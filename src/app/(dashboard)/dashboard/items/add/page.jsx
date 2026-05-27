@@ -24,7 +24,7 @@ export default async function AddProductPage() {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
@@ -32,5 +32,5 @@ export default async function AddProductPage() {
     (mod) => mod.default,
   );
 
-  return <AddProductForm isAdmin={user.role === "admin"} />;
+  return <AddProductForm isAdmin={true} />;
 }

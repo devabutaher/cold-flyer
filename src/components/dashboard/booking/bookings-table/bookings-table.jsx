@@ -30,7 +30,7 @@ const BOOKING_PDF_COLUMNS = [
   { header: "Payment", accessorKey: "paymentStatus", width: 1 },
 ];
 
-export default function BookingsTable({ isAdmin = false }) {
+export default function BookingsTable({ isAdmin = false, userRole }) {
   const { data: bookings = [], isLoading: loading } = useBookingsQuery();
   const cancelBooking = useCancelBooking();
 
@@ -43,7 +43,7 @@ export default function BookingsTable({ isAdmin = false }) {
     [cancelBooking],
   );
 
-  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel, isAdmin }), [handleCancel, isAdmin]);
+  const columns = useMemo(() => buildBookingColumns({ onCancel: handleCancel, isAdmin, userRole }), [handleCancel, isAdmin, userRole]);
 
   const paymentStatusOptions = useMemo(() => {
     const values = [...new Set(bookings.map((b) => b.paymentStatus).filter(Boolean))];

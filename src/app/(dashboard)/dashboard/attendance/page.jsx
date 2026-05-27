@@ -5,7 +5,7 @@ const AttendancePageComponent = dynamic(() => import("@/components/dashboard/att
 
 export default function AttendancePage() {
   return (
-    <ProtectedRoute requiredRole="admin">
+    <ProtectedRoute requiredRole={["admin", "worker"]}>
       <AttendancePageComponent />
     </ProtectedRoute>
   );

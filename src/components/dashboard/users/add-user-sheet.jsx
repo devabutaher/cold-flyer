@@ -11,8 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-const ROLE_OPTIONS = ["user", "admin", "technician"];
-const EMPTY_FORM = { name: "", email: "", phone: "", password: "", role: "user" };
+const ROLE_OPTIONS = ["customer", "admin", "moderator", "worker"];
+const EMPTY_FORM = { name: "", email: "", phone: "", password: "", role: "customer" };
 
 export function AddUserSheet({ open, onOpenChange }) {
   const [saving, setSaving] = useState(false);

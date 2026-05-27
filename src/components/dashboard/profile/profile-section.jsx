@@ -307,7 +307,7 @@ export function ProfileSection({ user }) {
                     <p className="font-medium capitalize">{user.gender ? t(user.gender) : t("notSet")}</p>
                   </div>
                 </div>
-                {user.role !== "user" && (
+                {user.role !== "customer" && (
                   <>
                     <Separator />
                     <div className="flex items-center gap-3">

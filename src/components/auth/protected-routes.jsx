@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/components/providers";
+import { redirect, usePathname } from "next/navigation";
 
 export default function ProtectedRoute({ children, requiredRole }) {
   const { backendUser, loading } = useAuth();
+  const pathname = usePathname();
 
   if (loading)
     return (
@@ -12,9 +14,16 @@ export default function ProtectedRoute({ children, requiredRole }) {
       </div>
     );
 
-  if (!backendUser) return null;
+  if (!backendUser) {
+    redirect(`/auth?redirect=${encodeURIComponent(pathname)}`);
+  }
 
-  if (requiredRole && backendUser?.role !== requiredRole) return null;
+  if (requiredRole) {
+    const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!roles.includes(backendUser?.role)) {
+      redirect("/");
+    }
+  }
 
   return children;
 }

@@ -82,7 +82,7 @@ export default function UsersTable() {
     [handleRoleChange, handleView, handleDelete],
   );
 
-  const roleOptions = ["user", "admin", "technician"];
+  const roleOptions = ["customer", "moderator", "worker", "admin"];
 
   return (
     <>

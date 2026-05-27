@@ -7,7 +7,7 @@ const BlogsTable = dynamic(() => import("@/components/dashboard/blog/blogs-table
 
 export default function BlogsPage() {
   return (
-    <ProtectedRoute requiredRole="admin">
+    <ProtectedRoute requiredRole={["admin", "moderator"]}>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>

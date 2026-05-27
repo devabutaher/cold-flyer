@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 import { cookies } from "next/headers";
+import { requireRole } from "@/lib/auth-server";
 
 export async function getRecentWorksServer(params) {
   try {
@@ -42,6 +43,7 @@ export async function getRecentWorkBySlugServer(slug) {
 
 export async function createRecentWorkAction(workData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/recent-works", workData);
@@ -58,6 +60,7 @@ export async function createRecentWorkAction(workData) {
 
 export async function updateRecentWorkAction(id, workData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/recent-works/${id}`, workData);
@@ -74,6 +77,7 @@ export async function updateRecentWorkAction(id, workData) {
 
 export async function deleteRecentWorkAction(id) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/recent-works/${id}`);

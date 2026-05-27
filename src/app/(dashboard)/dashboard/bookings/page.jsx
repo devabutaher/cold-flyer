@@ -8,7 +8,8 @@ import Link from "next/link";
 
 export default function BookingsPage() {
   const { backendUser } = useAuth();
-  const isAdmin = backendUser?.role === "admin";
+  const userRole = backendUser?.role;
+  const isAdmin = ["admin", "moderator"].includes(userRole);
 
   return (
     <div className="space-y-4">
@@ -26,7 +27,7 @@ export default function BookingsPage() {
           </Link>
         </Button>
       </div>
-      <BookingsTable isAdmin={isAdmin} />
+      <BookingsTable isAdmin={isAdmin} userRole={userRole} />
     </div>
   );
 }

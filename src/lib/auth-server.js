@@ -11,3 +11,14 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export async function requireRole(...allowedRoles) {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("Authentication required");
+  }
+  if (!allowedRoles.includes(user.role)) {
+    throw new Error("Forbidden: insufficient permissions");
+  }
+  return user;
+}

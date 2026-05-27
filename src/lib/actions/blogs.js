@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
 import { cookies } from "next/headers";
+import { requireRole } from "@/lib/auth-server";
 
 export async function getBlogsServer(params) {
   try {
@@ -42,6 +43,7 @@ export async function getBlogBySlugServer(slug) {
 
 export async function createBlogAction(blogData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/blogs", blogData);
@@ -58,6 +60,7 @@ export async function createBlogAction(blogData) {
 
 export async function updateBlogAction(id, blogData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/blogs/${id}`, blogData);
@@ -75,6 +78,7 @@ export async function updateBlogAction(id, blogData) {
 
 export async function deleteBlogAction(id) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/blogs/${id}`);

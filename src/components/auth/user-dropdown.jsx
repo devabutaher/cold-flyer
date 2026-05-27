@@ -39,7 +39,8 @@ export function UserDropdown() {
 
   const name = backendUser.name || backendUser.email || "User";
   const initial = name[0]?.toUpperCase() || "U";
-  const isAdmin = backendUser?.role === "admin";
+  const userRole = backendUser?.role;
+  const canManage = ["admin", "moderator"].includes(userRole);
 
   const handleLogOut = () => {
     logOut();
@@ -84,11 +85,11 @@ export function UserDropdown() {
           </Link>
         </DropdownMenuGroup>
 
-        {isAdmin && (
+        {canManage && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Admin</DropdownMenuLabel>
+              <DropdownMenuLabel>Management</DropdownMenuLabel>
               <Link href="/dashboard/items" passHref>
                 <DropdownMenuItem className="cursor-pointer">
                   <Package className="mr-2 size-4" />

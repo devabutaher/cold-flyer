@@ -24,7 +24,7 @@ export default async function AddServicePage() {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
@@ -32,5 +32,5 @@ export default async function AddServicePage() {
     (mod) => mod.default,
   );
 
-  return <AddServiceForm isAdmin={user.role === "admin"} />;
+  return <AddServiceForm isAdmin={true} />;
 }

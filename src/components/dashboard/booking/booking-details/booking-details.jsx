@@ -77,7 +77,9 @@ function formatDateTime(date) {
 export function BookingDetails({ bookingId }) {
   const { data: booking, isLoading, isError, error, refetch } = useBookingQuery(bookingId);
   const { backendUser } = useAuth();
-  const isAdmin = backendUser?.role === "admin";
+  const userRole = backendUser?.role;
+  const canManage = ["admin", "moderator"].includes(userRole);
+  const canOperate = ["admin", "moderator", "worker"].includes(userRole);
 
   const { data: technicians = [] } = useQuery({
     queryKey: ["admin-technicians"],
@@ -85,7 +87,7 @@ export function BookingDetails({ bookingId }) {
       const res = await getClient().get("/admin/technicians?limit=100");
       return res.data?.data?.technicians || [];
     },
-    enabled: isAdmin,
+    enabled: canManage,
   });
 
   if (isLoading) return <BookingDetailSkeleton />;
@@ -344,7 +346,7 @@ export function BookingDetails({ bookingId }) {
             </DetailCard>
           )}
 
-          {(booking.notes || (booking.internalNotes && isAdmin)) && (
+          {(booking.notes || (booking.internalNotes && canManage)) && (
             <DetailCard icon={<FileText size={15} className="text-primary" />} title="Notes">
               {booking.notes && (
                 <div>
@@ -356,7 +358,7 @@ export function BookingDetails({ bookingId }) {
                   <p className="text-muted-foreground">{booking.notes}</p>
                 </div>
               )}
-              {booking.internalNotes && isAdmin && (
+              {booking.internalNotes && canManage && (
                 <div className={booking.notes ? "mt-3" : ""}>
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                     Internal Notes
@@ -424,7 +426,7 @@ export function BookingDetails({ bookingId }) {
           </DetailCard>
 
           <DetailCard icon={<User size={15} className="text-primary" />} title="Booking Info">
-            {isAdmin && (booking.user || booking.customerName) && (
+            {canManage && (booking.user || booking.customerName) && (
               <div className="space-y-1 pb-2 mb-2 border-b border-border">
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Customer</p>
                 {booking.user ? (
@@ -470,9 +472,9 @@ export function BookingDetails({ bookingId }) {
           </DetailCard>
 
           <div className="space-y-2">
-            {isAdmin && booking.status !== "cancelled" && (
+            {booking.status !== "cancelled" && (
               <>
-                {booking.status === "pending" && (
+                {booking.status === "pending" && canManage && (
                   <ConfirmBookingDialog
                     booking={booking}
                     onSuccess={refetch}
@@ -480,7 +482,7 @@ export function BookingDetails({ bookingId }) {
                     triggerVariant="default"
                   />
                 )}
-                {booking.status === "confirmed" && (
+                {booking.status === "confirmed" && canManage && (
                   <ScheduleBookingDialog
                     booking={booking}
                     onSuccess={refetch}
@@ -489,7 +491,7 @@ export function BookingDetails({ bookingId }) {
                     triggerVariant="default"
                   />
                 )}
-                {booking.status === "scheduled" && (
+                {booking.status === "scheduled" && canOperate && (
                   <StartServiceDialog
                     booking={booking}
                     onSuccess={refetch}
@@ -497,7 +499,7 @@ export function BookingDetails({ bookingId }) {
                     triggerVariant="default"
                   />
                 )}
-                {booking.status === "in_progress" && (
+                {booking.status === "in_progress" && canOperate && (
                   <CompleteBookingDialog
                     booking={booking}
                     onSuccess={refetch}
@@ -512,7 +514,7 @@ export function BookingDetails({ bookingId }) {
                 <ReviewDialog booking={booking} onSuccess={refetch} />
               </div>
             )}
-            {isAdmin && booking.status !== "cancelled" && (
+            {canManage && booking.status !== "cancelled" && (
               <Button variant="outline" className="w-full gap-2" asChild>
                 <Link href={`/dashboard/bookings/edit/${booking._id}`}>
                   <PencilLine size={14} />

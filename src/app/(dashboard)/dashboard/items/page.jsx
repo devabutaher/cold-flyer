@@ -5,7 +5,7 @@ const ProductsTable = dynamic(() => import("@/components/dashboard/product/produ
 
 export default function ProductsPage() {
   return (
-    <ProtectedRoute requiredRole="admin">
+    <ProtectedRoute requiredRole={["admin", "moderator"]}>
       <div className="space-y-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">All Products</h1>

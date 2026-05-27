@@ -31,10 +31,13 @@ import { Eye, MoreHorizontal, PencilLine, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export function BookingRowActions({ row, onCancel, isAdmin = false }) {
+export function BookingRowActions({ row, onCancel, isAdmin = false, userRole }) {
   const booking = row.original;
   const [cancelOpen, setCancelOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
+
+  const canManage = userRole ? ["admin", "moderator"].includes(userRole) : isAdmin;
+  const canOperate = userRole ? ["admin", "moderator", "worker"].includes(userRole) : isAdmin;
 
   const { data: technicians = [] } = useQuery({
     queryKey: ["admin-technicians"],
@@ -42,7 +45,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
       const res = await getClient().get("/admin/technicians?limit=100");
       return res.data?.data?.technicians || [];
     },
-    enabled: isAdmin,
+    enabled: canManage,
   });
 
   const canCancel = ["pending", "confirmed", "scheduled", "in_progress"].includes(booking.status);
@@ -57,7 +60,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
 
   return (
     <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
-      {isAdmin && booking.status === "pending" && (
+      {canManage && booking.status === "pending" && (
         <ConfirmBookingDialog
           booking={booking}
           onSuccess={() => {}}
@@ -65,7 +68,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
           triggerVariant="default"
         />
       )}
-      {isAdmin && booking.status === "confirmed" && (
+      {canManage && booking.status === "confirmed" && (
         <ScheduleBookingDialog
           booking={booking}
           onSuccess={() => {}}
@@ -74,7 +77,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
           triggerVariant="default"
         />
       )}
-      {isAdmin && booking.status === "scheduled" && (
+      {canOperate && booking.status === "scheduled" && (
         <StartServiceDialog
           booking={booking}
           onSuccess={() => {}}
@@ -82,7 +85,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
           triggerVariant="default"
         />
       )}
-      {isAdmin && booking.status === "in_progress" && (
+      {canOperate && booking.status === "in_progress" && (
         <CompleteBookingDialog
           booking={booking}
           onSuccess={() => {}}
@@ -107,7 +110,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false }) {
               </Link>
             </DropdownMenuItem>
 
-            {isAdmin && (
+            {canManage && (
               <DropdownMenuItem asChild>
                 <Link href={`/dashboard/bookings/edit/${booking._id}`} className="flex items-center w-full">
                   <PencilLine size={14} className="mr-2" />

@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
+import { requireRole } from "@/lib/auth-server";
 
 export async function getServicesServer(params) {
   try {
@@ -77,6 +78,7 @@ export async function getFeaturedServicesServer() {
 
 export async function createServiceAction(serviceData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/services", serviceData);
@@ -93,6 +95,7 @@ export async function createServiceAction(serviceData) {
 
 export async function updateServiceAction(id, serviceData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/services/${id}`, serviceData);
@@ -109,6 +112,7 @@ export async function updateServiceAction(id, serviceData) {
 
 export async function deleteServiceAction(id) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/services/${id}`);
@@ -184,6 +188,7 @@ export async function cancelBookingAction(bookingId, reason) {
 
 export async function updateBookingAction(bookingId, bookingData) {
   try {
+    await requireRole("admin", "moderator", "worker");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/services/bookings/${bookingId}`, bookingData);

@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { createServerClient, API_BACKEND_URL, getServerFetchHeaders } from "@/lib/http-client";
+import { requireRole } from "@/lib/auth-server";
 
 export async function getProductsServer(params) {
   try {
@@ -57,6 +58,7 @@ export async function getProductByIdServer(id) {
 
 export async function createProductAction(productData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.post("/api/products", productData);
@@ -73,6 +75,7 @@ export async function createProductAction(productData) {
 
 export async function updateProductAction(id, productData) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     const res = await client.patch(`/api/products/${id}`, productData);
@@ -90,6 +93,7 @@ export async function updateProductAction(id, productData) {
 
 export async function deleteProductAction(id) {
   try {
+    await requireRole("admin", "moderator");
     const cookieStore = await cookies();
     const client = createServerClient(cookieStore);
     await client.delete(`/api/products/${id}`);

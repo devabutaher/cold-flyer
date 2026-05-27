@@ -38,7 +38,7 @@ export default async function EditBlogPage({ params }) {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
@@ -59,5 +59,5 @@ export default async function EditBlogPage({ params }) {
     );
   }
 
-  return <EditBlogForm blog={blog} isAdmin={user.role === "admin"} />;
+  return <EditBlogForm blog={blog} isAdmin={["admin", "moderator"].includes(user.role)} />;
 }

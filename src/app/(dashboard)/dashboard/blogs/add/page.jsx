@@ -24,11 +24,11 @@ export default async function AddBlogPage() {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
   const AddBlogForm = await import("@/components/dashboard/blog/add-blog/add-blog-form").then((mod) => mod.default);
 
-  return <AddBlogForm isAdmin={user.role === "admin"} />;
+  return <AddBlogForm isAdmin={["admin", "moderator"].includes(user.role)} />;
 }

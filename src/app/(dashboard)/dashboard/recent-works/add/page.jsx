@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/auth-server";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Add Recent Work | ColdFlyer",
@@ -7,7 +8,12 @@ export const metadata = {
 
 export default async function AddRecentWorkPage() {
   const user = await getCurrentUser();
-  const isAdmin = user?.role === "admin";
+
+  if (!user || !["admin", "moderator"].includes(user.role)) {
+    redirect("/");
+  }
+
+  const isAdmin = user.role === "admin";
 
   const AddRecentWorkForm =
     await import("@/components/dashboard/recent-works/add-recent-work/add-recent-work-form").then((mod) => mod.default);

@@ -48,7 +48,7 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
       accessorKey: "role",
       cell: ({ row }) => {
         const u = row.original;
-        const isTechnician = u.role === "technician";
+        const isTechnician = u.role === "worker";
 
         if (isTechnician) {
           return (
@@ -64,7 +64,9 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="user">User</SelectItem>
+              <SelectItem value="customer">Customer</SelectItem>
+              <SelectItem value="moderator">Moderator</SelectItem>
+              <SelectItem value="worker">Worker</SelectItem>
               <SelectItem value="admin">Admin</SelectItem>
             </SelectContent>
           </Select>

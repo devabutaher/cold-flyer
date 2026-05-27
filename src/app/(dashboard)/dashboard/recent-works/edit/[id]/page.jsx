@@ -38,7 +38,7 @@ export default async function EditRecentWorkPage({ params }) {
 
   const user = await getUser();
 
-  if (!user || user.role !== "admin") {
+  if (!user || !["admin", "moderator"].includes(user.role)) {
     redirect("/");
   }
 
