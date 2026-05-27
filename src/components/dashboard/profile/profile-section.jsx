@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Separator } from "@/components/ui/separator";
 import { updateProfileAction } from "@/lib/actions/user";
 import { getClient } from "@/lib/http-client";
@@ -251,18 +251,12 @@ export function ProfileSection({ user }) {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="gender">{t("gender")}</Label>
-                  <Select value={form.gender} onValueChange={(value) => setForm({ ...form, gender: value })}>
-                    <SelectTrigger id="gender" className="w-full">
-                      <SelectValue placeholder={t("selectGender")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GENDERS.map((opt) => (
-                        <SelectItem key={opt} value={opt}>
-                          {t(opt)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SelectWithOther
+                    options={GENDERS}
+                    value={form.gender}
+                    onChange={(value) => setForm({ ...form, gender: value })}
+                    placeholder={t("selectGender")}
+                  />
                 </div>
               </>
             ) : (

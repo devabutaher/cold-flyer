@@ -15,9 +15,11 @@ import {
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
+import { Button } from "@/components/ui/button";
 import { buildTechnicianColumns } from "./technicians-columns";
+import { AddWorkerSheet } from "./add-worker-sheet";
 import { getClient } from "@/lib/http-client";
-import { Wrench } from "lucide-react";
+import { Wrench, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 const mapRow = (t) => ({
@@ -44,6 +46,7 @@ const PDF_COLUMNS = [
 
 export default function TechniciansTable() {
   const queryClient = useQueryClient();
+  const [addSheetOpen, setAddSheetOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const { data: technicians = [], isLoading } = useQuery({
@@ -58,7 +61,7 @@ export default function TechniciansTable() {
     mutationFn: (id) => getClient().delete(`/admin/technicians/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
-      toast.success("Technician removed");
+      toast.success("Worker removed");
       setDeleteTarget(null);
     },
     onError: (err) => {
@@ -78,6 +81,10 @@ export default function TechniciansTable() {
   const columns = useMemo(() => buildTechnicianColumns({ onDelete: handleDelete }), [handleDelete]);
 
   const statusOptions = ["available", "busy", "offline", "on_leave"];
+  const specializationOptions = useMemo(() => {
+    const all = technicians.flatMap((t) => t.specializations || []);
+    return [...new Set(all)].sort();
+  }, [technicians]);
 
   return (
     <>
@@ -85,15 +92,16 @@ export default function TechniciansTable() {
         columns={columns}
         data={technicians}
         loading={isLoading}
-        rowCount="technicians"
+        rowCount="workers"
         defaultSort={[]}
-        emptyMessage="No technicians found. Create one from the users page."
+        emptyMessage="No workers found."
         emptyIcon={<Wrench size={40} />}
+        searchFields={["user.name", "user.email", "employeeId", "specializations", "status"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}
-            searchPlaceholder="Search technicians..."
-            selectedLabel="technicians"
+            searchPlaceholder="Search workers..."
+            selectedLabel="workers"
             filters={[
               {
                 columnId: "status",
@@ -101,15 +109,27 @@ export default function TechniciansTable() {
                 allLabel: "All Statuses",
                 options: statusOptions,
               },
+              {
+                columnId: "specializations",
+                placeholder: "All Specializations",
+                allLabel: "All Specializations",
+                options: specializationOptions,
+              },
             ]}
             actions={
-              <ExportMenu
-                table={table}
-                filename="technicians"
-                mapRow={mapRow}
-                pdfTitle="ColdFlyer — Technicians Report"
-                pdfColumns={PDF_COLUMNS}
-              />
+              <>
+                <Button onClick={() => setAddSheetOpen(true)}>
+                  <Plus className="mr-1 size-4" />
+                  Add Worker
+                </Button>
+                <ExportMenu
+                  table={table}
+                  filename="workers"
+                  mapRow={mapRow}
+                  pdfTitle="ColdFlyer — Workers Report"
+                  pdfColumns={PDF_COLUMNS}
+                />
+              </>
             }
           />
         )}
@@ -117,9 +137,9 @@ export default function TechniciansTable() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove this technician?</AlertDialogTitle>
+            <AlertDialogTitle>Remove this worker?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently remove the technician profile. The linked user account will not be affected.
+              This will permanently remove the worker profile. The linked user account will not be affected.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -134,6 +154,7 @@ export default function TechniciansTable() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <AddWorkerSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
     </>
   );
 }

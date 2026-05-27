@@ -73,6 +73,7 @@ export default function ServicesTable({ isAdmin = false }) {
       defaultSort={[]}
       emptyMessage="No services found. Add your first service to get started."
       emptyIcon={<Package size={40} />}
+      searchFields={["name", "category", "serviceType", "basePrice", "description"]}
       toolbar={(table) => (
         <TableToolbar
           table={table}

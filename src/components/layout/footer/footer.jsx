@@ -1,7 +1,7 @@
 "use client";
 
+import { AnimatedDiv } from "@/components/ui/animated-div";
 import { getData } from "@/data";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,39 +10,28 @@ import { useTranslations, useLocale } from "next-intl";
 
 function SocialLink({ href, children }) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, backgroundColor: "var(--color-primary)" }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-    >
+    <div className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95">
       <Link
         href={href}
         className="flex h-9 w-9 items-center justify-center rounded-md bg-inverted-foreground/10 hover:bg-primary transition-colors"
       >
         {children}
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
 function FooterLink({ href, children }) {
   return (
-    <motion.li initial="rest" whileHover="hover" className="relative w-fit">
+    <li className="relative w-fit">
       <Link
         href={href}
-        className="text-muted-foreground text-sm hover:text-inverted-foreground transition-colors inline-block"
+        className="group text-muted-foreground text-sm hover:text-inverted-foreground transition-colors inline-block"
       >
         {children}
-        <motion.span
-          className="absolute bottom-0 left-0 h-px bg-inverted-foreground"
-          variants={{
-            rest: { scaleX: 0, originX: 0 },
-            hover: { scaleX: 1, originX: 0 },
-          }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-        />
+        <span className="absolute bottom-0 left-0 h-px w-full bg-inverted-foreground scale-x-0 origin-left transition-transform duration-200 ease-out group-hover:scale-x-100" />
       </Link>
-    </motion.li>
+    </li>
   );
 }
 
@@ -62,7 +51,7 @@ function NewsletterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex rounded-md overflow-hidden w-full">
-      <motion.div className="flex w-full" whileFocusWithin={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
+      <div className="flex w-full transition-transform duration-200 focus-within:scale-[1.01]">
         <input
           type="email"
           value={email}
@@ -71,25 +60,19 @@ function NewsletterForm() {
           required
           className="flex-1 min-w-0 bg-white/10 border-none outline-none text-sm text-white placeholder:text-neutral-500 px-3 py-2.5 transition-all duration-200 focus:bg-white/15"
         />
-        <motion.button
+        <button
           type="submit"
-          className="bg-primary hover:bg-primary/90 px-3 py-2.5 text-primary-foreground transition-colors shrink-0 flex items-center justify-center"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.95 }}
+          className="bg-primary hover:bg-primary/90 px-3 py-2.5 text-primary-foreground transition-colors shrink-0 flex items-center justify-center active:scale-95"
         >
           {subscribed ? (
-            <motion.span
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            >
+            <span className="animate-in-scale-up" data-in-view="true">
               <Check size={16} />
-            </motion.span>
+            </span>
           ) : (
             <ArrowRight size={16} />
           )}
-        </motion.button>
-      </motion.div>
+        </button>
+      </div>
     </form>
   );
 }
@@ -105,7 +88,7 @@ export default function Footer() {
       <div className="container py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
-          <motion.div
+          <AnimatedDiv
             className="lg:col-span-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,11 +157,11 @@ export default function Footer() {
                 </SocialLink>
               ))}
             </div>
-          </motion.div>
+          </AnimatedDiv>
 
           {/* Nav cols */}
           {footerColumns.map((col, colIdx) => (
-            <motion.div
+            <AnimatedDiv
               key={col.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -193,11 +176,11 @@ export default function Footer() {
                   </FooterLink>
                 ))}
               </ul>
-            </motion.div>
+            </AnimatedDiv>
           ))}
 
           {/* Newsletter */}
-          <motion.div
+          <AnimatedDiv
             className="lg:col-span-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -207,10 +190,10 @@ export default function Footer() {
             <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">{t("footer.newsletter")}</h4>
             <p className="text-muted-foreground text-sm mb-4">{t("home.newsletterDescription")}</p>
             <NewsletterForm />
-          </motion.div>
+          </AnimatedDiv>
         </div>
 
-        <motion.div
+        <AnimatedDiv
           className="border-t border-inverted-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -230,7 +213,7 @@ export default function Footer() {
               </Link>
             ))}
           </div>
-        </motion.div>
+        </AnimatedDiv>
       </div>
     </footer>
   );

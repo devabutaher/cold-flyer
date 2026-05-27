@@ -88,16 +88,6 @@ export const moreLinks = [
     icon: <Briefcase />,
   },
   {
-    label: "গোপনীয়তা নীতি",
-    href: "/privacy",
-    icon: <ShieldCheck />,
-  },
-  {
-    label: "শর্তাবলী",
-    href: "/terms",
-    icon: <FileText />,
-  },
-  {
     label: "শিপিং এবং রিটার্ন",
     href: "/shipping",
     icon: <Truck />,

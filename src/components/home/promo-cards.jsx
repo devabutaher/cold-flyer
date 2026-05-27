@@ -1,21 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { ArrowRight, Shield, Truck, Zap } from "lucide-react";
 import Link from "next/link";
-import { animations, staggerItem } from "@/lib/animation";
 
 function PromoCard({ card, index }) {
   return (
-    <motion.div
-      variants={staggerItem}
-      className={`rounded-md p-6 sm:p-7 shadow-xl border transition-colors duration-200 ${
+    <div
+      className={`animate-in-fade-up rounded-md p-6 sm:p-7 shadow-xl border transition-colors duration-200 ${
         card.accent
           ? "bg-primary text-primary-foreground border-primary"
           : "bg-card text-foreground border-border hover:border-primary/30"
       }`}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      data-in-view="true"
+      style={{ animationDelay: `${0.15 + index * 0.08}s` }}
     >
       <div
         className={`mb-4 flex h-10 w-10 items-center justify-center rounded-md ${
@@ -46,7 +44,7 @@ function PromoCard({ card, index }) {
         {card.cta}
         <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -81,17 +79,12 @@ export default function PromoCards() {
   ];
 
   return (
-    <motion.div
-      className="container relative z-20 -mt-14 mb-12 lg:-mt-16 lg:mb-16"
-      variants={animations.stagger.normal}
-      initial="hidden"
-      animate="visible"
-    >
+    <div className="container relative z-20 -mt-14 mb-12 lg:-mt-16 lg:mb-16">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
         {cards.map((card, index) => (
           <PromoCard key={card.title} card={card} index={index} />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,72 +1,51 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { animations, staggerItem, transitionTokens } from "@/lib/animation";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useTheme } from "next-themes";
+import { useInView } from "@/hooks/use-in-view";
+import { useRef, useCallback } from "react";
 
 function useTilt(enabled) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const rafRef = useRef(null);
 
-  const springConfig = { stiffness: 300, damping: 30, mass: 0.5 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-4, 4]), springConfig);
+  const onMouseMove = useCallback((e) => {
+    if (!enabled) return;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * -8;
+      e.currentTarget.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+    });
+  }, [enabled]);
 
-  const onMouseMove = enabled
-    ? (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - rect.left) / rect.width - 0.5);
-        y.set((e.clientY - rect.top) / rect.height - 0.5);
-      }
-    : undefined;
+  const onMouseLeave = useCallback((e) => {
+    if (!enabled) return;
+    cancelAnimationFrame(rafRef.current);
+    e.currentTarget.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
+  }, [enabled]);
 
-  const onMouseLeave = enabled
-    ? () => {
-        x.set(0);
-        y.set(0);
-      }
-    : undefined;
-
-  return {
-    rotateX: enabled ? rotateX : 0,
-    rotateY: enabled ? rotateY : 0,
-    onMouseMove,
-    onMouseLeave,
-  };
+  return { onMouseMove, onMouseLeave };
 }
 
-function useShimmer(enabled, isDark = false) {
-  const mouseX = useMotionValue(-200);
-  const mouseY = useMotionValue(-200);
+function useShimmerHandler(enabled) {
+  const rafRef = useRef(null);
 
-  const onMouseMove = enabled
-    ? (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        mouseX.set(e.clientX - rect.left);
-        mouseY.set(e.clientY - rect.top);
-      }
-    : undefined;
+  const onMouseMove = useCallback((e) => {
+    if (!enabled) return;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+      e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+    });
+  }, [enabled]);
 
-  const onMouseLeave = enabled
-    ? () => {
-        mouseX.set(-200);
-        mouseY.set(-200);
-      }
-    : undefined;
+  const onMouseLeave = useCallback(() => {
+    if (!enabled) return;
+    cancelAnimationFrame(rafRef.current);
+  }, [enabled]);
 
-  const shimmerColor = isDark ? "oklch(0.6460 0.2220 41.1160 / 0.06)" : "oklch(0.6460 0.2220 41.1160 / 0.04)";
-
-  const background = useTransform(
-    [mouseX, mouseY],
-    ([mx, my]) => `radial-gradient(200px circle at ${mx}px ${my}px, ${shimmerColor}, transparent 80%)`,
-  );
-
-  return {
-    background: enabled ? background : "none",
-    onMouseMove,
-    onMouseLeave,
-  };
+  return { onMouseMove, onMouseLeave };
 }
 
 function Card({
@@ -79,66 +58,48 @@ function Card({
   delay = 0,
   ...props
 }) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { ref, inView } = useInView({ once: whileInView, margin: "-60px" });
 
   const baseStyles = cn(
     "group/card relative flex flex-col gap-6 overflow-hidden rounded-xl bg-card py-6 text-sm text-card-foreground shadow-xs ring-1 ring-foreground/10 dark:ring-foreground/20",
     "has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4",
     "*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+    tilt && "card-tilt",
     className,
   );
 
   const tiltProps = useTilt(tilt);
-  const shimmerProps = useShimmer(shimmer, isDark);
+  const shimmerProps = useShimmerHandler(shimmer);
 
   const mergedMouseMove = (e) => {
     tiltProps.onMouseMove?.(e);
     shimmerProps.onMouseMove?.(e);
   };
+
   const mergedMouseLeave = (e) => {
     tiltProps.onMouseLeave?.(e);
     shimmerProps.onMouseLeave?.(e);
   };
 
   if (!animate) {
-    return <div data-slot="card" data-size={size} className={baseStyles} {...props} />;
+    return <div ref={ref} data-slot="card" data-size={size} className={baseStyles} {...props} />;
   }
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       data-slot="card"
       data-size={size}
-      className={baseStyles}
-      variants={animations.entrance.fadeUp}
-      initial="hidden"
-      {...(whileInView ? { whileInView: "visible", viewport: animations.inView.once } : { animate: "visible" })}
-      transition={{ ...transitionTokens.normal, delay }}
-      whileHover={{
-        y: -3,
-        boxShadow: isDark
-          ? "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.2)"
-          : "0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.12)",
-      }}
-      style={{
-        rotateX: tiltProps.rotateX,
-        rotateY: tiltProps.rotateY,
-        transformPerspective: 800,
-        transformStyle: "preserve-3d",
-      }}
+      data-shimmer={shimmer || undefined}
+      data-in-view={inView || undefined}
+      className={cn("animate-in-fade-up", baseStyles)}
+      style={{ animationDelay: delay ? `${delay}s` : undefined }}
       onMouseMove={mergedMouseMove}
       onMouseLeave={mergedMouseLeave}
       {...props}
     >
-      {shimmer && (
-        <motion.div
-          className="pointer-events-none absolute inset-0 z-10 rounded-xl"
-          style={{ background: shimmerProps.background }}
-          aria-hidden
-        />
-      )}
       {props.children}
-    </motion.div>
+    </div>
   );
 }
 

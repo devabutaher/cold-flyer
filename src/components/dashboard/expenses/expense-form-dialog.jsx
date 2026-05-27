@@ -14,7 +14,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { getClient } from "@/lib/http-client";
 import { expenseFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +34,6 @@ const CATEGORY_OPTIONS = [
   { value: "office_supplies", label: "Office Supplies" },
   { value: "marketing", label: "Marketing" },
   { value: "food", label: "Food" },
-  { value: "other", label: "Other" },
 ];
 
 const INITIAL_FORM = { item: "", amount: "", date: "", category: "" };
@@ -173,18 +172,12 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
                 name="category"
                 control={control}
                 render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="category" className="w-full">
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORY_OPTIONS.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SelectWithOther
+                    options={CATEGORY_OPTIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select category"
+                  />
                 )}
               />
             </div>

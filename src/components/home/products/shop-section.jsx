@@ -89,7 +89,7 @@ function ServiceCard({ service }) {
           <ServiceFeatures features={service.includes} />
         </div>
         <Button className="w-full" asChild>
-          <Link href={`/dashboard/bookings/new/${service._id}`}>{tc("bookNow")}</Link>
+          <Link href={`/book/${service._id}`}>{tc("bookNow")}</Link>
         </Button>
       </div>
     </div>

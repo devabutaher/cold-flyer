@@ -73,6 +73,7 @@ export default function ProductsTable({ isAdmin = false }) {
       defaultSort={[]}
       emptyMessage="No products found. Add your first product to get started."
       emptyIcon={<Package size={40} />}
+      searchFields={["sku", "name", "category", "brand", "tag", "warranty"]}
       toolbar={(table) => (
         <TableToolbar
           table={table}

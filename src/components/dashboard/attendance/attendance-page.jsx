@@ -202,6 +202,7 @@ export default function AttendancePage() {
             rowCount="records"
             defaultSort={[{ id: "date", desc: true }]}
             emptyMessage="No attendance history found."
+            searchFields={["workerName", "date", "location", "task"]}
             emptyIcon={<Users size={40} />}
             toolbar={(table) => (
               <TableToolbar

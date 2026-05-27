@@ -43,7 +43,26 @@ export function useDeleteTechnician(componentOptions = {}) {
     mutationFn: (id) => client().delete(`/admin/technicians/${id}`),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: technicianKeys.all });
-      toast.success("Technician removed");
+      toast.success("Worker removed");
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      toast.error(error.response?.data?.message || error.message);
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}
+
+export function useCreateWorker(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: (data) => client().post("/admin/workers", data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: technicianKeys.all });
+      toast.success("Worker created successfully");
       userOnSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {

@@ -88,6 +88,7 @@ export default function OrdersPage() {
         defaultSort={[{ id: "createdAt", desc: true }]}
         emptyMessage="You haven't placed any orders yet."
         emptyIcon={<ShoppingBag size={40} />}
+        searchFields={["orderNumber", "user.name", "user.email", "user.phone", "status", "paymentStatus"]}
         emptyAction={
           <Button asChild size="sm" animate={false}>
             <Link href="/items">Start Shopping</Link>

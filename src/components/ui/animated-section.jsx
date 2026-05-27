@@ -1,13 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { animations, transitionTokens } from "@/lib/animation";
+import { useInView } from "@/hooks/use-in-view";
+import { cn } from "@/lib/utils";
+
+const variantMap = {
+  fadeUp: "fade-up",
+  fadeIn: "fade",
+  fadeLeft: "fade-left",
+  fadeRight: "fade-right",
+  scaleUp: "scale-up",
+};
 
 export function AnimatedSection({
   children,
   className,
-  variant = "fadeUp",
-  transition = "normal",
+  variant = "fade-up",
   delay = 0,
   once = true,
   margin = "-60px",
@@ -15,23 +22,17 @@ export function AnimatedSection({
   id,
   ...props
 }) {
-  const Component = motion[as] || motion.section;
+  const { ref, inView } = useInView({ once, margin });
+  const Component = as;
+  const animClass = `animate-in-${variantMap[variant] || variant}`;
 
   return (
     <Component
+      ref={ref}
       id={id}
-      className={className}
-      variants={animations.entrance[variant] || animations.entrance.fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once,
-        margin,
-      }}
-      transition={{
-        ...transitionTokens[transition],
-        delay,
-      }}
+      className={cn(animClass, className)}
+      data-in-view={inView || undefined}
+      style={delay ? { animationDelay: `${delay}s` } : undefined}
       {...props}
     >
       {children}

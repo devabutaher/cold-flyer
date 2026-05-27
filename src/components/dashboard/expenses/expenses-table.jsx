@@ -122,6 +122,7 @@ export default function ExpensesTable() {
         defaultSort={[{ id: "date", desc: true }]}
         emptyMessage="No expenses found."
         emptyIcon={<Receipt size={40} />}
+        searchFields={["item", "category", "amount", "date", "addedBy.name", "addedBy"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

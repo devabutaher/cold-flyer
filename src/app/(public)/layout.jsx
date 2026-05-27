@@ -1,3 +1,5 @@
+import { FloatingContactButtons } from "@/components/layout/floating-contact-buttons";
+import { ServiceOfferPopup } from "@/components/layout/service-offer-popup";
 import Footer from "@/components/layout/footer/footer";
 import Navbar from "@/components/layout/navbar/navbar";
 import { TextSlider } from "@/components/ui/text-slider";
@@ -29,6 +31,8 @@ export default function layout({ children }) {
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
+      <FloatingContactButtons />
+      <ServiceOfferPopup />
       <PWAInstallPrompt />
     </>
   );

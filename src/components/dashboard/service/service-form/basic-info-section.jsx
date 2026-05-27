@@ -3,22 +3,27 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Textarea } from "@/components/ui/textarea";
 import { Info } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
 
-const CATEGORIES = ["installation", "maintenance", "repair", "support"];
+const CATEGORIES = [
+  { value: "installation", label: "Installation" },
+  { value: "maintenance", label: "Maintenance" },
+  { value: "repair", label: "Repair" },
+  { value: "support", label: "Support" },
+];
 const SERVICE_TYPES = [
-  "installation",
-  "preventative care",
-  "efficiency tuning",
-  "rapid response",
-  "repair",
-  "consultation",
-  "emergency",
-  "inspection",
+  { value: "installation", label: "Installation" },
+  { value: "preventative care", label: "Preventative Care" },
+  { value: "efficiency tuning", label: "Efficiency Tuning" },
+  { value: "rapid response", label: "Rapid Response" },
+  { value: "repair", label: "Repair" },
+  { value: "consultation", label: "Consultation" },
+  { value: "emergency", label: "Emergency" },
+  { value: "inspection", label: "Inspection" },
 ];
 
 export function ServiceBasicInfoSection({ control }) {
@@ -66,18 +71,12 @@ export function ServiceBasicInfoSection({ control }) {
                 <FieldLabel>
                   Category <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger aria-invalid={fieldState.invalid}>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map((c) => (
-                      <SelectItem key={c} value={c}>
-                        {c.charAt(0).toUpperCase() + c.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectWithOther
+                  options={CATEGORIES}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select category"
+                />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -91,18 +90,12 @@ export function ServiceBasicInfoSection({ control }) {
                 <FieldLabel>
                   Service Type <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger aria-invalid={fieldState.invalid}>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SERVICE_TYPES.map((t) => (
-                      <SelectItem key={t} value={t}>
-                        {t.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectWithOther
+                  options={SERVICE_TYPES}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select type"
+                />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}

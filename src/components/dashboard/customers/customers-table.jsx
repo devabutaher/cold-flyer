@@ -19,9 +19,12 @@ const mapRow = (c) => ({
   brand: c.brand || "—",
   model: c.model || "—",
   unit: c.unit || "—",
+  acTon: c.acTon || "—",
+  gasType: c.gasType || "—",
   service: c.service || "—",
   installDate: c.installDate ? new Date(c.installDate).toLocaleDateString() : "—",
   amount: c.amount || 0,
+  bookingCount: c.bookingCount || 0,
   status: c.status || "active",
 });
 
@@ -32,9 +35,12 @@ const PDF_COLUMNS = [
   { header: "Brand", accessorKey: "brand", width: 1.2 },
   { header: "Model", accessorKey: "model", width: 1.2 },
   { header: "Unit", accessorKey: "unit", width: 1 },
+  { header: "Ton", accessorKey: "acTon", width: 0.8 },
+  { header: "Gas Type", accessorKey: "gasType", width: 1 },
   { header: "Service", accessorKey: "service", width: 1 },
   { header: "Install Date", accessorKey: "installDate", width: 1 },
   { header: "Amount", accessorKey: "amount", width: 0.8 },
+  { header: "Bookings", accessorKey: "bookingCount", width: 0.8 },
   { header: "Status", accessorKey: "status", width: 0.8 },
 ];
 
@@ -134,6 +140,7 @@ export default function CustomersTable() {
         defaultSort={[]}
         emptyMessage="No customers found."
         emptyIcon={<Users size={40} />}
+        searchFields={["customerId", "name", "phone", "email", "brand", "model", "unit", "acTon", "gasType", "service", "status"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

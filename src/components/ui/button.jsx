@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import { motion, useReducedMotion } from "framer-motion";
 import { Slot } from "radix-ui";
 
 const buttonVariants = cva(
@@ -42,100 +41,38 @@ const buttonVariants = cva(
   },
 );
 
-// Per-variant animation config — different buttons feel different
-const VARIANT_MOTION = {
-  // Primary CTA: crisp spring tap + a fast shimmer sweep on hover
-  default: {
-    whileHover: { scale: 1.015 },
-    whileTap: { scale: 0.965 },
-    transition: { type: "spring", stiffness: 500, damping: 22, mass: 0.6 },
-    shimmer: true,
-  },
-  // Outline: gentle lift, no shimmer (border already adds hover feedback)
-  outline: {
-    whileHover: { y: -1 },
-    whileTap: { y: 0, scale: 0.98 },
-    transition: { type: "spring", stiffness: 400, damping: 20 },
-    shimmer: false,
-  },
-  // Secondary: same gentle lift
-  secondary: {
-    whileHover: { y: -1 },
-    whileTap: { scale: 0.97 },
-    transition: { type: "spring", stiffness: 400, damping: 20 },
-    shimmer: false,
-  },
-  // Ghost: minimal — just a quick scale-down on tap
-  ghost: {
-    whileTap: { scale: 0.96 },
-    transition: { type: "spring", stiffness: 500, damping: 25 },
-    shimmer: false,
-  },
-  // Destructive: firm press, no scale-up (danger actions should feel weighty)
-  destructive: {
-    whileTap: { scale: 0.96 },
-    transition: { type: "spring", stiffness: 500, damping: 22 },
-    shimmer: false,
-  },
-  link: {
-    transition: { duration: 0 },
-    shimmer: false,
-  },
+// Per-variant animation scale for hover/tap — CSS only
+const VARIANT_TRANSFORM = {
+  default: { hover: 1.015, tap: 0.965 },
+  outline: { hover: null, tap: 0.98 },
+  secondary: { hover: null, tap: 0.97 },
+  ghost: { hover: null, tap: 0.96 },
+  destructive: { hover: null, tap: 0.96 },
+  link: { hover: null, tap: null },
 };
 
-// Light sweep that passes left→right on hover — only for default variant
-function ShimmerLayer() {
-  return (
-    <motion.span
-      aria-hidden
-      className="pointer-events-none absolute inset-0 -translate-x-full"
-      style={{
-        background: "linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.18) 50%, transparent 60%)",
-      }}
-      initial={false}
-      variants={{
-        rest: { x: "-100%", opacity: 0 },
-        hover: {
-          x: "100%",
-          opacity: 1,
-          transition: { duration: 0.45, ease: "easeInOut" },
-        },
-      }}
-    />
-  );
-}
-
 function Button({ className, variant = "default", size = "default", asChild = false, animate = true, ...props }) {
-  const shouldReduceMotion = useReducedMotion();
   const classNames = cn(buttonVariants({ variant, size, className }));
+  const cfg = VARIANT_TRANSFORM[variant] ?? VARIANT_TRANSFORM.default;
 
-  if (!animate || asChild || shouldReduceMotion) {
-    const { asChild: _, ...restProps } = props;
+  if (!animate || asChild) {
     const Element = asChild ? Slot.Root : "button";
-    return <Element data-slot="button" data-variant={variant} data-size={size} className={classNames} {...restProps} />;
+    return <Element data-slot="button" data-variant={variant} data-size={size} className={classNames} {...props} />;
   }
 
-  const motionCfg = VARIANT_MOTION[variant] ?? VARIANT_MOTION.default;
-  const { shimmer, ...motionProps } = motionCfg;
-  const { asChild: _, ...restProps } = props;
-
   return (
-    <motion.button
+    <button
       data-slot="button"
       data-variant={variant}
       data-size={size}
+      data-animate="true"
       className={classNames}
-      initial="rest"
-      whileHover="hover"
-      whileTap="tap"
-      animate="rest"
-      {...motionProps}
-      {...restProps}
-    >
-      {shimmer && <ShimmerLayer />}
-      {/* Content sits above the shimmer layer */}
-      <span className="relative z-10 inline-flex items-center gap-[inherit]">{props.children}</span>
-    </motion.button>
+      style={{
+        "--btn-scale-hover": cfg.hover || 1,
+        "--btn-scale-tap": cfg.tap || 0.96,
+      }}
+      {...props}
+    />
   );
 }
 

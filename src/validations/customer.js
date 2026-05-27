@@ -12,6 +12,8 @@ export const customerFormSchema = z.object({
   brand: z.string().optional(),
   model: z.string().optional(),
   unit: z.string().optional(),
+  acTon: z.string().optional(),
+  gasType: z.string().optional(),
   installDate: z.string().optional(),
   service: z.string().min(1, "Service type is required"),
   amount: z.coerce.number().min(0, "Amount cannot be negative").optional(),

@@ -185,12 +185,19 @@ export default function LocationPage() {
           defaultSort={[]}
           emptyMessage="No location updates today."
           emptyIcon={<MapPin size={40} />}
+          searchFields={["workerName", "address", "task", "time"]}
           toolbar={(table) => (
             <TableToolbar
               table={table}
               searchPlaceholder="Search log..."
               selectedLabel="entries"
-              filters={[]}
+              filters={[
+                {
+                  columnId: "workerName",
+                  placeholder: "All Workers",
+                  allLabel: "All Workers",
+                },
+              ]}
               actions={
                 <ExportMenu
                   table={table}

@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/components/providers/cart-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "next-themes";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 
 export function Providers({ children }) {
   return (
@@ -15,7 +15,9 @@ export function Providers({ children }) {
         <QueryProvider>
           <CartProvider>
             <AuthProvider>
-              <AnimatePresence mode="popLayout">{children}</AnimatePresence>
+              <MotionConfig reducedMotion="user">
+                <AnimatePresence mode="popLayout">{children}</AnimatePresence>
+              </MotionConfig>
               <Toaster />
             </AuthProvider>
           </CartProvider>

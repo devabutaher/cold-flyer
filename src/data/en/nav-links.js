@@ -88,16 +88,6 @@ export const moreLinks = [
     icon: <Briefcase />,
   },
   {
-    label: "Privacy Policy",
-    href: "/privacy",
-    icon: <ShieldCheck />,
-  },
-  {
-    label: "Terms & Conditions",
-    href: "/terms",
-    icon: <FileText />,
-  },
-  {
     label: "Shipping & Returns",
     href: "/shipping",
     icon: <Truck />,

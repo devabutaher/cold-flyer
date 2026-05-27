@@ -8,4 +8,5 @@ export { customerFormSchema } from "./customer";
 export { expenseFormSchema } from "./expense";
 export { couponFormSchema } from "./coupon";
 export { addressSchema, passwordChangeSchema, profileEditSchema } from "./profile";
+export { createUserSchema } from "./user";
 export { applicationSchema } from "./application";

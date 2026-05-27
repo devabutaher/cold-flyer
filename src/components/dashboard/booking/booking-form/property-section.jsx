@@ -2,10 +2,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Home } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { Controller } from "react-hook-form";
+
+const PROPERTY_TYPE_OPTIONS = ["residential", "commercial", "industrial", "apartment"];
 
 export function PropertySection({ control }) {
   return (
@@ -13,7 +15,7 @@ export function PropertySection({ control }) {
       <CardHeader>
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-            <Home className="h-4 w-4 text-primary" />
+            <Building2 className="h-4 w-4 text-primary" />
           </div>
           <div>
             <CardTitle className="text-base">Property Details</CardTitle>
@@ -30,17 +32,12 @@ export function PropertySection({ control }) {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Property Type</FieldLabel>
-              <Select value={field.value ?? "residential"} onValueChange={field.onChange}>
-                <SelectTrigger aria-invalid={fieldState.invalid}>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="residential">Residential</SelectItem>
-                  <SelectItem value="commercial">Commercial</SelectItem>
-                  <SelectItem value="industrial">Industrial</SelectItem>
-                  <SelectItem value="apartment">Apartment</SelectItem>
-                </SelectContent>
-              </Select>
+              <SelectWithOther
+                options={PROPERTY_TYPE_OPTIONS}
+                value={field.value ?? "residential"}
+                onChange={field.onChange}
+                placeholder="Select type"
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

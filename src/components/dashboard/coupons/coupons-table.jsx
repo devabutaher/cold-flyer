@@ -105,6 +105,7 @@ export default function CouponsTable() {
         defaultSort={[]}
         emptyMessage="No coupons yet. Create your first coupon."
         emptyIcon={<Percent size={40} />}
+        searchFields={["code", "discountValue", "discountType", "minOrderAmount", "maxUsage"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

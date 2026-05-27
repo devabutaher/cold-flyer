@@ -73,6 +73,23 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
       cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("unit") || "—"}</span>,
     },
     {
+      header: "Ton",
+      accessorKey: "acTon",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("acTon") || "—"}</span>,
+    },
+    {
+      header: "Gas Type",
+      accessorKey: "gasType",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("gasType") || "—"}</span>,
+    },
+    {
+      header: "Bookings",
+      accessorKey: "bookingCount",
+      cell: ({ row }) => (
+        <span className="text-sm font-mono">{row.getValue("bookingCount") ?? 0}</span>
+      ),
+    },
+    {
       header: "Service",
       accessorKey: "service",
       cell: ({ row }) => <span className="text-sm capitalize">{row.getValue("service") || "—"}</span>,

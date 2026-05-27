@@ -18,7 +18,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { getClient } from "@/lib/http-client";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -26,7 +26,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { customerFormSchema } from "@/validations";
 
-const SERVICE_OPTIONS = ["Installation", "Repair", "Maintenance", "Gas Fill", "Other"];
+const SERVICE_OPTIONS = ["Installation", "Repair", "Maintenance", "Gas Fill"];
 
 const INITIAL_FORM = {
   name: "",
@@ -37,6 +37,8 @@ const INITIAL_FORM = {
   brand: "",
   model: "",
   unit: "",
+  acTon: "",
+  gasType: "",
   installDate: "",
   service: "",
   amount: "",
@@ -53,6 +55,8 @@ function getInitialForm(mode, customer) {
       brand: customer.brand || "",
       model: customer.model || "",
       unit: customer.unit || "",
+      acTon: customer.acTon || "",
+      gasType: customer.gasType || "",
       installDate: customer.installDate ? customer.installDate.slice(0, 10) : "",
       service: customer.service || "",
       amount: customer.amount?.toString() || "",
@@ -92,6 +96,8 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
         brand: formData.brand || undefined,
         model: formData.model || undefined,
         unit: formData.unit || undefined,
+        acTon: formData.acTon || undefined,
+        gasType: formData.gasType || undefined,
         installDate: formData.installDate || undefined,
       };
       if (mode === "create") {
@@ -208,6 +214,26 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
+              <Label htmlFor="acTon" className="mb-1.5 block">
+                Ton
+              </Label>
+              <Controller
+                name="acTon"
+                control={control}
+                render={({ field }) => <Input id="acTon" {...field} placeholder="e.g. 1.5" />}
+              />
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <Label htmlFor="gasType" className="mb-1.5 block">
+                Gas Type
+              </Label>
+              <Controller
+                name="gasType"
+                control={control}
+                render={({ field }) => <Input id="gasType" {...field} placeholder="e.g. R32" />}
+              />
+            </div>
+            <div className="col-span-2 sm:col-span-1">
               <Label className="mb-1.5 block">Install Date</Label>
               <Controller
                 name="installDate"
@@ -247,18 +273,12 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
                 name="service"
                 control={control}
                 render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="service" className="w-full">
-                      <SelectValue placeholder="Select service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {SERVICE_OPTIONS.map((opt) => (
-                        <SelectItem key={opt} value={opt}>
-                          {opt}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SelectWithOther
+                    options={SERVICE_OPTIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select service"
+                  />
                 )}
               />
               {errors.service && <p className="text-xs text-destructive mt-1">{errors.service.message}</p>}

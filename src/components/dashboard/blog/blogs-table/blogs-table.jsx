@@ -37,6 +37,7 @@ export default function BlogsTable({ isAdmin = false }) {
     return [...new Set(values)].sort();
   };
   const categoriesOptions = getUnique(blogs, "category");
+  const featuredOptions = ["true", "false"];
 
   return (
     <DataTable
@@ -47,6 +48,7 @@ export default function BlogsTable({ isAdmin = false }) {
       defaultSort={[{ id: "createdAt", desc: true }]}
       emptyMessage="No blog posts found. Create your first blog post to get started."
       emptyIcon={<Newspaper size={40} />}
+      searchFields={["title", "author.name", "category", "tags", "metaTitle"]}
       toolbar={(table) => (
         <TableToolbar
           table={table}
@@ -58,6 +60,12 @@ export default function BlogsTable({ isAdmin = false }) {
               placeholder: "All Categories",
               allLabel: "All Categories",
               options: categoriesOptions,
+            },
+            {
+              columnId: "featured",
+              placeholder: "All Featured",
+              allLabel: "All Featured",
+              options: featuredOptions,
             },
           ]}
         />

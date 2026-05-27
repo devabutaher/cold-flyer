@@ -31,7 +31,7 @@ export default function ApplicationsTable() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-applications"] });
       queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
-      toast.success("Application approved. Technician profile created.");
+      toast.success("Application approved. Worker profile created.");
       setApproveApp(null);
     },
     onError: (err) => toast.error(err.response?.data?.message || err.message),
@@ -73,6 +73,10 @@ export default function ApplicationsTable() {
   );
 
   const statusOptions = ["pending", "approved", "rejected"];
+  const positionOptions = useMemo(() => {
+    const positions = [...new Set(applications.map((a) => a.position).filter(Boolean))];
+    return positions.sort();
+  }, [applications]);
 
   return (
     <>
@@ -84,6 +88,7 @@ export default function ApplicationsTable() {
         defaultSort={[]}
         emptyMessage="No applications found."
         emptyIcon={<FileText size={40} />}
+        searchFields={["name", "email", "phone", "position", "experience", "status"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}
@@ -95,6 +100,12 @@ export default function ApplicationsTable() {
                 placeholder: "All Statuses",
                 allLabel: "All Statuses",
                 options: statusOptions,
+              },
+              {
+                columnId: "position",
+                placeholder: "All Positions",
+                allLabel: "All Positions",
+                options: positionOptions,
               },
             ]}
           />

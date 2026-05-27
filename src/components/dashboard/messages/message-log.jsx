@@ -63,12 +63,19 @@ export function MessageLog({ messages, isLoading }) {
         defaultSort={[]}
         emptyMessage="No messages sent yet."
         emptyIcon={<MessageSquare size={40} />}
+        searchFields={["name", "number", "channel", "time"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}
             searchPlaceholder="Search messages..."
             selectedLabel="messages"
-            filters={[]}
+            filters={[
+              {
+                columnId: "channel",
+                placeholder: "All Channels",
+                allLabel: "All Channels",
+              },
+            ]}
             actions={
               <ExportMenu
                 table={table}

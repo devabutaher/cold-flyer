@@ -3,16 +3,16 @@
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import { AnimatePresence, motion } from "framer-motion";
+import { useInView } from "@/hooks/use-in-view";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { animations } from "@/lib/animation";
 
 const FAQ_IDS = ["faqQ1", "faqQ2", "faqQ3", "faqQ4", "faqQ5", "faqQ6"];
 
 function AnimatedChevron({ isOpen }) {
   return (
-    <motion.svg
+    <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
@@ -22,12 +22,10 @@ function AnimatedChevron({ isOpen }) {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-primary"
-      animate={{ rotate: isOpen ? 180 : 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`shrink-0 text-primary transition-transform duration-300 ease-out ${isOpen ? "rotate-180" : ""}`}
     >
       <path d="m6 9 6 6 6-6" />
-    </motion.svg>
+    </svg>
   );
 }
 
@@ -65,13 +63,13 @@ function FaqItem({ item, openValue }) {
 
 function FaqImage() {
   const t = useTranslations("home");
+  const { ref, inView } = useInView({ once: true });
+
   return (
-    <motion.div
-      className="relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-130"
-      variants={animations.entrance.fadeLeft}
-      initial="hidden"
-      whileInView="visible"
-      viewport={animations.inView.once}
+    <div
+      ref={ref}
+      className="animate-in-fade-left relative h-64 w-full shrink-0 overflow-hidden rounded-xl shadow-lg md:h-80 lg:h-130"
+      data-in-view={inView || undefined}
     >
       <Image
         src="https://plus.unsplash.com/premium_photo-1661911309991-cc81afcce97d?q=80&w=1170&auto=format&fit=crop"
@@ -82,17 +80,16 @@ function FaqImage() {
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-        <motion.div
-          className="inline-block rounded-lg border border-white/10 bg-background/10 p-4 backdrop-blur-md"
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.3 }}
+        <div
+          className="animate-in-scale-up inline-block rounded-lg border border-white/10 bg-background/10 p-4 backdrop-blur-md"
+          data-in-view={inView || undefined}
+          style={{ animationDelay: "0.3s" }}
         >
           <p className="text-base font-bold text-white md:text-lg">{t("faqSupportTitle")}</p>
           <p className="mt-1 text-sm text-white/90">{t("faqSupportDesc")}</p>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

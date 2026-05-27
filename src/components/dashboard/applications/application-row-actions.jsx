@@ -116,7 +116,7 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
               permanently deleted.
               {application.status === "approved" && (
                 <span className="block mt-2 text-destructive">
-                  This application is already approved. Remove the technician profile first.
+                  This application is already approved. Remove the worker profile first.
                 </span>
               )}
             </AlertDialogDescription>

@@ -84,7 +84,7 @@ export const navGroups = [
         icon: <FileText />,
       },
       {
-        title: "Technicians",
+        title: "Workers",
         path: "/dashboard/technicians",
         icon: <Wrench />,
       },

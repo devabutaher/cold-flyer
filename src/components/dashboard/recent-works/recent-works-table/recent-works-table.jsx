@@ -47,6 +47,7 @@ export default function RecentWorksTable({ isAdmin = false }) {
     return [...new Set(values)].sort();
   };
   const categoriesOptions = getUnique(recentWorks, "category");
+  const featuredOptions = ["true", "false"];
 
   return (
     <DataTable
@@ -57,6 +58,7 @@ export default function RecentWorksTable({ isAdmin = false }) {
       defaultSort={[{ id: "createdAt", desc: true }]}
       emptyMessage="No recent works found. Add your first project to get started."
       emptyIcon={<Briefcase size={40} />}
+      searchFields={["title", "category", "clientName", "description"]}
       toolbar={(table) => (
         <TableToolbar
           table={table}
@@ -68,6 +70,12 @@ export default function RecentWorksTable({ isAdmin = false }) {
               placeholder: "All Categories",
               allLabel: "All Categories",
               options: categoriesOptions,
+            },
+            {
+              columnId: "featured",
+              placeholder: "All Featured",
+              allLabel: "All Featured",
+              options: featuredOptions,
             },
           ]}
         />

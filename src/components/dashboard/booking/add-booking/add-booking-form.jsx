@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useCreateBooking } from "@/hooks/queries/bookings";
+import { useAuth } from "@/components/providers";
 import { parseListInput } from "@/lib/utils";
 import { getAddressesAction, deleteAddressAction, setDefaultAddressAction } from "@/lib/actions/user";
 import { AddressFormSheet } from "@/components/dashboard/profile/address-form-sheet";
@@ -9,9 +10,14 @@ import { AddressPicker } from "@/components/checkout/address-picker";
 import { DISTRICTS, THANAS } from "@/data/bd-addresses";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
-import { FormHeader, ScheduleSection, PropertySection, NotesSection } from "../booking-form";
+import { FormHeader, ScheduleSection, NotesSection, ServiceDetailsSection, AddressFields } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { User, MapPin } from "lucide-react";
+import { Controller } from "react-hook-form";
 
 import { bookingFormSchema } from "@/validations";
 
@@ -21,11 +27,24 @@ const initialValues = {
   propertyType: "residential",
   issues: "",
   notes: "",
+  acBrand: "",
+  acModel: "",
+  acTon: "",
+  acGasType: "",
+  acType: "",
+  customerName: "",
+  customerPhone: "",
+  customerEmail: "",
+  guestAddress: "",
+  guestDistrict: "",
+  guestThana: "",
 };
 
-export default function AddBookingForm({ serviceId, serviceName }) {
+export default function AddBookingForm({ serviceId, serviceName, guestMode = false }) {
   const router = useRouter();
   const createBooking = useCreateBooking();
+  const { backendUser } = useAuth();
+  const isLoggedIn = !!backendUser;
 
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -41,33 +60,45 @@ export default function AddBookingForm({ serviceId, serviceName }) {
     [addresses, effectiveSelectedId],
   );
 
-  useEffect(() => {
-    getAddressesAction().then((result) => {
-      if (result.success) {
-        setAddresses(result.addresses);
-        setSelectedAddressId((prev) => {
-          if (prev) return prev;
-          return result.addresses.find((a) => a.isDefault)?._id || result.addresses[0]?._id || null;
-        });
-      }
-    });
-  }, []);
+  const formDefaultValues = useMemo(
+    () => ({
+      ...initialValues,
+      customerName: backendUser?.name || "",
+      customerPhone: backendUser?.phone || "",
+      customerEmail: backendUser?.email || "",
+    }),
+    [backendUser],
+  );
 
   const form = useForm({
-    defaultValues: initialValues,
+    defaultValues: formDefaultValues,
     resolver: zodResolver(bookingFormSchema),
     mode: "onTouched",
   });
 
+  useEffect(() => {
+    if (isLoggedIn && !guestMode) {
+      getAddressesAction().then((result) => {
+        if (result.success) {
+          setAddresses(result.addresses);
+          setSelectedAddressId((prev) => {
+            if (prev) return prev;
+            return result.addresses.find((a) => a.isDefault)?._id || result.addresses[0]?._id || null;
+          });
+        }
+      });
+    }
+  }, [isLoggedIn, guestMode]);
+
   const completedSections = useWatch({
     control: form.control,
-    name: ["scheduledDate", "notes"],
+    name: ["scheduledDate", "notes", "guestAddress"],
   });
 
   const completedCount = useMemo(() => {
     let count = 0;
     if (completedSections[0]) count++;
-    if (selectedAddress) count++;
+    if (selectedAddress || completedSections[2]) count++;
     return count;
   }, [completedSections, selectedAddress]);
 
@@ -102,10 +133,15 @@ export default function AddBookingForm({ serviceId, serviceName }) {
   }
 
   async function onSubmit(values) {
-    if (!selectedAddress) return;
+    const districtName = guestMode
+      ? DISTRICTS.find((d) => d.id === values.guestDistrict)?.name || values.guestDistrict
+      : DISTRICTS.find((d) => d.id === selectedAddress?.district)?.name || selectedAddress?.district;
 
-    const districtName = DISTRICTS.find((d) => d.id === selectedAddress.district)?.name || selectedAddress.district;
-    const thanaName = THANAS.find((t) => t.id === selectedAddress.thana)?.name || selectedAddress.thana;
+    const thanaName = guestMode
+      ? THANAS.find((t) => t.id === values.guestThana)?.name || values.guestThana
+      : THANAS.find((t) => t.id === selectedAddress?.thana)?.name || selectedAddress?.thana;
+
+    if (!guestMode && !selectedAddress) return;
 
     const payload = {
       service: serviceId,
@@ -115,27 +151,47 @@ export default function AddBookingForm({ serviceId, serviceName }) {
         propertyType: values.propertyType,
         issues: values.issues ? parseListInput(values.issues) : [],
       },
-      serviceAddress: {
-        fullName: selectedAddress.fullName,
-        phone: selectedAddress.phone,
-        district: districtName,
-        thana: thanaName,
-        address: selectedAddress.address,
-      },
+      serviceAddress: guestMode
+        ? {
+            fullName: values.customerName,
+            phone: values.customerPhone,
+            district: districtName,
+            thana: thanaName,
+            address: values.guestAddress,
+          }
+        : {
+            fullName: selectedAddress.fullName,
+            phone: selectedAddress.phone,
+            district: districtName,
+            thana: thanaName,
+            address: selectedAddress.address,
+          },
       notes: values.notes || undefined,
+      acBrand: values.acBrand || undefined,
+      acModel: values.acModel || undefined,
+      acTon: values.acTon || undefined,
+      acGasType: values.acGasType || undefined,
+      acType: values.acType || undefined,
+      customerName: values.customerName,
+      customerPhone: values.customerPhone,
+      customerEmail: values.customerEmail || undefined,
     };
 
     try {
       await createBooking.mutateAsync(payload);
       form.reset(initialValues);
-      router.push("/dashboard/bookings");
+      if (guestMode) {
+        router.push("/services");
+      } else {
+        router.push("/dashboard/bookings");
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
   function handleReset() {
-    form.reset(initialValues);
+    form.reset(formDefaultValues);
   }
 
   return (
@@ -148,37 +204,117 @@ export default function AddBookingForm({ serviceId, serviceName }) {
       )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
         <ScheduleSection control={form.control} />
-        <PropertySection control={form.control} />
+        <ServiceDetailsSection control={form.control} />
 
-        <div className="rounded-2xl border border-border bg-card p-6">
-          <AddressPicker
-            addresses={addresses}
-            effectiveSelectedId={effectiveSelectedId}
-            onSelect={(id) => setSelectedAddressId(id)}
-            onAdd={() => {
-              setEditingAddress(null);
-              setAddressSheetOpen(true);
-            }}
-            onEdit={(addr) => {
-              setEditingAddress(addr);
-              setAddressSheetOpen(true);
-            }}
-            onDelete={handleDeleteAddress}
-            onSetDefault={handleSetDefaultAddress}
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                <User className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-base">Your Information</CardTitle>
+                <CardDescription className="text-xs mt-0.5">
+                  {guestMode ? "We&apos;ll create a customer profile for you" : "Contact information"}
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Controller
+                name="customerName"
+                control={form.control}
+                defaultValue=""
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>
+                      Name <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input {...field} value={field.value ?? ""} placeholder="Your full name" />
+                    {fieldState.invalid && <p className="text-xs text-destructive mt-1">{fieldState.error?.message}</p>}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="customerPhone"
+                control={form.control}
+                defaultValue=""
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>
+                      Phone <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input {...field} value={field.value ?? ""} placeholder="Your phone number" />
+                    {fieldState.invalid && <p className="text-xs text-destructive mt-1">{fieldState.error?.message}</p>}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="customerEmail"
+                control={form.control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Field>
+                    <FieldLabel>Email</FieldLabel>
+                    <Input {...field} value={field.value ?? ""} type="email" placeholder="your@email.com" />
+                  </Field>
+                )}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {guestMode ? (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                  <MapPin className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Service Address</CardTitle>
+                  <CardDescription className="text-xs mt-0.5">Where should we come?</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <AddressFields control={form.control} namePrefix="guest" />
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <AddressPicker
+              addresses={addresses}
+              effectiveSelectedId={effectiveSelectedId}
+              onSelect={(id) => setSelectedAddressId(id)}
+              onAdd={() => {
+                setEditingAddress(null);
+                setAddressSheetOpen(true);
+              }}
+              onEdit={(addr) => {
+                setEditingAddress(addr);
+                setAddressSheetOpen(true);
+              }}
+              onDelete={handleDeleteAddress}
+              onSetDefault={handleSetDefaultAddress}
+            />
+          </div>
+        )}
 
         <NotesSection control={form.control} />
         <FormActions onReset={handleReset} isPending={createBooking.isPending} submitLabel="Confirm Booking" />
       </form>
 
-      <AddressFormSheet
-        key={editingAddress?._id || "new"}
-        open={addressSheetOpen}
-        onOpenChange={setAddressSheetOpen}
-        address={editingAddress}
-        onSaved={handleAddressSaved}
-      />
+      {!guestMode && (
+        <AddressFormSheet
+          key={editingAddress?._id || "new"}
+          open={addressSheetOpen}
+          onOpenChange={setAddressSheetOpen}
+          address={editingAddress}
+          onSaved={handleAddressSaved}
+        />
+      )}
     </div>
   );
 }

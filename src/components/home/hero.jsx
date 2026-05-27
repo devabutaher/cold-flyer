@@ -5,70 +5,67 @@ import { Button } from "@/components/ui/button";
 import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
-function SlideContent({ slide, index, t }) {
+const styles = `
+  @keyframes hero-badge {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-title {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-animate {
+    will-change: transform, opacity;
+  }
+  .hero-animate:nth-child(1) {
+    animation: hero-badge 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+  }
+  .hero-animate:nth-child(2) {
+    animation: hero-title 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+  }
+  .hero-animate:nth-child(3) {
+    animation: hero-fade-up 0.45s ease-out 0.54s both;
+  }
+  .hero-animate:nth-child(4) {
+    animation: hero-fade-up 0.4s ease-out 0.76s both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-animate {
+      animation: none !important;
+    }
+  }
+`;
+
+function SlideContent({ slide, t }) {
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      className="container relative z-10 flex h-full flex-col items-start justify-center"
-      variants={{
-        hidden: {},
-        visible: {
-          transition: { staggerChildren: 0.12, delayChildren: 0.2 },
-        },
-      }}
-    >
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-          },
-        }}
-      >
+    <div className="container relative z-10 flex h-full flex-col items-start justify-center">
+      <div className="hero-animate">
         <Badge className="mb-3 sm:mb-4 md:mb-5 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm text-xxs sm:text-xs">
           {slide.badge}
         </Badge>
-      </motion.div>
+      </div>
 
-      <motion.h1
-        className="mb-3 sm:mb-4 max-w-2xl text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] text-white"
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-        }}
-      >
+      <h1 className="hero-animate mb-3 sm:mb-4 max-w-2xl text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] text-white">
         {slide.headline}
         <br />
         <span className="text-primary">{slide.highlight}</span>
-      </motion.h1>
+      </h1>
 
-      <motion.p
-        className="mb-5 sm:mb-7 max-w-lg text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-white/70"
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.45, delay: 0.1 } },
-        }}
-      >
+      <p className="hero-animate mb-5 sm:mb-7 max-w-lg text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-white/70">
         {slide.sub}
-      </motion.p>
+      </p>
 
-      <motion.div
-        className="flex flex-wrap gap-2 sm:gap-3"
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.4, delay: 0.2 } },
-        }}
-      >
+      <div className="hero-animate flex flex-wrap gap-2 sm:gap-3">
         <Link href="/items">
           <Button size="lg" className="group relative overflow-hidden sm:size-xl">
             <span className="relative z-10 inline-flex items-center gap-2">
@@ -83,8 +80,8 @@ function SlideContent({ slide, index, t }) {
             {t("common.ourServices")}
           </Button>
         </Link>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -103,6 +100,7 @@ export default function Hero() {
       ref={sectionRef}
       className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-112 w-full overflow-hidden bg-inverted"
     >
+      <style>{styles}</style>
       <div className="embla h-full relative" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {heroSliderData.map((slide, i) => (
@@ -122,13 +120,12 @@ export default function Hero() {
 
               <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
 
-              <SlideContent slide={slide} index={i} t={t} />
+              <SlideContent slide={slide} t={t} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Progress dots */}
       <div className="absolute top-1/2 right-4 sm:right-6 z-20 flex -translate-y-1/2 flex-col items-center gap-2">
         {heroSliderData.map((_, i) => (
           <button

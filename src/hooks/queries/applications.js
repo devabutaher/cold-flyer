@@ -30,7 +30,7 @@ export function useApproveApplication(componentOptions = {}) {
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
       queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
-      toast.success("Application approved. Technician profile created.");
+      toast.success("Application approved. Worker profile created.");
       userOnSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {

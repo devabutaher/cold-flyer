@@ -177,6 +177,41 @@ export function BookingDetails({ bookingId }) {
             </DetailCard>
           ) : null}
 
+          {(booking.acBrand || booking.acModel || booking.acTon || booking.acGasType || booking.acType) && (
+            <DetailCard icon={<Wrench size={15} className="text-primary" />} title="AC Unit">
+              {booking.acBrand && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Brand</span>
+                  <span className="font-medium">{booking.acBrand}</span>
+                </div>
+              )}
+              {booking.acModel && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Model</span>
+                  <span>{booking.acModel}</span>
+                </div>
+              )}
+              {booking.acTon && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Ton</span>
+                  <span>{booking.acTon}</span>
+                </div>
+              )}
+              {booking.acGasType && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Gas Type</span>
+                  <span>{booking.acGasType}</span>
+                </div>
+              )}
+              {booking.acType && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">AC Type</span>
+                  <span className="capitalize">{booking.acType}</span>
+                </div>
+              )}
+            </DetailCard>
+          )}
+
           {booking.serviceAddress && (
             <DetailCard icon={<MapPin size={15} className="text-primary" />} title="Service Address">
               {booking.serviceAddress.fullName && (
@@ -389,15 +424,30 @@ export function BookingDetails({ bookingId }) {
           </DetailCard>
 
           <DetailCard icon={<User size={15} className="text-primary" />} title="Booking Info">
-            {isAdmin && booking.user && (
+            {isAdmin && (booking.user || booking.customerName) && (
               <div className="space-y-1 pb-2 mb-2 border-b border-border">
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Customer</p>
-                <p className="font-medium">{booking.user.name || "—"}</p>
-                {booking.user.email && <p className="text-xs text-muted-foreground">{booking.user.email}</p>}
-                {booking.user.phone && (
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Smartphone size={11} /> {booking.user.phone}
-                  </p>
+                {booking.user ? (
+                  <>
+                    <p className="font-medium">{booking.user.name || "—"}</p>
+                    {booking.user.email && <p className="text-xs text-muted-foreground">{booking.user.email}</p>}
+                    {booking.user.phone && (
+                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Smartphone size={11} /> {booking.user.phone}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p className="font-medium">{booking.customerName || "—"}</p>
+                    {booking.customerEmail && <p className="text-xs text-muted-foreground">{booking.customerEmail}</p>}
+                    {booking.customerPhone && (
+                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Smartphone size={11} /> {booking.customerPhone}
+                      </p>
+                    )}
+                    <p className="text-xs italic text-muted-foreground mt-1">Guest booking</p>
+                  </>
                 )}
               </div>
             )}

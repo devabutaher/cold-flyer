@@ -55,6 +55,25 @@ export function useUpdateUserRole(componentOptions = {}) {
   });
 }
 
+export function useCreateUser(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: (data) => client().post("/admin/users", data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: userKeys.all });
+      toast.success("User created successfully");
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      toast.error(error.response?.data?.message || error.message);
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}
+
 export function useDeleteUser(componentOptions = {}) {
   const queryClient = useQueryClient();
   const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;

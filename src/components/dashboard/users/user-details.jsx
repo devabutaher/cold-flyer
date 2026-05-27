@@ -62,7 +62,7 @@ export function UserDetails({ userId }) {
     );
   }
 
-  const roleLabel = user.role === "admin" ? "Admin" : user.role === "technician" ? "Technician" : "User";
+  const roleLabel = user.role === "admin" ? "Admin" : user.role === "technician" ? "Worker" : "User";
   const roleClass =
     user.role === "admin"
       ? "bg-primary/10 text-primary"
@@ -276,7 +276,7 @@ export function UserDetails({ userId }) {
               </div>
               {user.technicianProfile && (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-2.5 text-xs text-blue-700">
-                  Has a technician profile linked
+                  Has a worker profile linked
                 </div>
               )}
             </CardContent>

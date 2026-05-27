@@ -10,13 +10,13 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTi
 import { DISTRICTS, getThanas } from "@/data/bd-addresses";
 import { addAddressAction, updateAddressAction } from "@/lib/actions/user";
 import { cn } from "@/lib/utils";
+import { addressSchema } from "@/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2, Home, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchema } from "@/validations";
 
 export const LABEL_OPTIONS = [
   { value: "Home", icon: Home },
@@ -44,29 +44,42 @@ function AddressForm({ control, errors, thanas }) {
         <Controller
           name="label"
           control={control}
-          render={({ field }) => (
-            <div className="flex gap-2">
-              {LABEL_OPTIONS.map((opt) => {
-                const Icon = opt.icon;
-                return (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => field.onChange(opt.value)}
-                    className={cn(
-                      "flex flex-1 items-center justify-center gap-2 rounded-md border py-2 text-sm font-medium transition-colors cursor-pointer",
-                      field.value === opt.value
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-input bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                    )}
-                  >
-                    <Icon className="size-4" />
-                    {t(opt.value.toLowerCase())}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          render={({ field }) => {
+            const isOther = !["Home", "Work"].includes(field.value);
+            return (
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  {LABEL_OPTIONS.map((opt) => {
+                    const Icon = opt.icon;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => field.onChange(opt.value === "Other" ? "" : opt.value)}
+                        className={cn(
+                          "flex flex-1 items-center justify-center gap-2 rounded-md border py-2 text-sm font-medium transition-colors cursor-pointer",
+                          (opt.value === "Other" ? isOther : field.value === opt.value)
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-input bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                        )}
+                      >
+                        <Icon className="size-4" />
+                        {t(opt.value.toLowerCase())}
+                      </button>
+                    );
+                  })}
+                </div>
+                {isOther && (
+                  <Input
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    placeholder={t("other")}
+                    autoFocus
+                  />
+                )}
+              </div>
+            );
+          }}
         />
       </div>
 
@@ -129,7 +142,7 @@ function AddressForm({ control, errors, thanas }) {
             <textarea
               id="addr-address"
               {...field}
-              className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
+              className="flex min-h-20 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
               rows={3}
             />
           )}

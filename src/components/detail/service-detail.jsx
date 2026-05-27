@@ -51,7 +51,7 @@ export default function ServiceDetailClient({ service }) {
     { icon: ThumbsUp, text: t("satisfactionGuaranteed") },
     { icon: Clock, text: t("timelyResponse") },
   ];
-  const bookingUrl = `/dashboard/bookings/new/${service._id}`;
+  const bookingUrl = `/book/${service._id}`;
 
   return (
     <div className="bg-background min-h-screen pb-10">

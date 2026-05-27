@@ -21,7 +21,6 @@ export const BRANDS = [
   "Walton",
   "Minister",
   "Vision",
-  "Other",
 ];
 
 export const TAGS = [

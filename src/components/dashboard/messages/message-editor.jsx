@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { TEMPLATES } from "./message-constants";
 
 export function MessageEditor({ template, message, onTemplateChange, onMessageChange, recipients }) {
@@ -17,18 +17,12 @@ export function MessageEditor({ template, message, onTemplateChange, onMessageCh
           <Label htmlFor="template" className="mb-1.5 block">
             Template
           </Label>
-          <Select value={template} onValueChange={onTemplateChange}>
-            <SelectTrigger id="template" className="w-full">
-              <SelectValue placeholder="Select a template..." />
-            </SelectTrigger>
-            <SelectContent>
-              {TEMPLATES.map((t) => (
-                <SelectItem key={t.label} value={t.label}>
-                  {t.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <SelectWithOther
+            options={TEMPLATES.map((t) => t.label)}
+            value={template}
+            onChange={onTemplateChange}
+            placeholder="Select a template..."
+          />
         </div>
 
         <div>

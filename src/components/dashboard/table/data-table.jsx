@@ -16,6 +16,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { getNestedValue } from "@/lib/get-nested-value";
 import {
   ChevronDownIcon,
   ChevronFirstIcon,
@@ -24,7 +25,7 @@ import {
   ChevronRightIcon,
   ChevronUpIcon,
 } from "lucide-react";
-import { useId, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import { TableSkeleton } from "./table-skeleton";
 
 const NAV_BUTTONS = [
@@ -73,6 +74,7 @@ export function DataTable({
   onRowClick,
   stickyHeader = false,
   className,
+  searchFields,
 }) {
   const id = useId();
   const [globalFilter, setGlobalFilter] = useState("");
@@ -83,6 +85,27 @@ export function DataTable({
     pageIndex: 0,
     pageSize: pageSizes[1] ?? 10,
   });
+  const searchFieldsRef = useRef(searchFields);
+  searchFieldsRef.current = searchFields;
+
+  const customGlobalFilter = useCallback((row, _columnId, filterValue) => {
+    const fields = searchFieldsRef.current;
+    if (!fields || fields.length === 0) {
+      const value = row.getValue(_columnId);
+      if (value == null) return false;
+      return String(value).toLowerCase().includes(String(filterValue).toLowerCase());
+    }
+    if (!filterValue) return true;
+    const search = String(filterValue).toLowerCase();
+    return fields.some((field) => {
+      const value = getNestedValue(row.original, field);
+      if (value == null) return false;
+      if (Array.isArray(value)) {
+        return value.some((v) => String(v ?? "").toLowerCase().includes(search));
+      }
+      return String(value).toLowerCase().includes(search);
+    });
+  }, []);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -101,7 +124,7 @@ export function DataTable({
     getPaginationRowModel: getPaginationRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    globalFilterFn: "includesString",
+    globalFilterFn: customGlobalFilter,
     enableColumnFilters: true,
     enableGlobalFilter: true,
     enableSortingRemoval: false,

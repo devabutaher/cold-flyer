@@ -9,7 +9,7 @@ import { AddressPicker } from "@/components/checkout/address-picker";
 import { DISTRICTS, THANAS } from "@/data/bd-addresses";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
-import { FormHeader, ScheduleSection, PropertySection, NotesSection } from "../booking-form";
+import { FormHeader, ScheduleSection, PropertySection, NotesSection, AcSection } from "../booking-form";
 import { FormActions } from "../../product/product-form";
 import { useRouter } from "next/navigation";
 
@@ -27,6 +27,11 @@ function getBookingInitialValues(booking) {
     propertyType: booking.propertyDetails?.propertyType || "residential",
     issues: (booking.propertyDetails?.issues || []).join("\n"),
     notes: booking.notes || "",
+    acBrand: booking.acBrand || "",
+    acModel: booking.acModel || "",
+    acTon: booking.acTon || "",
+    acGasType: booking.acGasType || "",
+    acType: booking.acType || "",
   };
 }
 
@@ -130,6 +135,11 @@ export default function EditBookingForm({ booking }) {
       },
       serviceAddress,
       notes: values.notes || undefined,
+      acBrand: values.acBrand || undefined,
+      acModel: values.acModel || undefined,
+      acTon: values.acTon || undefined,
+      acGasType: values.acGasType || undefined,
+      acType: values.acType || undefined,
     };
 
     try {
@@ -142,6 +152,7 @@ export default function EditBookingForm({ booking }) {
     <div className="w-full max-w-4xl mx-auto">
       <FormHeader completedSections={completedCount} title="Edit Booking" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
+        <AcSection control={form.control} />
         <ScheduleSection control={form.control} />
         <PropertySection control={form.control} />
 

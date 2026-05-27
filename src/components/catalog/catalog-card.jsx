@@ -156,7 +156,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
             </Button>
           ) : (
             <Button size="sm" asChild>
-              <Link href={`/dashboard/bookings/new/${item._id}`}>{t("book")}</Link>
+              <Link href={`/book/${item._id}`}>{t("book")}</Link>
             </Button>
           )}
         </div>

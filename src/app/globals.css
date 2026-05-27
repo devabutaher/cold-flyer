@@ -239,6 +239,110 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     filter: var(--time-picker-filter, none);
 }
 
+@keyframes anim-fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes anim-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes anim-fade-left {
+    from { opacity: 0; transform: translateX(-24px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes anim-fade-right {
+    from { opacity: 0; transform: translateX(24px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes anim-scale-up {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+[class*="animate-in-"]:not([data-in-view]) {
+    opacity: 0;
+}
+
+.animate-in-fade-up[data-in-view] { animation: anim-fade-up 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.animate-in-fade[data-in-view] { animation: anim-fade 0.4s ease-out both; }
+.animate-in-fade-left[data-in-view] { animation: anim-fade-left 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.animate-in-fade-right[data-in-view] { animation: anim-fade-right 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.animate-in-scale-up[data-in-view] { animation: anim-scale-up 0.4s ease-out both; }
+
+/* Card hover lift — replaces framer-motion whileHover */
+.group\/card:hover:not([data-shimmer]) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.12);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+:is(.dark) .group\/card:hover:not([data-shimmer]) {
+    box-shadow: 0 12px 32px -4px oklch(0.6460 0.2220 41.1160 / 0.2);
+}
+
+/* Card tilt support */
+.card-tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+}
+
+/* Card shimmer — CSS ::before pseudo-element */
+.group\/card[data-shimmer]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(200px circle at var(--mouse-x, 0) var(--mouse-y, 0), oklch(0.6460 0.2220 41.1160 / 0.06), transparent 80%);
+    transition: opacity 0.3s ease-out;
+}
+.group\/card[data-shimmer]:hover::before {
+    opacity: 1;
+}
+
+/* Button hover/tap — replaces framer-motion whileHover/whileTap */
+button[data-animate="true"] {
+    will-change: transform;
+    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+}
+button[data-animate="true"]:hover {
+    transform: scale(var(--btn-scale-hover, 1));
+}
+button[data-animate="true"]:active {
+    transform: scale(var(--btn-scale-tap, 0.96));
+}
+
+/* Default button shimmer — CSS @keyframes replaces motion.span */
+button[data-variant="default"][data-animate="true"]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.18) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0s;
+}
+button[data-variant="default"][data-animate="true"]:hover::after {
+    transform: translateX(100%);
+    transition: transform 0.45s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [class*="animate-in-"] {
+        animation: none !important;
+        opacity: 1 !important;
+    }
+    button[data-animate="true"] {
+        transform: none !important;
+        transition: none !important;
+    }
+    button[data-variant="default"][data-animate="true"]::after {
+        display: none !important;
+    }
+}
+
 @keyframes marquee {
     from {
         transform: translateX(0);

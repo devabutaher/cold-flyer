@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getData } from "@/data";
@@ -84,18 +85,12 @@ export function BasicInfoSection({ control }) {
                 <FieldLabel>
                   Brand <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger aria-invalid={fieldState.invalid}>
-                    <SelectValue placeholder="Select brand" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {BRANDS.map((b) => (
-                      <SelectItem key={b} value={b}>
-                        {b}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectWithOther
+                  options={BRANDS}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select brand"
+                />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -110,18 +105,12 @@ export function BasicInfoSection({ control }) {
                 <FieldLabel>
                   Category <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger aria-invalid={fieldState.invalid}>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map((c) => (
-                      <SelectItem key={c} value={c}>
-                        {c}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectWithOther
+                  options={CATEGORIES}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select category"
+                />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -134,18 +123,12 @@ export function BasicInfoSection({ control }) {
             render={({ field }) => (
               <Field>
                 <FieldLabel>Warranty</FieldLabel>
-                <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select warranty" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {WARRANTIES.map((w) => (
-                      <SelectItem key={w} value={w}>
-                        {w}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectWithOther
+                  options={WARRANTIES}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  placeholder="Select warranty"
+                />
               </Field>
             )}
           />

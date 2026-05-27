@@ -25,7 +25,7 @@ export default function ApproveApplicationDialog({ application, open, onOpenChan
               <strong>{application.position}</strong>.
             </span>
             <span className="block text-sm text-muted-foreground">
-              A technician profile will be created and the applicant will be notified via email. If the user does not
+              A worker profile will be created and the applicant will be notified via email. If the user does not
               exist, a new account will be created.
             </span>
           </AlertDialogDescription>
