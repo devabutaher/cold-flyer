@@ -124,3 +124,188 @@ export function BookingsSkeleton() {
     </div>
   );
 }
+
+export function BlogListSkeleton() {
+  return (
+    <div className="container py-8 space-y-8">
+      <Skeleton className="h-10 w-48" />
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="rounded-2xl overflow-hidden border space-y-0">
+            <Skeleton className="aspect-16/10 w-full rounded-none" />
+            <div className="p-5 space-y-3">
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-4/5" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function BlogDetailSkeleton() {
+  return (
+    <div className="bg-background text-foreground">
+      <div className="relative h-[50vh] md:h-[60vh] overflow-hidden">
+        <Skeleton className="absolute inset-0 rounded-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 flex items-end">
+          <div className="container pb-12 md:pb-16 space-y-4">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-5 w-20" />
+            <Skeleton className="h-10 w-3/4 max-w-3xl" />
+            <div className="flex gap-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container py-12 md:py-16">
+        <div className="max-w-3xl mx-auto space-y-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+          <div className="pt-8 space-y-3">
+            <div className="flex gap-2">
+              <Skeleton className="h-6 w-16 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-14 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-card py-16 mt-8">
+        <div className="container space-y-8">
+          <Skeleton className="h-8 w-48" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="rounded-xl overflow-hidden border">
+                <Skeleton className="aspect-16/10 w-full rounded-none" />
+                <div className="p-5 space-y-2">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-5 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function RecentWorksGridSkeleton() {
+  return (
+    <div className="container py-8 space-y-8">
+      <Skeleton className="h-10 w-56" />
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="rounded-2xl overflow-hidden border space-y-0">
+            <Skeleton className="aspect-16/10 w-full rounded-none" />
+            <div className="p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-3 w-3" />
+                <Skeleton className="h-3.5 w-24" />
+              </div>
+              <Skeleton className="h-5 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function RecentWorkDetailSkeleton() {
+  return (
+    <div className="bg-background text-foreground">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden bg-muted">
+        <Skeleton className="absolute inset-0 rounded-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="relative z-10 container py-32 space-y-4">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-16 w-3/4 max-w-3xl" />
+          <div className="flex gap-4">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+      </section>
+      <div className="py-20">
+        <div className="container max-w-4xl mx-auto space-y-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-4 w-4/5" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      </div>
+      <section className="py-20 bg-primary">
+        <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-72" />
+            <Skeleton className="h-4 w-56" />
+          </div>
+          <Skeleton className="h-12 w-36 rounded-lg" />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export function BookingFormSkeleton() {
+  return (
+    <div className="container py-8">
+      <div className="mx-auto max-w-2xl space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <div className="rounded-xl border p-6 space-y-5">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-24 w-full rounded-lg" />
+          </div>
+          <Skeleton className="h-12 w-full rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+}
