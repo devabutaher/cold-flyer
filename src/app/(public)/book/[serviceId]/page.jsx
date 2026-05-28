@@ -1,5 +1,6 @@
 import { getServiceByIdServer } from "@/lib/actions/services";
 
+export const metadata = { title: "Book a Service" };
 export const dynamic = "force-dynamic";
 
 export default async function PublicBookingPage({ params }) {

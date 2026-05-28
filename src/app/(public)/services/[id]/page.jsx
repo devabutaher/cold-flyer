@@ -1,27 +1,16 @@
 import ServiceDetailClient from "@/components/detail/service-detail";
 import { getBreadcrumbSchema, getServiceSchema } from "@/lib/seo";
 import { sanitizeForRSC } from "@/lib/utils";
+import { getServiceBySlugServer } from "@/lib/actions/services";
 import { notFound } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-async function fetchService(slug) {
-  try {
-    const res = await fetch(`${API_URL}/api/services/slug/${slug}`, { next: { revalidate: 30 } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.data?.service || data?.service || null;
-  } catch {
-    return null;
-  }
-}
 
 export async function generateMetadata({ params }) {
   const { id: slug } = await params;
   if (!slug) return {};
 
-  const service = await fetchService(slug);
+  const service = await getServiceBySlugServer(slug);
 
   if (!service) {
     return {
@@ -69,7 +58,7 @@ export default async function ServicePage({ params }) {
   const { id: slug } = await params;
   if (!slug) notFound();
 
-  const service = sanitizeForRSC(await fetchService(slug));
+  const service = sanitizeForRSC(await getServiceBySlugServer(slug));
   if (!service) notFound();
 
   const serviceSchema = getServiceSchema(service);

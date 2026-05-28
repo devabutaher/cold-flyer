@@ -7,6 +7,7 @@ import { ProfileSection } from "@/components/dashboard/profile/profile-section";
 import { AddressSection } from "@/components/dashboard/profile/address-section";
 import { PasswordSection } from "@/components/dashboard/profile/password-section";
 
+export const metadata = { title: "Profile" };
 export const dynamic = "force-dynamic";
 
 export default async function ProfilePage() {

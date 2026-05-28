@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies, headers } from "next/headers";
 import { getServiceByIdServer } from "@/lib/actions/services";
 
+export const metadata = { title: "New Booking" };
 export const dynamic = "force-dynamic";
 
 function getPath(h) {

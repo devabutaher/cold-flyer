@@ -1,43 +1,20 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { Calendar, Clock, Eye, Newspaper, Tag, User, ArrowLeft, Share2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { sanitizeForRSC } from "@/lib/utils";
+import { getBlogBySlugServer, getBlogsServer } from "@/lib/actions/blogs";
 import { getBreadcrumbSchema } from "@/lib/seo";
+import { sanitizeForRSC } from "@/lib/utils";
+import { ArrowLeft, Calendar, Clock, Eye, Newspaper, Share2, Tag, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
-
-async function fetchBlog(slug) {
-  try {
-    const res = await fetch(`${API_URL}/api/blogs/slug/${slug}`, { next: { tags: ["blogs", "blog-detail"] } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.data?.blog || data?.blog || null;
-  } catch {
-    return null;
-  }
-}
-
-async function fetchFeaturedBlogs(currentSlug) {
-  try {
-    const res = await fetch(`${API_URL}/api/blogs/featured?limit=3`, { next: { tags: ["blogs"] } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const blogs = data?.data?.blogs || data?.blogs || [];
-    return blogs.filter((b) => b.slug !== currentSlug).slice(0, 3);
-  } catch {
-    return [];
-  }
-}
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   if (!slug) return {};
 
-  const blog = await fetchBlog(slug);
+  const blog = await getBlogBySlugServer(slug);
 
   if (!blog) {
     return {
@@ -99,10 +76,12 @@ export default async function BlogDetailPage({ params }) {
   const { slug } = await params;
   if (!slug) notFound();
 
-  const blog = sanitizeForRSC(await fetchBlog(slug));
+  const blog = sanitizeForRSC(await getBlogBySlugServer(slug));
   if (!blog) notFound();
 
-  const featuredBlogs = sanitizeForRSC(await fetchFeaturedBlogs(slug));
+  const blogsData = await getBlogsServer({ featured: true, limit: 3 });
+  const allBlogs = blogsData?.data?.blogs || blogsData?.blogs || [];
+  const featuredBlogs = sanitizeForRSC(allBlogs.filter((b) => b.slug !== slug).slice(0, 3));
 
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: SITE_URL },
@@ -224,7 +203,7 @@ export default async function BlogDetailPage({ params }) {
                     href={`/blog/${related.slug}`}
                     className="group bg-background rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="relative aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-16/10 overflow-hidden">
                       {related.image?.url ? (
                         <Image
                           src={related.image.url}

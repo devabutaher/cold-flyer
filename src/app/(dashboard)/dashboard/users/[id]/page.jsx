@@ -1,9 +1,7 @@
-"use client";
+import UserDetailPage from "./page-content";
 
-import { useParams } from "next/navigation";
-import { UserDetails } from "@/components/dashboard/users/user-details";
+export const metadata = { title: "User Details" };
 
-export default function UserDetailPage() {
-  const params = useParams();
-  return <UserDetails userId={params.id} />;
+export default function Page() {
+  return <UserDetailPage />;
 }

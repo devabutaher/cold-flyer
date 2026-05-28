@@ -6,6 +6,8 @@ import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
+export const metadata = { title: "About Us" };
+
 const values = [
   {
     icon: Thermometer,

@@ -4,6 +4,8 @@ import { AlertTriangle, FileText, Scale, Shield } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 
+export const metadata = { title: "Terms & Conditions" };
+
 export default async function TermsPage() {
   const locale = await getLocale();
   const t = await getTranslations("terms");

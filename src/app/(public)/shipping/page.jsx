@@ -5,6 +5,8 @@ import { Clock, Package } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 
+export const metadata = { title: "Shipping Policy" };
+
 export default async function ShippingPage() {
   const locale = await getLocale();
   const t = await getTranslations("shipping");

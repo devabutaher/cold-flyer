@@ -1,11 +1,7 @@
-"use client";
+import OrderDetailPage from "./page-content";
 
-import { useParams } from "next/navigation";
-import { OrderDetails } from "@/components/dashboard/orders/order-details";
+export const metadata = { title: "Order Details" };
 
-export default function OrderDetailPage() {
-  const params = useParams();
-  const orderId = params.id;
-
-  return <OrderDetails orderId={orderId} />;
+export default function Page() {
+  return <OrderDetailPage />;
 }

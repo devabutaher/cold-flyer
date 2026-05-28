@@ -3,6 +3,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Plus } from "lucide-react";
 
+export const metadata = { title: "Blogs" };
+
 const BlogsTable = dynamic(() => import("@/components/dashboard/blog/blogs-table/blogs-table"));
 
 export default function BlogsPage() {

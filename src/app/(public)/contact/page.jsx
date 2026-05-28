@@ -8,6 +8,8 @@ import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
+export const metadata = { title: "Contact Us" };
+
 const contactMethods = [
   {
     icon: Phone,

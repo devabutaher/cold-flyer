@@ -1,55 +1,28 @@
+import { getProductsServer } from "@/lib/actions/products";
+import { getServicesServer } from "@/lib/actions/services";
+
 export const dynamic = "force-dynamic";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
-
-async function getAllProducts() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/products?limit=1000`, {
-      credentials: "include",
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const products = data?.data?.products || data?.products || [];
-    return products;
-  } catch (error) {
-    console.error("Error fetching products for sitemap:", error);
-    return [];
-  }
-}
-
-async function getAllServices() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/services?limit=1000`, {
-      credentials: "include",
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const services = data?.data?.services || data?.services || [];
-    return services;
-  } catch (error) {
-    console.error("Error fetching services for sitemap:", error);
-    return [];
-  }
-}
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
 
 export default async function GET() {
-  let products = [];
-  let services = [];
+  let productsData = { data: { products: [] } };
+  let servicesData = { data: { services: [] } };
 
   try {
-    products = await getAllProducts();
+    productsData = await getProductsServer({ limit: 1000 });
   } catch (e) {
     console.warn("Could not fetch products for sitemap");
   }
 
   try {
-    services = await getAllServices();
+    servicesData = await getServicesServer({ limit: 1000 });
   } catch (e) {
     console.warn("Could not fetch services for sitemap");
   }
+
+  const products = productsData?.data?.products || productsData?.products || [];
+  const services = servicesData?.data?.services || servicesData?.services || [];
 
   const staticPages = ["", "/items", "/services", "/about", "/contact", "/faq", "/terms", "/shipping", "/cart"];
 

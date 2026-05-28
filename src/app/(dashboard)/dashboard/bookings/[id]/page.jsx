@@ -1,8 +1,7 @@
-"use client";
+import BookingDetailPage from "./page-content";
 
-import { useParams } from "next/navigation";
-import { BookingDetails } from "@/components/dashboard/booking/booking-details";
+export const metadata = { title: "Booking Details" };
 
-export default function BookingDetailPage() {
-  return <BookingDetails bookingId={useParams().id} />;
+export default function Page() {
+  return <BookingDetailPage />;
 }

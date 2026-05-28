@@ -2,29 +2,10 @@
  * SEO Utilities - Helper functions for metadata and structured data
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-export async function fetchAPI(endpoint) {
-  const baseUrl = API_BASE_URL;
-  const url = endpoint.startsWith("/api") ? `${baseUrl}${endpoint}` : `${baseUrl}/api${endpoint}`;
-
-  try {
-    const res = await fetch(url, {
-      credentials: "include",
-      next: { revalidate: 60 },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("SEO fetch error:", error);
-    return null;
-  }
-}
-
 export function getProductSchema(product) {
   if (!product) return null;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
   const imageUrl = product.images?.[0]?.url || product.images?.[0] || "/placeholder-product.jpg";
 
   return {
@@ -58,7 +39,7 @@ export function getProductSchema(product) {
 export function getServiceSchema(service) {
   if (!service) return null;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
   const imageUrl = service.images?.[0]?.url || service.images?.[0] || "/placeholder-service.jpg";
 
   return {

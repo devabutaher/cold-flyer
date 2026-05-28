@@ -3,6 +3,7 @@ import { cookies, headers } from "next/headers";
 import { getCurrentUser } from "@/lib/auth-server";
 import { getBookingByIdServer } from "@/lib/actions/services";
 
+export const metadata = { title: "Edit Booking" };
 export const dynamic = "force-dynamic";
 
 async function getUser() {

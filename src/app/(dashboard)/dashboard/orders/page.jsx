@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const metadata = { title: "Orders" };
 export const dynamic = "force-dynamic";
 
 export default async function OrdersPage() {

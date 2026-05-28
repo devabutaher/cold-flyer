@@ -42,7 +42,7 @@ export async function generateMetadata() {
   const siteName = common.siteName || "Cold Flyer";
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.com"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app"),
     title: {
       default:
         locale === "bn"
@@ -144,7 +144,7 @@ export default async function RootLayout({ children }) {
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
               strategy="afterInteractive"
             />
-            <Script id="google-analytics" strategy="afterInteractive">
+            <Script id="google-analytics" strategy="beforeInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}

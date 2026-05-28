@@ -1,6 +1,8 @@
 import ProtectedRoute from "@/components/auth/protected-routes";
 import dynamic from "next/dynamic";
 
+export const metadata = { title: "Users" };
+
 const UsersTable = dynamic(() => import("@/components/dashboard/users/users-table"));
 
 export default function UsersPage() {

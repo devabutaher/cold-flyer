@@ -1,6 +1,8 @@
 import ProtectedRoute from "@/components/auth/protected-routes";
 import dynamic from "next/dynamic";
 
+export const metadata = { title: "Applications" };
+
 const ApplicationsPageComponent = dynamic(() => import("@/components/dashboard/applications/applications-table"));
 
 export default function ApplicationsPage() {

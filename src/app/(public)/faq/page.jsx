@@ -14,6 +14,8 @@ import {
   Truck,
   Wrench,
 } from "lucide-react";
+
+export const metadata = { title: "FAQ" };
 import { getData } from "@/data";
 import { getLocale, getTranslations } from "next-intl/server";
 

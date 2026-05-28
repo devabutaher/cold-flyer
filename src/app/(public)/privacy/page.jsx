@@ -5,6 +5,8 @@ import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, Shield
 import { getData } from "@/data";
 import { getLocale, getTranslations } from "next-intl/server";
 
+export const metadata = { title: "Privacy Policy" };
+
 export default async function PrivacyPage() {
   const locale = await getLocale();
   const t = await getTranslations("privacy");

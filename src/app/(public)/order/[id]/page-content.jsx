@@ -1,0 +1,270 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { CheckCircle, XCircle, Package, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useAuth } from "@/components/providers";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getClient } from "@/lib/http-client";
+
+const POLL_INTERVAL = 2000;
+const POLL_TIMEOUT = 20000;
+
+export default function OrderSuccessPage() {
+  const params = useParams();
+  const t = useTranslations("order");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { backendUser } = useAuth();
+  const orderId = params.id;
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [polling, setPolling] = useState(false);
+  const [pollTimedOut, setPollTimedOut] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const pollingRef = useRef(null);
+
+  const isSuccess = searchParams.get("success") !== "false";
+  const provider = searchParams.get("provider") || "stripe";
+
+  useEffect(() => {
+    if (!orderId || !backendUser) return;
+
+    let mounted = true;
+    let intervalId = null;
+    let timeoutId = null;
+    let startedAt = Date.now();
+
+    const tryVerifyPayment = async (fetchedOrder) => {
+      setVerifying(true);
+      try {
+        let verifyRes;
+        if (provider === "sslcommerz") {
+          verifyRes = await getClient().post(`/payments/sslcommerz/verify/${orderId}`);
+        } else if (fetchedOrder?.stripeSessionId) {
+          verifyRes = await getClient().post(`/orders/${orderId}/verify-payment`, {
+            sessionId: fetchedOrder.stripeSessionId,
+          });
+        }
+        if (!mounted) return;
+        if (verifyRes && verifyRes.data && !verifyRes.data.success) {
+          console.warn("Verify payment returned:", verifyRes.data);
+        }
+        const refreshRes = await getClient().get(`/orders/${orderId}`);
+        if (!mounted) return;
+        const refreshedOrder = refreshRes.data?.data?.order || refreshRes.data?.order;
+        if (refreshedOrder) setOrder(refreshedOrder);
+      } catch (err) {
+        console.error("Verify payment failed:", err?.response?.data || err?.message || err);
+      } finally {
+        if (mounted) setVerifying(false);
+      }
+    };
+
+    const stopPolling = () => {
+      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
+      intervalId = null;
+      timeoutId = null;
+    };
+
+    const handleTimeout = (fetchedOrder) => {
+      setPollTimedOut(true);
+      setPolling(false);
+      setLoading(false);
+      stopPolling();
+      tryVerifyPayment(fetchedOrder);
+    };
+
+    const fetchOrder = async (isPoll = false) => {
+      try {
+        const res = await getClient().get(`/orders/${orderId}`);
+        if (!mounted) return;
+
+        const fetchedOrder = res.data?.data?.order || res.data?.order;
+        if (!mounted) return;
+
+        setOrder(fetchedOrder);
+
+        if (fetchedOrder.paymentStatus === "paid") {
+          setPolling(false);
+          setLoading(false);
+          stopPolling();
+          return;
+        }
+
+        if (!isPoll) {
+          setLoading(false);
+          if (isSuccess) {
+            startedAt = Date.now();
+            setPolling(true);
+            timeoutId = setTimeout(() => handleTimeout(fetchedOrder), POLL_TIMEOUT);
+            intervalId = setInterval(() => fetchOrder(true), POLL_INTERVAL);
+          }
+          return;
+        }
+
+        if (Date.now() - startedAt > POLL_TIMEOUT) {
+          handleTimeout(fetchedOrder);
+        }
+      } catch {
+        if (mounted && isPoll) {
+          if (Date.now() - startedAt > POLL_TIMEOUT) {
+            handleTimeout();
+          }
+        } else if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchOrder(false);
+
+    return () => {
+      mounted = false;
+      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [orderId, backendUser, isSuccess, provider]);
+
+  if (loading || polling || verifying) {
+    return (
+      <div className="container flex min-h-[60vh] items-center justify-center py-12">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-8 space-y-4">
+            <Skeleton className="h-16 w-16 rounded-full mx-auto" />
+            <Skeleton className="h-8 w-3/4 mx-auto" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+            {(polling || verifying) && (
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Loader2 size={14} className="animate-spin" />
+                {verifying ? t("verifying") : t("confirming")}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const isPaid = order?.paymentStatus === "paid";
+
+  return (
+    <div className="container flex min-h-[60vh] flex-col items-center justify-center py-12">
+      <Card className="w-full max-w-md text-center">
+        <CardContent className="pt-8">
+          {isSuccess && provider === "cod" ? (
+            <>
+              <div className="mb-4 flex justify-center">
+                <CheckCircle className="h-16 w-16 text-green-500" />
+              </div>
+              <h1 className="mb-2 text-2xl font-bold">{t("orderPlaced")}</h1>
+              <p className="mb-6 text-muted-foreground">{t("orderPlacedDesc")}</p>
+            </>
+          ) : isSuccess && isPaid ? (
+            <>
+              <div className="mb-4 flex justify-center">
+                <CheckCircle className="h-16 w-16 text-green-500" />
+              </div>
+              <h1 className="mb-2 text-2xl font-bold">{t("paymentSuccessful")}</h1>
+              <p className="mb-6 text-muted-foreground">
+                {provider === "sslcommerz"
+                  ? "Your payment via SSLCOMMERZ has been processed successfully."
+                  : "Thank you for your order. Your payment has been processed."}
+              </p>
+            </>
+          ) : pollTimedOut && !isPaid ? (
+            <>
+              <div className="mb-4 flex justify-center">
+                <Loader2 className="h-16 w-16 text-amber-500" />
+              </div>
+              <h1 className="mb-2 text-2xl font-bold">{t("paymentProcessing")}</h1>
+              <p className="mb-6 text-muted-foreground">
+                Your payment is being confirmed. This can take a few moments. Please check your order status.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="mb-4 flex justify-center">
+                <XCircle className="h-16 w-16 text-red-500" />
+              </div>
+              <h1 className="mb-2 text-2xl font-bold">
+                {order?.paymentStatus === "failed" ? t("paymentFailed") : t("paymentCancelled")}
+              </h1>
+              <p className="mb-6 text-muted-foreground">
+                {provider === "sslcommerz"
+                  ? "Your SSLCOMMERZ transaction could not be completed. Please try again."
+                  : "Your payment could not be completed. Please try again."}
+              </p>
+            </>
+          )}
+
+          {order && (
+            <div className="mb-6 rounded-lg bg-muted p-4 text-left">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Package size={16} />
+                <span>{t("orderLabel", { number: order.orderNumber })}</span>
+              </div>
+              <p className="mt-2 text-sm">
+                Status:{" "}
+                <span className={cn("font-medium", order.status === "cancelled" ? "text-red-600" : "text-green-600")}>
+                  {order.status?.toUpperCase()}
+                </span>
+              </p>
+              <p className="text-sm">
+                Payment:{" "}
+                <span
+                  className={cn(
+                    "font-medium",
+                    order.paymentMethod === "cod"
+                      ? "text-amber-600"
+                      : order.paymentStatus === "paid"
+                        ? "text-green-600"
+                        : "text-red-600",
+                  )}
+                >
+                  {order.paymentMethod === "cod" ? t("cashOnDelivery") : order.paymentStatus?.toUpperCase()}
+                </span>
+              </p>
+              <p className="mt-2 text-lg font-bold">{t("total", { amount: order.total?.toLocaleString() })}</p>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2">
+            <Link href={`/dashboard/orders/${orderId}`}>
+              <Button className="w-full">{t("viewDetails")}</Button>
+            </Link>
+            {(!isPaid || pollTimedOut) && (
+              <Link href={`/dashboard/orders/${orderId}`}>
+                <Button variant="outline" className="w-full">
+                  Retry Payment
+                </Button>
+              </Link>
+            )}
+            {pollTimedOut && (
+              <Button variant="outline" className="w-full" onClick={() => router.refresh()}>
+                Refresh Status
+              </Button>
+            )}
+            <Link href="/dashboard/orders">
+              <Button variant="outline" className="w-full">
+                View All Orders
+              </Button>
+            </Link>
+            <Link href="/">
+              <Button variant="ghost" className="w-full">
+                Continue Shopping
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

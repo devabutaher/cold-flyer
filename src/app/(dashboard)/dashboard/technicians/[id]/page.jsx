@@ -1,9 +1,7 @@
-"use client";
+import TechnicianDetailPage from "./page-content";
 
-import { useParams } from "next/navigation";
-import { TechnicianDetails } from "@/components/dashboard/technicians/technician-details";
+export const metadata = { title: "Technician Details" };
 
-export default function TechnicianDetailPage() {
-  const params = useParams();
-  return <TechnicianDetails technicianId={params.id} />;
+export default function Page() {
+  return <TechnicianDetailPage />;
 }

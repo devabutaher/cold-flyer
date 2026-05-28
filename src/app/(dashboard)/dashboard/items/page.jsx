@@ -1,6 +1,8 @@
 import ProtectedRoute from "@/components/auth/protected-routes";
 import dynamic from "next/dynamic";
 
+export const metadata = { title: "Products" };
+
 const ProductsTable = dynamic(() => import("@/components/dashboard/product/products-table/products-table"));
 
 export default function ProductsPage() {

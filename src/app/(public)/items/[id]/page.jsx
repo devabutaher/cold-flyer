@@ -1,27 +1,16 @@
 import { ProductDetailClient } from "@/components/detail/product-detail.client";
 import { getBreadcrumbSchema, getProductSchema } from "@/lib/seo";
 import { sanitizeForRSC } from "@/lib/utils";
+import { getProductBySlugServer } from "@/lib/actions/products";
 import { notFound } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
-
-async function fetchProduct(slug) {
-  try {
-    const res = await fetch(`${API_URL}/api/products/slug/${slug}`, { next: { tags: ["products", "product-detail"] } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.data?.product || data?.product || null;
-  } catch {
-    return null;
-  }
-}
 
 export async function generateMetadata({ params }) {
   const { id: slug } = await params;
   if (!slug) return {};
 
-  const product = await fetchProduct(slug);
+  const product = await getProductBySlugServer(slug);
 
   if (!product) {
     return {
@@ -69,7 +58,7 @@ export default async function ProductPage({ params }) {
   const { id: slug } = await params;
   if (!slug) notFound();
 
-  const product = sanitizeForRSC(await fetchProduct(slug));
+  const product = sanitizeForRSC(await getProductBySlugServer(slug));
   if (!product) notFound();
 
   const productSchema = getProductSchema(product);

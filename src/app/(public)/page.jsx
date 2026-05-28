@@ -7,6 +7,8 @@ import Services from "@/components/home/services";
 import StatsStrip from "@/components/home/stats-strip";
 import dynamic from "next/dynamic";
 
+export const metadata = { title: "Home" };
+
 const Testimonials = dynamic(() => import("@/components/home/testimonials"));
 const Faq = dynamic(() => import("@/components/home/faq"));
 const Contact = dynamic(() => import("@/components/home/contact"));

@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth-server";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const metadata = { title: "Add Blog" };
 export const dynamic = "force-dynamic";
 
 async function getUser() {
