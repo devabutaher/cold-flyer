@@ -18,7 +18,6 @@ export async function getBlogsServer(params) {
     const qs = query.toString();
     const res = await fetch(`${API_BACKEND_URL}/api/blogs${qs ? `?${qs}` : ""}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["blogs"] },
     });
     const data = await res.json();
     return data;
@@ -32,7 +31,6 @@ export async function getBlogBySlugServer(slug) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/blogs/slug/${slug}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["blogs", "blog-detail"] },
     });
     const data = await res.json();
     return data?.data?.blog || data;

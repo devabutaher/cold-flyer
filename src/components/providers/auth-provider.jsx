@@ -3,6 +3,19 @@
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
+function decodeJwtPayload(token) {
+  try {
+    return JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+  } catch {
+    return null;
+  }
+}
+
+function getAccessToken() {
+  const match = document.cookie.match(/(?:^|;\s*)accessToken=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -10,6 +23,19 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const initialized = useRef(false);
+  const expiryTimer = useRef(null);
+
+  const performLogout = useCallback(
+    (redirectPath) => {
+      fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
+      setBackendUser(null);
+      const path = redirectPath || window.location.pathname;
+      if (!path.startsWith("/auth")) {
+        router.push(`/auth?redirect=${encodeURIComponent(path)}`);
+      }
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (initialized.current) return;
@@ -23,6 +49,29 @@ export function AuthProvider({ children }) {
       .catch((err) => console.error("[AuthProvider] Status fetch failed:", err))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!backendUser) return;
+
+    function checkExpiry() {
+      const token = getAccessToken();
+      if (!token) return;
+      const payload = decodeJwtPayload(token);
+      if (!payload?.exp) return;
+
+      const msUntilExpiry = payload.exp * 1000 - Date.now();
+      if (msUntilExpiry <= 60000) {
+        performLogout(window.location.pathname);
+      }
+    }
+
+    checkExpiry();
+    expiryTimer.current = setInterval(checkExpiry, 30000);
+
+    return () => {
+      if (expiryTimer.current) clearInterval(expiryTimer.current);
+    };
+  }, [backendUser, performLogout]);
 
   const refreshUser = useCallback(async () => {
     try {

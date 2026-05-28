@@ -1,23 +1,19 @@
 /**
  * Cart Provider - SSR-safe hydration wrapper for Zustand cart store
- * Ensures cart is hydrated before rendering children
+ * Renders children immediately (SSR-safe), hydrates cart on mount
  */
 
 "use client";
 
 import { useCart } from "@/store/cart";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function CartProvider({ children }) {
-  const { isHydrated, setHydrated } = useCart();
+  const { setHydrated } = useCart();
 
   useEffect(() => {
     setHydrated(true);
   }, [setHydrated]);
-
-  if (!isHydrated) {
-    return null;
-  }
 
   return <>{children}</>;
 }

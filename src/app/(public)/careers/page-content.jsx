@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { getData } from "@/data";
-import { getClient } from "@/lib/http-client";
 import { Clock, Loader2, Mail, MapPin, Video, Wrench } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
@@ -16,6 +15,7 @@ import { toast } from "sonner";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { applicationSchema } from "@/validations";
+import { useCreateApplication } from "@/hooks/queries/applications";
 
 export default function CareersPage() {
   const locale = useLocale();
@@ -24,7 +24,7 @@ export default function CareersPage() {
   const culture = getData("culture", locale);
 
   const [showApplyForm, setShowApplyForm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const createApplication = useCreateApplication();
 
   const {
     control,
@@ -50,38 +50,34 @@ export default function CareersPage() {
   };
 
   const onApply = async (data) => {
-    setSubmitting(true);
+    const skills = data.skills
+      ? data.skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+
+    const payload = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      position: "HVAC Technician",
+      experience: data.experience,
+      skills,
+      coverLetter: data.coverLetter,
+    };
+
     try {
-      const client = getClient();
-      const skills = data.skills
-        ? data.skills
-            .split(",")
-            .map((s) => s.trim())
-            .filter(Boolean)
-        : [];
-
-      const payload = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        position: "HVAC Technician",
-        experience: data.experience,
-        skills,
-        coverLetter: data.coverLetter,
-      };
-
-      await client.post("/job-applications", payload);
+      await createApplication.mutateAsync(payload);
       toast.success(t("applySuccess"));
       setShowApplyForm(false);
     } catch (err) {
-      const msg = err.response?.data?.message || "";
+      const msg = err?.response?.data?.message || "";
       if (msg.includes("already have")) {
         toast.error(t("applyAlreadyExists"));
       } else {
         toast.error(t("applyError"));
       }
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -410,8 +406,8 @@ export default function CareersPage() {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? (
+            <Button type="submit" className="w-full" disabled={createApplication.isPending}>
+              {createApplication.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   {t("applySubmitting")}

@@ -6,6 +6,7 @@ import PriceFormat from "@/components/ui/price-format";
 import { haptic } from "@/lib/haptic";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
+import { useWishlist } from "@/store/wishlist";
 import { motion } from "framer-motion";
 import { Heart, Package, ShoppingCart, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -25,8 +26,9 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
   const t = useTranslations("common");
   const isProduct = type === "product";
   const { addItem } = useCart();
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const isWishlisted = isInWishlist(item._id || item.id, type);
 
   const slug = item.slug || item._id;
   const href = `/${isProduct ? "items" : "services"}/${slug}`;
@@ -59,8 +61,14 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
   const toggleWishlist = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsWishlisted((prev) => !prev);
-    toast.success(isWishlisted ? t("removedFromWishlist") : t("addedToWishlist"));
+    const itemId = item._id || item.id;
+    if (isWishlisted) {
+      removeWishlistItem(itemId, type);
+      toast.success(t("removedFromWishlist"));
+    } else {
+      addWishlistItem({ itemId, type, slug, name, price: item.price, imageUrl: image });
+      toast.success(t("addedToWishlist"));
+    }
   };
 
   const cardContent = (

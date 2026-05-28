@@ -28,6 +28,7 @@ export function useBlogsQuery(params) {
       const res = await client().get(endpoint);
       return extractList(res, "blogs");
     },
+    staleTime: 2 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -41,6 +42,7 @@ export function useBlogQuery(slug) {
       const res = await client().get(endpoint);
       return extractItem(res, "blog");
     },
+    staleTime: 5 * 60 * 1000,
     enabled: !!slug,
     placeholderData: (previousData) => previousData ?? null,
   });

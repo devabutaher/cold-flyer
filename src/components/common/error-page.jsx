@@ -31,7 +31,7 @@ const Error = () => {
           alt="404 illustration"
           fill
           loading="eager"
-          quality={90}
+          quality={85}
           unoptimized
           className="object-contain contrast-105 brightness-105 saturate-110"
           sizes="(max-width: 768px) 100vw, 200px"

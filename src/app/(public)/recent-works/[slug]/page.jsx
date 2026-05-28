@@ -1,19 +1,15 @@
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
-import { getRecentWorkBySlugServer, getRecentWorksServer } from "@/lib/actions/recentWorks";
+import { getRecentWorkBySlugServer } from "@/lib/actions/recentWorks";
 import { ArrowRight, Briefcase, Calendar, ChevronLeft, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
-  try {
-    const data = await getRecentWorksServer({ limit: 100 });
-    const works = data?.data?.recentWorks || [];
-    return works.filter((w) => w.slug).map((w) => ({ slug: w.slug }));
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export async function generateMetadata({ params }) {

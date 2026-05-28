@@ -30,6 +30,7 @@ export function useProductsQuery(params) {
       const res = await client().get(endpoint);
       return extractList(res, "products");
     },
+    staleTime: 2 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -46,6 +47,7 @@ export function useProductQuery(idOrSlug) {
       const res = await client().get(endpoint);
       return extractItem(res, "product");
     },
+    staleTime: 5 * 60 * 1000,
     enabled: !!idOrSlug,
     placeholderData: (previousData) => previousData ?? null,
   });
@@ -152,6 +154,7 @@ export function useFeaturedProductsQuery(params) {
       const res = await client().get(endpoint);
       return extractList(res, "products");
     },
+    staleTime: 5 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }

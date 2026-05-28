@@ -13,8 +13,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/store/cart";
 import { useAuth } from "@/components/providers";
-import { getClient } from "@/lib/http-client";
 import { QuantityInput } from "@/components/carts/quantity-input";
+import { usePublicCouponsQuery, useAutoApplyCoupon, lookupCoupon } from "@/hooks/queries/coupons";
+import { useCreateOrder } from "@/hooks/queries/orders";
 
 function CartEmpty() {
   const t = useTranslations("cart-page");
@@ -62,13 +63,16 @@ function CartContent() {
     coupon,
     couponLoading,
     applyCoupon,
-    setCouponLoading,
     removeCoupon,
+    setCouponLoading,
   } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
-  const [availableCoupons, setAvailableCoupons] = useState([]);
+
+  const { data: availableCoupons = [] } = usePublicCouponsQuery(4);
+  const autoApply = useAutoApplyCoupon();
+  const createOrder = useCreateOrder();
 
   const subtotal = items.reduce((total, p) => total + p.price * p.quantity, 0);
   const vatAmount = subtotal * 0.05;
@@ -77,23 +81,10 @@ function CartContent() {
   const totalAmount = subtotal + shipping + vatAmount - discount;
 
   useEffect(() => {
-    if (!coupon) {
-      getClient()
-        .get("/coupons?limit=4")
-        .then((r) => {
-          if (r.data?.success && r.data?.data?.coupons) {
-            setAvailableCoupons(r.data.data.coupons);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [coupon]);
-
-  useEffect(() => {
     if (coupon || items.length === 0) return;
     const timer = setTimeout(() => {
-      getClient()
-        .post("/coupons/auto-apply", {
+      autoApply.mutate(
+        {
           subtotal,
           itemCount: items.length,
           items: items.map((item) => ({
@@ -101,26 +92,32 @@ function CartContent() {
             price: item.price,
             quantity: item.quantity,
           })),
-        })
-        .then((r) => {
-          if (r.data?.success && r.data?.data?.coupon) {
-            applyCoupon(r.data.data.coupon);
-            toast.success(`Coupon ${r.data.data.coupon.code} auto-applied!`);
-          }
-        })
-        .catch(() => {});
+        },
+        {
+          onSuccess: (data) => {
+            if (data?.success && data?.data?.coupon) {
+              applyCoupon(data.data.coupon);
+              toast.success(`Coupon ${data.data.coupon.code} auto-applied!`);
+            }
+          },
+        },
+      );
     }, 500);
     return () => clearTimeout(timer);
-  }, [items.length, subtotal, items, coupon, applyCoupon]);
+  }, [items.length, subtotal, items, coupon, applyCoupon, autoApply]);
+
+  const computeDiscount = (subtotal, couponInfo) => {
+    if (couponInfo.discountType === "percentage") return (subtotal * couponInfo.discountValue) / 100;
+    if (couponInfo.discountType === "fixed") return couponInfo.discountValue;
+    return 0;
+  };
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
     setCouponError("");
     setCouponLoading(true);
     try {
-      const lookup = await getClient()
-        .get(`/coupons/lookup/${couponCode}`)
-        .then((r) => r.data);
+      const lookup = await lookupCoupon(couponCode);
       if (!lookup.success || !lookup.data?.coupon) {
         throw new Error(ct("invalidCoupon"));
       }
@@ -137,23 +134,11 @@ function CartContent() {
         );
         if (!hasMatch) throw new Error("This coupon does not apply to items in your cart");
       }
-      const res = await getClient()
-        .patch("/cart/apply-coupon", {
-          code: couponCode,
-          items: items.map((item) => ({
-            productRef: item.productRef || item.productId,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-          })),
-        })
-        .then((r) => r.data);
-      if (res.success) {
-        applyCoupon(res.data.coupon);
-        toast.success(ct("couponApplied"));
-      }
+      const calculatedDiscount = computeDiscount(subtotal, couponInfo);
+      applyCoupon({ ...couponInfo, calculatedDiscount });
+      toast.success(ct("couponApplied"));
     } catch (err) {
-      const msg = err?.response?.data?.message || ct("invalidCoupon");
+      const msg = err?.message || ct("invalidCoupon");
       setCouponError(msg);
       toast.error(msg);
     } finally {
@@ -161,15 +146,10 @@ function CartContent() {
     }
   };
 
-  const handleRemoveCoupon = async () => {
-    try {
-      await getClient().delete("/cart/remove-coupon");
-      removeCoupon();
-      setCouponCode("");
-      toast.success("Coupon removed");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to remove coupon");
-    }
+  const handleRemoveCoupon = () => {
+    removeCoupon();
+    setCouponCode("");
+    toast.success("Coupon removed");
   };
 
   const handleCheckout = async () => {
@@ -198,14 +178,11 @@ function CartContent() {
         ...(coupon?.code && { couponCode: coupon.code }),
       };
 
-      const response = await getClient()
-        .post("/orders", orderData)
-        .then((r) => r.data);
-
-      if (response.success && response.data?.order?._id) {
-        router.push(`/checkout/${response.data.order._id}`);
+      const result = await createOrder.mutateAsync(orderData);
+      if (result?.data?.order?._id) {
+        router.push(`/checkout/${result.data.order._id}`);
       } else {
-        toast.error(response.message || t("orderFailed"));
+        toast.error(result?.message || t("orderFailed"));
       }
     } catch (error) {
       const msg = error?.response?.data?.message || error?.message || t("somethingWrong");

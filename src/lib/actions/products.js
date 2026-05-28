@@ -19,7 +19,6 @@ export async function getProductsServer(params) {
     const qs = query.toString();
     const res = await fetch(`${API_BACKEND_URL}/api/products${qs ? `?${qs}` : ""}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["products"] },
     });
     const data = await res.json();
     return data;
@@ -33,7 +32,6 @@ export async function getProductBySlugServer(slug) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/products/slug/${slug}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["products", "product-detail"] },
     });
     const data = await res.json();
     return data?.data?.product || data;
@@ -47,7 +45,6 @@ export async function getProductByIdServer(id) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/products/${id}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["products"] },
     });
     const data = await res.json();
     return data?.data?.product || data;

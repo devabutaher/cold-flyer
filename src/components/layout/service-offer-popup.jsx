@@ -52,7 +52,7 @@ export function ServiceOfferPopup() {
           <DialogDescription>{t("serviceOfferSubtitle")}</DialogDescription>
         </DialogHeader>
 
-        <div className="flex gap-3 pt-1">
+        <div className="flex gap-3 pt-8">
           <Link href="/services" onClick={handleDismiss} className="flex-1">
             <Button size="lg" className="w-full gap-2">
               {t("bookService")}

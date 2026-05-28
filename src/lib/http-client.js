@@ -12,6 +12,21 @@ function createClientInstance() {
     timeout: 15000,
   });
 
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401 && typeof window !== "undefined") {
+        fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
+        const currentPath = window.location.pathname;
+        if (!currentPath.startsWith("/auth")) {
+          const redirect = encodeURIComponent(currentPath + window.location.search);
+          window.location.href = `/auth?redirect=${redirect}`;
+        }
+      }
+      return Promise.reject(error);
+    },
+  );
+
   return instance;
 }
 

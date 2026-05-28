@@ -77,3 +77,73 @@ export function useDeleteCoupon(componentOptions = {}) {
     ...rest,
   });
 }
+
+export const publicCouponKeys = {
+  all: ["public-coupons"],
+  lookup: (code) => ["public-coupon", code],
+};
+
+export function usePublicCouponsQuery(limit = 4) {
+  return useQuery({
+    queryKey: [...publicCouponKeys.all, { limit }],
+    queryFn: async () => {
+      const res = await client().get(`/coupons?limit=${limit}`);
+      return res.data?.data?.coupons || res.data?.coupons || [];
+    },
+    staleTime: 2 * 60 * 1000,
+    placeholderData: (prev) => prev,
+  });
+}
+
+export function useCouponLookupQuery(code) {
+  return useQuery({
+    queryKey: publicCouponKeys.lookup(code),
+    queryFn: async () => {
+      if (!code) return null;
+      const res = await client().get(`/coupons/lookup/${code}`);
+      return res.data?.data?.coupon || null;
+    },
+    staleTime: 30 * 1000,
+    enabled: !!code,
+    retry: false,
+  });
+}
+
+export async function lookupCoupon(code) {
+  const res = await client().get(`/coupons/lookup/${code}`);
+  return res.data;
+}
+
+export function useAutoApplyCoupon(componentOptions = {}) {
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: ({ subtotal, itemCount, items }) =>
+      client().post("/coupons/auto-apply", { subtotal, itemCount, items }).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}
+
+export function useApplyOrderCoupon(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: ({ orderId, couponCode, removeCoupon }) =>
+      client().patch(`/orders/${orderId}/coupon`, removeCoupon ? { removeCoupon: true } : { couponCode }).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: ["order", variables.orderId] });
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}

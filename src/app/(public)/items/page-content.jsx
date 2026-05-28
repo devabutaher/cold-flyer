@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
-import { getClient, extractList } from "@/lib/http-client";
+import { Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { CatalogPage } from "@/components/catalog/catalog-page";
+import { useProductsQuery } from "@/hooks/queries/products";
 import { uniqueSorted } from "@/lib/utils";
 
 const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
@@ -16,39 +17,43 @@ const SORT_MAP = {
 };
 
 function ItemsContent() {
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  const category = searchParams.get("category");
+  const brand = searchParams.get("brand");
+  const productType = searchParams.get("producttype");
+  const rawSort = searchParams.get("sort");
+  const params = useMemo(
+    () => ({
+      q: q || undefined,
+      category: category || undefined,
+      brand: brand || undefined,
+      productType: productType || undefined,
+      sort: rawSort ? (SORT_MAP[rawSort] || "newest") : undefined,
+    }),
+    [q, category, brand, productType, rawSort],
+  );
+
+  const { data: allProducts, isLoading: allLoading } = useProductsQuery({ limit: 200 });
+  const { data: products, isLoading, error } = useProductsQuery({ ...params, limit: 50 });
+
   return (
     <CatalogPage
       type="product"
-      queryKey={["products"]}
-      fetchFn={(params) => {
-        const query = new URLSearchParams();
-        if (params?.q) query.set("search", params.q);
-        if (params?.category && params.category !== "All Categories") query.set("category", params.category);
-        if (params?.brand && params.brand !== "All Brands") query.set("brand", params.brand);
-        if (params?.sort) query.set("sortBy", SORT_MAP[params.sort] || "newest");
-        if (params?.page) query.set("page", String(params.page));
-        if (params?.limit) query.set("limit", String(params.limit));
-        const qs = query.toString();
-        return getClient()
-          .get(`/products${qs ? `?${qs}` : ""}`)
-          .then((r) => r.data);
-      }}
-      fetchAllFn={() =>
-        getClient()
-          .get("/products?limit=200")
-          .then((r) => r.data)
-      }
-      extractArray={(res) => extractList(res, "products")}
-      buildFilterOptions={(products) => [
+      data={products}
+      allData={allProducts}
+      isLoading={isLoading || allLoading}
+      error={error}
+      buildFilterOptions={(items) => [
         {
           key: "Category",
           defaultValue: "All Categories",
-          options: ["All Categories", ...uniqueSorted(products.map((p) => p.category))],
+          options: ["All Categories", ...uniqueSorted(items.map((p) => p.category))],
         },
         {
           key: "Brand",
           defaultValue: "All Brands",
-          options: ["All Brands", ...uniqueSorted(products.map((p) => p.brand))],
+          options: ["All Brands", ...uniqueSorted(items.map((p) => p.brand))],
         },
       ]}
       sortOptions={SORT_OPTIONS}

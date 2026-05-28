@@ -119,3 +119,59 @@ export function useVerifyPayment(componentOptions = {}) {
     ...rest,
   });
 }
+
+export function useUpdateOrderShipping(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: ({ orderId, shippingAddress }) =>
+      client().patch(`/orders/${orderId}`, { shippingAddress }).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.orderId) });
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      toast.error(error.response?.data?.message || error.message || "Failed to update shipping");
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}
+
+export function useCheckoutOrder(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: ({ orderId, provider }) =>
+      client().post(`/orders/${orderId}/checkout`, { provider }).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.orderId) });
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      toast.error(error.response?.data?.message || error.message || "Checkout failed");
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}
+
+export function useVerifySSLCommerzPayment(componentOptions = {}) {
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: (orderId) => client().post(`/payments/sslcommerz/verify/${orderId}`).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables) });
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      console.error("SSLCommerz verify failed:", error?.response?.data || error?.message);
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}

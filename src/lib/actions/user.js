@@ -24,7 +24,6 @@ export async function getAddressesAction() {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/users/addresses`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["user-profile"] },
     });
     const data = await res.json();
     return { success: true, addresses: data?.data?.addresses || [] };

@@ -4,7 +4,9 @@ import ImageCarousel from "@/components/products/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { CheckCircle, CircleAlert, Clock, FileText, ShieldCheck, Star, ThumbsUp } from "lucide-react";
+import { useWishlist } from "@/store/wishlist";
+import { cn } from "@/lib/utils";
+import { CheckCircle, CircleAlert, Clock, FileText, Heart, ShieldCheck, Star, ThumbsUp } from "lucide-react";
 import { DetailBackButton } from "./detail-back-button";
 import { DetailMetaInfo } from "./detail-meta-info";
 import { DetailPrice } from "./detail-price";
@@ -12,10 +14,14 @@ import { DetailTabs } from "./detail-tabs";
 import { DetailTrustBadges } from "./detail-trust-badges";
 import { ServiceReviews } from "@/components/reviews/service-reviews";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function ServiceDetailClient({ service }) {
   const t = useTranslations("common");
   const ts = useTranslations("services");
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
+  const serviceId = service._id || service.id;
+  const isWishlisted = isInWishlist(serviceId, "service");
   if (!service) return null;
 
   const handleContact = () => {
@@ -129,6 +135,35 @@ export default function ServiceDetailClient({ service }) {
             <Button variant="outline" size="lg" className="flex-1" onClick={handleContact}>
               {ts("contactUs")}
             </Button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (isWishlisted) {
+                  removeWishlistItem(serviceId, "service");
+                  toast.success(t("removedFromWishlist"));
+                } else {
+                  addWishlistItem({
+                    itemId: serviceId,
+                    type: "service",
+                    slug: service.slug,
+                    name: service.name,
+                    price: service.basePrice,
+                    imageUrl: service.images?.[0]?.url || "",
+                  });
+                  toast.success(t("addedToWishlist"));
+                }
+              }}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card transition-colors hover:bg-muted"
+              aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
+            >
+              <Heart
+                size={18}
+                className={cn(
+                  "transition-colors",
+                  isWishlisted ? "fill-destructive text-destructive" : "text-muted-foreground",
+                )}
+              />
+            </button>
           </div>
 
           <DetailTrustBadges items={trustBadgesData} />

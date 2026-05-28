@@ -1,19 +1,12 @@
 "use client";
 
-import { Suspense } from "react";
-import { getClient, extractList } from "@/lib/http-client";
+import { Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { CatalogPage } from "@/components/catalog/catalog-page";
+import { useServicesQuery } from "@/hooks/queries/services";
 import { uniqueSorted } from "@/lib/utils";
 
 const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
-
-const SORT_MAP = {
-  Newest: "newest",
-  "Price: Low to High": "price_asc",
-  "Price: High to Low": "price_desc",
-  "Best Rated": "rating",
-  "Most Popular": "popular",
-};
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -24,28 +17,31 @@ function titleCase(str) {
 }
 
 function ServicesContent() {
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  const category = searchParams.get("category");
+  const serviceType = searchParams.get("servicetype");
+  const sort = searchParams.get("sort");
+  const params = useMemo(
+    () => ({
+      q: q || undefined,
+      category: category || undefined,
+      serviceType: serviceType || undefined,
+      sort: sort || undefined,
+    }),
+    [q, category, serviceType, sort],
+  );
+
+  const { data: allServices, isLoading: allLoading } = useServicesQuery({ limit: 200 });
+  const { data: services, isLoading, error } = useServicesQuery({ ...params, limit: 50 });
+
   return (
     <CatalogPage
       type="service"
-      queryKey={["services"]}
-      fetchFn={(params) => {
-        const query = new URLSearchParams();
-        if (params?.q) query.set("search", params.q);
-        if (params?.category) query.set("category", params.category);
-        if (params?.serviceType) query.set("serviceType", params.serviceType);
-        if (params?.sort) query.set("sortBy", SORT_MAP[params.sort] || "newest");
-        if (params?.limit) query.set("limit", String(params.limit));
-        const qs = query.toString();
-        return getClient()
-          .get(`/services${qs ? `?${qs}` : ""}`)
-          .then((r) => r.data);
-      }}
-      fetchAllFn={() =>
-        getClient()
-          .get("/services?limit=200")
-          .then((r) => r.data)
-      }
-      extractArray={(res) => extractList(res, "services")}
+      data={services}
+      allData={allServices}
+      isLoading={isLoading || allLoading}
+      error={error}
       buildFilterOptions={(services) => [
         {
           key: "Category",

@@ -28,6 +28,7 @@ export function useRecentWorksQuery(params) {
       const res = await client().get(endpoint);
       return extractList(res, "recentWorks");
     },
+    staleTime: 2 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -41,6 +42,7 @@ export function useRecentWorkQuery(slug) {
       const res = await client().get(endpoint);
       return extractItem(res, "recentWork");
     },
+    staleTime: 5 * 60 * 1000,
     enabled: !!slug,
     placeholderData: (previousData) => previousData ?? null,
   });

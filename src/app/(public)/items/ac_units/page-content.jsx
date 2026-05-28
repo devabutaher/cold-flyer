@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
-import { getClient, extractList } from "@/lib/http-client";
+import { Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { CatalogPage } from "@/components/catalog/catalog-page";
+import { useProductsQuery } from "@/hooks/queries/products";
 import { uniqueSorted } from "@/lib/utils";
 
 const SORT_OPTIONS = ["Newest", "Price: Low to High", "Price: High to Low", "Best Rated", "Most Popular"];
@@ -16,35 +17,32 @@ const SORT_MAP = {
 };
 
 function ACUnitsContent() {
-  const buildQuery = (params = {}) => {
-    const query = new URLSearchParams();
-    if (params?.q) query.set("search", params.q);
-    if (params?.category && params.category !== "All Categories") query.set("category", params.category);
-    if (params?.brand && params.brand !== "All Brands") query.set("brand", params.brand);
-    if (params?.sort) query.set("sortBy", SORT_MAP[params.sort] || "newest");
-    if (params?.page) query.set("page", String(params.page));
-    if (params?.limit) query.set("limit", String(params.limit));
-    query.set("productType", "unit");
-    return query;
-  };
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  const category = searchParams.get("category");
+  const brand = searchParams.get("brand");
+  const rawSort = searchParams.get("sort");
+  const params = useMemo(
+    () => ({
+      q: q || undefined,
+      category: category || undefined,
+      brand: brand || undefined,
+      productType: "unit",
+      sort: rawSort ? (SORT_MAP[rawSort] || "newest") : undefined,
+    }),
+    [q, category, brand, rawSort],
+  );
+
+  const { data: allProducts, isLoading: allLoading } = useProductsQuery({ productType: "unit", limit: 200 });
+  const { data: products, isLoading, error } = useProductsQuery({ ...params, limit: 50 });
 
   return (
     <CatalogPage
       type="product"
-      queryKey={["products", "units"]}
-      fetchFn={(params) => {
-        const qs = buildQuery(params).toString();
-        return getClient()
-          .get(`/products?${qs}`)
-          .then((r) => r.data);
-      }}
-      fetchAllFn={() => {
-        const qs = buildQuery({ limit: 200 }).toString();
-        return getClient()
-          .get(`/products?${qs}`)
-          .then((r) => r.data);
-      }}
-      extractArray={(res) => extractList(res, "products")}
+      data={products}
+      allData={allProducts}
+      isLoading={isLoading || allLoading}
+      error={error}
       buildFilterOptions={(products) => [
         {
           key: "Category",

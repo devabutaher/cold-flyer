@@ -18,6 +18,7 @@ export function useServicesQuery(params) {
     queryKey: ["services", params || {}],
     queryFn: async () => {
       const query = new URLSearchParams();
+      if (params?.q) query.set("search", params.q);
       if (params?.category) query.set("category", params.category);
       if (params?.serviceType) query.set("serviceType", params.serviceType);
       if (params?.sort) {
@@ -37,6 +38,7 @@ export function useServicesQuery(params) {
       const res = await client().get(endpoint);
       return extractList(res, "services");
     },
+    staleTime: 2 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -49,6 +51,7 @@ export function useServiceQuery(slug) {
       const res = await client().get(`/services/slug/${slug}`);
       return extractItem(res, "service");
     },
+    staleTime: 5 * 60 * 1000,
     enabled: !!slug,
   });
 }
@@ -60,6 +63,7 @@ export function useFeaturedServicesQuery() {
       const res = await client().get("/services/featured");
       return extractList(res, "services");
     },
+    staleTime: 5 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }

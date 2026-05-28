@@ -6,11 +6,12 @@ import InfoTabs from "@/components/products/info-tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
 import { animations } from "@/lib/animation";
 import { useCart } from "@/store/cart";
+import { useWishlist } from "@/store/wishlist";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ShieldCheck, Tag, Truck } from "lucide-react";
+import { Heart, ShieldCheck, Tag, Truck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { haptic } from "@/lib/haptic";
@@ -22,7 +23,10 @@ import { DetailTrustBadges } from "./detail-trust-badges";
 export function ProductDetailClient({ product }) {
   const t = useTranslations("common");
   const { addItem } = useCart();
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
+  const productId = product._id || product.id;
+  const isWishlisted = isInWishlist(productId, "product");
 
   const isLowStock = product.stock > 0 && product.stock <= 10;
   const isOutOfStock = product.stock === 0;
@@ -187,6 +191,35 @@ export function ProductDetailClient({ product }) {
                 {t("buyNow")}
               </Button>
             </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (isWishlisted) {
+                  removeWishlistItem(productId, "product");
+                  toast.success(t("removedFromWishlist"));
+                } else {
+                  addWishlistItem({
+                    itemId: productId,
+                    type: "product",
+                    slug: product.slug,
+                    name: product.name,
+                    price: product.price,
+                    imageUrl: product.images?.[0]?.url || "",
+                  });
+                  toast.success(t("addedToWishlist"));
+                }
+              }}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card transition-colors hover:bg-muted"
+              aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
+            >
+              <Heart
+                size={18}
+                className={cn(
+                  "transition-colors",
+                  isWishlisted ? "fill-destructive text-destructive" : "text-muted-foreground",
+                )}
+              />
+            </button>
           </div>
 
           <DetailTrustBadges items={trustBadges} />

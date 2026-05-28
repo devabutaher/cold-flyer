@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, Loader2, Tag, X } from "lucide-react";
@@ -20,9 +20,10 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { DISTRICTS, THANAS } from "@/data/bd-addresses";
-import { getClient } from "@/lib/http-client";
 import { useAuth } from "@/components/providers";
 import { useCart } from "@/store/cart";
+import { useOrderQuery, useUpdateOrderShipping, useCheckoutOrder } from "@/hooks/queries/orders";
+import { useApplyOrderCoupon, lookupCoupon } from "@/hooks/queries/coupons";
 import { AddressFormSheet } from "@/components/dashboard/profile/address-form-sheet";
 import { getAddressesAction, deleteAddressAction, setDefaultAddressAction } from "@/lib/actions/user";
 import { AddressPicker } from "@/components/checkout/address-picker";
@@ -36,8 +37,6 @@ export function CheckoutPage({ orderId }) {
   const { backendUser, refreshUser } = useAuth();
   const { clearCart } = useCart();
 
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [addressSheetOpen, setAddressSheetOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
@@ -45,7 +44,11 @@ export function CheckoutPage({ orderId }) {
   const [deleting, setDeleting] = useState(false);
   const [paymentProvider, setPaymentProvider] = useState("stripe");
   const [couponInput, setCouponInput] = useState("");
-  const [couponUpdating, setCouponUpdating] = useState(false);
+
+  const { data: order, isLoading: loading } = useOrderQuery(orderId);
+  const updateShipping = useUpdateOrderShipping();
+  const checkoutOrder = useCheckoutOrder();
+  const applyOrderCoupon = useApplyOrderCoupon();
 
   const addresses = useMemo(() => backendUser?.addresses || [], [backendUser?.addresses]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -57,18 +60,6 @@ export function CheckoutPage({ orderId }) {
     () => addresses.find((a) => a._id === effectiveSelectedId) || null,
     [addresses, effectiveSelectedId],
   );
-
-  useEffect(() => {
-    if (!orderId || !backendUser) return;
-    getClient()
-      .get(`/orders/${orderId}`)
-      .then((res) => {
-        const fetchedOrder = res.data?.data?.order || res.data?.order;
-        setOrder(fetchedOrder);
-      })
-      .catch(() => router.push("/"))
-      .finally(() => setLoading(false));
-  }, [orderId, backendUser, router]);
 
   async function handleAddressSaved() {
     const result = await getAddressesAction();
@@ -112,11 +103,8 @@ export function CheckoutPage({ orderId }) {
 
   async function handleApplyCoupon() {
     if (!couponInput.trim()) return;
-    setCouponUpdating(true);
     try {
-      const lookup = await getClient()
-        .get(`/coupons/lookup/${couponInput}`)
-        .then((r) => r.data);
+      const lookup = await lookupCoupon(couponInput);
       if (!lookup.success || !lookup.data?.coupon) {
         throw new Error(t("invalidCoupon"));
       }
@@ -127,36 +115,21 @@ export function CheckoutPage({ orderId }) {
       if (couponInfo.minItemCount > 0 && (order?.items?.length || 0) < couponInfo.minItemCount) {
         throw new Error(`Minimum ${couponInfo.minItemCount} items required`);
       }
-      const res = await getClient()
-        .patch(`/orders/${orderId}/coupon`, { couponCode: couponInput })
-        .then((r) => r.data);
-      if (res.success) {
-        setOrder(res.data.order);
-        setCouponInput("");
-        toast.success(t("couponApplied"));
-      }
+      await applyOrderCoupon.mutateAsync({ orderId, couponCode: couponInput });
+      setCouponInput("");
+      toast.success(t("couponApplied"));
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || t("invalidCoupon");
       toast.error(msg);
-    } finally {
-      setCouponUpdating(false);
     }
   }
 
   async function handleRemoveCoupon() {
-    setCouponUpdating(true);
     try {
-      const res = await getClient()
-        .patch(`/orders/${orderId}/coupon`, { removeCoupon: true })
-        .then((r) => r.data);
-      if (res.success) {
-        setOrder(res.data.order);
-        toast.success(t("couponRemoved"));
-      }
+      await applyOrderCoupon.mutateAsync({ orderId, removeCoupon: true });
+      toast.success(t("couponRemoved"));
     } catch (err) {
       toast.error(err?.response?.data?.message || t("somethingWrong"));
-    } finally {
-      setCouponUpdating(false);
     }
   }
 
@@ -179,10 +152,8 @@ export function CheckoutPage({ orderId }) {
 
     setSubmitting(true);
     try {
-      await getClient().patch(`/orders/${orderId}`, { shippingAddress: orderAddress });
-      const checkoutRes = await getClient()
-        .post(`/orders/${orderId}/checkout`, { provider: paymentProvider })
-        .then((r) => r.data);
+      await updateShipping.mutateAsync({ orderId, shippingAddress: orderAddress });
+      const checkoutRes = await checkoutOrder.mutateAsync({ orderId, provider: paymentProvider });
       if (checkoutRes.success) {
         clearCart();
         if (checkoutRes.data?.checkoutUrl) {
@@ -281,10 +252,10 @@ export function CheckoutPage({ orderId }) {
                     variant="ghost"
                     size="sm"
                     onClick={handleRemoveCoupon}
-                    disabled={couponUpdating}
+                    disabled={applyOrderCoupon.isPending}
                     className="text-destructive hover:text-destructive h-8"
                   >
-                    {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("removeCoupon")}
+                    {applyOrderCoupon.isPending ? <Loader2 size={14} className="animate-spin" /> : t("removeCoupon")}
                   </Button>
                 </div>
               ) : (
@@ -302,10 +273,10 @@ export function CheckoutPage({ orderId }) {
                   <Button
                     size="sm"
                     onClick={handleApplyCoupon}
-                    disabled={!couponInput.trim() || couponUpdating}
+                    disabled={!couponInput.trim() || applyOrderCoupon.isPending}
                     className="h-9 shrink-0"
                   >
-                    {couponUpdating ? <Loader2 size={14} className="animate-spin" /> : t("applyCoupon")}
+                    {applyOrderCoupon.isPending ? <Loader2 size={14} className="animate-spin" /> : t("applyCoupon")}
                   </Button>
                 </div>
               )}

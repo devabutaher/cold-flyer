@@ -9,7 +9,6 @@ export async function getOrdersServer() {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/orders`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["orders"] },
     });
     const data = await res.json();
     return data?.data?.orders || data;
@@ -23,7 +22,6 @@ export async function getOrderByIdServer(id) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/orders/${id}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["orders", "order-detail"] },
     });
     const data = await res.json();
     return data?.data?.order || data;

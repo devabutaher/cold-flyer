@@ -1,196 +1,122 @@
-/**
- * Zustand store for cart management
- * Simple hydration-safe state management with localStorage persistence
- * No middleware dependencies for maximum stability
- */
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-const STORAGE_KEY = "cold_flyer_cart";
+const useCartStore = create(
+  persist(
+    (set, get) => ({
+      items: [],
+      coupon: null,
+      couponLoading: false,
+      _hydrated: false,
 
-// Pure state management without middleware
-function createCartStore() {
-  let items = [];
-  let coupon = null;
-  let couponLoading = false;
-  let listeners = new Set();
-  let hydrated = false;
+      setHydrated: (val) => set({ _hydrated: val }),
 
-  // Load from localStorage
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        items = parsed;
-      } else if (parsed.items) {
-        items = parsed.items;
-        coupon = parsed.coupon || null;
-      }
-    }
-  } catch (e) {
-    items = [];
-  }
-
-  function persist() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, coupon }));
-    } catch (e) {
-      // Ignore storage errors
-    }
-  }
-
-  function notify() {
-    listeners.forEach((fn) => fn());
-  }
-
-  return {
-    getItems: () => items,
-    getItemCount: () => items.reduce((sum, item) => sum + item.quantity, 0),
-    getSubtotal: () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    getTotal: (shippingCost = 60, vatRate = 0.05) => {
-      const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const shipping = shippingCost;
-      const vat = subtotal * vatRate;
-      return { subtotal, shipping, vat, total: subtotal + shipping + vat };
-    },
-
-    addItem: (product, quantity = 1) => {
-      const productId = product.id || product._id || "";
-      // Ensure we have a valid 24-char ObjectId
-      if (!productId || productId.length < 20) {
-        console.error("Invalid product ID:", productId);
-        return;
-      }
-
-      const existingItem = items.find((item) => item.productId === productId);
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        items.push({
-          id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-          productId,
-          productRef: productId,
-          slug: product.slug,
-          name: product.name,
-          price: product.price,
-          imageUrl: product.images?.[0]?.url || "",
-          description: product.description || "",
-          quantity,
-        });
-      }
-      persist();
-      notify();
-    },
-
-    updateQuantity: (id, quantity) => {
-      if (quantity <= 0) {
-        items = items.filter((item) => item.id !== id);
-      } else {
-        const item = items.find((item) => item.id === id);
-        if (item) item.quantity = quantity;
-      }
-      persist();
-      notify();
-    },
-
-    removeItem: (id) => {
-      items = items.filter((item) => item.id !== id);
-      persist();
-      notify();
-    },
-
-    clearCart: () => {
-      items = [];
-      coupon = null;
-      persist();
-      notify();
-    },
-
-    getCoupon: () => coupon,
-    getCouponLoading: () => couponLoading,
-
-    setCouponLoading: (val) => {
-      couponLoading = val;
-      notify();
-    },
-
-    applyCoupon: (applied) => {
-      coupon = applied;
-      persist();
-      notify();
-    },
-
-    removeCoupon: () => {
-      coupon = null;
-      persist();
-      notify();
-    },
-
-    subscribe: (fn) => {
-      listeners.add(fn);
-      return () => listeners.delete(fn);
-    },
-
-    hydrate: (savedItems) => {
-      if (savedItems && savedItems.length > 0) {
-        const existingIds = new Set(items.map((i) => i.id));
-        for (const item of savedItems) {
-          if (!existingIds.has(item.id)) {
-            items.push(item);
+      addItem: (product, quantity = 1) => {
+        const productId = product.id || product._id || "";
+        if (!productId || productId.length < 20) return;
+        set((state) => {
+          const idx = state.items.findIndex((item) => item.productId === productId);
+          if (idx >= 0) {
+            const updated = [...state.items];
+            updated[idx] = { ...updated[idx], quantity: updated[idx].quantity + quantity };
+            return { items: updated };
           }
-        }
-        persist();
-        notify();
-      }
+          return {
+            items: [
+              ...state.items,
+              {
+                id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+                productId,
+                productRef: productId,
+                slug: product.slug,
+                name: product.name,
+                price: product.price,
+                imageUrl: product.images?.[0]?.url || "",
+                description: product.description || "",
+                quantity,
+              },
+            ],
+          };
+        });
+      },
+
+      updateQuantity: (id, quantity) =>
+        set((state) => ({
+          items:
+            quantity <= 0
+              ? state.items.filter((item) => item.id !== id)
+              : state.items.map((item) => (item.id === id ? { ...item, quantity } : item)),
+        })),
+
+      removeItem: (id) => set((state) => ({ items: state.items.filter((item) => item.id !== id) })),
+
+      clearCart: () => set({ items: [], coupon: null }),
+
+      getItemCount: () => get().items.reduce((sum, item) => sum + item.quantity, 0),
+
+      getSubtotal: () => get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+
+      getTotal: (shippingCost = 60, vatRate = 0.05) => {
+        const subtotal = get().getSubtotal();
+        const shipping = shippingCost;
+        const vat = subtotal * vatRate;
+        return { subtotal, shipping, vat, total: subtotal + shipping + vat };
+      },
+
+      setCouponLoading: (val) => set({ couponLoading: val }),
+
+      applyCoupon: (applied) => set({ coupon: applied }),
+
+      removeCoupon: () => set({ coupon: null }),
+    }),
+    {
+      name: "cold_flyer_cart",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ items: state.items, coupon: state.coupon }),
     },
+  ),
+);
 
-    reset: () => {
-      items = [];
-      coupon = null;
-      notify();
-    },
-
-    isHydrated: () => hydrated,
-    setHydrated: (val) => {
-      hydrated = val;
-      notify();
-    },
-  };
-}
-
-const cartStore = createCartStore();
-
-// React hook for using the cart
 export function useCart() {
-  const [, forceUpdate] = useState(0);
-
-  useEffect(() => {
-    return cartStore.subscribe(() => forceUpdate((n) => n + 1));
-  }, []);
+  const items = useCartStore((s) => s.items);
+  const _hydrated = useCartStore((s) => s._hydrated);
+  const coupon = useCartStore((s) => s.coupon);
+  const couponLoading = useCartStore((s) => s.couponLoading);
+  const setHydrated = useCartStore((s) => s.setHydrated);
+  const addItem = useCartStore((s) => s.addItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const getItemCount = useCartStore((s) => s.getItemCount);
+  const getSubtotal = useCartStore((s) => s.getSubtotal);
+  const getTotal = useCartStore((s) => s.getTotal);
+  const applyCoupon = useCartStore((s) => s.applyCoupon);
+  const setCouponLoading = useCartStore((s) => s.setCouponLoading);
+  const removeCoupon = useCartStore((s) => s.removeCoupon);
 
   return {
-    items: cartStore.getItems(),
-    itemCount: cartStore.getItemCount(),
-    isHydrated: cartStore.isHydrated(),
-    setHydrated: cartStore.setHydrated,
-    addItem: cartStore.addItem,
-    updateQuantity: cartStore.updateQuantity,
-    removeItem: cartStore.removeItem,
-    clearCart: cartStore.clearCart,
-    getItemCount: cartStore.getItemCount,
-    getSubtotal: cartStore.getSubtotal,
-    getTotal: cartStore.getTotal,
-    coupon: cartStore.getCoupon(),
-    couponLoading: cartStore.getCouponLoading(),
-    applyCoupon: cartStore.applyCoupon,
-    setCouponLoading: cartStore.setCouponLoading,
-    removeCoupon: cartStore.removeCoupon,
+    items,
+    itemCount: getItemCount(),
+    isHydrated: _hydrated,
+    setHydrated,
+    addItem,
+    updateQuantity,
+    removeItem,
+    clearCart,
+    getItemCount,
+    getSubtotal,
+    getTotal,
+    coupon,
+    couponLoading,
+    applyCoupon,
+    setCouponLoading,
+    removeCoupon,
   };
 }
+
+export { useCartStore };
 
 export function CartHydrationProvider({ children }) {
   return <>{children}</>;

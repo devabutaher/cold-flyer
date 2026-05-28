@@ -78,3 +78,25 @@ export function useDeleteApplication(componentOptions = {}) {
     ...rest,
   });
 }
+
+export function useCreateApplication(componentOptions = {}) {
+  const { onSuccess: userOnSuccess, onError: userOnError, ...rest } = componentOptions;
+
+  return useMutation({
+    mutationFn: (data) => client().post("/job-applications", data).then((r) => r.data),
+    onSuccess: (data, variables, context) => {
+      toast.success("Application submitted successfully");
+      userOnSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      const msg = error.response?.data?.message || "";
+      if (msg.includes("already have")) {
+        toast.error("You have already applied for this position");
+      } else {
+        toast.error(msg || "Failed to submit application");
+      }
+      userOnError?.(error, variables, context);
+    },
+    ...rest,
+  });
+}

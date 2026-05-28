@@ -18,6 +18,10 @@ export function CatalogPage({
   defaultSort,
   itemLabel,
   searchComponent,
+  data: externalData,
+  allData: externalAllData,
+  isLoading: externalLoading,
+  error: externalError,
 }) {
   const searchParams = useSearchParams();
 
@@ -33,27 +37,30 @@ export function CatalogPage({
     [searchParams],
   );
 
-  const { data: allItems = [] } = useQuery({
+  const queryAll = useQuery({
     queryKey: [...queryKey, "all"],
     queryFn: async () => {
       const res = await fetchAllFn();
       return extractArray(res);
     },
+    enabled: !externalAllData && !!fetchAllFn,
     staleTime: 5 * 60 * 1000,
   });
 
-  const {
-    data: items = [],
-    isLoading,
-    error,
-  } = useQuery({
+  const queryList = useQuery({
     queryKey: [...queryKey, params],
     queryFn: async () => {
       const res = await fetchFn({ ...params, limit: "50" });
       return extractArray(res);
     },
+    enabled: !externalData && !!fetchFn,
     staleTime: 2 * 60 * 1000,
   });
+
+  const allItems = useMemo(() => externalAllData ?? queryAll.data ?? [], [externalAllData, queryAll.data]);
+  const items = useMemo(() => externalData ?? queryList.data ?? [], [externalData, queryList.data]);
+  const isLoading = externalData ? (externalLoading ?? false) : queryList.isLoading;
+  const error = externalData ? (externalError ?? null) : queryList.error;
 
   const filterOptions = useMemo(() => {
     if (!buildFilterOptions) return [];

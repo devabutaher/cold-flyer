@@ -25,7 +25,6 @@ export async function getServicesServer(params) {
     const qs = query.toString();
     const res = await fetch(`${API_BACKEND_URL}/api/services${qs ? `?${qs}` : ""}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["services"] },
     });
     const data = await res.json();
     return data;
@@ -39,7 +38,6 @@ export async function getServiceByIdServer(id) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/services/${id}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["services"] },
     });
     const data = await res.json();
     return data?.data?.service || data;
@@ -53,7 +51,6 @@ export async function getServiceBySlugServer(slug) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/services/slug/${slug}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["services"] },
     });
     const data = await res.json();
     return data?.data?.service || data;
@@ -67,7 +64,6 @@ export async function getFeaturedServicesServer() {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/services/featured`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["services"] },
     });
     const data = await res.json();
     return data?.data?.services || data;
@@ -148,7 +144,6 @@ export async function getBookingsServer() {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/services/bookings`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["bookings"] },
     });
     const data = await res.json();
     return data?.data?.bookings || data;
@@ -162,7 +157,6 @@ export async function getBookingByIdServer(id) {
     const cookieStore = await cookies();
     const res = await fetch(`${API_BACKEND_URL}/api/services/bookings/${id}`, {
       headers: getServerFetchHeaders(cookieStore),
-      next: { tags: ["bookings"] },
     });
     const data = await res.json();
     return data?.data?.booking || data;

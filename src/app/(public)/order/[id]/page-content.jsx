@@ -10,9 +10,8 @@ import { useAuth } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getClient } from "@/lib/http-client";
+import { useOrderQuery, useVerifyPayment, useVerifySSLCommerzPayment } from "@/hooks/queries/orders";
 
-const POLL_INTERVAL = 2000;
 const POLL_TIMEOUT = 20000;
 
 export default function OrderSuccessPage() {
@@ -22,117 +21,55 @@ export default function OrderSuccessPage() {
   const router = useRouter();
   const { backendUser } = useAuth();
   const orderId = params.id;
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [polling, setPolling] = useState(false);
-  const [pollTimedOut, setPollTimedOut] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const pollingRef = useRef(null);
+  const verifiedRef = useRef(false);
 
   const isSuccess = searchParams.get("success") !== "false";
   const provider = searchParams.get("provider") || "stripe";
 
+  const { data: order, isLoading } = useOrderQuery(orderId);
+  const verifyStripe = useVerifyPayment();
+  const verifySSL = useVerifySSLCommerzPayment();
+
   useEffect(() => {
-    if (!orderId || !backendUser) return;
-
-    let mounted = true;
-    let intervalId = null;
-    let timeoutId = null;
-    let startedAt = Date.now();
-
-    const tryVerifyPayment = async (fetchedOrder) => {
+    if (!order || verifiedRef.current || !backendUser) return;
+    if (!isSuccess || order.paymentStatus === "paid") {
+      verifiedRef.current = true;
+      return;
+    }
+    verifiedRef.current = true;
+    let cancelled = false;
+    const doVerify = async () => {
       setVerifying(true);
       try {
-        let verifyRes;
         if (provider === "sslcommerz") {
-          verifyRes = await getClient().post(`/payments/sslcommerz/verify/${orderId}`);
-        } else if (fetchedOrder?.stripeSessionId) {
-          verifyRes = await getClient().post(`/orders/${orderId}/verify-payment`, {
-            sessionId: fetchedOrder.stripeSessionId,
-          });
-        }
-        if (!mounted) return;
-        if (verifyRes && verifyRes.data && !verifyRes.data.success) {
-          console.warn("Verify payment returned:", verifyRes.data);
-        }
-        const refreshRes = await getClient().get(`/orders/${orderId}`);
-        if (!mounted) return;
-        const refreshedOrder = refreshRes.data?.data?.order || refreshRes.data?.order;
-        if (refreshedOrder) setOrder(refreshedOrder);
-      } catch (err) {
-        console.error("Verify payment failed:", err?.response?.data || err?.message || err);
-      } finally {
-        if (mounted) setVerifying(false);
-      }
-    };
-
-    const stopPolling = () => {
-      if (intervalId) clearInterval(intervalId);
-      if (timeoutId) clearTimeout(timeoutId);
-      intervalId = null;
-      timeoutId = null;
-    };
-
-    const handleTimeout = (fetchedOrder) => {
-      setPollTimedOut(true);
-      setPolling(false);
-      setLoading(false);
-      stopPolling();
-      tryVerifyPayment(fetchedOrder);
-    };
-
-    const fetchOrder = async (isPoll = false) => {
-      try {
-        const res = await getClient().get(`/orders/${orderId}`);
-        if (!mounted) return;
-
-        const fetchedOrder = res.data?.data?.order || res.data?.order;
-        if (!mounted) return;
-
-        setOrder(fetchedOrder);
-
-        if (fetchedOrder.paymentStatus === "paid") {
-          setPolling(false);
-          setLoading(false);
-          stopPolling();
-          return;
-        }
-
-        if (!isPoll) {
-          setLoading(false);
-          if (isSuccess) {
-            startedAt = Date.now();
-            setPolling(true);
-            timeoutId = setTimeout(() => handleTimeout(fetchedOrder), POLL_TIMEOUT);
-            intervalId = setInterval(() => fetchOrder(true), POLL_INTERVAL);
-          }
-          return;
-        }
-
-        if (Date.now() - startedAt > POLL_TIMEOUT) {
-          handleTimeout(fetchedOrder);
+          await verifySSL.mutateAsync(orderId);
+        } else if (order.stripeSessionId) {
+          await verifyStripe.mutateAsync({ orderId, sessionId: order.stripeSessionId });
         }
       } catch {
-        if (mounted && isPoll) {
-          if (Date.now() - startedAt > POLL_TIMEOUT) {
-            handleTimeout();
-          }
-        } else if (mounted) {
-          setLoading(false);
-        }
+        // verification failure is non-fatal — polling continues
+      } finally {
+        if (!cancelled) setVerifying(false);
       }
     };
+    doVerify();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order?._id, isSuccess, backendUser]);
 
-    fetchOrder(false);
+  useEffect(() => {
+    if (!isSuccess || !order || order.paymentStatus === "paid" || order.paymentStatus === "failed") return;
+    const timer = setTimeout(() => setTimedOut(true), POLL_TIMEOUT);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, order?.paymentStatus]);
 
-    return () => {
-      mounted = false;
-      if (intervalId) clearInterval(intervalId);
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [orderId, backendUser, isSuccess, provider]);
+  const loading = isLoading || verifying;
+  const polling = !!order && isSuccess && order.paymentStatus !== "paid" && order.paymentStatus !== "failed" && !timedOut;
 
-  if (loading || polling || verifying) {
+  if (loading || polling) {
     return (
       <div className="container flex min-h-[60vh] items-center justify-center py-12">
         <Card className="w-full max-w-md">
@@ -179,7 +116,7 @@ export default function OrderSuccessPage() {
                   : "Thank you for your order. Your payment has been processed."}
               </p>
             </>
-          ) : pollTimedOut && !isPaid ? (
+          ) : timedOut && !isPaid ? (
             <>
               <div className="mb-4 flex justify-center">
                 <Loader2 className="h-16 w-16 text-amber-500" />
@@ -240,14 +177,14 @@ export default function OrderSuccessPage() {
             <Link href={`/dashboard/orders/${orderId}`}>
               <Button className="w-full">{t("viewDetails")}</Button>
             </Link>
-            {(!isPaid || pollTimedOut) && (
+            {(!isPaid || timedOut) && (
               <Link href={`/dashboard/orders/${orderId}`}>
                 <Button variant="outline" className="w-full">
                   Retry Payment
                 </Button>
               </Link>
             )}
-            {pollTimedOut && (
+            {timedOut && (
               <Button variant="outline" className="w-full" onClick={() => router.refresh()}>
                 Refresh Status
               </Button>
