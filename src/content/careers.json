@@ -1,0 +1,186 @@
+{
+  "en": {
+    "heroBadge": "Join Our Team",
+    "heroTitle": "Build the<br></br>Future of Comfort",
+    "heroDesc": "Join a global team of innovators shaping sustainable climate solutions for generations to come.",
+    "whyTitle": "Why Cold Flyer?",
+    "whyDesc": "We are more than an HVAC company - we are a movement toward sustainable living.",
+    "culture": [
+      { "value": "800+", "label": "Team Members" },
+      { "value": "32", "label": "Countries" },
+      { "value": "150+", "label": "Partner Brands" },
+      { "value": "98%", "label": "Client Retention" }
+    ],
+    "benefitsBadge": "What We Offer",
+    "benefitsTitle": "Benefits & Perks",
+    "benefitsDesc": "We invest in our people because they are our greatest asset.",
+    "benefits": [
+      {
+        "icon": "DollarSign",
+        "title": "Competitive Compensation",
+        "desc": "Industry-leading salaries with annual performance reviews and bonuses.",
+        "highlight": true
+      },
+      {
+        "icon": "Heart",
+        "title": "Health & Wellness",
+        "desc": "Comprehensive health, dental, and vision insurance plus wellness programs.",
+        "highlight": false
+      },
+      {
+        "icon": "Calendar",
+        "title": "Flexible Time Off",
+        "desc": "Unlimited PTO policy with minimum required rest days.",
+        "highlight": false
+      },
+      {
+        "icon": "Rocket",
+        "title": "Growth Opportunities",
+        "desc": "Clear career paths with training budget and mentorship programs.",
+        "highlight": false
+      },
+      {
+        "icon": "Home",
+        "title": "Remote-First Culture",
+        "desc": "Work from anywhere with home office stipend provided.",
+        "highlight": false
+      },
+      {
+        "icon": "Globe",
+        "title": "Global Exposure",
+        "desc": "Work on international projects with teams across 32 countries.",
+        "highlight": false
+      }
+    ],
+    "positionsTitle": "Open Positions",
+    "departmentTeam": "Service Team",
+    "departmentDesc": "Technical Operations",
+    "positionName": "HVAC Technician",
+    "positionLocation": "Dhaka, Bangladesh",
+    "positionType": "Full-time",
+    "applyNow": "Apply Now",
+    "applyFormTitle": "Apply for HVAC Technician",
+    "applyFormSubtitle": "Dhaka, Bangladesh · Full-time",
+    "processBadge": "How It Works",
+    "processTitle": "Application Process",
+    "process": [
+      { "step": "01", "title": "Submit Application", "desc": "Fill out our online application form with your details and resume." },
+      { "step": "02", "title": "Initial Screening", "desc": "Our HR team reviews your application and reaches out within 5-7 business days." },
+      { "step": "03", "title": "Technical Interview", "desc": "Meet with our technical leads to discuss your experience and skills." },
+      { "step": "04", "title": "Offer & Onboarding", "desc": "Successful candidates receive an offer and begin our structured onboarding." }
+    ],
+    "applyName": "Full Name",
+    "applyNamePlaceholder": "Enter your full name",
+    "applyEmail": "Email Address",
+    "applyEmailPlaceholder": "Enter your email",
+    "applyPhone": "Phone Number",
+    "applyPhonePlaceholder": "Enter your phone number",
+    "applyExperience": "Years of Experience",
+    "applyExperiencePlaceholder": "e.g., 3-5 years",
+    "applySkills": "Skills",
+    "applySkillsPlaceholder": "e.g., HVAC, Installation, Maintenance",
+    "applyCoverLetter": "Cover Letter",
+    "applyCoverLetterPlaceholder": "Tell us why you'd be a great fit...",
+    "applySubmit": "Submit Application",
+    "applySubmitting": "Submitting...",
+    "applySuccess": "Application submitted successfully! We will contact you soon.",
+    "applyAlreadyExists": "You have already applied for this position.",
+    "applyError": "Something went wrong. Please try again.",
+    "ctaTitle": "Don't see the right role?",
+    "ctaDesc": "Submit your resume for future opportunities.",
+    "ctaEmail": "careers@coldflyer.com",
+    "ctaChat": "Schedule Chat"
+  },
+  "bn": {
+    "heroBadge": "আমাদের টিমে যোগ দিন",
+    "heroTitle": "আরামের<br></br>ভবিষ্যত গড়ুন",
+    "heroDesc": "টেকসই জলবায়ু সমাধান গঠনে উদ্ভাবকদের একটি বৈশ্বিক দলে যোগ দিন।",
+    "whyTitle": "কেন কোল্ড ফ্লায়ার?",
+    "whyDesc": "আমরা শুধু একটি HVAC কোম্পানি নই - আমরা টেকসই জীবনের দিকে একটি আন্দোলন।",
+    "culture": [
+      { "value": "৮০০+", "label": "টিম সদস্য" },
+      { "value": "৩২", "label": "টি দেশ" },
+      { "value": "১৫০+", "label": "পার্টনার ব্র্যান্ড" },
+      { "value": "৯৮%", "label": "গ্রাহক ধারণ" }
+    ],
+    "benefitsBadge": "আমরা যা অফার করি",
+    "benefitsTitle": "সুবিধা ও পার্কস",
+    "benefitsDesc": "আমরা আমাদের লোকেদের মধ্যে বিনিয়োগ করি কারণ তারা আমাদের সবচেয়ে বড় সম্পদ।",
+    "benefits": [
+      {
+        "icon": "DollarSign",
+        "title": "প্রতিযোগিতামূলক ক্ষতিপূরণ",
+        "desc": "বার্ষিক কর্মক্ষমতা পর্যালোচনা এবং বোনাস সহ শিল্প-নেতৃস্থানীয় বেতন।",
+        "highlight": true
+      },
+      {
+        "icon": "Heart",
+        "title": "স্বাস্থ্য ও সুস্থতা",
+        "desc": "ব্যাপক স্বাস্থ্য, ডেন্টাল এবং ভিশন ইন্স্যুরেন্স plus ওয়েলনেস প্রোগ্রাম।",
+        "highlight": false
+      },
+      {
+        "icon": "Calendar",
+        "title": "নমনীয় ছুটি",
+        "desc": "ন্যূনতম বাধ্যতামূলক বিশ্রাম দিবস সহ আনলিমিটেড PTO নীতি।",
+        "highlight": false
+      },
+      {
+        "icon": "Rocket",
+        "title": "বৃদ্ধির সুযোগ",
+        "desc": "প্রশিক্ষণ বাজেট এবং মেন্টরশিপ প্রোগ্রাম সহ স্পষ্ট ক্যারিয়ার পথ।",
+        "highlight": false
+      },
+      {
+        "icon": "Home",
+        "title": "রিমোট-ফার্স্ট সংস্কৃতি",
+        "desc": "হোম অফিস স্টাইপেন্ড সহ যেকোনো স্থান থেকে কাজ করুন।",
+        "highlight": false
+      },
+      {
+        "icon": "Globe",
+        "title": "বৈশ্বিক অভিজ্ঞতা",
+        "desc": "৩২টি দেশের দলের সাথে আন্তর্জাতিক প্রকল্পে কাজ করার সুযোগ।",
+        "highlight": false
+      }
+    ],
+    "positionsTitle": "খালি পদ",
+    "departmentTeam": "সার্ভিস টিম",
+    "departmentDesc": "প্রযুক্তিগত অপারেশন",
+    "positionName": "HVAC টেকনিশিয়ান",
+    "positionLocation": "ঢাকা, বাংলাদেশ",
+    "positionType": "পূর্ণ-সময়",
+    "applyNow": "এখন আবেদন করুন",
+    "applyFormTitle": "HVAC টেকনিশিয়ানের জন্য আবেদন",
+    "applyFormSubtitle": "ঢাকা, বাংলাদেশ · পূর্ণ-সময়",
+    "processBadge": "কিভাবে কাজ করে",
+    "processTitle": "আবেদন প্রক্রিয়া",
+    "process": [
+      { "step": "০১", "title": "আবেদন জমা দিন", "desc": "আপনার বিবরণ এবং জীবনবৃত্তান্ত সহ আমাদের অনলাইন আবেদন ফর্ম পূরণ করুন।" },
+      { "step": "০২", "title": "প্রাথমিক স্ক্রীনিং", "desc": "আমাদের HR টিম আপনার আবেদন পর্যালোচনা করে ৫-৭ কার্যদিবসের মধ্যে যোগাযোগ করে।" },
+      { "step": "০৩", "title": "প্রযুক্তিগত সাক্ষাৎকার", "desc": "আপনার অভিজ্ঞতা এবং দক্ষতা নিয়ে আলোচনা করতে আমাদের টেকনিক্যাল লিডদের সাথে দেখা করুন।" },
+      { "step": "০৪", "title": "অফার ও অনবোর্ডিং", "desc": "সফল প্রার্থীরা একটি অফার পান এবং আমাদের কাঠামোবদ্ধ অনবোর্ডিং শুরু করেন।" }
+    ],
+    "applyName": "পূর্ণ নাম",
+    "applyNamePlaceholder": "আপনার পূর্ণ নাম লিখুন",
+    "applyEmail": "ইমেইল ঠিকানা",
+    "applyEmailPlaceholder": "আপনার ইমেইল লিখুন",
+    "applyPhone": "ফোন নম্বর",
+    "applyPhonePlaceholder": "আপনার ফোন নম্বর লিখুন",
+    "applyExperience": "অভিজ্ঞতার বছর",
+    "applyExperiencePlaceholder": "যেমন, ৩-৫ বছর",
+    "applySkills": "দক্ষতা",
+    "applySkillsPlaceholder": "যেমন, HVAC, ইনস্টলেশন, মেইনটেন্যান্স",
+    "applyCoverLetter": "কভার লেটার",
+    "applyCoverLetterPlaceholder": "আপনি কেন দুর্দান্ত ফিট হবেন তা বলুন...",
+    "applySubmit": "আবেদন জমা দিন",
+    "applySubmitting": "জমা দেওয়া হচ্ছে...",
+    "applySuccess": "আবেদন সফলভাবে জমা দেওয়া হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।",
+    "applyAlreadyExists": "আপনি ইতিমধ্যে এই পদের জন্য আবেদন করেছেন।",
+    "applyError": "কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "ctaTitle": "সঠিক ভূমিকা খুঁজে পাচ্ছেন না?",
+    "ctaDesc": "ভবিষ্যতের সুযোগের জন্য আপনার জীবনবৃত্তান্ত জমা দিন।",
+    "ctaEmail": "careers@coldflyer.com",
+    "ctaChat": "সাক্ষাতের সময় নির্ধারণ করুন"
+  }
+}

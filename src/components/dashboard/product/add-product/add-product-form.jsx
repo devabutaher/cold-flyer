@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { getData } from "@/data";
+import { getPageContent } from "@/lib/content";
 import {
   BasicInfoSection,
   FeaturesSection,
@@ -34,7 +34,7 @@ function useCompletedSections(control) {
 }
 
 export default function AddProductForm({ isAdmin = false }) {
-  const DEFAULT_FORM_VALUES = getData("DEFAULT_FORM_VALUES", "en");
+  const DEFAULT_FORM_VALUES = getPageContent("product-form-constants", "en").DEFAULT_FORM_VALUES;
   const initialValues = {
     ...DEFAULT_FORM_VALUES,
     name: "",

@@ -1,5 +1,6 @@
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getRecentWorkBySlugServer } from "@/lib/actions/recentWorks";
 import { ArrowRight, Briefcase, Calendar, ChevronLeft, Eye } from "lucide-react";
 import Image from "next/image";
@@ -136,11 +137,11 @@ export default async function RecentWorkDetailPage({ params }) {
             </h3>
             <p className="text-primary-foreground/70 text-sm">Contact us to discuss your project requirements.</p>
           </div>
-          <Link href="/contact">
-            <div className="inline-flex items-center gap-2 rounded-lg bg-primary-foreground text-primary px-6 py-3 text-sm font-bold hover:bg-primary-foreground/90 transition-colors">
+          <Button asChild>
+            <Link href="/contact">
               Get in Touch <ArrowRight size={16} />
-            </div>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </AnimatedSection>
     </main>

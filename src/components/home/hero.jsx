@@ -2,11 +2,11 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getData } from "@/data";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -88,7 +88,7 @@ function SlideContent({ slide, t }) {
 export default function Hero() {
   const t = useTranslations();
   const locale = useLocale();
-  const heroSliderData = getData("heroSliderData", locale);
+  const { slides: heroSliderData } = getPageContent("home-hero", locale);
   const sectionRef = useRef(null);
 
   const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ loop: true }, [

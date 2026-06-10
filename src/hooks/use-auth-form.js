@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/providers";
-import { forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
+import { demoLogin, forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
 import { createAccountSchema, signInSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -110,6 +110,23 @@ export function useAuthForm() {
     reset();
   };
 
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    setAuthError("");
+    try {
+      await demoLogin();
+      const user = await refreshUser();
+      toast.success(t("welcomeBack"));
+      router.push(
+        searchParams.get("redirect") || (["admin", "moderator", "worker"].includes(user?.role) ? "/dashboard" : "/"),
+      );
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = async (data) => {
     setLoading(true);
     setAuthError("");
@@ -154,6 +171,7 @@ export function useAuthForm() {
     setShowPassword,
     setShowAdminHint,
     handleTabSwitch,
+    handleDemoLogin,
     onSubmit,
   };
 }

@@ -2,10 +2,10 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
-import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { getPageContent } from "@/lib/content";
 
 function PortfolioItem({ project, isLarge = false }) {
   return (
@@ -32,7 +32,7 @@ export default function Portfolio() {
   const t = useTranslations("home");
   const tc = useTranslations("common");
   const locale = useLocale();
-  const projects = getData("projects", locale);
+  const projects = getPageContent("home-projects", locale);
 
   if (!projects?.length) return null;
 

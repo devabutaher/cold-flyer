@@ -25,8 +25,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
       ...(await import(`../messages/${locale}/nav.json`)).default,
       ...(await import(`../messages/${locale}/home.json`)).default,
       ...(await import(`../messages/${locale}/footer.json`)).default,
-      ...(await import(`../messages/${locale}/about.json`)).default,
-      ...(await import(`../messages/${locale}/faq.json`)).default,
       ...(await import(`../messages/${locale}/services.json`)).default,
       ...(await import(`../messages/${locale}/auth.json`)).default,
       ...(await import(`../messages/${locale}/cart.json`)).default,
@@ -35,13 +33,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
       ...(await import(`../messages/${locale}/bookings.json`)).default,
       ...(await import(`../messages/${locale}/cart-page.json`)).default,
       ...(await import(`../messages/${locale}/checkout.json`)).default,
-      ...(await import(`../messages/${locale}/contact.json`)).default,
       ...(await import(`../messages/${locale}/order.json`)).default,
       ...(await import(`../messages/${locale}/blog.json`)).default,
-      ...(await import(`../messages/${locale}/careers.json`)).default,
-      ...(await import(`../messages/${locale}/privacy.json`)).default,
-      ...(await import(`../messages/${locale}/shipping.json`)).default,
-      ...(await import(`../messages/${locale}/terms.json`)).default,
     },
   };
 });

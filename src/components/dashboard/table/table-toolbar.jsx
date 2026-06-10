@@ -106,7 +106,7 @@ export function TableToolbar({ table, searchPlaceholder = "Search…", filters =
             placeholder={searchPlaceholder}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            className="pl-8 h-9 w-52 text-sm"
+            className="pl-8 h-9 w-full sm:w-52 text-sm"
           />
         </div>
 

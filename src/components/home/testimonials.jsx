@@ -1,6 +1,6 @@
 "use client";
 
-import { getData } from "@/data";
+import { getPageContent } from "@/lib/content";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
 import Autoplay from "embla-carousel-autoplay";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -46,7 +46,7 @@ function TestimonialCard({ review }) {
 export default function Testimonials() {
   const t = useTranslations("home");
   const locale = useLocale();
-  const reviews = getData("reviews", locale);
+  const reviews = getPageContent("home-reviews", locale);
   const { emblaRef, emblaApi, selectedIndex } = useEmblaSlider({ align: "start", containItems: false }, [
     Autoplay({ delay: 4500, stopOnInteraction: true }),
   ]);

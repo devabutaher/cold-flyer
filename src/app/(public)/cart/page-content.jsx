@@ -234,7 +234,7 @@ function CartContent() {
                   </div>
                   <button
                     onClick={() => removeItem(product.id)}
-                    className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    className="shrink-0 rounded-lg p-2.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                   >
                     <X size={15} />
                   </button>

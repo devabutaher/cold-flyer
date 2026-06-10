@@ -4,7 +4,7 @@ import { sanitizeForRSC } from "@/lib/utils";
 import { getServiceBySlugServer } from "@/lib/actions/services";
 import { notFound } from "next/navigation";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://coldflyer.vercel.app";
 
 export async function generateMetadata({ params }) {
   const { id: slug } = await params;

@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { getData } from "@/data";
-import { Clock, Loader2, Mail, MapPin, Video, Wrench } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import RichText from "@/components/ui/rich-text";
+import { Calendar, Clock, DollarSign, Globe, Heart, Home, Loader2, Mail, MapPin, Rocket, Video, Wrench } from "lucide-react";
+import { useLocale } from "next-intl";
+import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,9 +20,8 @@ import { useCreateApplication } from "@/hooks/queries/applications";
 
 export default function CareersPage() {
   const locale = useLocale();
-  const t = useTranslations("careers");
-  const benefits = getData("benefits", locale);
-  const culture = getData("culture", locale);
+  const content = getPageContent("careers", locale);
+  const { benefits, culture, process } = content;
 
   const [showApplyForm, setShowApplyForm] = useState(false);
   const createApplication = useCreateApplication();
@@ -36,13 +36,6 @@ export default function CareersPage() {
     resolver: zodResolver(applicationSchema),
     mode: "onTouched",
   });
-
-  const process = [
-    { step: "01", title: t("step1Title"), desc: t("step1Desc") },
-    { step: "02", title: t("step2Title"), desc: t("step2Desc") },
-    { step: "03", title: t("step3Title"), desc: t("step3Desc") },
-    { step: "04", title: t("step4Title"), desc: t("step4Desc") },
-  ];
 
   const handleApply = () => {
     setShowApplyForm(true);
@@ -69,14 +62,14 @@ export default function CareersPage() {
 
     try {
       await createApplication.mutateAsync(payload);
-      toast.success(t("applySuccess"));
+      toast.success(content.applySuccess);
       setShowApplyForm(false);
     } catch (err) {
       const msg = err?.response?.data?.message || "";
       if (msg.includes("already have")) {
-        toast.error(t("applyAlreadyExists"));
+        toast.error(content.applyAlreadyExists);
       } else {
-        toast.error(t("applyError"));
+        toast.error(content.applyError);
       }
     }
   };
@@ -98,11 +91,11 @@ export default function CareersPage() {
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">{t("heroBadge")}</Badge>
-            <h1 className="font-sans font-extrabold text-6xl text-white md:text-8xl leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", { br: () => <br /> })}
+            <Badge className="mb-6 uppercase tracking-[0.2em] text-xs">{content.heroBadge}</Badge>
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl text-white md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter mb-8">
+              <RichText html={content.heroTitle} />
             </h1>
-            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{t("heroDesc")}</p>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{content.heroDesc}</p>
           </div>
         </div>
       </section>
@@ -115,11 +108,11 @@ export default function CareersPage() {
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
                 <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
-                  Why Cold Flyer?
+                  {content.whyTitle}
                 </h2>
               </div>
 
-              <p className="text-lg leading-relaxed text-muted-foreground">{t("whyDesc")}</p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{content.whyDesc}</p>
 
               <div className="grid grid-cols-2 gap-6">
                 {culture.map((item) => (
@@ -157,19 +150,19 @@ export default function CareersPage() {
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
               <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
-                What We Offer
+                {content.benefitsBadge}
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-                Benefits & Perks
+                {content.benefitsTitle}
               </h2>
             </div>
 
-            <p className="max-w-md font-medium text-muted-foreground">{t("benefitsDesc")}</p>
+            <p className="max-w-md font-medium text-muted-foreground">{content.benefitsDesc}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {benefits.map((benefit) => {
-              const Icon = benefit.icon;
+              const Icon = { DollarSign, Heart, Calendar, Rocket, Home, Globe }[benefit.icon];
 
               return (
                 <div
@@ -216,7 +209,7 @@ export default function CareersPage() {
         <div className="container">
           <div className="text-center mb-20">
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-inverted-foreground mb-5">
-              Open Positions
+              {content.positionsTitle}
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
@@ -228,28 +221,28 @@ export default function CareersPage() {
                   <Wrench size={24} className="text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-sans font-extrabold text-2xl">Service Team</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Technical Operations</p>
+                  <h3 className="font-sans font-extrabold text-2xl">{content.departmentTeam}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{content.departmentDesc}</p>
                 </div>
               </div>
 
               <div className="divide-y divide-border/30">
                 <div className="p-6 flex items-center justify-between hover:bg-primary/10 transition-colors">
                   <div>
-                    <div className="font-medium text-lg mb-1">HVAC Technician</div>
+                    <div className="font-medium text-lg mb-1">{content.positionName}</div>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <MapPin size={14} />
-                        Dhaka, Bangladesh
+                        {content.positionLocation}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock size={14} />
-                        Full-time
+                        {content.positionType}
                       </span>
                     </div>
                   </div>
                   <Button variant="secondary" size="sm" onClick={handleApply}>
-                    Apply Now
+                    {content.applyNow}
                   </Button>
                 </div>
               </div>
@@ -264,10 +257,10 @@ export default function CareersPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
-                How It Works
+                {content.processBadge}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                Application Process
+                {content.processTitle}
               </h2>
 
               <div className="space-y-6">
@@ -306,16 +299,16 @@ export default function CareersPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              {"Don't see the right role?"}
+              {content.ctaTitle}
             </h3>
-            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
+            <p className="text-primary-foreground/70 text-sm">{content.ctaDesc}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">
-              <Mail size={16} /> careers@coldflyer.com
+              <Mail size={16} /> {content.ctaEmail}
             </Button>
             <Button variant="secondary" size="lg" className="gap-2">
-              <Video size={16} /> Schedule Chat
+              <Video size={16} /> {content.ctaChat}
             </Button>
           </div>
         </div>
@@ -325,32 +318,32 @@ export default function CareersPage() {
       <Sheet open={showApplyForm} onOpenChange={(open) => !open && setShowApplyForm(false)}>
         <SheetContent open={showApplyForm} className="sm:max-w-125 px-4 overflow-y-auto">
           <SheetHeader className="mb-6">
-            <SheetTitle className="text-xl">Apply for HVAC Technician</SheetTitle>
-            <SheetDescription>Dhaka, Bangladesh &middot; Full-time</SheetDescription>
+            <SheetTitle className="text-xl">{content.applyFormTitle}</SheetTitle>
+            <SheetDescription>{content.applyFormSubtitle}</SheetDescription>
           </SheetHeader>
 
           <form onSubmit={handleSubmit(onApply)} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="apply-name">
-                {t("applyName")} <span className="text-destructive">*</span>
+                {content.applyName} <span className="text-destructive">*</span>
               </Label>
               <Controller
                 name="name"
                 control={control}
-                render={({ field }) => <Input id="apply-name" placeholder={t("applyNamePlaceholder")} {...field} />}
+                render={({ field }) => <Input id="apply-name" placeholder={content.applyNamePlaceholder} {...field} />}
               />
               {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="apply-email">
-                {t("applyEmail")} <span className="text-destructive">*</span>
+                {content.applyEmail} <span className="text-destructive">*</span>
               </Label>
               <Controller
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input id="apply-email" type="email" placeholder={t("applyEmailPlaceholder")} {...field} />
+                  <Input id="apply-email" type="email" placeholder={content.applyEmailPlaceholder} {...field} />
                 )}
               />
               {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
@@ -358,47 +351,47 @@ export default function CareersPage() {
 
             <div className="space-y-2">
               <Label htmlFor="apply-phone">
-                {t("applyPhone")} <span className="text-destructive">*</span>
+                {content.applyPhone} <span className="text-destructive">*</span>
               </Label>
               <Controller
                 name="phone"
                 control={control}
                 render={({ field }) => (
-                  <Input id="apply-phone" type="tel" placeholder={t("applyPhonePlaceholder")} {...field} />
+                  <Input id="apply-phone" type="tel" placeholder={content.applyPhonePlaceholder} {...field} />
                 )}
               />
               {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="apply-experience">{t("applyExperience")}</Label>
+              <Label htmlFor="apply-experience">{content.applyExperience}</Label>
               <Controller
                 name="experience"
                 control={control}
                 render={({ field }) => (
-                  <Input id="apply-experience" placeholder={t("applyExperiencePlaceholder")} {...field} />
+                  <Input id="apply-experience" placeholder={content.applyExperiencePlaceholder} {...field} />
                 )}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="apply-skills">{t("applySkills")}</Label>
+              <Label htmlFor="apply-skills">{content.applySkills}</Label>
               <Controller
                 name="skills"
                 control={control}
-                render={({ field }) => <Input id="apply-skills" placeholder={t("applySkillsPlaceholder")} {...field} />}
+                render={({ field }) => <Input id="apply-skills" placeholder={content.applySkillsPlaceholder} {...field} />}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="apply-cover-letter">{t("applyCoverLetter")}</Label>
+              <Label htmlFor="apply-cover-letter">{content.applyCoverLetter}</Label>
               <Controller
                 name="coverLetter"
                 control={control}
                 render={({ field }) => (
                   <Textarea
                     id="apply-cover-letter"
-                    placeholder={t("applyCoverLetterPlaceholder")}
+                    placeholder={content.applyCoverLetterPlaceholder}
                     {...field}
                     rows={4}
                   />
@@ -410,10 +403,10 @@ export default function CareersPage() {
               {createApplication.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  {t("applySubmitting")}
+                  {content.applySubmitting}
                 </>
               ) : (
-                t("applySubmit")
+                content.applySubmit
               )}
             </Button>
           </form>

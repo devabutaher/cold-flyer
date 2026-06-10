@@ -1,7 +1,7 @@
 export const aboutData = [
   {
     label: "Sustainable Efficiency",
-    sub: "Reduce your energy spend by up to 40% with our smart thermal systems. Designed for Bangladesh's tropical climate.",
+    sub: "Reduce your energy spend by up to 40% with our smart HVAC systems. Designed for Bangladesh's tropical climate.",
   },
   {
     label: "Pan-Bangladesh Support",

@@ -1,0 +1,87 @@
+{
+  "en": {
+    "CATEGORIES": [
+      "Split AC",
+      "Window AC",
+      "Portable AC",
+      "Central AC",
+      "Filters",
+      "Coils",
+      "Fan Parts",
+      "Electronics",
+      "Accessories"
+    ],
+    "BRANDS": [
+      "ColdFlyer",
+      "Daikin",
+      "LG",
+      "Samsung",
+      "Carrier",
+      "Mitsubishi",
+      "General",
+      "Walton",
+      "Minister",
+      "Vision"
+    ],
+    "TAGS": [
+      { "value": "Sale", "label": "Sale" },
+      { "value": "New", "label": "New" },
+      { "value": "Hot", "label": "Hot" },
+      { "value": "Featured", "label": "Featured" }
+    ],
+    "WARRANTIES": ["1 Year", "2 Years", "3 Years", "5 Years"],
+    "DEFAULT_FORM_VALUES": {
+      "name": "",
+      "sku": "",
+      "brand": "",
+      "category": "",
+      "description": "",
+      "price": "",
+      "originalPrice": "",
+      "stock": "",
+      "productType": "unit",
+      "warranty": "",
+      "tag": "None",
+      "features": "",
+      "inBox": "",
+      "images": []
+    }
+  },
+  "bn": {
+    "CATEGORIES": [
+      "স্প্লিট এসি",
+      "উইন্ডো এসি",
+      "পোর্টেবল এসি",
+      "সেন্ট্রাল এসি",
+      "ফিল্টার",
+      "কয়েল",
+      "ফ্যান যন্ত্রাংশ",
+      "ইলেকট্রনিক্স",
+      "অ্যাক্সেসরিজ"
+    ],
+    "BRANDS": ["কোল্ড ফ্লায়ার", "ডাইকিন", "এলজি", "স্যামসাং", "কেরিয়ার", "মিতসুবিশি"],
+    "TAGS": [
+      { "value": "Sale", "label": "সেল" },
+      { "value": "New", "label": "নতুন" },
+      { "value": "Hot", "label": "হট" },
+      { "value": "Featured", "label": "বৈশিষ্ট্যযুক্ত" }
+    ],
+    "WARRANTIES": ["১ বছর", "২ বছর", "৩ বছর", "৫ বছর"],
+    "DEFAULT_FORM_VALUES": {
+      "name": "",
+      "sku": "",
+      "brand": "",
+      "category": "",
+      "description": "",
+      "price": "",
+      "originalPrice": "",
+      "stock": "",
+      "productType": "unit",
+      "warranty": "",
+      "tag": "None",
+      "features": "",
+      "inBox": "",
+      "images": []
+    }
+  }
+}

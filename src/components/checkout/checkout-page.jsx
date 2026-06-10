@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog,
@@ -262,12 +263,12 @@ export function CheckoutPage({ orderId }) {
                 <div className="flex items-center gap-2">
                   <div className="relative flex-1">
                     <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
+                    <Input
                       type="text"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                       placeholder={t("couponPlaceholder")}
-                      className="flex h-9 w-full rounded-md border border-input bg-transparent pl-9 pr-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                      className="pl-9"
                     />
                   </div>
                   <Button

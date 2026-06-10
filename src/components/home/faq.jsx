@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { Accordion as AccordionPrimitive } from "radix-ui";
-import { AnimatePresence, motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
-import Image from "next/image";
-import { useState, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Accordion as AccordionPrimitive } from "radix-ui";
+import { useMemo, useState } from "react";
 
 const FAQ_IDS = ["faqQ1", "faqQ2", "faqQ3", "faqQ4", "faqQ5", "faqQ6"];
 
@@ -72,7 +72,7 @@ function FaqImage() {
       data-in-view={inView || undefined}
     >
       <Image
-        src="https://plus.unsplash.com/premium_photo-1661911309991-cc81afcce97d?q=80&w=1170&auto=format&fit=crop"
+        src="https://plus.unsplash.com/premium_photo-1664298059861-1560b39fb890?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="AC Technician"
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"

@@ -4,41 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import RichText from "@/components/ui/rich-text";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
+import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 
 export const metadata = { title: "Contact Us" };
 
-const contactMethods = [
-  {
-    icon: Phone,
-    title: "phone",
-    detail: "09612-345678",
-    sub: "Sat-Thu, 9AM-8PM",
-  },
-  {
-    icon: Mail,
-    title: "emailLabel",
-    detail: "support@coldflyer.com",
-    sub: "We reply within 24 hours",
-  },
-  {
-    icon: MapPin,
-    title: "office",
-    detail: "Dhaka, Bangladesh",
-    sub: "Head office & showroom",
-  },
-  {
-    icon: Clock,
-    title: "hours",
-    detail: "Sat - Thu, 9AM - 8PM",
-    sub: "Friday closed",
-  },
-];
+const ICONS = { Phone, Mail, MapPin, Clock };
 
 export default async function ContactPage() {
-  const t = await getTranslations("contact");
+  const locale = await getLocale();
+  const content = getPageContent("contact", locale);
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -56,17 +34,17 @@ export default async function ContactPage() {
           <div className="max-w-2xl">
             <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                {t("heroBadge")}
+                {content.heroBadge}
               </Badge>
             </AnimatedDiv>
             <AnimatedDiv
               as="h1"
-              className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
+              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {t.rich("heroHeading", { br: () => <br /> })}
+              <RichText html={content.heroHeading} />
             </AnimatedDiv>
             <AnimatedDiv
               as="p"
@@ -75,7 +53,7 @@ export default async function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {t("heroDesc")}
+              {content.heroDesc}
             </AnimatedDiv>
           </div>
         </div>
@@ -86,41 +64,39 @@ export default async function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
             <div>
               <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
-                Contact Us
+                {content.contactMethodsTitle}
               </span>
-              <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight mb-6">Send Us a Message</h2>
-              <p className="text-muted-foreground mb-10 max-w-md">
-                Fill out the form and our team will get back to you within 24 hours.
-              </p>
+              <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight mb-6">{content.formTitle}</h2>
+              <p className="text-muted-foreground mb-10 max-w-md">{content.formDesc}</p>
 
               <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("name")}</label>
-                    <Input placeholder={t("namePlaceholder")} />
+                    <label className="text-sm font-medium">{content.name}</label>
+                    <Input placeholder={content.namePlaceholder} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("email")}</label>
-                    <Input type="email" placeholder={t("emailPlaceholder")} />
+                    <label className="text-sm font-medium">{content.email}</label>
+                    <Input type="email" placeholder={content.emailPlaceholder} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">{t("subject")}</label>
-                  <Input placeholder={t("subjectPlaceholder")} />
+                  <label className="text-sm font-medium">{content.subject}</label>
+                  <Input placeholder={content.subjectPlaceholder} />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">{t("message")}</label>
-                  <Textarea placeholder={t("messagePlaceholder")} rows={5} />
+                  <label className="text-sm font-medium">{content.message}</label>
+                  <Textarea placeholder={content.messagePlaceholder} rows={5} />
                 </div>
                 <Button size="lg" className="gap-2">
-                  <Send size={16} /> Send Message
+                  <Send size={16} /> {content.sendMessage}
                 </Button>
               </div>
             </div>
 
             <div className="space-y-8">
-              {contactMethods.map((method, i) => {
-                const Icon = method.icon;
+              {content.contactMethods.map((method, i) => {
+                const Icon = ICONS[method.icon];
                 return (
                   <AnimatedDiv
                     key={method.title}
@@ -134,7 +110,7 @@ export default async function ContactPage() {
                       <Icon size={22} className="text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-sans font-extrabold text-lg mb-1">{t(method.title)}</h3>
+                      <h3 className="font-sans font-extrabold text-lg mb-1">{method.title}</h3>
                       <p className="text-foreground font-medium">{method.detail}</p>
                       <p className="text-sm text-muted-foreground mt-0.5">{method.sub}</p>
                     </div>
@@ -150,9 +126,9 @@ export default async function ContactPage() {
         <div className="container">
           <div className="text-center mb-16">
             <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
-              Our Location
+              {content.locationLabel}
             </span>
-            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{t("locationTitle")}</h2>
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight">{content.locationTitle}</h2>
           </div>
           <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted">
             <Image
@@ -165,8 +141,8 @@ export default async function ContactPage() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="bg-background/90 backdrop-blur-sm rounded-xl p-6 text-center">
                 <MapPin size={32} className="text-primary mx-auto mb-2" />
-                <p className="font-medium">{t("locationAddress")}</p>
-                <p className="text-sm text-muted-foreground">{t("locationSub")}</p>
+                <p className="font-medium">{content.locationAddress}</p>
+                <p className="text-sm text-muted-foreground">{content.locationSub}</p>
               </div>
             </div>
           </div>
@@ -177,12 +153,12 @@ export default async function ContactPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              Need urgent support?
+              {content.ctaTitle}
             </h3>
-            <p className="text-primary-foreground/70 text-sm">{t("ctaSub")}</p>
+            <p className="text-primary-foreground/70 text-sm">{content.ctaSub}</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
-            <Phone size={16} /> 09612-345678
+            <Phone size={16} /> {content.ctaPhone}
           </Button>
         </div>
       </AnimatedSection>

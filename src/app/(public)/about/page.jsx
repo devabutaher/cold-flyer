@@ -1,69 +1,16 @@
-import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedDiv } from "@/components/ui/animated-div";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Leaf, Thermometer, Users, Zap } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import RichText from "@/components/ui/rich-text";
+import { ArrowRight, Leaf, Quote, Thermometer, Users, Zap } from "lucide-react";
+import { getLocale } from "next-intl/server";
+import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 
 export const metadata = { title: "About Us" };
 
-const values = [
-  {
-    icon: Thermometer,
-    title: "Precision Engineering",
-    desc: "Every millimeter matters. Our systems are designed with surgical accuracy to ensure peak performance under any atmospheric condition.",
-    wide: true,
-    hover: "bg-primary",
-  },
-  {
-    icon: Leaf,
-    title: "Sustainable Innovation",
-    desc: "Pioneering low-carbon technologies that harmonize human comfort with planetary health.",
-    wide: false,
-    hover: "bg-foreground",
-  },
-  {
-    icon: Users,
-    title: "Customer-Centricity",
-    desc: "We don\u2019t just sell systems; we build partnerships based on trust, transparency, and lifetime support.",
-    wide: false,
-    hover: "none",
-  },
-  {
-    icon: Zap,
-    title: "Operational Speed",
-    desc: "Agility in response, efficiency in execution. We deliver mission-critical solutions at the speed of your business.",
-    wide: true,
-    hover: "none",
-    img: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&q=80",
-  },
-];
-
-const team = [
-  {
-    name: "Marcus Vane",
-    role: "Chief Executive Officer",
-    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80",
-  },
-  {
-    name: "Elena Rodriguez",
-    role: "Head of Engineering",
-    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80",
-  },
-  {
-    name: "Dr. Simon Chen",
-    role: "Sustainability Lead",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
-  },
-];
-
-const stats = [
-  { value: "15k+", label: "Projects Completed" },
-  { value: "50+", label: "Global Partners" },
-  { value: "32", label: "Countries Reached" },
-  { value: "400M", label: "kWh Saved Annually" },
-];
+const ICONS = { Thermometer, Leaf, Users, Zap };
 
 function KineticPulse() {
   return (
@@ -84,7 +31,7 @@ function KineticPulse() {
 }
 
 function ValueCard({ value, index }) {
-  const Icon = value.icon;
+  const Icon = ICONS[value.icon];
   const isPrimaryHover = value.hover === "bg-primary";
   const isForegroundHover = value.hover === "bg-foreground";
 
@@ -156,28 +103,46 @@ function ValueCard({ value, index }) {
   );
 }
 
-function TeamCard({ member, index }) {
+function CEOSection({ content }) {
   return (
-    <AnimatedDiv
-      className="group"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.35, delay: index * 0.1 }}
-    >
-      <div className="relative aspect-4/5 mb-5 overflow-hidden rounded-xl bg-secondary">
-        <Image
-          src={member.img}
-          alt={member.name}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
-        />
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      </div>
-      <h4 className="font-sans font-extrabold text-xl text-foreground">{member.name}</h4>
-      <p className="text-primary font-extrabold uppercase tracking-widest text-xxs mt-0.5">{member.role}</p>
-    </AnimatedDiv>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <AnimatedDiv
+        className="relative"
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute -inset-4 bg-primary/10 blur-3xl rounded-full opacity-60" />
+        <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl">
+          <div className="aspect-[4/5]">
+            <Image
+              src="/images/ceo.jpeg"
+              alt={content.ceoName}
+              fill
+              sizes="(max-width: 768px) 100vw, 400px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </AnimatedDiv>
+      <AnimatedDiv
+        className="space-y-6"
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <Quote size={32} className="text-primary/30" />
+        <div>
+          <h3 className="font-sans font-extrabold text-3xl text-foreground">{content.ceoName}</h3>
+          <p className="text-primary font-extrabold uppercase tracking-widest text-xs mt-1">{content.ceoRole}</p>
+        </div>
+        <p className="text-base leading-relaxed text-muted-foreground">{content.ceoDesc1}</p>
+        <p className="text-base leading-relaxed text-muted-foreground">{content.ceoDesc2}</p>
+        <p className="text-base leading-relaxed text-muted-foreground">{content.ceoDesc3}</p>
+      </AnimatedDiv>
+    </div>
   );
 }
 
@@ -197,7 +162,8 @@ function StatItem({ stat, index }) {
 }
 
 export default async function AboutPage() {
-  const t = await getTranslations("about");
+  const locale = await getLocale();
+  const content = getPageContent("about", locale);
   return (
     <main className="bg-background text-foreground">
       <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
@@ -215,20 +181,17 @@ export default async function AboutPage() {
           <div className="max-w-2xl">
             <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                {t("heroBadge")}
+                {content.heroBadge}
               </Badge>
             </AnimatedDiv>
             <AnimatedDiv
               as="h1"
-              className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
+              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {t.rich("heroTitle", {
-                br: () => <br />,
-                primary: (chunks) => <span className="text-primary">{chunks}</span>,
-              })}
+              <RichText html={content.heroTitle} />
             </AnimatedDiv>
             <AnimatedDiv
               as="p"
@@ -237,7 +200,7 @@ export default async function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {t("heroSub")}
+              {content.heroSub}
             </AnimatedDiv>
           </div>
         </div>
@@ -250,7 +213,7 @@ export default async function AboutPage() {
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
                 <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
-                  {t("storyTitle")}
+                  {content.storyTitle}
                 </h2>
               </div>
               <AnimatedDiv
@@ -260,18 +223,31 @@ export default async function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
               >
-                <div className="font-sans font-extrabold text-6xl text-primary leading-none">26</div>
+                <div className="font-sans font-extrabold text-6xl text-primary leading-none">2</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
-                  {t("storyYears")}
+                  {content.storyYears}
                 </div>
               </AnimatedDiv>
               <Button size="lg" className="gap-2">
-                {t("storyButton")} <ArrowRight size={16} />
+                {content.storyButton} <ArrowRight size={16} />
               </Button>
             </div>
             <div className="md:col-span-7 space-y-6">
-              <p className="text-lg leading-relaxed text-muted-foreground">{t("storyPara1")}</p>
-              <p className="text-lg leading-relaxed text-muted-foreground">{t("storyPara2")}</p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{content.storyPara1}</p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{content.storyPara2}</p>
+              <div className="space-y-4 pt-8 border-t border-border/30">
+                <h3 className="font-sans font-extrabold text-2xl text-foreground">{content.missionTitle}</h3>
+                <p className="text-lg leading-relaxed text-muted-foreground">{content.missionDesc}</p>
+                <div className="space-y-2">
+                  <p className="text-base leading-relaxed text-muted-foreground">
+                    <span className="font-extrabold text-foreground">{content.visionLabel}</span> {content.visionText}
+                  </p>
+                  <p className="text-base leading-relaxed text-muted-foreground">
+                    <span className="font-extrabold text-foreground">{content.missionLabel}</span> {content.missionText}
+                  </p>
+                </div>
+                <p className="text-lg leading-relaxed text-muted-foreground font-medium">{content.closingText}</p>
+              </div>
               <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/30">
                 <div>
                   <div className="font-sans font-extrabold text-3xl text-primary mb-1 relative inline-block">
@@ -279,7 +255,7 @@ export default async function AboutPage() {
                     <KineticPulse />
                   </div>
                   <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
-                    {t("storyEngineers")}
+                    {content.storyEngineers}
                   </div>
                 </div>
                 <div>
@@ -288,7 +264,7 @@ export default async function AboutPage() {
                     <KineticPulse />
                   </div>
                   <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground mt-1">
-                    {t("storyCarbonGoal")}
+                    {content.storyCarbonGoal}
                   </div>
                 </div>
               </div>
@@ -302,16 +278,16 @@ export default async function AboutPage() {
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
               <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
-                {t("valuesLabel")}
+                {content.valuesLabel}
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-                {t("valuesTitle")}
+                {content.valuesTitle}
               </h2>
             </div>
-            <p className="max-w-md font-medium text-muted-foreground">{t("valuesDesc")}</p>
+            <p className="max-w-md font-medium text-muted-foreground">{content.valuesDesc}</p>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {values.map((value, index) => (
+            {content.values.map((value, index) => (
               <ValueCard key={value.title} value={value} index={index} />
             ))}
           </div>
@@ -320,17 +296,13 @@ export default async function AboutPage() {
 
       <AnimatedSection className="py-28 bg-background">
         <div className="container">
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-foreground mb-5">
-              {t("teamTitle")}
+              {content.teamTitle}
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {team.map((member, index) => (
-              <TeamCard key={member.name} member={member} index={index} />
-            ))}
-          </div>
+          <CEOSection content={content} />
         </div>
       </AnimatedSection>
 
@@ -339,13 +311,13 @@ export default async function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
-                {t("statsLabel")}
+                {content.statsLabel}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                {t.rich("statsTitle", { br: () => <br /> })}
+                <RichText html={content.statsTitle} />
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {stats.map((stat, index) => (
+                {content.stats.map((stat, index) => (
                   <StatItem key={stat.label} stat={stat} index={index} />
                 ))}
               </div>
@@ -376,12 +348,12 @@ export default async function AboutPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              {t("ctaTitle")}
+              {content.ctaTitle}
             </h3>
-            <p className="text-primary-foreground/70 text-sm">{t("ctaSub")}</p>
+            <p className="text-primary-foreground/70 text-sm">{content.ctaSub}</p>
           </div>
           <Button variant="secondary" size="lg" className="gap-2 shrink-0">
-            {t("ctaButton")} <ArrowRight size={16} />
+            {content.ctaButton} <ArrowRight size={16} />
           </Button>
         </div>
       </AnimatedSection>

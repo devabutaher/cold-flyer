@@ -1,18 +1,30 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Globe, Mail, MessageSquare, Package, Phone, Shield, ShieldCheck, User } from "lucide-react";
-import { getData } from "@/data";
-import { getLocale, getTranslations } from "next-intl/server";
+import RichText from "@/components/ui/rich-text";
+import {
+  Eye,
+  EyeOff,
+  Globe,
+  Mail,
+  MessageSquare,
+  Phone,
+  Shield,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+import { getLocale } from "next-intl/server";
+import { getPageContent } from "@/lib/content";
 
 export const metadata = { title: "Privacy Policy" };
 
+const ICONS = { User, Shield, Globe, EyeOff, Eye, MessageSquare, ShieldCheck };
+
 export default async function PrivacyPage() {
   const locale = await getLocale();
-  const t = await getTranslations("privacy");
-  const principles = getData("principles", locale);
-  const dataTypes = getData("dataTypes", locale);
-  const timeline = getData("timeline", locale);
+  const content = getPageContent("privacy", locale);
+  const { principles, dataTypes, timeline } = content;
+
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
@@ -31,14 +43,13 @@ export default async function PrivacyPage() {
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-              {t("heroBadge")}
+              {content.heroBadge}
             </Badge>
-            <h1 className="font-sans font-extrabold text-6xl md:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
-              {t.rich("heroTitle", { br: () => <br /> })}
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
+              <RichText html={content.heroTitle} />
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              Your trust is our most valuable asset. We&apos;re committed to safeguarding your personal information with
-              the highest standards of privacy and security.
+              {content.heroDesc}
             </p>
           </div>
         </div>
@@ -50,19 +61,19 @@ export default async function PrivacyPage() {
           <div className="mb-16 flex flex-col items-end justify-between gap-8 md:flex-row">
             <div>
               <span className="mb-3 block text-xxs font-extrabold uppercase tracking-[0.3em] text-primary">
-                Our Commitment
+                {content.principlesBadge}
               </span>
               <h2 className="font-sans text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-                Privacy Principles
+                {content.principlesTitle}
               </h2>
             </div>
 
-            <p className="max-w-md font-medium text-muted-foreground">{t("principlesDesc")}</p>
+            <p className="max-w-md font-medium text-muted-foreground">{content.principlesDesc}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {principles.map((principle, i) => {
-              const Icon = principle.icon;
+              const Icon = ICONS[principle.icon];
 
               return (
                 <div
@@ -116,22 +127,21 @@ export default async function PrivacyPage() {
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 w-1 h-20 bg-primary rounded-full" />
                 <h2 className="font-sans font-extrabold text-3xl md:text-4xl text-foreground leading-tight tracking-tight">
-                  Understanding Your Data
+                  {content.dataTitle}
                 </h2>
               </div>
 
-              <p className="text-lg leading-relaxed text-muted-foreground">{t("dataDesc")}</p>
+              <p className="text-lg leading-relaxed text-muted-foreground">{content.dataDesc}</p>
 
               <div className="flex items-center gap-6 p-8 bg-card rounded-xl shadow-md">
                 <div className="font-sans font-extrabold text-6xl text-primary leading-none">100%</div>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground leading-tight">
-                  You <br />
-                  Control
+                  {content.dataControl}
                 </div>
               </div>
 
               <Button size="lg" className="gap-2">
-                {t("dataButton")} <User size={16} />
+                {content.dataButton} <User size={16} />
               </Button>
             </div>
 
@@ -159,7 +169,7 @@ export default async function PrivacyPage() {
         <div className="container">
           <div className="text-center mb-20">
             <h2 className="font-sans font-extrabold text-4xl md:text-5xl tracking-tight text-inverted-foreground mb-5">
-              Our Privacy Journey
+              {content.timelineTitle}
             </h2>
             <div className="w-20 h-1.5 bg-primary rounded-full mx-auto" />
           </div>
@@ -194,10 +204,10 @@ export default async function PrivacyPage() {
 
             <div>
               <span className="text-xxs font-extrabold uppercase tracking-[0.4em] text-primary mb-5 block">
-                Your Control
+                {content.rightsBadge}
               </span>
               <h2 className="font-sans font-extrabold text-5xl md:text-6xl leading-tight mb-12 tracking-tighter">
-                Exercising Your Rights
+                {content.rightsTitle}
               </h2>
 
               <div className="space-y-6">
@@ -206,8 +216,8 @@ export default async function PrivacyPage() {
                     <Eye size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right1Title")}</h4>
-                    <p className="text-muted-foreground">{t("right1Desc")}</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{content.right1Title}</h4>
+                    <p className="text-muted-foreground">{content.right1Desc}</p>
                   </div>
                 </div>
 
@@ -216,8 +226,8 @@ export default async function PrivacyPage() {
                     <MessageSquare size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right2Title")}</h4>
-                    <p className="text-muted-foreground">{t("right2Desc")}</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{content.right2Title}</h4>
+                    <p className="text-muted-foreground">{content.right2Desc}</p>
                   </div>
                 </div>
 
@@ -226,8 +236,8 @@ export default async function PrivacyPage() {
                     <ShieldCheck size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right3Title")}</h4>
-                    <p className="text-muted-foreground">{t("right3Desc")}</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{content.right3Title}</h4>
+                    <p className="text-muted-foreground">{content.right3Desc}</p>
                   </div>
                 </div>
 
@@ -236,8 +246,8 @@ export default async function PrivacyPage() {
                     <Globe size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-sans font-extrabold text-lg mb-1">{t("right4Title")}</h4>
-                    <p className="text-muted-foreground">{t("right4Desc")}</p>
+                    <h4 className="font-sans font-extrabold text-lg mb-1">{content.right4Title}</h4>
+                    <p className="text-muted-foreground">{content.right4Desc}</p>
                   </div>
                 </div>
               </div>
@@ -251,16 +261,16 @@ export default async function PrivacyPage() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h3 className="font-sans font-extrabold text-3xl text-primary-foreground tracking-tight mb-1">
-              Questions about privacy?
+              {content.ctaTitle}
             </h3>
-            <p className="text-primary-foreground/70 text-sm">{t("ctaDesc")}</p>
+            <p className="text-primary-foreground/70 text-sm">{content.ctaDesc}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Button variant="secondary" size="lg" className="gap-2">
-              <Mail size={16} /> privacy@coldflyer.com
+              <Mail size={16} /> {content.ctaEmail}
             </Button>
             <Button variant="secondary" size="lg" className="gap-2">
-              <Phone size={16} /> Contact Us
+              <Phone size={16} /> {content.ctaPhone}
             </Button>
           </div>
         </div>

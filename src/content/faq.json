@@ -1,0 +1,218 @@
+{
+  "en": {
+    "heroBadge": "FAQ",
+    "heroTitle": "How Can<br></br>We Help?",
+    "heroSub": "Find answers to common questions about our products, services, and policies.",
+    "searchPlaceholder": "Search for answers...",
+    "cantFind": "Can't find what you're looking for?",
+    "contactTeam": "Contact our team",
+    "quickHelp": [
+      { "icon": "Calculator", "title": "Get a Quote", "desc": "Request a customized quote for your project" },
+      { "icon": "Truck", "title": "Track Order", "desc": "Check the status of your shipment" },
+      { "icon": "Wrench", "title": "Technical Support", "desc": "Get help with installation and maintenance" },
+      { "icon": "MessageSquare", "title": "Live Chat", "desc": "Chat with our support team" }
+    ],
+    "comprehensiveAnswers": "Comprehensive Answers",
+    "browseCategory": "Browse by Category",
+    "categories": [
+      {
+        "name": "Products & Services",
+        "icon": "Wrench",
+        "questions": [
+          {
+            "q": "What types of HVAC systems do you offer?",
+            "a": "We offer a comprehensive range of industrial and commercial HVAC solutions including central air conditioning units, split systems, VRF systems, chillers, heat pumps, and custom refrigeration units. Our catalog includes leading brands and custom solutions for specialized applications."
+          },
+          {
+            "q": "Do you provide installation services?",
+            "a": "Yes, we provide professional installation services through our certified network of HVAC technicians across Bangladesh. Our team handles projects of all sizes, from small residential setups to large commercial installations in Dhaka, Chattogram, and beyond. Request a quote for installation assistance."
+          },
+          {
+            "q": "What brands do you work with?",
+            "a": "We partner with industry-leading manufacturers including Daikin, LG, Samsung, Carrier, Mitsubishi, General, Walton, and Minister. Our product selection ensures you find the perfect solution for any requirement and budget."
+          },
+          {
+            "q": "Can I get a custom HVAC solution?",
+            "a": "Absolutely. We specialize in custom HVAC solutions for unique industrial requirements. Our engineering team works closely with you to design and specify systems tailored to your specific needs."
+          }
+        ]
+      },
+      {
+        "name": "Orders & Payment",
+        "icon": "CreditCard",
+        "questions": [
+          {
+            "q": "What payment methods do you accept?",
+            "a": "We accept major credit cards (Visa, MasterCard, American Express), bKash, Nagad, bank wire transfers, and corporate purchase orders for verified businesses. All transactions are secured with industry-standard encryption."
+          },
+          {
+            "q": "Do you offer financing options?",
+            "a": "Yes, we offer flexible EMI financing options through our partner banks in Bangladesh. Payment plans are available for qualified customers with competitive rates. Contact our sales team for more information."
+          },
+          {
+            "q": "How do I place a bulk order?",
+            "a": "For bulk orders, please contact our B2B sales team directly at b2b@coldflyer.com or call 09612-345678. We offer volume discounts and dedicated account managers for large orders."
+          },
+          {
+            "q": "Can I get a quote before ordering?",
+            "a": "Yes, we provide free quotes for all products and projects. Request a quote through our website or contact our sales team. Most quotes are generated within 24 hours."
+          }
+        ]
+      },
+      {
+        "name": "Shipping & Delivery",
+        "icon": "Truck",
+        "questions": [
+          {
+            "q": "How long does shipping take?",
+            "a": "Shipping times vary by product and location. Standard shipping takes 7-14 business days within Bangladesh, express shipping 2-4 business days. Heavy equipment may require additional time. Track your order for real-time updates."
+          },
+          {
+            "q": "Do you deliver outside Dhaka?",
+            "a": "Yes, we deliver to all 64 districts of Bangladesh. International shipping is also available for bulk orders. Contact us for specific shipping quotes for your location."
+          },
+          {
+            "q": "How much is shipping?",
+            "a": "Shipping costs are calculated at checkout based on weight, dimensions, and destination. Orders over BDT 25,000 qualify for free standard shipping within Bangladesh. Freight shipping is available for large equipment."
+          },
+          {
+            "q": "Can I track my order?",
+            "a": "Yes, all orders include tracking information. You'll receive tracking details via SMS and email once your order ships. Track your package through our website or the carrier's portal."
+          }
+        ]
+      },
+      {
+        "name": "Returns & Warranty",
+        "icon": "Package",
+        "questions": [
+          {
+            "q": "What is your return policy?",
+            "a": "We offer a 30-day return policy for unused items in original packaging. Custom orders and installed items are not returnable. Contact our support team to initiate a return. Refunds are processed within 7 business days."
+          },
+          {
+            "q": "How do warranties work?",
+            "a": "All products include manufacturer warranties typically ranging from 1-10 years depending on the product. Extended warranties are available at checkout. Register your product for warranty coverage."
+          },
+          {
+            "q": "How do I file a warranty claim?",
+            "a": "To file a warranty claim, gather your purchase receipt and product serial number, then contact our support team. We'll guide you through the claims process and arrange repairs or replacements through our nationwide service network."
+          },
+          {
+            "q": "Who handles repairs?",
+            "a": "Repairs are handled by our certified service network covering Dhaka, Chattogram, Sylhet, Khulna, Rajshahi, and other major cities. Create a support ticket through your account or contact our service department directly."
+          }
+        ]
+      },
+      {
+        "name": "Account & Support",
+        "icon": "Users",
+        "questions": [
+          {
+            "q": "How do I create an account?",
+            "a": "Click 'Sign Up' in the navigation and complete the registration form. Accounts provide order tracking, history, and preferential pricing on many products."
+          },
+          {
+            "q": "How do I reset my password?",
+            "a": "Use the 'Forgot Password' link on the login page. You'll receive a password reset email. For security, the link expires after one hour."
+          },
+          {
+            "q": "How can I contact support?",
+            "a": "Reach our support team via email at support@coldflyer.com, call 09612-345678, or use the live chat feature on our website. We're available Saturday-Thursday, 9AM-8PM. Our support team speaks both English and Bengali."
+          },
+          {
+            "q": "Is there a loyalty program?",
+            "a": "Yes, our loyalty program rewards repeat customers with exclusive discounts, early access to new products, and special offers. Enroll through your account dashboard."
+          }
+        ]
+      }
+    ],
+    "contactTitle": "Still Have Questions?",
+    "contactSub": "Our support team is ready to help you.",
+    "contactSupportDesc": "Our dedicated support team is here to help you with any questions or concerns.",
+    "contactEmailLabel": "Email",
+    "contactEmail": "support@coldflyer.com",
+    "contactPhoneLabel": "Phone",
+    "contactPhone": "09612-345678",
+    "contactHoursLabel": "Hours",
+    "contactHours": "Sat-Thu, 9AM-8PM",
+    "ctaDesc": "Browse our catalog or get a personalized quote today."
+  },
+  "bn": {
+    "heroBadge": "প্রায়শই জিজ্ঞাসা",
+    "heroTitle": "আমরা কীভাবে<br></br>সাহায্য করতে পারি?",
+    "heroSub": "আমাদের পণ্য, সেবা এবং নীতি সম্পর্কে সাধারণ প্রশ্নের উত্তর খুঁজুন।",
+    "searchPlaceholder": "উত্তর খুঁজুন...",
+    "cantFind": "আপনি যা খুঁজছেন তা খুঁজে পাচ্ছেন না?",
+    "contactTeam": "আমাদের টিমের সাথে যোগাযোগ করুন",
+    "quickHelp": [
+      { "icon": "Calculator", "title": "কোটা নিন", "desc": "আপনার প্রজেক্টের জন্য কাস্টমাইজড কোটা অনুরোধ করুন" },
+      { "icon": "Truck", "title": "অর্ডার ট্র্যাক করুন", "desc": "আপনার চালানের অবস্থা পরীক্ষা করুন" },
+      { "icon": "Wrench", "title": "টেকনিক্যাল সাপোর্ট", "desc": "ইনস্টলেশন এবং মেইনটেন্যান্সে সহায়তা নিন" },
+      { "icon": "MessageSquare", "title": "লাইভ চ্যাট", "desc": "আমাদের সাপোর্ট টিমের সাথে চ্যাট করুন" }
+    ],
+    "comprehensiveAnswers": "বিস্তারিত উত্তর",
+    "browseCategory": "বিষয় অনুসারে ব্রাউজ করুন",
+    "categories": [
+      {
+        "name": "পণ্য ও সেবা",
+        "icon": "Wrench",
+        "questions": [
+          { "q": "আপনারা কী ধরনের HVAC সিস্টেম অফার করেন?", "a": "আমরা সেন্ট্রাল এয়ার কন্ডিশনিং ইউনিট, স্প্লিট সিস্টেম, VRF সিস্টেম, চিলার, হিট পাম্প এবং কাস্টম রেফ্রিজারেশন ইউনিট সহ শিল্প ও বাণিজ্যিক HVAC সমাধানের একটি ব্যাপক পরিসর অফার করি।" },
+          { "q": "আপনারা কি ইনস্টলেশন সেবা প্রদান করেন?", "a": "হ্যাঁ, আমরা আমাদের সার্টিফাইড HVAC টেকনিশিয়ানদের নেটওয়ার্কের মাধ্যমে পেশাদার ইনস্টলেশন সেবা প্রদান করি। আমাদের টিম ছোট বাণিজ্যিক সেটআপ থেকে বড় শিল্প ইনস্টলেশন পর্যন্ত সব আকারের প্রকল্প পরিচালনা করে।" },
+          { "q": "আপনারা কোন ব্র্যান্ডগুলোর সাথে কাজ করেন?", "a": "আমরা কেরিয়ার, ডাইকিন, এলজি, স্যামসাং এবং মিতসুবিশি সহ শিল্প-নেতৃস্থানীয় প্রস্তুতকারকদের সাথে অংশীদারিত্ব করি।" },
+          { "q": "আমি কি কাস্টম HVAC সমাধান পেতে পারি?", "a": "অবশ্যই। আমরা অনন্য শিল্প প্রয়োজনীয়তার জন্য কাস্টম HVAC সমাধানে বিশেষজ্ঞ। আমাদের ইঞ্জিনিয়ারিং টিম আপনার নির্দিষ্ট চাহিদা অনুযায়ী সিস্টেম ডিজাইন করে।" }
+        ]
+      },
+      {
+        "name": "অর্ডার ও পেমেন্ট",
+        "icon": "CreditCard",
+        "questions": [
+          { "q": "আপনারা কী কী পেমেন্ট পদ্ধতি গ্রহণ করেন?", "a": "আমরা প্রধান ক্রেডিট কার্ড (ভিসা, মাস্টারকার্ড, আমেরিকান এক্সপ্রেস), ব্যাংক ওয়্যার ট্রান্সফার এবং যাচাইকৃত ব্যবসার জন্য কর্পোরেট ক্রয় অর্ডার গ্রহণ করি।" },
+          { "q": "আপনারা কি ফাইন্যান্সিং অপশন অফার করেন?", "a": "হ্যাঁ, আমরা আমাদের লেন্ডিং পার্টনারদের মাধ্যমে নমনীয় ফাইন্যান্সিং অপশন অফার করি। যোগ্য ব্যবসার জন্য প্রতিযোগিতামূলক হারে পেমেন্ট প্ল্যান উপলব্ধ।" },
+          { "q": "আমি কীভাবে বাল্ক অর্ডার করব?", "a": "বাল্ক অর্ডারের জন্য, অনুগ্রহ করে আমাদের B2B সেলস টিমের সাথে b2b@coldflyer.com এ ইমেইল করুন। আমরা ভলিউম ডিসকাউন্ট অফার করি।" },
+          { "q": "অর্ডার করার আগে আমি কি কোটা নিতে পারি?", "a": "হ্যাঁ, আমরা সমস্ত পণ্য এবং প্রকল্পের জন্য বিনামূল্যে কোটা প্রদান করি। অধিকাংশ কোটা ২৪ ঘন্টার মধ্যে তৈরি করা হয়।" }
+        ]
+      },
+      {
+        "name": "শিপিং ও ডেলিভারি",
+        "icon": "Truck",
+        "questions": [
+          { "q": "শিপিং কতদিন লাগে?", "a": "শিপিং সময় পণ্য এবং অবস্থান অনুসারে পরিবর্তিত হয়। স্ট্যান্ডার্ড শিপিং ৭-১৪ কার্যদিবস, এক্সপ্রেস শিপিং ৩-৫ কার্যদিবস সময় নেয়।" },
+          { "q": "আপনারা কি আন্তর্জাতিকভাবে শিপ করেন?", "a": "হ্যাঁ, আমরা বিশ্বব্যাপী শিপ করি। আন্তর্জাতিক অর্ডারের জন্য অতিরিক্ত ডকুমেন্টেশনের প্রয়োজন হতে পারে।" },
+          { "q": "শিপিং খরচ কত?", "a": "শিপিং খরচ ওজন, মাত্রা এবং গন্তব্যের উপর ভিত্তি করে চেকআউটে গণনা করা হয়। ২৫,০০০ টাকার বেশি অর্ডার ফ্রি স্ট্যান্ডার্ড শিপিংয়ের জন্য যোগ্য।" },
+          { "q": "আমি কি আমার অর্ডার ট্র্যাক করতে পারি?", "a": "হ্যাঁ, সমস্ত অর্ডারে ট্র্যাকিং তথ্য অন্তর্ভুক্ত থাকে। আপনার অর্ডার শিপ হওয়ার পর আপনি ইমেইলের মাধ্যমে ট্র্যাকিং বিবরণ পাবেন।" }
+        ]
+      },
+      {
+        "name": "রিটার্ন ও ওয়ারেন্টি",
+        "icon": "Package",
+        "questions": [
+          { "q": "আপনাদের রিটার্ন নীতি কী?", "a": "আমরা মূল প্যাকেজিংয়ে অব্যবহৃত আইটেমের জন্য ৩০ দিনের রিটার্ন নীতি অফার করি। কাস্টম অর্ডার এবং ইনস্টল করা আইটেম ফেরতযোগ্য নয়।" },
+          { "q": "ওয়ারেন্টি কীভাবে কাজ করে?", "a": "সমস্ত পণ্যে পণ্য অনুযায়ী সাধারণত ১-১০ বছর পর্যন্ত প্রস্তুতকারকের ওয়ারেন্টি অন্তর্ভুক্ত থাকে।" },
+          { "q": "আমি কীভাবে ওয়ারেন্টি ক্লেইম দায়ের করব?", "a": "ওয়ারেন্টি ক্লেইম দায়ের করতে, আপনার ক্রয় রসিদ এবং পণ্য সিরিয়াল নম্বর সংগ্রহ করুন, তারপর আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।" },
+          { "q": "কে মেরামত পরিচালনা করে?", "a": "মেরামত আমাদের সার্টিফাইড সার্ভিস নেটওয়ার্ক দ্বারা পরিচালিত হয়। আপনার অ্যাকাউন্টের মাধ্যমে একটি সাপোর্ট টিকিট তৈরি করুন।" }
+        ]
+      },
+      {
+        "name": "অ্যাকাউন্ট ও সাপোর্ট",
+        "icon": "Users",
+        "questions": [
+          { "q": "আমি কীভাবে অ্যাকাউন্ট তৈরি করব?", "a": "নেভিগেশনে 'সাইন আপ' ক্লিক করুন এবং রেজিস্ট্রেশন ফর্ম পূরণ করুন। অ্যাকাউন্টগুলি অর্ডার ট্র্যাকিং এবং ইতিহাস প্রদান করে।" },
+          { "q": "আমি কীভাবে আমার পাসওয়ার্ড রিসেট করব?", "a": "লগইন পৃষ্ঠায় 'পাসওয়ার্ড ভুলে গেছেন' লিংক ব্যবহার করুন। আপনি একটি পাসওয়ার্ড রিসেট ইমেইল পাবেন।" },
+          { "q": "আমি কীভাবে সাপোর্টের সাথে যোগাযোগ করব?", "a": "support@coldflyer.com এ ইমেইল, ০৯৬১২-৩৪৫৬৭৮ নম্বরে কল বা লাইভ চ্যাট সুবিধা ব্যবহার করে যোগাযোগ করুন।" },
+          { "q": "কোনো লয়ালটি প্রোগ্রাম আছে কি?", "a": "হ্যাঁ, আমাদের লয়ালটি প্রোগ্রাম পুনরাবৃত্ত গ্রাহকদের এক্সক্লুসিভ ডিসকাউন্ট এবং বিশেষ অফার দিয়ে পুরস্কৃত করে।" }
+        ]
+      }
+    ],
+    "contactTitle": "এখনও প্রশ্ন আছে?",
+    "contactSub": "আমাদের সাপোর্ট টিম আপনাকে সাহায্য করতে প্রস্তুত।",
+    "contactSupportDesc": "আমাদের নিবেদিত সাপোর্ট টিম আপনার যেকোনো প্রশ্ন বা সমস্যায় সাহায্য করতে প্রস্তুত।",
+    "contactEmailLabel": "ইমেইল",
+    "contactEmail": "support@coldflyer.com",
+    "contactPhoneLabel": "ফোন",
+    "contactPhone": "০৯৬১২-৩৪৫৬৭৮",
+    "contactHoursLabel": "ব্যবসায়িক সময়",
+    "contactHours": "শনি-বৃহস্পতি, সকাল ৯টা-রাত ৮টা",
+    "ctaDesc": "আমাদের ক্যাটালগ ব্রাউজ করুন বা আজই একটি কাস্টমাইজড কোটা নিন।"
+  }
+}

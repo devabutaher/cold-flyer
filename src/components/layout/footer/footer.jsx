@@ -1,19 +1,19 @@
 "use client";
 
 import { AnimatedDiv } from "@/components/ui/animated-div";
-import { getData } from "@/data";
+import { getPageContent } from "@/lib/content";
+import { ArrowRight, Check } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
 
 function SocialLink({ href, children }) {
   return (
     <div className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95">
       <Link
         href={href}
-        className="flex h-9 w-9 items-center justify-center rounded-md bg-inverted-foreground/10 hover:bg-primary transition-colors"
+        className="flex h-11 w-11 items-center justify-center rounded-md bg-inverted-foreground/10 hover:bg-primary transition-colors"
       >
         {children}
       </Link>
@@ -26,7 +26,7 @@ function FooterLink({ href, children }) {
     <li className="relative w-fit">
       <Link
         href={href}
-        className="group text-muted-foreground text-sm hover:text-inverted-foreground transition-colors inline-block"
+        className="group text-inverted-foreground/50 text-sm hover:text-inverted-foreground transition-colors inline-block"
       >
         {children}
         <span className="absolute bottom-0 left-0 h-px w-full bg-inverted-foreground scale-x-0 origin-left transition-transform duration-200 ease-out group-hover:scale-x-100" />
@@ -80,8 +80,9 @@ function NewsletterForm() {
 export default function Footer() {
   const t = useTranslations();
   const locale = useLocale();
-  const footerColumns = getData("footerColumns", locale);
-  const footerLinks = getData("footerLinks", locale);
+  const footerContent = getPageContent("footer-links", locale);
+  const footerColumns = footerContent.footerColumns;
+  const footerLinks = footerContent.footerLinks;
 
   return (
     <footer className="bg-inverted text-inverted-foreground">
@@ -100,7 +101,7 @@ export default function Footer() {
 
               <h1 className="font-bold text-xl font-heading">{t("common.siteName")}</h1>
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("home.brandTagline")}</p>
+            <p className="text-inverted-foreground/50 text-sm leading-relaxed mb-5">{t("home.brandTagline")}</p>
             <div className="flex gap-3">
               {[
                 {
@@ -188,13 +189,13 @@ export default function Footer() {
             transition={{ duration: 0.4, delay: 0.25 }}
           >
             <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">{t("footer.newsletter")}</h4>
-            <p className="text-muted-foreground text-sm mb-4">{t("home.newsletterDescription")}</p>
+            <p className="text-inverted-foreground/50 text-sm mb-4">{t("home.newsletterDescription")}</p>
             <NewsletterForm />
           </AnimatedDiv>
         </div>
 
         <AnimatedDiv
-          className="border-t border-inverted-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted-foreground text-xs"
+          className="border-t border-inverted-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-inverted-foreground/50 text-xs"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

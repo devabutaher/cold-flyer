@@ -14,19 +14,19 @@ export function DetailTabs({ tabs }) {
   return (
     <div className="mt-8 rounded-lg bg-card">
       <Tabs defaultValue={defaultTab} className="w-full flex flex-col">
-        <TabsList className="w-full justify-start rounded-t-lg p-0 h-auto shrink-0">
+        <TabsList className="w-full justify-start rounded-t-lg p-0 h-auto shrink-0 overflow-x-auto scrollbar-none">
           {activeTabs.map((tab) => (
-            <TabsTrigger key={tab.key} value={tab.key} className="gap-1 rounded-t-md px-4 py-3">
-              {tab.icon && <tab.icon size={13} />} {tab.label}
+            <TabsTrigger key={tab.key} value={tab.key} className="gap-1 rounded-t-md px-3 sm:px-4 py-3">
+              {tab.icon && <tab.icon size={13} />} <span className="whitespace-nowrap">{tab.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
 
         {activeTabs.map((tab) => (
-          <TabsContent key={tab.key} value={tab.key} className="p-4 pt-4 focus-visible:outline-none">
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <TabsContent key={tab.key} value={tab.key} className="p-3 sm:p-4 pt-4 focus-visible:outline-none overflow-x-hidden">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {tab.data.map((item, i) => (
-                <li key={i} className="flex items-start gap-2.5">
+                <li key={i} className="flex items-start gap-2">
                   <span
                     className={`
                     w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5
@@ -39,7 +39,7 @@ export function DetailTabs({ tabs }) {
                       <Check size={11} className="text-accent-foreground" strokeWidth={3} />
                     )}
                   </span>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-muted-foreground break-words">
                     {typeof item === "string" ? item : item.label || item.text}
                   </span>
                 </li>

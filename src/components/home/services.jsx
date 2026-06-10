@@ -1,10 +1,12 @@
 "use client";
 
-import { getData } from "@/data";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock, Shield, Wrench, Zap } from "lucide-react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
+import { getPageContent } from "@/lib/content";
+
+const ICONS = { Clock, Shield, Wrench, Zap };
 
 function ServiceCard({ service, index, t }) {
   return (
@@ -31,7 +33,8 @@ function ServiceCard({ service, index, t }) {
 export default function Services() {
   const t = useTranslations();
   const locale = useLocale();
-  const servicesData = getData("servicesData", locale);
+  const rawServicesData = getPageContent("home-services", locale);
+  const servicesData = rawServicesData.map((s) => ({ ...s, icon: ICONS[s.icon] || s.icon }));
   return (
     <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-background" id="services">
       <div className="container">

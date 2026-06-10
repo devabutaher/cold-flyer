@@ -6,8 +6,36 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Moon, Sun } from "lucide-react";
+import {
+  AirVent,
+  Briefcase,
+  FileText,
+  HelpCircle,
+  Layers,
+  LayoutGrid,
+  Mail,
+  Moon,
+  Settings,
+  ShieldCheck,
+  Sun,
+  Truck,
+  Users,
+} from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+
+export const NAV_ICONS = {
+  AirVent,
+  Briefcase,
+  FileText,
+  HelpCircle,
+  Layers,
+  LayoutGrid,
+  Mail,
+  Settings,
+  ShieldCheck,
+  Truck,
+  Users,
+};
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,6 +43,7 @@ import { usePathname } from "next/navigation";
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   const pathname = usePathname();
   const locale = useLocale();
+  const Icon = NAV_ICONS[icon];
   const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "") || "/";
   const isActive =
     pathWithoutLocale === href ||
@@ -38,7 +67,7 @@ export function LinkItem({ label, description, icon, className, href, onClick, .
           "[&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='size-'])]:text-foreground",
         )}
       >
-        {icon}
+        {Icon ? <Icon size={16} /> : null}
       </div>
       <div className="flex flex-col items-start justify-center">
         <span className="text-sm font-medium">{label}</span>

@@ -9,17 +9,18 @@ const nextConfig = {
 
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "placehold.co" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "*.googleusercontent.com" },
     ],
     deviceSizes: [320, 420, 640, 768, 1024, 1280, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000,
     qualities: [75, 80, 85, 100],
     dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
+    contentDispositionType: "inline",
     formats: ["image/webp", "image/avif"],
   },
 

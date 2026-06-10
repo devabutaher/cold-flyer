@@ -5,7 +5,7 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 
 export function FormActions({ isPending, submitLabel, onCancel, cancelLabel }) {
   return (
-    <div className="flex items-center justify-between pt-4 border-t">
+    <div className="flex flex-wrap gap-2 items-center justify-between pt-4 border-t">
       <p className="text-xs text-muted-foreground">
         Fields marked <span className="text-destructive font-medium">*</span> are required.
       </p>

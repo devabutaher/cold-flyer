@@ -159,7 +159,7 @@ export function CatalogCard({ item, type = "product", animate = true, index = 0 
           )}
 
           {isProduct ? (
-            <Button size="icon" onClick={handleAction} disabled={item.stock === 0 || !item.stock}>
+            <Button size="icon-lg" onClick={handleAction} disabled={item.stock === 0 || !item.stock}>
               <ShoppingCart size={16} />
             </Button>
           ) : (

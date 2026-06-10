@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { DISTRICTS, getThanas } from "@/data/bd-addresses";
 import { addAddressAction, updateAddressAction } from "@/lib/actions/user";
@@ -139,10 +140,10 @@ function AddressForm({ control, errors, thanas }) {
           name="address"
           control={control}
           render={({ field }) => (
-            <textarea
+            <Textarea
               id="addr-address"
               {...field}
-              className="flex min-h-20 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
+              className="min-h-20 resize-y"
               rows={3}
             />
           )}

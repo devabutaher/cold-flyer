@@ -1,0 +1,114 @@
+{
+  "en": {
+    "footerLinks": {
+      "services": [
+        { "label": "Residential Cooling", "href": "/services" },
+        { "label": "Commercial HVAC", "href": "/services" },
+        { "label": "Duct Cleaning", "href": "/services" },
+        { "label": "Smart Thermostats", "href": "/services" }
+      ],
+      "company": [
+        { "label": "About Us", "href": "/about" },
+        { "label": "Blog", "href": "/blog" },
+        { "label": "Careers", "href": "/careers" },
+        { "label": "FAQ", "href": "/faq" },
+        { "label": "Contact", "href": "/contact" }
+      ],
+      "legal": [
+        { "label": "Privacy Policy", "href": "/privacy" },
+        { "label": "Terms & Conditions", "href": "/terms" },
+        { "label": "Shipping & Returns", "href": "/shipping" }
+      ],
+      "quickLinks": [
+        { "label": "Privacy Policy", "href": "/privacy" },
+        { "label": "Terms & Conditions", "href": "/terms" },
+        { "label": "Shipping & Returns", "href": "/shipping" }
+      ]
+    },
+    "footerColumns": [
+      {
+        "title": "Services",
+        "links": [
+          { "label": "Residential Cooling", "href": "/services" },
+          { "label": "Commercial HVAC", "href": "/services" },
+          { "label": "Duct Cleaning", "href": "/services" },
+          { "label": "Smart Thermostats", "href": "/services" }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          { "label": "About Us", "href": "/about" },
+          { "label": "Blog", "href": "/blog" },
+          { "label": "Careers", "href": "/careers" },
+          { "label": "FAQ", "href": "/faq" },
+          { "label": "Contact", "href": "/contact" }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          { "label": "Privacy Policy", "href": "/privacy" },
+          { "label": "Terms & Conditions", "href": "/terms" },
+          { "label": "Shipping & Returns", "href": "/shipping" }
+        ]
+      }
+    ]
+  },
+  "bn": {
+    "footerLinks": {
+      "services": [
+        { "label": "আবাসিক কুলিং", "href": "/services" },
+        { "label": "বাণিজ্যিক HVAC", "href": "/services" },
+        { "label": "ডাক্ট ক্লিনিং", "href": "/services" },
+        { "label": "স্মার্ট থার্মোস্ট্যাট", "href": "/services" }
+      ],
+      "company": [
+        { "label": "আমাদের সম্পর্কে", "href": "/about" },
+        { "label": "ব্লগ", "href": "/blog" },
+        { "label": "ক্যারিয়ার", "href": "/careers" },
+        { "label": "সাধারণ প্রশ্ন", "href": "/faq" },
+        { "label": "যোগাযোগ", "href": "/contact" }
+      ],
+      "legal": [
+        { "label": "গোপনীয়তা নীতি", "href": "/privacy" },
+        { "label": "শর্তাবলী", "href": "/terms" },
+        { "label": "শিপিং ও রিটার্ন", "href": "/shipping" }
+      ],
+      "quickLinks": [
+        { "label": "গোপনীয়তা নীতি", "href": "/privacy" },
+        { "label": "শর্তাবলী", "href": "/terms" },
+        { "label": "শিপিং ও রিটার্ন", "href": "/shipping" }
+      ]
+    },
+    "footerColumns": [
+      {
+        "title": "সেবা",
+        "links": [
+          { "label": "আবাসিক কুলিং", "href": "/services" },
+          { "label": "বাণিজ্যিক HVAC", "href": "/services" },
+          { "label": "ডাক্ট ক্লিনিং", "href": "/services" },
+          { "label": "স্মার্ট থার্মোস্ট্যাট", "href": "/services" }
+        ]
+      },
+      {
+        "title": "কোম্পানি",
+        "links": [
+          { "label": "আমাদের সম্পর্কে", "href": "/about" },
+          { "label": "ব্লগ", "href": "/blog" },
+          { "label": "ক্যারিয়ার", "href": "/careers" },
+          { "label": "সাধারণ প্রশ্ন", "href": "/faq" },
+          { "label": "যোগাযোগ", "href": "/contact" }
+        ]
+      },
+      {
+        "title": "আইনগত",
+        "links": [
+          { "label": "গোপনীয়তা নীতি", "href": "/privacy" },
+          { "label": "শর্তাবলী", "href": "/terms" },
+          { "label": "শিপিং ও রিটার্ন", "href": "/shipping" }
+        ]
+      }
+    ]
+  }
+}

@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -532,12 +533,10 @@ export function CouponFormDialog({
               control={control}
               render={({ field }) => (
                 <div className="flex items-center gap-2">
-                  <input
+                  <Checkbox
                     id="coupon-first-order"
-                    type="checkbox"
                     checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                    className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+                    onCheckedChange={(checked) => field.onChange(checked)}
                   />
                   <Label htmlFor="coupon-first-order" className="text-xs cursor-pointer">
                     First Order Only
@@ -550,12 +549,10 @@ export function CouponFormDialog({
               control={control}
               render={({ field }) => (
                 <div className="flex items-center gap-2">
-                  <input
+                  <Checkbox
                     id="coupon-show-banner"
-                    type="checkbox"
                     checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                    className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+                    onCheckedChange={(checked) => field.onChange(checked)}
                   />
                   <Label htmlFor="coupon-show-banner" className="text-xs cursor-pointer">
                     Show on Banner

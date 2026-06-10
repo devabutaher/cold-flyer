@@ -7,7 +7,7 @@ import { useAuthForm } from "@/hooks/use-auth-form";
 import { animations } from "@/lib/animation";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Crown, Eye, EyeOff, KeyRound, LockKeyhole, Mail, Shield } from "lucide-react";
+import { Crown, Eye, EyeOff, KeyRound, LockKeyhole, LogIn, Mail, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
@@ -27,6 +27,7 @@ export default function AuthPage() {
     errors,
     setShowPassword,
     handleTabSwitch,
+    handleDemoLogin,
     onSubmit,
     forgotPasswordMode,
     forgotSent,
@@ -297,6 +298,11 @@ export default function AuthPage() {
           </div>
 
           <div ref={googleBtnRef} className="w-full min-h-11" />
+
+          <Button type="button" variant="outline" onClick={handleDemoLogin} disabled={loading} className="w-full mt-3">
+            <LogIn className="size-4 mr-2" />
+            {t("demoLogin")}
+          </Button>
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             {t("protectedBy")}{" "}

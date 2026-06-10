@@ -1,0 +1,170 @@
+{
+  "en": {
+    "heroBadge": "Delivery & Returns",
+    "heroTitle": "Shipping<br></br>Made Simple",
+    "heroDesc": "Fast, reliable, and transparent — we ship to every corner of Bangladesh.",
+    "optionsBadge": "Delivery Methods",
+    "optionsTitle": "Shipping Options",
+    "optionsDesc": "Choose the delivery method that best fits your timeline and budget.",
+    "shippingOptions": [
+      {
+        "icon": "Truck",
+        "title": "Standard Shipping",
+        "time": "7-14 Business Days",
+        "price": "Free for orders over BDT 25,000",
+        "description": "Reliable ground shipping across all 64 districts of Bangladesh. Perfect for scheduled projects."
+      },
+      {
+        "icon": "Ship",
+        "title": "Express Shipping",
+        "time": "2-4 Business Days",
+        "price": "BDT 1,500",
+        "description": "Fast delivery for time-sensitive orders within Dhaka and major city divisions. Includes priority handling."
+      },
+      {
+        "icon": "Globe",
+        "title": "International Shipping",
+        "time": "10-21 Business Days",
+        "price": "Calculated at Checkout",
+        "description": "Global coverage with customs clearance assistance for bulk and commercial orders. Duties may apply."
+      },
+      {
+        "icon": "Warehouse",
+        "title": "Freight Shipping",
+        "time": "5-10 Business Days",
+        "price": "Quote-Based",
+        "description": "For large equipment and bulk orders. Includes loading dock delivery across Bangladesh industrial zones."
+      }
+    ],
+    "processTitle": "From Order to Doorstep",
+    "processDesc": "Our streamlined delivery process ensures your equipment arrives safely.",
+    "processSupport": "Order Support",
+    "processButton": "Track Your Order",
+    "process": [
+      { "step": "01", "title": "Order Processing", "desc": "We verify and prepare your items within 24-48 hours." },
+      { "step": "02", "title": "Packaging", "desc": "Industrial-grade packaging ensures safe transport in all weather conditions." },
+      { "step": "03", "title": "Shipment", "desc": "Your order is dispatched via our trusted delivery partners across Bangladesh." },
+      { "step": "04", "title": "Track & Deliver", "desc": "Real-time tracking via SMS and email until final delivery to your doorstep." }
+    ],
+    "returnsTitle": "Returns Made Simple",
+    "returns": [
+      {
+        "icon": "RefreshCw",
+        "title": "Easy Returns",
+        "desc": "Return any unused item within 30 days of delivery. No questions asked for standard items."
+      },
+      {
+        "icon": "Box",
+        "title": "Original Packaging",
+        "desc": "Items must be returned in original packaging with all accessories and labels intact."
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Refund Process",
+        "desc": "Refunds are processed within 5-7 business days after inspection. Original shipping costs may apply."
+      },
+      {
+        "icon": "Calendar",
+        "title": "Exchange Option",
+        "desc": "Prefer a different product? We offer hassle-free exchanges for alternative sizes or models."
+      }
+    ],
+    "restrictionsBadge": "Important Info",
+    "restrictionsTitle": "Return Restrictions",
+    "restrictionsDesc": "To maintain product quality and safety, certain items cannot be returned:",
+    "restrictions": [
+      "Custom or specially ordered items are non-returnable",
+      "Items that have been installed or used are not eligible for return",
+      "Products past 30-day return window",
+      "Items damaged due to improper installation or misuse",
+      "Specialty refrigeration units may have modified return terms"
+    ],
+    "ctaTitle": "Still have questions?",
+    "ctaDesc": "Our shipping team is here to help.",
+    "ctaButton": "Contact Shipping Team"
+  },
+  "bn": {
+    "heroBadge": "ডেলিভারি ও রিটার্ন",
+    "heroTitle": "শিপিং<br></br>সহজ করা",
+    "heroDesc": "দ্রুত, নির্ভরযোগ্য এবং স্বচ্ছ — আমরা বাংলাদেশের প্রতিটি প্রান্তে শিপ করি।",
+    "optionsBadge": "ডেলিভারি পদ্ধতি",
+    "optionsTitle": "শিপিং অপশন",
+    "optionsDesc": "আপনার সময়সূচী এবং বাজেটের জন্য সবচেয়ে উপযুক্ত ডেলিভারি পদ্ধতি বেছে নিন।",
+    "shippingOptions": [
+      {
+        "icon": "Truck",
+        "title": "স্ট্যান্ডার্ড শিপিং",
+        "time": "৭-১৪ কার্যদিবস",
+        "price": "২৫,০০০ টাকার বেশি অর্ডারে ফ্রি",
+        "description": "জরুরি নয় এমন অর্ডারের জন্য নির্ভরযোগ্য গ্রাউন্ড শিপিং। নির্ধারিত প্রকল্পের জন্য উপযুক্ত।"
+      },
+      {
+        "icon": "Ship",
+        "title": "এক্সপ্রেস শিপিং",
+        "time": "৩-৫ কার্যদিবস",
+        "price": "১,৫০০ টাকা",
+        "description": "সময়-সংবেদনশীল ডেলিভারির জন্য দ্রুত এয়ার ফ্রেইট। প্রায়োরিটি হ্যান্ডলিং অন্তর্ভুক্ত।"
+      },
+      {
+        "icon": "Globe",
+        "title": "আন্তর্জাতিক শিপিং",
+        "time": "১০-২১ কার্যদিবস",
+        "price": "চেকআউটে গণনা করা হয়",
+        "description": "কাস্টমস ক্লিয়ারেন্স সহায়তা সহ বিশ্বব্যাপী কভারেজ। শুল্ক প্রযোজ্য হতে পারে।"
+      },
+      {
+        "icon": "Warehouse",
+        "title": "ফ্রেইট শিপিং",
+        "time": "৫-১০ কার্যদিবস",
+        "price": "কোটা ভিত্তিক",
+        "description": "বড় সরঞ্জাম এবং বাল্ক অর্ডারের জন্য। লোডিং ডক ডেলিভারি অন্তর্ভুক্ত।"
+      }
+    ],
+    "processTitle": "অর্ডার থেকে ডোরস্টেপ",
+    "processDesc": "আমাদের সুবিন্যস্ত ডেলিভারি প্রক্রিয়া নিশ্চিত করে যে আপনার সরঞ্জাম নিরাপদে পৌঁছায়।",
+    "processSupport": "অর্ডার সাপোর্ট",
+    "processButton": "আপনার অর্ডার ট্র্যাক করুন",
+    "process": [
+      { "step": "০১", "title": "অর্ডার প্রক্রিয়াকরণ", "desc": "আমরা ২৪-৪৮ ঘন্টার মধ্যে আপনার আইটেম যাচাই এবং প্রস্তুত করি।" },
+      { "step": "০২", "title": "প্যাকেজিং", "desc": "শিল্প-গ্রেড প্যাকেজিং নিরাপদ পরিবহন নিশ্চিত করে।" },
+      { "step": "০৩", "title": "শিপমেন্ট", "desc": "আপনার অর্ডার আপনার পছন্দের ডেলিভারি পদ্ধতিতে প্রেরণ করা হয়।" },
+      { "step": "০৪", "title": "ট্র্যাক ও ডেলিভার", "desc": "আপনার অবস্থানে চূড়ান্ত ডেলিভারি পর্যন্ত রিয়েল-টাইম ট্র্যাকিং।" }
+    ],
+    "returnsTitle": "সহজ রিটার্ন",
+    "returns": [
+      {
+        "icon": "RefreshCw",
+        "title": "সহজ রিটার্ন",
+        "desc": "ডেলিভারির ৩০ দিনের মধ্যে যেকোনো অব্যবহৃত আইটেম ফেরত দিন। স্ট্যান্ডার্ড আইটেমের জন্য কোনো প্রশ্ন নেই।"
+      },
+      {
+        "icon": "Box",
+        "title": "মূল প্যাকেজিং",
+        "desc": "সমস্ত অ্যাক্সেসরিজ এবং লেবেল সহ মূল প্যাকেজিংয়ে আইটেম ফেরত দিতে হবে।"
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "রিফান্ড প্রক্রিয়া",
+        "desc": "পরিদর্শনের পর ৫-৭ কার্যদিবসের মধ্যে রিফান্ড প্রক্রিয়া করা হয়। মূল শিপিং খরচ প্রযোজ্য হতে পারে।"
+      },
+      {
+        "icon": "Calendar",
+        "title": "এক্সচেঞ্জ অপশন",
+        "desc": "ভিন্ন পণ্য পছন্দ করেন? আমরা বিকল্প সাইজ বা মডেলের জন্য ঝামেলামুক্ত এক্সচেঞ্জ অফার করি।"
+      }
+    ],
+    "restrictionsBadge": "গুরুত্বপূর্ণ তথ্য",
+    "restrictionsTitle": "রিটার্ন সীমাবদ্ধতা",
+    "restrictionsDesc": "পণ্যের গুণমান এবং নিরাপত্তা বজায় রাখতে, নির্দিষ্ট আইটেম ফেরত দেওয়া যাবে না:",
+    "restrictions": [
+      "কাস্টম বা বিশেষ অর্ডারকৃত আইটেম ফেরতযোগ্য নয়",
+      "যে আইটেম ইনস্টল বা ব্যবহার করা হয়েছে সেগুলি ফেরতের জন্য যোগ্য নয়",
+      "৩০ দিনের রিটার্ন উইন্ডো অতিক্রান্ত পণ্য",
+      "অপযুক্ত ইনস্টলেশন বা অপব্যবহারের কারণে ক্ষতিগ্রস্ত আইটেম",
+      "বিশেষায়িত রেফ্রিজারেশন ইউনিটের পরিবর্তিত রিটার্ন শর্ত প্রযোজ্য হতে পারে"
+    ],
+    "ctaTitle": "এখনও প্রশ্ন আছে?",
+    "ctaDesc": "আমাদের শিপিং টিম সাহায্য করতে প্রস্তুত।",
+    "ctaButton": "শিপিং টিমের সাথে যোগাযোগ করুন"
+  }
+}

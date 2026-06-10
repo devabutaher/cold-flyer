@@ -34,6 +34,10 @@ export async function googleAuth(idToken) {
   return data;
 }
 
+export async function demoLogin() {
+  return loginUser("fatima@example.com", "User@1234");
+}
+
 export async function forgotPassword(email) {
   const res = await fetch("/api/auth/forgot-password", {
     method: "POST",

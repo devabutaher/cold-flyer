@@ -80,9 +80,11 @@ export function AppHeader() {
       <div className="flex items-center gap-2">
         <LocaleSwitcher />
         <ThemeToggle />
-        <FullscreenToggle />
-        <RefreshButton />
-        <Separator className="h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
+        <div className="hidden sm:flex items-center gap-2">
+          <FullscreenToggle />
+          <RefreshButton />
+          <Separator className="h-4 data-[orientation=vertical]:self-center" orientation="vertical" />
+        </div>
         <NotificationDropdown />
         <UserDropdown />
       </div>

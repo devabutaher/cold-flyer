@@ -16,9 +16,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getData } from "@/data";
 import { MenuIcon, Package, XIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { getPageContent } from "@/lib/content";
 import { Suspense, useState } from "react";
 import { NavSearch } from "./nav-search";
 
@@ -26,8 +26,9 @@ export function MobileNav() {
   const t = useTranslations("common");
   const navT = useTranslations("nav");
   const locale = useLocale();
-  const primaryLinks = getData("primaryLinks", locale);
-  const moreLinks = getData("moreLinks", locale);
+  const navContent = getPageContent("nav-links", locale);
+  const primaryLinks = navContent.primaryLinks;
+  const moreLinks = navContent.moreLinks;
   const { backendUser } = useAuth();
   const [open, setOpen] = useState(false);
 
@@ -76,7 +77,7 @@ export function MobileNav() {
                 label={navT("products")}
                 href="/items"
                 icon={<Package size={16} />}
-                className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                className="rounded-lg px-3 min-h-[44px] py-3 hover:bg-muted active:bg-muted"
                 onClick={() => setOpen(false)}
               />
             </div>
@@ -86,7 +87,7 @@ export function MobileNav() {
                 <LinkItem
                   key={link.href}
                   {...link}
-                  className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                  className="rounded-lg px-3 min-h-[44px] py-3 hover:bg-muted active:bg-muted"
                   onClick={() => setOpen(false)}
                 />
               ))}
@@ -94,7 +95,7 @@ export function MobileNav() {
 
             <Accordion type="single" collapsible>
               <AccordionItem value="more" className="border-none">
-                <AccordionTrigger className="w-full rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted hover:no-underline">
+                <AccordionTrigger className="w-full rounded-lg px-3 min-h-[44px] py-3 text-sm font-medium hover:bg-muted hover:no-underline">
                   {navT("more")}
                 </AccordionTrigger>
                 <AccordionContent className="pb-1">
@@ -103,7 +104,7 @@ export function MobileNav() {
                       <LinkItem
                         key={link.href}
                         {...link}
-                        className="rounded-lg px-3 py-2.5 hover:bg-muted active:bg-muted"
+                        className="rounded-lg px-3 min-h-[44px] py-3 hover:bg-muted active:bg-muted"
                         onClick={() => setOpen(false)}
                       />
                     ))}

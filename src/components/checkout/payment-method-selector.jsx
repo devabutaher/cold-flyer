@@ -28,7 +28,7 @@ export function PaymentMethodSelector({ value, onChange }) {
             type="button"
             onClick={() => onChange(p.value)}
             className={cn(
-              "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors",
+              "flex items-center gap-2.5 rounded-lg border px-3 py-3 text-left text-sm transition-colors",
               selected
                 ? "border-primary bg-primary/5 text-foreground"
                 : "border-border text-muted-foreground hover:border-muted-foreground/30",

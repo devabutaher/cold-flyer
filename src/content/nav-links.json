@@ -1,0 +1,70 @@
+{
+  "en": {
+    "productLinks": [
+      { "label": "Shops", "href": "/items", "icon": "LayoutGrid" },
+      { "label": "AC Units", "href": "/items/ac_units", "icon": "AirVent" },
+      { "label": "AC Parts", "href": "/items/ac_parts", "icon": "Layers" }
+    ],
+    "serviceLinks": [
+      { "label": "Installation", "href": "/services/installation", "icon": "Settings" },
+      { "label": "Maintenance", "href": "/services/maintenance", "icon": "ShieldCheck" },
+      { "label": "Support", "href": "/services/support", "icon": "HelpCircle" }
+    ],
+    "primaryLinks": [
+      { "label": "Services", "href": "/services", "icon": "Settings" },
+      { "label": "Contact", "href": "/contact", "icon": "Mail" },
+      { "label": "About", "href": "/about", "icon": "Users" },
+      { "label": "Blog", "href": "/blog", "icon": "FileText" }
+    ],
+    "moreLinks": [
+      { "label": "Recent Works", "href": "/recent-works", "icon": "Briefcase" },
+      { "label": "FAQ", "href": "/faq", "icon": "HelpCircle" },
+      { "label": "Careers", "href": "/careers", "icon": "Briefcase" },
+      { "label": "Shipping & Returns", "href": "/shipping", "icon": "Truck" }
+    ],
+    "mainNavLinks": [
+      {
+        "category": "Shops",
+        "links": [
+          { "label": "Shops", "href": "/items", "icon": "LayoutGrid" },
+          { "label": "AC Units", "href": "/items/ac_units", "icon": "AirVent" },
+          { "label": "AC Parts", "href": "/items/ac_parts", "icon": "Layers" }
+        ]
+      }
+    ]
+  },
+  "bn": {
+    "productLinks": [
+      { "label": "সব পণ্য", "href": "/items", "icon": "LayoutGrid" },
+      { "label": "এসি ইউনিট", "href": "/items/ac_units", "icon": "AirVent" },
+      { "label": "এসি যন্ত্রাংশ", "href": "/items/ac_parts", "icon": "Layers" }
+    ],
+    "serviceLinks": [
+      { "label": "ইনস্টলেশন", "href": "/services/installation", "icon": "Settings" },
+      { "label": "রক্ষণাবেক্ষণ", "href": "/services/maintenance", "icon": "ShieldCheck" },
+      { "label": "সাপোর্ট", "href": "/services/support", "icon": "HelpCircle" }
+    ],
+    "primaryLinks": [
+      { "label": "সেবা", "href": "/services", "icon": "Settings" },
+      { "label": "যোগাযোগ", "href": "/contact", "icon": "Mail" },
+      { "label": "আমাদের সম্পর্কে", "href": "/about", "icon": "Users" }
+    ],
+    "moreLinks": [
+      { "label": "সাম্প্রতিক কাজ", "href": "/recent-works", "icon": "Briefcase" },
+      { "label": "ব্লগ", "href": "/blog", "icon": "FileText" },
+      { "label": "প্রশ্নোত্তর", "href": "/faq", "icon": "HelpCircle" },
+      { "label": "ক্যারিয়ার", "href": "/careers", "icon": "Briefcase" },
+      { "label": "শিপিং এবং রিটার্ন", "href": "/shipping", "icon": "Truck" }
+    ],
+    "mainNavLinks": [
+      {
+        "category": "পণ্য",
+        "links": [
+          { "label": "সব পণ্য", "href": "/items", "icon": "LayoutGrid" },
+          { "label": "এসি ইউনিট", "href": "/items/ac_units", "icon": "AirVent" },
+          { "label": "এসি যন্ত্রাংশ", "href": "/items/ac_parts", "icon": "Layers" }
+        ]
+      }
+    ]
+  }
+}

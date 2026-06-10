@@ -7,16 +7,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SelectWithOther } from "@/components/ui/select-with-other";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { getData } from "@/data";
+import { getPageContent } from "@/lib/content";
 import { Info, Star } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { ImageUploadField } from "./image-upload-field";
 
 export function BasicInfoSection({ control }) {
-  const BRANDS = getData("BRANDS", "en");
-  const CATEGORIES = getData("CATEGORIES", "en");
-  const TAGS = getData("TAGS", "en");
-  const WARRANTIES = getData("WARRANTIES", "en");
+  const formConstants = getPageContent("product-form-constants", "en");
+  const BRANDS = formConstants.BRANDS;
+  const CATEGORIES = formConstants.CATEGORIES;
+  const TAGS = formConstants.TAGS;
+  const WARRANTIES = formConstants.WARRANTIES;
   return (
     <Card>
       <CardHeader>

@@ -2,6 +2,7 @@
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { SearchableSelect } from "@/components/ui/searchable-select";
+import { Textarea } from "@/components/ui/textarea";
 import { DISTRICTS, getThanas } from "@/data/bd-addresses";
 import { Controller, useWatch } from "react-hook-form";
 
@@ -61,11 +62,11 @@ export function AddressFields({ control, namePrefix = "" }) {
         render={({ field }) => (
           <Field>
             <FieldLabel>Address</FieldLabel>
-            <textarea
+            <Textarea
               {...field}
               value={field.value ?? ""}
               placeholder="Street, building, area"
-              className="flex min-h-20 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 resize-y"
+              className="min-h-20 resize-y"
               rows={3}
             />
           </Field>

@@ -152,7 +152,7 @@ export function BlogDetailSkeleton() {
     <div className="bg-background text-foreground">
       <div className="relative h-[50vh] md:h-[60vh] overflow-hidden">
         <Skeleton className="absolute inset-0 rounded-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 flex items-end">
           <div className="container pb-12 md:pb-16 space-y-4">
             <Skeleton className="h-4 w-24" />
@@ -233,7 +233,7 @@ export function RecentWorkDetailSkeleton() {
     <div className="bg-background text-foreground">
       <section className="relative min-h-[60vh] flex items-center overflow-hidden bg-muted">
         <Skeleton className="absolute inset-0 rounded-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
         <div className="relative z-10 container py-32 space-y-4">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-5 w-20" />

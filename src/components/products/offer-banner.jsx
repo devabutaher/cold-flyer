@@ -23,34 +23,34 @@ function CouponCard({ coupon, t, onCopyCode }) {
         : "Free Shipping";
 
   return (
-    <div className="flex shrink-0 w-[260px] flex-col justify-between gap-2 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-3.5">
+    <div className="flex shrink-0 w-[220px] flex-col justify-between gap-1.5 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-2">
       <div>
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-black text-primary-foreground">{discountLabel}</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm font-black text-primary-foreground">{discountLabel}</span>
           {coupon.minOrderValue > 0 && (
-            <span className="text-xxs text-primary-foreground/60">Min ৳{coupon.minOrderValue.toLocaleString()}</span>
+            <span className="text-[10px] text-primary-foreground/60">Min ৳{coupon.minOrderValue.toLocaleString()}</span>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-primary-foreground/70 leading-snug line-clamp-2">{coupon.description}</p>
+        <p className="mt-0.5 text-[11px] text-primary-foreground/70 leading-snug line-clamp-1">{coupon.description}</p>
         {coupon.applicableTo && coupon.applicableTo !== "all" && (
-          <span className="mt-1 inline-block rounded bg-primary-foreground/10 px-1.5 py-0.5 text-xxxs font-medium text-primary-foreground/60 uppercase tracking-wider">
+          <span className="mt-1 inline-block rounded bg-primary-foreground/10 px-1.5 py-0.5 text-[9px] font-medium text-primary-foreground/60 uppercase tracking-wider">
             {SCOPE_LABELS[coupon.applicableTo] || "Limited items"}
           </span>
         )}
         {coupon.firstOrderOnly && (
-          <span className="mt-1 ml-1 inline-block rounded bg-green-500/20 px-1.5 py-0.5 text-xxxs font-medium text-green-300 uppercase tracking-wider">
+          <span className="mt-1 ml-1 inline-block rounded bg-green-500/20 px-1.5 py-0.5 text-[9px] font-medium text-green-300 uppercase tracking-wider">
             First order
           </span>
         )}
       </div>
       <div className="flex items-center justify-between gap-2 mt-1">
-        <div className="flex items-center gap-1 rounded bg-primary-foreground/15 px-2 py-1">
-          <span className="text-xxs font-bold text-primary-foreground/60">{t("useCode")}</span>
-          <span className="text-xs font-extrabold tracking-wider text-primary-foreground">{coupon.code}</span>
+        <div className="flex items-center gap-1 rounded bg-primary-foreground/15 px-1.5 py-0.5">
+          <span className="text-[10px] font-bold text-primary-foreground/60">{t("useCode")}</span>
+          <span className="text-[11px] font-extrabold tracking-wider text-primary-foreground">{coupon.code}</span>
         </div>
         <button
           onClick={() => onCopyCode(coupon.code)}
-          className="rounded bg-primary-foreground/20 px-2 py-1 text-xxs font-bold text-primary-foreground hover:bg-primary-foreground/30 transition-colors"
+          className="rounded bg-primary-foreground/20 px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground hover:bg-primary-foreground/30 transition-colors"
         >
           {t("copyCode")}
         </button>

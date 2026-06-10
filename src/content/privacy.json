@@ -1,0 +1,178 @@
+{
+  "en": {
+    "heroBadge": "Your Privacy Matters",
+    "heroTitle": "Protecting<br></br>What Matters",
+    "heroDesc": "Your trust is our most valuable asset. We're committed to safeguarding your personal information with the highest standards of privacy and security.",
+    "principlesTitle": "Privacy Principles",
+    "principlesBadge": "Our Commitment",
+    "principlesDesc": "Every decision we make is guided by these core principles.",
+    "principles": [
+      {
+        "icon": "User",
+        "title": "Your Data, Your Control",
+        "desc": "You have full authority over your personal information. Access, modify, or delete your data anytime through your account settings or by contacting us directly.",
+        "highlight": true
+      },
+      {
+        "icon": "Shield",
+        "title": "Enterprise-Grade Protection",
+        "desc": "We employ bank-level encryption and security protocols to safeguard your information against unauthorized access, ensuring your data remains confidential.",
+        "highlight": false
+      },
+      {
+        "icon": "Globe",
+        "title": "Transparency First",
+        "desc": "No hidden clauses or surprise data uses. We believe in complete transparency about what data we collect and exactly how we use it.",
+        "highlight": false
+      },
+      {
+        "icon": "EyeOff",
+        "title": "Minimal Data Principle",
+        "desc": "We collect only what's essential. Every piece of data has a clear purpose, and we never gather more than necessary.",
+        "highlight": false
+      }
+    ],
+    "dataTitle": "Understanding Your Data",
+    "dataDesc": "We believe in radical transparency about what we collect and why.",
+    "dataControl": "You Control",
+    "dataButton": "Manage Your Data",
+    "dataTypes": [
+      {
+        "category": "Personal Information",
+        "items": [
+          { "name": "Full Name", "description": "For identification and communication" },
+          { "name": "Email Address", "description": "For account access and notifications" },
+          { "name": "Phone Number", "description": "For order updates and support" },
+          { "name": "Company Details", "description": "For business account management" }
+        ]
+      },
+      {
+        "category": "Technical Data",
+        "items": [
+          { "name": "IP Address", "description": "For security and analytics" },
+          { "name": "Browser Type", "description": "For website optimization" },
+          { "name": "Device Information", "description": "For mobile responsiveness" },
+          { "name": "Usage Patterns", "description": "For improving our services" }
+        ]
+      },
+      {
+        "category": "Transaction Data",
+        "items": [
+          { "name": "Order History", "description": "For purchase records" },
+          { "name": "Payment Information", "description": "For processing transactions" },
+          { "name": "Shipping Details", "description": "For delivery coordination across Bangladesh" },
+          { "name": "Communication History", "description": "For customer support" }
+        ]
+      }
+    ],
+    "timelineTitle": "Our Privacy Journey",
+    "timeline": [
+      { "year": "2024", "event": "Implemented GDPR compliance framework" },
+      { "year": "2025", "event": "Launched data privacy dashboard" },
+      { "year": "2026", "event": "Achieved ISO 27001 certification" },
+      { "year": "2027", "event": "Introduced end-to-end encryption" }
+    ],
+    "rightsBadge": "Your Control",
+    "rightsTitle": "Exercising Your Rights",
+    "right1Title": "Right to Access",
+    "right1Desc": "Request a copy of all personal data we hold about you.",
+    "right2Title": "Right to Correction",
+    "right2Desc": "Have inaccurate personal information corrected.",
+    "right3Title": "Right to Deletion",
+    "right3Desc": "Request complete removal of your data from our systems.",
+    "right4Title": "Data Portability",
+    "right4Desc": "Transfer your data to another service provider.",
+    "ctaTitle": "Questions about privacy?",
+    "ctaDesc": "Our privacy team is here to help.",
+    "ctaEmail": "privacy@coldflyer.com",
+    "ctaPhone": "Contact Us"
+  },
+  "bn": {
+    "heroBadge": "আপনার গোপনীয়তা গুরুত্বপূর্ণ",
+    "heroTitle": "গুরুত্বপূর্ণ<br></br>যা রক্ষা করা",
+    "heroDesc": "আপনার আস্থা আমাদের সবচেয়ে মূল্যবান সম্পদ। আমরা গোপনীয়তা এবং নিরাপত্তার সর্বোচ্চ মান সহ আপনার ব্যক্তিগত তথ্য রক্ষা করতে প্রতিশ্রুতিবদ্ধ।",
+    "principlesTitle": "গোপনীয়তার নীতি",
+    "principlesBadge": "আমাদের অঙ্গীকার",
+    "principlesDesc": "প্রতিটি সিদ্ধান্ত এই মূল নীতিগুলি দ্বারা পরিচালিত হয়।",
+    "principles": [
+      {
+        "icon": "User",
+        "title": "আপনার ডেটা, আপনার নিয়ন্ত্রণ",
+        "desc": "আপনার ব্যক্তিগত তথ্যের উপর আপনার সম্পূর্ণ কর্তৃত্ব রয়েছে। আপনার অ্যাকাউন্ট সেটিংস থেকে বা সরাসরি আমাদের সাথে যোগাযোগ করে যেকোনো সময় ডেটা অ্যাক্সেস, পরিবর্তন বা মুছুন।",
+        "highlight": true
+      },
+      {
+        "icon": "Shield",
+        "title": "এন্টারপ্রাইজ-গ্রেড সুরক্ষা",
+        "desc": "আমরা ব্যাংক-স্তরের এনক্রিপশন এবং নিরাপত্তা প্রোটোকল ব্যবহার করে আপনার তথ্য অননুমোদিত অ্যাক্সেস থেকে সুরক্ষিত রাখি।",
+        "highlight": false
+      },
+      {
+        "icon": "Globe",
+        "title": "প্রথমে স্বচ্ছতা",
+        "desc": "কোনো লুকানো শর্ত বা অপ্রত্যাশিত ডেটা ব্যবহার নয়। আমরা কী তথ্য সংগ্রহ করি এবং কীভাবে ব্যবহার করি তা সম্পূর্ণ স্বচ্ছভাবে জানাই।",
+        "highlight": false
+      },
+      {
+        "icon": "EyeOff",
+        "title": "ন্যূনতম ডেটা নীতি",
+        "desc": "আমরা শুধুমাত্র প্রয়োজনীয় তথ্য সংগ্রহ করি। প্রতিটি ডেটার একটি স্পষ্ট উদ্দেশ্য রয়েছে এবং আমরা প্রয়োজনাতিরিক্ত কখনো সংগ্রহ করি না।",
+        "highlight": false
+      }
+    ],
+    "dataTitle": "আপনার ডেটা বোঝা",
+    "dataDesc": "আমরা কী সংগ্রহ করি এবং কেন তা নিয়ে আমরা সম্পূর্ণ স্বচ্ছতায় বিশ্বাস করি।",
+    "dataControl": "আপনার নিয়ন্ত্রণ",
+    "dataButton": "আপনার ডেটা ব্যবস্থাপনা",
+    "dataTypes": [
+      {
+        "category": "ব্যক্তিগত তথ্য",
+        "items": [
+          { "name": "পুরো নাম", "description": "শনাক্তকরণ এবং যোগাযোগের জন্য" },
+          { "name": "ইমেইল ঠিকানা", "description": "অ্যাকাউন্ট অ্যাক্সেস এবং নোটিফিকেশনের জন্য" },
+          { "name": "ফোন নম্বর", "description": "অর্ডার আপডেট এবং সাপোর্টের জন্য" },
+          { "name": "কোম্পানির বিবরণ", "description": "ব্যবসায়িক অ্যাকাউন্ট ব্যবস্থাপনার জন্য" }
+        ]
+      },
+      {
+        "category": "টেকনিক্যাল ডেটা",
+        "items": [
+          { "name": "আইপি ঠিকানা", "description": "নিরাপত্তা এবং বিশ্লেষণের জন্য" },
+          { "name": "ব্রাউজার টাইপ", "description": "ওয়েবসাইট অপ্টিমাইজেশনের জন্য" },
+          { "name": "ডিভাইস তথ্য", "description": "মোবাইল রেসপন্সিভনেসের জন্য" },
+          { "name": "ব্যবহারের প্যাটার্ন", "description": "আমাদের সেবা উন্নত করার জন্য" }
+        ]
+      },
+      {
+        "category": "লেনদেন সংক্রান্ত তথ্য",
+        "items": [
+          { "name": "অর্ডার ইতিহাস", "description": "ক্রয় রেকর্ডের জন্য" },
+          { "name": "পেমেন্ট তথ্য", "description": "লেনদেন প্রক্রিয়াকরণের জন্য" },
+          { "name": "শিপিং বিবরণ", "description": "ডেলিভারি সমন্বয়ের জন্য" },
+          { "name": "যোগাযোগ ইতিহাস", "description": "গ্রাহক সাপোর্টের জন্য" }
+        ]
+      }
+    ],
+    "timelineTitle": "আমাদের গোপনীয়তা যাত্রা",
+    "timeline": [
+      { "year": "২০২৪", "event": "GDPR কমপ্লায়েন্স ফ্রেমওয়ার্ক বাস্তবায়ন" },
+      { "year": "২০২৫", "event": "ডেটা প্রাইভেসি ড্যাশবোর্ড চালু" },
+      { "year": "২০২৬", "event": "ISO 27001 সার্টিফিকেশন অর্জন" },
+      { "year": "২০২৭", "event": "এন্ড-টু-এন্ড এনক্রিপশন চালু" }
+    ],
+    "rightsBadge": "আপনার নিয়ন্ত্রণ",
+    "rightsTitle": "আপনার অধিকার প্রয়োগ",
+    "right1Title": "অ্যাক্সেসের অধিকার",
+    "right1Desc": "আমাদের কাছে থাকা আপনার সমস্ত ব্যক্তিগত ডেটার একটি কপির অনুরোধ করুন।",
+    "right2Title": "সংশোধনের অধিকার",
+    "right2Desc": "ভুল ব্যক্তিগত তথ্য সংশোধন করান।",
+    "right3Title": "মুছে ফেলার অধিকার",
+    "right3Desc": "আমাদের সিস্টেম থেকে আপনার ডেটা সম্পূর্ণ অপসারণের অনুরোধ করুন।",
+    "right4Title": "ডেটা বহনযোগ্যতা",
+    "right4Desc": "আপনার ডেটা অন্য সেবা প্রদানকারীর কাছে স্থানান্তর করুন।",
+    "ctaTitle": "গোপনীয়তা সম্পর্কে প্রশ্ন?",
+    "ctaDesc": "আমাদের গোপনীয়তা টিম সাহায্য করতে প্রস্তুত।",
+    "ctaEmail": "privacy@coldflyer.com",
+    "ctaPhone": "যোগাযোগ করুন"
+  }
+}

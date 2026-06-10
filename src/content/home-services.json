@@ -1,0 +1,46 @@
+{
+  "en": [
+    {
+      "icon": "Wrench",
+      "title": "Precision Installation",
+      "sub": "Tailored ductwork and unit placement for maximum airflow efficiency — installed by certified technicians across Bangladesh."
+    },
+    {
+      "icon": "Shield",
+      "title": "Preventative Care",
+      "sub": "Smart diagnostic checkups that extend your equipment's lifespan by up to 40% in tropical conditions."
+    },
+    {
+      "icon": "Zap",
+      "title": "Efficiency Tuning",
+      "sub": "Optimizing thermostat logic and component calibration to lower energy costs monthly in Bangladesh's climate."
+    },
+    {
+      "icon": "Clock",
+      "title": "24/7 Rapid Response",
+      "sub": "Immediate climate restoration when you need it most. Average arrival: 55 minutes in major cities."
+    }
+  ],
+  "bn": [
+    {
+      "icon": "Wrench",
+      "title": "প্রিসিশন ইনস্টলেশন",
+      "sub": "সর্বোচ্চ এয়ারফ্লো দক্ষতা এবং ন্যূনতম ভিজুয়াল ইম্প্যাক্টের জন্য তৈরি ডাক্টওয়ার্ক এবং ইউনিট প্লেসমেন্ট।"
+    },
+    {
+      "icon": "Shield",
+      "title": "প্রতিরোধমূলক যত্ন",
+      "sub": "স্মার্ট ডায়াগনস্টিক চেকআপ যা আপনার সরঞ্জামের আয়ু ৪০% পর্যন্ত বাড়িয়ে দেয়।"
+    },
+    {
+      "icon": "Zap",
+      "title": "দক্ষতা টিউনিং",
+      "sub": "থার্মোস্ট্যাট লজিক এবং কম্পোনেন্ট ক্যালিব্রেশন অপ্টিমাইজ করে মাসিক শক্তি খরচ কমানো।"
+    },
+    {
+      "icon": "Clock",
+      "title": "২৪/৭ জরুরি প্রতিক্রিয়া",
+      "sub": "যখন আপনার সবচেয়ে বেশি প্রয়োজন তখন তাৎক্ষণিক ক্লাইমেট রিস্টোরেশন। গড় আগমন: ৫৫ মিনিট।"
+    }
+  ]
+}

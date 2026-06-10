@@ -9,8 +9,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { getData } from "@/data";
 import { useLocale, useTranslations } from "next-intl";
+import { getPageContent } from "@/lib/content";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -20,9 +20,10 @@ export function DesktopNav() {
   const locale = useLocale();
   const pathname = usePathname();
   const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "") || "/";
-  const mainNavLinks = getData("mainNavLinks", locale);
-  const primaryLinks = getData("primaryLinks", locale);
-  const moreLinks = getData("moreLinks", locale);
+  const navContent = getPageContent("nav-links", locale);
+  const mainNavLinks = navContent.mainNavLinks;
+  const primaryLinks = navContent.primaryLinks;
+  const moreLinks = navContent.moreLinks;
 
   return (
     // Changed from lg:flex → xl:flex to stay in sync with navbar breakpoint
