@@ -49,7 +49,7 @@ export default async function RecentWorkDetailPage({ params }) {
   return (
     <main className="bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden bg-inverted">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden bg-neutral-950">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -61,9 +61,9 @@ export default async function RecentWorkDetailPage({ params }) {
             className="object-cover opacity-50"
           />
         ) : (
-          <div className="absolute inset-0 bg-inverted" />
+          <div className="absolute inset-0 bg-neutral-950" />
         )}
-        <div className="absolute inset-0 bg-linear-to-r from-inverted/80 via-inverted/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-neutral-950/80 via-neutral-950/40 to-transparent" />
         <div className="relative z-10 container py-32">
           <Link
             href="/recent-works"

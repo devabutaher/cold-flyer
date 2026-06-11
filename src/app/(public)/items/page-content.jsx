@@ -34,15 +34,14 @@ function ItemsContent() {
     [q, category, brand, productType, rawSort],
   );
 
-  const { data: allProducts, isLoading: allLoading } = useProductsQuery({ limit: 200 });
-  const { data: products, isLoading, error } = useProductsQuery({ ...params, limit: 50 });
+  const { data: allProducts, isLoading, error } = useProductsQuery({ ...params, limit: 200 });
 
   return (
     <CatalogPage
       type="product"
-      data={products}
+      data={allProducts}
       allData={allProducts}
-      isLoading={isLoading || allLoading}
+      isLoading={isLoading}
       error={error}
       buildFilterOptions={(items) => [
         {

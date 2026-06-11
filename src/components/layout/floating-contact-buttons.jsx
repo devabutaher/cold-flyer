@@ -2,7 +2,7 @@
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { MessageCircle, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -52,18 +52,18 @@ export function FloatingContactButtons() {
     }
   }, []);
 
+  const pulseClass = "animate-whatsapp-pulse";
+
   return (
     <TooltipProvider>
-      <motion.div
+      <div
         className={cn("fixed z-100 flex flex-col gap-3", "bottom-6 right-6", pwaMayShow && "max-sm:bottom-24")}
-        initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
+        style={{ opacity: 0, animation: "fadeInUp 0.5s ease-out 1.5s forwards" }}
       >
         {BUTTONS.map((btn) => (
           <Tooltip key={btn.key}>
             <TooltipTrigger asChild>
-              <motion.a
+              <a
                 href={btn.href}
                 target={btn.external ? "_blank" : undefined}
                 rel={btn.external ? "noopener noreferrer" : undefined}
@@ -74,38 +74,20 @@ export function FloatingContactButtons() {
                   "shadow-lg",
                   btn.bgColor,
                   "text-white",
+                  btn.pulse && !shouldReduceMotion && pulseClass,
+                  "transition-transform duration-200 hover:-translate-y-1",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
+                  "active:scale-90",
                 )}
-                initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.5 }}
-                animate={
-                  shouldReduceMotion
-                    ? { opacity: 1, scale: 1 }
-                    : btn.pulse
-                      ? {
-                          opacity: 1,
-                          scale: [1, 1.06, 1],
-                          transition: {
-                            scale: {
-                              duration: 2.5,
-                              repeat: Infinity,
-                              ease: "easeInOut",
-                              repeatDelay: 1,
-                            },
-                          },
-                        }
-                      : { opacity: 1, scale: 1 }
-                }
-                whileHover={shouldReduceMotion ? undefined : { y: -4, boxShadow: btn.hoverShadow }}
-                whileTap={shouldReduceMotion ? undefined : { scale: 0.92 }}
-                transition={shouldReduceMotion ? undefined : { type: "spring", stiffness: 400, damping: 17 }}
+                style={btn.pulse && !shouldReduceMotion ? { boxShadow: btn.hoverShadow } : undefined}
               >
                 <btn.icon size={22} />
-              </motion.a>
+              </a>
             </TooltipTrigger>
             <TooltipContent side="left">{t(btn.labelKey)}</TooltipContent>
           </Tooltip>
         ))}
-      </motion.div>
+      </div>
     </TooltipProvider>
   );
 }

@@ -32,15 +32,14 @@ function ServicesContent() {
     [q, category, serviceType, sort],
   );
 
-  const { data: allServices, isLoading: allLoading } = useServicesQuery({ limit: 200 });
-  const { data: services, isLoading, error } = useServicesQuery({ ...params, limit: 50 });
+  const { data: allServices, isLoading, error } = useServicesQuery({ ...params, limit: 200 });
 
   return (
     <CatalogPage
       type="service"
-      data={services}
+      data={allServices}
       allData={allServices}
-      isLoading={isLoading || allLoading}
+      isLoading={isLoading}
       error={error}
       buildFilterOptions={(services) => [
         {

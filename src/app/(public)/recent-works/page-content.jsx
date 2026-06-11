@@ -97,7 +97,7 @@ export default function RecentWorksPage() {
 
   return (
     <main className="bg-background text-foreground">
-      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
+      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-neutral-950">
         <Image
           src="https://images.unsplash.com/photo-1581092795604-19e71fdab1d4?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0"
           alt="Recent Works"
@@ -107,7 +107,7 @@ export default function RecentWorksPage() {
           quality={75}
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-neutral-950/70 via-neutral-950/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -116,7 +116,7 @@ export default function RecentWorksPage() {
               </Badge>
             </motion.div>
             <motion.h1
-              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
+              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-snug tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}

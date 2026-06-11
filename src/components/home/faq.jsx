@@ -2,7 +2,6 @@
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useInView } from "@/hooks/use-in-view";
-import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Accordion as AccordionPrimitive } from "radix-ui";
@@ -41,22 +40,11 @@ function FaqItem({ item, openValue }) {
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <AccordionPrimitive.Content forceMount asChild>
-            <motion.div
-              key="content"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              style={{ overflow: "hidden" }}
-            >
-              <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
-            </motion.div>
-          </AccordionPrimitive.Content>
-        )}
-      </AnimatePresence>
+      <AccordionPrimitive.Content className="grid transition-[grid-template-rows] duration-300 ease-out data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr]">
+        <div className="overflow-hidden">
+          <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+        </div>
+      </AccordionPrimitive.Content>
     </AccordionPrimitive.Item>
   );
 }

@@ -31,6 +31,7 @@ export function useProductsQuery(params) {
       return extractList(res, "products");
     },
     staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -48,6 +49,7 @@ export function useProductQuery(idOrSlug) {
       return extractItem(res, "product");
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     enabled: !!idOrSlug,
     placeholderData: (previousData) => previousData ?? null,
   });
@@ -155,6 +157,7 @@ export function useFeaturedProductsQuery(params) {
       return extractList(res, "products");
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }

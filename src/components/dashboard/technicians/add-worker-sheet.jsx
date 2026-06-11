@@ -66,17 +66,25 @@ export function AddWorkerSheet({ open, onOpenChange }) {
 
         <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4">
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
-            <Controller name="name" control={control} render={({ field }) => <Input id="name" {...field} />} />
+            <Label htmlFor="name">
+              Name <span className="text-destructive">*</span>
+            </Label>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => <Input id="name" {...field} aria-invalid={fieldState.invalid} />}
+            />
             {errors?.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">
+              Email <span className="text-destructive">*</span>
+            </Label>
             <Controller
               name="email"
               control={control}
-              render={({ field }) => <Input id="email" type="email" {...field} />}
+              render={({ field, fieldState }) => <Input id="email" type="email" {...field} aria-invalid={fieldState.invalid} />}
             />
             {errors?.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
           </div>
@@ -88,11 +96,13 @@ export function AddWorkerSheet({ open, onOpenChange }) {
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">
+              Password <span className="text-destructive">*</span>
+            </Label>
             <Controller
               name="password"
               control={control}
-              render={({ field }) => <Input id="password" type="password" {...field} />}
+              render={({ field, fieldState }) => <Input id="password" type="password" {...field} aria-invalid={fieldState.invalid} />}
             />
             {errors?.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
           </div>

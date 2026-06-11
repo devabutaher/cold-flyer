@@ -1,13 +1,13 @@
-import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedDiv } from "@/components/ui/animated-div";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import RichText from "@/components/ui/rich-text";
+import { Textarea } from "@/components/ui/textarea";
+import { getPageContent } from "@/lib/content";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import { getLocale } from "next-intl/server";
-import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 
 export const metadata = { title: "Contact Us" };
@@ -19,7 +19,7 @@ export default async function ContactPage() {
   const content = getPageContent("contact", locale);
   return (
     <main className="bg-background text-foreground">
-      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
+      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-neutral-950">
         <Image
           src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1400&q=80"
           alt="Contact us"
@@ -29,7 +29,7 @@ export default async function ContactPage() {
           quality={75}
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-neutral-950/70 via-neutral-950/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -39,7 +39,7 @@ export default async function ContactPage() {
             </AnimatedDiv>
             <AnimatedDiv
               as="h1"
-              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
+              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-snug tracking-tighter mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -132,7 +132,7 @@ export default async function ContactPage() {
           </div>
           <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted">
             <Image
-              src="https://images.unsplash.com/photo-1569336415962-a4bd9f2ad600?w=1200&q=80"
+              src="https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Map location"
               fill
               sizes="100vw"

@@ -18,13 +18,30 @@ import {
 import { useCheckinMutation } from "@/hooks/queries/attendance";
 import { Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const checkinSchema = z.object({
+  location: z.string().optional(),
+  task: z.string().optional(),
+});
 
 export function CheckInDialog({ worker, open, onOpenChange, onSuccess }) {
-  const [location, setLocation] = useState("");
-  const [task, setTask] = useState("");
   const [gpsCoords, setGpsCoords] = useState(null);
   const [gettingGps, setGettingGps] = useState(false);
   const checkinMutation = useCheckinMutation();
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { location: "", task: "" },
+    resolver: zodResolver(checkinSchema),
+    mode: "onTouched",
+  });
 
   const handleGetGps = () => {
     if (!navigator.geolocation) {
@@ -45,16 +62,15 @@ export function CheckInDialog({ worker, open, onOpenChange, onSuccess }) {
     );
   };
 
-  const handleCheckIn = async () => {
+  const onSubmit = async (data) => {
     try {
       await checkinMutation.mutateAsync({
         workerId: worker._id,
-        location: location || gpsCoords ? `${gpsCoords?.lat},${gpsCoords?.lng}` : undefined,
-        task: task || undefined,
+        location: data.location || gpsCoords ? `${gpsCoords?.lat},${gpsCoords?.lng}` : undefined,
+        task: data.task || undefined,
       });
       toast.success(`${worker.workerName} checked in.`);
-      setLocation("");
-      setTask("");
+      reset();
       setGpsCoords(null);
       onOpenChange(false);
       onSuccess?.();
@@ -66,48 +82,69 @@ export function CheckInDialog({ worker, open, onOpenChange, onSuccess }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Check In — {worker.workerName}</AlertDialogTitle>
-          <AlertDialogDescription>Record check-in details for this worker.</AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className="space-y-4 py-2">
-          <div>
-            <Label className="mb-1.5 block text-xs">Location</Label>
-            <div className="flex gap-2">
-              <Input
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Enter location manually"
-                className="h-9 flex-1"
-              />
-              <Button variant="outline" size="sm" onClick={handleGetGps} disabled={gettingGps} className="shrink-0">
-                <MapPin size={14} className={gettingGps ? "animate-pulse" : ""} />
-              </Button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Check In — {worker.workerName}</AlertDialogTitle>
+            <AlertDialogDescription>Record check-in details for this worker.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label className="mb-1.5 block text-xs">Location</Label>
+              <div className="flex gap-2">
+                <Controller
+                  name="location"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                        setGpsCoords(null);
+                      }}
+                      placeholder="Enter location manually"
+                      className="h-9 flex-1"
+                      aria-invalid={fieldState.invalid}
+                    />
+                  )}
+                />
+                <Button variant="outline" size="sm" onClick={handleGetGps} disabled={gettingGps} className="shrink-0">
+                  <MapPin size={14} className={gettingGps ? "animate-pulse" : ""} />
+                </Button>
+              </div>
+              {errors.location && <p className="text-xs text-destructive mt-1">{errors.location.message}</p>}
+              {gpsCoords && (
+                <p className="text-xxs text-muted-foreground mt-1">
+                  GPS: {gpsCoords.lat.toFixed(4)}, {gpsCoords.lng.toFixed(4)}
+                </p>
+              )}
             </div>
-            {gpsCoords && (
-              <p className="text-xxs text-muted-foreground mt-1">
-                GPS: {gpsCoords.lat.toFixed(4)}, {gpsCoords.lng.toFixed(4)}
-              </p>
-            )}
+            <div>
+              <Label className="mb-1.5 block text-xs">Task</Label>
+              <Controller
+                name="task"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Textarea
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    placeholder="Describe today's task"
+                    rows={2}
+                    className="resize-none"
+                    aria-invalid={fieldState.invalid}
+                  />
+                )}
+              />
+              {errors.task && <p className="text-xs text-destructive mt-1">{errors.task.message}</p>}
+            </div>
           </div>
-          <div>
-            <Label className="mb-1.5 block text-xs">Task</Label>
-            <Textarea
-              value={task}
-              onChange={(e) => setTask(e.target.value)}
-              placeholder="Describe today's task"
-              rows={2}
-              className="resize-none"
-            />
-          </div>
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleCheckIn} disabled={checkinMutation.isPending}>
-            {checkinMutation.isPending ? <Loader2 size={14} className="animate-spin mr-1" /> : null}
-            Confirm Check-In
-          </AlertDialogAction>
-        </AlertDialogFooter>
+          <AlertDialogFooter>
+            <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
+            <Button type="submit" disabled={checkinMutation.isPending}>
+              {checkinMutation.isPending ? <Loader2 size={14} className="animate-spin mr-1" /> : null}
+              Confirm Check-In
+            </Button>
+          </AlertDialogFooter>
+        </form>
       </AlertDialogContent>
     </AlertDialog>
   );

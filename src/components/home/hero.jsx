@@ -55,7 +55,7 @@ function SlideContent({ slide, t }) {
         </Badge>
       </div>
 
-      <h1 className="hero-animate mb-3 sm:mb-4 max-w-2xl text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] text-white">
+      <h1 className="hero-animate mb-3 sm:mb-4 max-w-2xl text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold leading-snug text-white">
         {slide.headline}
         <br />
         <span className="text-primary">{slide.highlight}</span>
@@ -99,7 +99,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-112 w-full overflow-hidden bg-inverted"
+      className="relative h-[60vh] sm:h-[75vh] md:h-[85vh] min-h-112 w-full overflow-hidden bg-neutral-950"
     >
       <style>{styles}</style>
       <div className="embla h-full relative" ref={emblaRef}>
@@ -119,7 +119,7 @@ export default function Hero() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-neutral-950/70 via-neutral-950/30 to-transparent" />
 
               <SlideContent slide={slide} t={t} />
             </div>

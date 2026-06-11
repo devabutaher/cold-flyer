@@ -13,7 +13,7 @@ function SocialLink({ href, children }) {
     <div className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95">
       <Link
         href={href}
-        className="flex h-11 w-11 items-center justify-center rounded-md bg-inverted-foreground/10 hover:bg-primary transition-colors"
+        className="flex h-11 w-11 items-center justify-center rounded-md bg-neutral-100/10 hover:bg-primary transition-colors"
       >
         {children}
       </Link>
@@ -26,10 +26,10 @@ function FooterLink({ href, children }) {
     <li className="relative w-fit">
       <Link
         href={href}
-        className="group text-inverted-foreground/50 text-sm hover:text-inverted-foreground transition-colors inline-block"
+        className="group text-neutral-100/50 text-sm hover:text-neutral-100 transition-colors inline-block"
       >
         {children}
-        <span className="absolute bottom-0 left-0 h-px w-full bg-inverted-foreground scale-x-0 origin-left transition-transform duration-200 ease-out group-hover:scale-x-100" />
+        <span className="absolute bottom-0 left-0 h-px w-full bg-neutral-100 scale-x-0 origin-left transition-transform duration-200 ease-out group-hover:scale-x-100" />
       </Link>
     </li>
   );
@@ -85,7 +85,7 @@ export default function Footer() {
   const footerLinks = footerContent.footerLinks;
 
   return (
-    <footer className="bg-inverted text-inverted-foreground">
+    <footer className="bg-neutral-950 text-neutral-100">
       <div className="container py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
@@ -101,7 +101,7 @@ export default function Footer() {
 
               <h1 className="font-bold text-xl font-heading">{t("common.siteName")}</h1>
             </Link>
-            <p className="text-inverted-foreground/50 text-sm leading-relaxed mb-5">{t("home.brandTagline")}</p>
+            <p className="text-neutral-100/50 text-sm leading-relaxed mb-5">{t("home.brandTagline")}</p>
             <div className="flex gap-3">
               {[
                 {
@@ -189,13 +189,13 @@ export default function Footer() {
             transition={{ duration: 0.4, delay: 0.25 }}
           >
             <h4 className="font-sans font-bold text-sm uppercase tracking-widest mb-4">{t("footer.newsletter")}</h4>
-            <p className="text-inverted-foreground/50 text-sm mb-4">{t("home.newsletterDescription")}</p>
+            <p className="text-neutral-100/50 text-sm mb-4">{t("home.newsletterDescription")}</p>
             <NewsletterForm />
           </AnimatedDiv>
         </div>
 
         <AnimatedDiv
-          className="border-t border-inverted-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-inverted-foreground/50 text-xs"
+          className="border-t border-neutral-100/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-neutral-100/50 text-xs"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -207,10 +207,10 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="hover:text-inverted-foreground transition-colors relative group"
+                className="hover:text-neutral-100 transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 h-px bg-inverted-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+                <span className="absolute bottom-0 left-0 h-px bg-neutral-100 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
               </Link>
             ))}
           </div>

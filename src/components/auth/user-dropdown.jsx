@@ -53,7 +53,7 @@ export function UserDropdown() {
         <Button variant="ghost" size="icon" className="rounded-full">
           <Avatar className="bg-primary">
             <AvatarImage src={backendUser.avatar || ""} alt={name} />
-            <AvatarFallback className="bg-primary text-inverted-foreground">{initial}</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">{initial}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

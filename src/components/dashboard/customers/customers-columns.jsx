@@ -53,6 +53,16 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
       },
     },
     {
+      header: "Company",
+      accessorKey: "company",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("company") || "—"}</span>,
+    },
+    {
+      header: "Address",
+      accessorKey: "address",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("address") || "—"}</span>,
+    },
+    {
       header: "Brand / Model",
       id: "brandModel",
       cell: ({ row }) => {

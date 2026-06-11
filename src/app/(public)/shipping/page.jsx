@@ -18,7 +18,7 @@ export default async function ShippingPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Hero */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-neutral-950">
         <Image
           src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1170&auto=format&fit=crop"
           alt="Shipping warehouse"
@@ -28,14 +28,14 @@ export default async function ShippingPage() {
           quality={75}
           className="object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-neutral-950/70 via-neutral-950/30 to-transparent" />
 
         <div className="relative z-10 container">
           <div className="max-w-2xl">
             <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
               {content.heroBadge}
             </Badge>
-            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8">
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-snug tracking-tighter mb-8">
               <RichText html={content.heroTitle} />
             </h1>
             <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{content.heroDesc}</p>

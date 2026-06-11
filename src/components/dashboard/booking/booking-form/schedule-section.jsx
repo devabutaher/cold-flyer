@@ -79,7 +79,7 @@ export function ScheduleSection({ control }) {
           <Controller
             name="scheduledDate"
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <div className="flex flex-col gap-2">
                 <Label htmlFor="date" className="px-1">
                   Date <span className="text-destructive">*</span>
@@ -93,7 +93,8 @@ export function ScheduleSection({ control }) {
                         readOnly
                         value={field.value ? formatShortDate(new Date(field.value)) : ""}
                         placeholder="Pick a date"
-                        className="pl-10 pr-10 cursor-pointer"
+                        className={`pl-10 pr-10 cursor-pointer ${fieldState.invalid ? "border-destructive" : ""}`}
+                        aria-invalid={fieldState.invalid}
                       />
                       <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
                     </div>
@@ -110,6 +111,9 @@ export function ScheduleSection({ control }) {
                     />
                   </PopoverContent>
                 </Popover>
+                {fieldState.invalid && (
+                  <p className="text-xs text-destructive px-1">{fieldState.error?.message || "Date is required"}</p>
+                )}
               </div>
             )}
           />

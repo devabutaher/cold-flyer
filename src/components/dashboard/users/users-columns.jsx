@@ -1,4 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { AvatarCell, StatusBadge, MonoCell } from "@/components/dashboard/table/table-cells";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserRowActions } from "./user-row-actions";
@@ -42,6 +43,26 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
       header: "Phone",
       accessorKey: "phone",
       cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.getValue("phone") || "—"}</span>,
+    },
+    {
+      header: "Location",
+      accessorKey: "address",
+      cell: ({ row }) => {
+        const val = row.getValue("address");
+        const addr = row.original.addresses?.[0];
+        if (!val || val === "—") return <span className="text-sm text-muted-foreground">—</span>;
+        const full = [addr?.district, addr?.thana, addr?.address].filter(Boolean).join(", ");
+        return (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-sm text-muted-foreground truncate max-w-28 inline-block cursor-default">{val}</span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" align="start" className="max-w-60">
+              <p className="text-xs leading-relaxed">{full}</p>
+            </TooltipContent>
+          </Tooltip>
+        );
+      },
     },
     {
       header: "Role",

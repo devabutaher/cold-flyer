@@ -9,13 +9,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { sendVerificationCodeAction, verifyEmailAction } from "@/lib/actions/user";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const verifyCodeSchema = z.object({
+  code: z
+    .string()
+    .length(6, "Code must be exactly 6 characters")
+    .regex(/^[A-Z0-9]+$/, "Code must be alphanumeric"),
+});
 
 export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
   const t = useTranslations("profile");
   const [step, setStep] = useState("idle");
-  const [code, setCode] = useState("");
   const [sending, setSending] = useState(false);
   const [verifying, setVerifying] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { code: "" },
+    resolver: zodResolver(verifyCodeSchema),
+    mode: "onTouched",
+  });
 
   async function handleSendCode() {
     setSending(true);
@@ -29,14 +49,13 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
     }
   }
 
-  async function handleVerify() {
-    if (code.length < 6) return;
+  async function onVerify(data) {
     setVerifying(true);
-    const result = await verifyEmailAction(code);
+    const result = await verifyEmailAction(data.code);
     setVerifying(false);
     if (result.success) {
       toast.success(result.message || "Email verified");
-      setCode("");
+      reset();
       setStep("idle");
       onOpenChange(false);
       onSuccess?.();
@@ -46,7 +65,7 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
   }
 
   function handleClose() {
-    setCode("");
+    reset();
     setStep("idle");
     onOpenChange(false);
   }
@@ -76,17 +95,25 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
           {step === "sent" && (
             <div className="space-y-3">
               <Label htmlFor="verify-code" className="text-center block text-sm">
-                Verification code
+                Verification code <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="verify-code"
-                value={code}
-                onChange={(e) => setCode(e.target.value.slice(0, 6).toUpperCase())}
-                placeholder="000000"
-                className="h-12 text-center text-2xl tracking-[0.5em] font-mono"
-                maxLength={6}
-                onKeyDown={(e) => e.key === "Enter" && handleVerify()}
+              <Controller
+                name="code"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Input
+                    id="verify-code"
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value.slice(0, 6).toUpperCase())}
+                    placeholder="000000"
+                    className="h-12 text-center text-2xl tracking-[0.5em] font-mono"
+                    maxLength={6}
+                    onKeyDown={(e) => e.key === "Enter" && handleSubmit(onVerify)()}
+                    aria-invalid={fieldState.invalid}
+                  />
+                )}
               />
+              {errors.code && <p className="text-xs text-destructive text-center">{errors.code.message}</p>}
             </div>
           )}
 
@@ -98,7 +125,7 @@ export function VerifyEmailDialog({ open, onOpenChange, email, onSuccess }) {
               </Button>
             ) : (
               <>
-                <Button className="w-full" onClick={handleVerify} disabled={verifying || code.length < 6}>
+                <Button className="w-full" onClick={handleSubmit(onVerify)} disabled={verifying}>
                   {verifying ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
                   {verifying ? t("saving") : t("confirm")}
                 </Button>

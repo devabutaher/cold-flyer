@@ -166,7 +166,7 @@ export default async function AboutPage() {
   const content = getPageContent("about", locale);
   return (
     <main className="bg-background text-foreground">
-      <AnimatedSection className="relative h-[80vh] flex items-center overflow-hidden bg-inverted">
+      <section className="relative h-[80vh] flex items-center overflow-hidden bg-neutral-950">
         <Image
           src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=80"
           alt="HVAC facility"
@@ -176,35 +176,19 @@ export default async function AboutPage() {
           quality={75}
           className="object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-inverted/70 via-inverted/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-neutral-950/70 via-neutral-950/30 to-transparent" />
         <div className="relative z-10 container">
           <div className="max-w-2xl">
-            <AnimatedDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
-                {content.heroBadge}
-              </Badge>
-            </AnimatedDiv>
-            <AnimatedDiv
-              as="h1"
-              className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] tracking-tighter mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
+            <Badge className="mb-4 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm sm:mb-5">
+              {content.heroBadge}
+            </Badge>
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-snug tracking-tighter mb-8">
               <RichText html={content.heroTitle} />
-            </AnimatedDiv>
-            <AnimatedDiv
-              as="p"
-              className="text-lg text-white/70 max-w-xl font-medium leading-relaxed"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              {content.heroSub}
-            </AnimatedDiv>
+            </h1>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">{content.heroSub}</p>
           </div>
         </div>
-      </AnimatedSection>
+      </section>
 
       <AnimatedSection className="py-28 bg-background">
         <div className="container">

@@ -114,7 +114,9 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
               <Controller
                 name="item"
                 control={control}
-                render={({ field }) => <Input id="item" {...field} placeholder="Expense item name" />}
+                render={({ field, fieldState }) => (
+                  <Input id="item" {...field} placeholder="Expense item name" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.item && <p className="text-xs text-destructive mt-1">{errors.item.message}</p>}
             </div>
@@ -125,7 +127,9 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
               <Controller
                 name="amount"
                 control={control}
-                render={({ field }) => <Input id="amount" type="number" {...field} placeholder="0" />}
+                render={({ field, fieldState }) => (
+                  <Input id="amount" type="number" {...field} placeholder="0" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.amount && <p className="text-xs text-destructive mt-1">{errors.amount.message}</p>}
             </div>
@@ -146,6 +150,7 @@ export function ExpenseFormDialog({ mode = "create", expense, open, onOpenChange
                           value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
                           placeholder="Pick a date"
                           className="pl-10 cursor-pointer"
+                          aria-invalid={false}
                         />
                       </div>
                     </PopoverTrigger>

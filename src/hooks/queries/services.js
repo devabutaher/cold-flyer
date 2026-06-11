@@ -39,6 +39,7 @@ export function useServicesQuery(params) {
       return extractList(res, "services");
     },
     staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -52,6 +53,7 @@ export function useServiceQuery(slug) {
       return extractItem(res, "service");
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     enabled: !!slug,
   });
 }
@@ -64,6 +66,7 @@ export function useFeaturedServicesQuery() {
       return extractList(res, "services");
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }

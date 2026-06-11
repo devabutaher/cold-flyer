@@ -1,6 +1,4 @@
-"use client";
-
-import { useTranslations, useLocale } from "next-intl";
+import { getTranslations, getLocale } from "next-intl/server";
 import Image from "next/image";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight } from "lucide-react";
@@ -28,10 +26,10 @@ function PortfolioItem({ project, isLarge = false }) {
   );
 }
 
-export default function Portfolio() {
-  const t = useTranslations("home");
-  const tc = useTranslations("common");
-  const locale = useLocale();
+export default async function Portfolio() {
+  const t = await getTranslations("home");
+  const tc = await getTranslations("common");
+  const locale = await getLocale();
   const projects = getPageContent("home-projects", locale);
 
   if (!projects?.length) return null;

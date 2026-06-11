@@ -34,7 +34,7 @@ export function CatalogPage({
       serviceType: searchParams.get("servicetype") || undefined,
       sort: searchParams.get("sort") || undefined,
     }),
-    [searchParams],
+    [searchParams.toString()],
   );
 
   const queryAll = useQuery({

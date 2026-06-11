@@ -1,5 +1,3 @@
-"use client";
-
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -7,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 function ContactCard({ info }) {
   return (
@@ -33,8 +31,8 @@ function ContactCard({ info }) {
   );
 }
 
-export default function Contact() {
-  const t = useTranslations("home");
+export default async function Contact() {
+  const t = await getTranslations("home");
 
   const contactInfo = [
     {

@@ -27,6 +27,7 @@ const mapRow = (t) => ({
   email: t.user?.email || "",
   employeeId: t.employeeId,
   specializations: (t.specializations || []).join(", "),
+  serviceAreas: (t.serviceAreas || []).map((a) => a.zone).join(", ") || "—",
   status: t.status,
   rating: t.rating,
   completedJobs: t.completedJobs || 0,
@@ -38,6 +39,7 @@ const PDF_COLUMNS = [
   { header: "Email", accessorKey: "email", width: 2 },
   { header: "Employee ID", accessorKey: "employeeId", width: 1.2 },
   { header: "Specialization", accessorKey: "specializations", width: 1.5 },
+  { header: "Service Areas", accessorKey: "serviceAreas", width: 1.5 },
   { header: "Status", accessorKey: "status", width: 0.8 },
   { header: "Rating", accessorKey: "rating", width: 0.6 },
   { header: "Jobs Done", accessorKey: "completedJobs", width: 0.8 },
@@ -96,7 +98,7 @@ export default function TechniciansTable() {
         defaultSort={[]}
         emptyMessage="No workers found."
         emptyIcon={<Wrench size={40} />}
-        searchFields={["user.name", "user.email", "employeeId", "specializations", "status"]}
+        searchFields={["user.name", "user.email", "employeeId", "specializations", "serviceAreas", "status"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

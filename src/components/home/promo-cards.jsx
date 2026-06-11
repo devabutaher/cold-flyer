@@ -1,6 +1,4 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { ArrowRight, Shield, Truck, Zap } from "lucide-react";
 import Link from "next/link";
 
@@ -48,8 +46,8 @@ function PromoCard({ card, index }) {
   );
 }
 
-export default function PromoCards() {
-  const t = useTranslations("home");
+export default async function PromoCards() {
+  const t = await getTranslations("home");
 
   const cards = [
     {

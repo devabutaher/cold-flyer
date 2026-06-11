@@ -19,6 +19,9 @@ const mapRow = (u) => ({
   email: u.email,
   phone: u.phone || "—",
   role: u.role,
+  address: u.addresses?.length
+    ? [u.addresses[0].district, u.addresses[0].thana].filter(Boolean).join(", ") || u.addresses[0].address || "—"
+    : "—",
   isActive: u.isActive,
   lastLogin: u.lastLogin,
   joined: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—",
@@ -29,6 +32,7 @@ const PDF_COLUMNS = [
   { header: "User ID", accessorKey: "userId", width: 1.2 },
   { header: "Email", accessorKey: "email", width: 2.5 },
   { header: "Phone", accessorKey: "phone", width: 1.5 },
+  { header: "Location", accessorKey: "address", width: 1.5 },
   { header: "Role", accessorKey: "role", width: 0.8 },
   { header: "Status", accessorKey: "isActive", width: 0.8 },
   { header: "Last Login", accessorKey: "lastLogin", width: 1.2 },
@@ -94,7 +98,7 @@ export default function UsersTable() {
         defaultSort={[]}
         emptyMessage="No users found."
         emptyIcon={<Users size={40} />}
-        searchFields={["userId", "name", "email", "phone", "role"]}
+        searchFields={["userId", "name", "email", "phone", "address", "role"]}
         toolbar={(table) => (
           <TableToolbar
             table={table}

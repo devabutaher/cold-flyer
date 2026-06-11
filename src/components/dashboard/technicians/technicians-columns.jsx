@@ -64,6 +64,17 @@ export function buildTechnicianColumns({ onDelete } = {}) {
       },
     },
     {
+      header: "Service Areas",
+      accessorKey: "serviceAreas",
+      cell: ({ row }) => (
+        <span className="text-sm text-muted-foreground">
+          {row.original.serviceAreas?.length
+            ? row.original.serviceAreas.map((a) => a.zone).join(", ")
+            : "—"}
+        </span>
+      ),
+    },
+    {
       header: "Status",
       accessorKey: "status",
       cell: ({ row }) => <StatusBadge value={row.getValue("status")} map={STATUS_MAP} />,

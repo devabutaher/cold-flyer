@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCounter } from "@/hooks/use-counter";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { useStatsQuery } from "@/hooks/queries/stats";
 
 const STATS_META = [
   { key: "unitsInstalled", suffix: "+", format: (n) => (n >= 1000 ? Math.floor(n / 1000) + "k" : n) },
@@ -50,20 +51,7 @@ export default function StatsStrip() {
   const t = useTranslations("home");
   const ref = useRef(null);
   const [started, setStarted] = useState(false);
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/public/stats")
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success && json.data) {
-          setStats(json.data);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: stats, isLoading } = useStatsQuery();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -84,7 +72,7 @@ export default function StatsStrip() {
   return (
     <AnimatedSection ref={ref} className="bg-inverted py-10 sm:py-14">
       <div className="container">
-        {loading ? (
+        {isLoading ? (
           <Skeleton />
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">

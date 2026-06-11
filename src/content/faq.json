@@ -1,7 +1,7 @@
 {
   "en": {
     "heroBadge": "FAQ",
-    "heroTitle": "How Can<br></br>We Help?",
+    "heroTitle": "How Can<br>We Help?",
     "heroSub": "Find answers to common questions about our products, services, and policies.",
     "searchPlaceholder": "Search for answers...",
     "cantFind": "Can't find what you're looking for?",
@@ -139,7 +139,7 @@
   },
   "bn": {
     "heroBadge": "প্রায়শই জিজ্ঞাসা",
-    "heroTitle": "আমরা কীভাবে<br></br>সাহায্য করতে পারি?",
+    "heroTitle": "আমরা কীভাবে<br>সাহায্য করতে পারি?",
     "heroSub": "আমাদের পণ্য, সেবা এবং নীতি সম্পর্কে সাধারণ প্রশ্নের উত্তর খুঁজুন।",
     "searchPlaceholder": "উত্তর খুঁজুন...",
     "cantFind": "আপনি যা খুঁজছেন তা খুঁজে পাচ্ছেন না?",

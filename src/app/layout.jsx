@@ -3,7 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 
 import { getLocale, getMessages } from "next-intl/server";
-import { DM_Sans, Geist_Mono, Lora, Noto_Sans_Bengali, Outfit } from "next/font/google";
+import { DM_Sans, Geist_Mono, Noto_Sans_Bengali, Outfit } from "next/font/google";
 
 const fontHeading = DM_Sans({
   subsets: ["latin"],
@@ -17,22 +17,17 @@ const fontSans = Outfit({
   display: "swap",
 });
 
-const fontSerif = Lora({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  display: "swap",
+  display: "optional",
 });
 
 const fontBengali = Noto_Sans_Bengali({
   subsets: ["bengali"],
   variable: "--font-bengali",
   display: "swap",
+  preload: true,
 });
 
 export async function generateMetadata() {
@@ -133,7 +128,7 @@ export default async function RootLayout({ children }) {
         <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body
-        className={`${fontHeading.variable} ${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} ${fontBengali.variable} antialiased overflow-x-hidden`}
+        className={`${fontHeading.variable} ${fontSans.variable} ${fontMono.variable} ${fontBengali.variable} antialiased overflow-x-hidden`}
       >
         <NextIntlProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
@@ -144,7 +139,7 @@ export default async function RootLayout({ children }) {
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
               strategy="afterInteractive"
             />
-            <Script id="google-analytics" strategy="beforeInteractive">
+            <Script id="google-analytics" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}

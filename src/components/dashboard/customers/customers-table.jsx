@@ -16,6 +16,8 @@ const mapRow = (c) => ({
   name: c.name,
   customerId: c.customerId,
   phone: c.phone || "—",
+  company: c.company || "—",
+  address: c.address || "—",
   brand: c.brand || "—",
   model: c.model || "—",
   unit: c.unit || "—",
@@ -32,6 +34,8 @@ const PDF_COLUMNS = [
   { header: "Name", accessorKey: "name", width: 2 },
   { header: "Customer ID", accessorKey: "customerId", width: 1.5 },
   { header: "Phone", accessorKey: "phone", width: 1.5 },
+  { header: "Company", accessorKey: "company", width: 1.2 },
+  { header: "Address", accessorKey: "address", width: 1.5 },
   { header: "Brand", accessorKey: "brand", width: 1.2 },
   { header: "Model", accessorKey: "model", width: 1.2 },
   { header: "Unit", accessorKey: "unit", width: 1 },
@@ -140,12 +144,14 @@ export default function CustomersTable() {
         defaultSort={[]}
         emptyMessage="No customers found."
         emptyIcon={<Users size={40} />}
-        searchFields={[
-          "customerId",
-          "name",
-          "phone",
-          "email",
-          "brand",
+searchFields={[
+  "customerId",
+  "name",
+  "phone",
+  "email",
+  "company",
+  "address",
+  "brand",
           "model",
           "unit",
           "acTon",

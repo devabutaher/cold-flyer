@@ -1,11 +1,9 @@
-"use client";
-
 import Image from "next/image";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useTranslations, useLocale } from "next-intl";
+import { getTranslations, getLocale } from "next-intl/server";
 import { getPageContent } from "@/lib/content";
 
 function AboutPoint({ point }) {
@@ -22,9 +20,9 @@ function AboutPoint({ point }) {
   );
 }
 
-export default function About() {
-  const t = useTranslations("home");
-  const locale = useLocale();
+export default async function About() {
+  const t = await getTranslations("home");
+  const locale = await getLocale();
   const aboutData = getPageContent("home-about", locale);
   return (
     <AnimatedSection className="py-10 sm:py-14 md:py-16 bg-background">

@@ -29,6 +29,7 @@ export function useBlogsQuery(params) {
       return extractList(res, "blogs");
     },
     staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -43,6 +44,7 @@ export function useBlogQuery(slug) {
       return extractItem(res, "blog");
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     enabled: !!slug,
     placeholderData: (previousData) => previousData ?? null,
   });

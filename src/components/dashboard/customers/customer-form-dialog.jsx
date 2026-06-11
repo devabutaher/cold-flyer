@@ -136,7 +136,9 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="name"
                 control={control}
-                render={({ field }) => <Input id="name" {...field} placeholder="Customer name" />}
+                render={({ field, fieldState }) => (
+                  <Input id="name" {...field} placeholder="Customer name" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.name && <p className="text-xs text-destructive mt-1">{errors.name.message}</p>}
             </div>
@@ -147,7 +149,9 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="phone"
                 control={control}
-                render={({ field }) => <Input id="phone" {...field} placeholder="Phone number" />}
+                render={({ field, fieldState }) => (
+                  <Input id="phone" {...field} placeholder="Phone number" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone.message}</p>}
             </div>
@@ -158,7 +162,9 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="email"
                 control={control}
-                render={({ field }) => <Input id="email" type="email" {...field} placeholder="Email address" />}
+                render={({ field, fieldState }) => (
+                  <Input id="email" type="email" {...field} placeholder="Email address" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.email && <p className="text-xs text-destructive mt-1">{errors.email.message}</p>}
             </div>
@@ -247,6 +253,7 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
                           value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
                           placeholder="Pick a date"
                           className="pl-10 cursor-pointer"
+                          aria-invalid={false}
                         />
                       </div>
                     </PopoverTrigger>
@@ -289,7 +296,9 @@ export function CustomerFormDialog({ mode = "create", customer, open, onOpenChan
               <Controller
                 name="amount"
                 control={control}
-                render={({ field }) => <Input id="amount" type="number" {...field} placeholder="0" />}
+                render={({ field, fieldState }) => (
+                  <Input id="amount" type="number" {...field} placeholder="0" aria-invalid={fieldState.invalid} />
+                )}
               />
               {errors.amount && <p className="text-xs text-destructive mt-1">{errors.amount.message}</p>}
             </div>

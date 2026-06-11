@@ -203,13 +203,14 @@ export function CouponFormDialog({
               <Controller
                 name="code"
                 control={control}
-                render={({ field }) => (
-                  <Input
-                    id="coupon-code"
-                    {...field}
-                    placeholder="SUMMER20"
-                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
-                  />
+                render={({ field, fieldState }) => (
+                    <Input
+                      id="coupon-code"
+                      {...field}
+                      placeholder="SUMMER20"
+                      onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                      aria-invalid={fieldState.invalid}
+                    />
                 )}
               />
               {errors.code && <p className="text-xs text-destructive">{errors.code.message}</p>}
@@ -245,12 +246,13 @@ export function CouponFormDialog({
                 <Controller
                   name="discountValue"
                   control={control}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <Input
                       id="coupon-value"
                       type="number"
                       {...field}
                       placeholder={discountType === "percentage" ? "20" : "500"}
+                      aria-invalid={fieldState.invalid}
                     />
                   )}
                 />
@@ -302,7 +304,7 @@ export function CouponFormDialog({
               <Controller
                 name="validFrom"
                 control={control}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <Popover open={fromOpen} onOpenChange={setFromOpen}>
                     <PopoverTrigger asChild>
                       <div className="relative cursor-pointer" role="button" tabIndex={0}>
@@ -312,6 +314,7 @@ export function CouponFormDialog({
                           value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
                           placeholder="Pick a date"
                           className="pl-10 cursor-pointer"
+                          aria-invalid={fieldState.invalid}
                         />
                       </div>
                     </PopoverTrigger>
@@ -337,7 +340,7 @@ export function CouponFormDialog({
               <Controller
                 name="validUntil"
                 control={control}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <Popover open={untilOpen} onOpenChange={setUntilOpen}>
                     <PopoverTrigger asChild>
                       <div className="relative cursor-pointer" role="button" tabIndex={0}>
@@ -347,6 +350,7 @@ export function CouponFormDialog({
                           value={field.value ? format(new Date(field.value + "T00:00:00"), "PP") : ""}
                           placeholder="Pick a date"
                           className="pl-10 cursor-pointer"
+                          aria-invalid={fieldState.invalid}
                         />
                       </div>
                     </PopoverTrigger>
