@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies, headers } from "next/headers";
-import DashboardClient from "@/components/dashboard/stats/dashboard-client";
+import DashboardHome from "@/components/dashboard/dashboard-home/dashboard-home";
 
 export const metadata = { title: "Overview" };
 export const dynamic = "force-dynamic";
@@ -14,5 +14,5 @@ export default async function DashboardLayout() {
     redirect(`/auth${p ? `?redirect=${encodeURIComponent(p)}` : ""}`);
   }
 
-  return <DashboardClient />;
+  return <DashboardHome />;
 }

@@ -3,7 +3,7 @@ import { AvatarCell, PriceCell, RatingCell, StatusBadge } from "../../table/tabl
 import { Wrench } from "lucide-react";
 import { ServiceRowActions } from "./service-row-actions";
 
-export function buildServiceColumns({ onDelete, onEdit } = {}) {
+export function buildServiceColumns({ onDelete } = {}) {
   return [
     {
       id: "select",
@@ -113,7 +113,7 @@ export function buildServiceColumns({ onDelete, onEdit } = {}) {
       size: 52,
       enableSorting: false,
       header: "",
-      cell: ({ row }) => <ServiceRowActions row={row} onDelete={onDelete} onEdit={onEdit} />,
+      cell: ({ row }) => <ServiceRowActions row={row} onDelete={onDelete} />,
     },
   ];
 }

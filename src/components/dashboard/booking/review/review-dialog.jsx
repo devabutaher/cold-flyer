@@ -90,7 +90,7 @@ export function ReviewDialog({ booking, onSuccess }) {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-1.5">
             <Label>Review (optional)</Label>
             <Textarea
               value={review}

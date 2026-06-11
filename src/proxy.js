@@ -61,17 +61,8 @@ export async function proxy(request) {
   }
 
   if (isAuth && isAuthenticated) {
-    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const verifyRes = await fetch(`${API_URL}/api/auth/status`, {
-        headers: { Cookie: `accessToken=${accessToken}` },
-      });
-      const data = await verifyRes.json();
-      if (data?.data?.authenticated) {
-        const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
-        return NextResponse.redirect(new URL(redirectTo, request.url));
-      }
-    } catch {}
+    const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
+    return NextResponse.redirect(new URL(redirectTo, request.url));
   }
 
   if (isAuthenticated) {
@@ -91,5 +82,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
+  matcher: ["/dashboard/:path*", "/auth", "/api/:path*"],
 };

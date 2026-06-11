@@ -32,7 +32,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
-const GENDERS = ["male", "female", "other"];
+const GENDERS = ["male", "female"];
 
 function formatDate(dateStr) {
   if (!dateStr) return "";

@@ -134,7 +134,7 @@ export function ScheduleBookingDialog({
             <p className="text-xs text-destructive mt-1">{errors.scheduledTime.end.message}</p>
           )}
           {technicians.length > 0 && (
-            <div className="mt-4">
+            <div className="mt-4 space-y-1.5">
               <Label>Technician</Label>
               <Select value={technician} onValueChange={setTechnician}>
                 <SelectTrigger>
@@ -242,7 +242,7 @@ export function CompleteBookingDialog({ booking, onSuccess, triggerClassName, tr
           <AlertDialogDescription>Record the work done for {booking.bookingNumber}</AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-4 py-4">
-          <div>
+          <div className="space-y-1.5">
             <Label>Diagnosis</Label>
             <Textarea
               value={diagnosis}
@@ -251,7 +251,7 @@ export function CompleteBookingDialog({ booking, onSuccess, triggerClassName, tr
               rows={3}
             />
           </div>
-          <div>
+          <div className="space-y-1.5">
             <Label>Work Done</Label>
             <Textarea
               value={workDone}

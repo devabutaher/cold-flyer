@@ -20,11 +20,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, PencilIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function ServiceRowActions({ row, onDelete, onEdit }) {
+export function ServiceRowActions({ row, onDelete }) {
+  const router = useRouter();
   const [showDelete, setShowDelete] = useState(false);
   const id = row.original._id ?? row.original.id;
-  const service = row.original;
+  const slug = row.original.slug;
+  const handleEdit = () => router.push(`/dashboard/services/edit/${slug || id}`);
 
   return (
     <>
@@ -41,7 +44,7 @@ export function ServiceRowActions({ row, onDelete, onEdit }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-44">
-          <DropdownMenuItem onClick={() => onEdit?.(service)}>
+          <DropdownMenuItem onClick={handleEdit}>
             <PencilIcon size={14} className="mr-3" />
             Edit
           </DropdownMenuItem>

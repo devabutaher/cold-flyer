@@ -25,7 +25,13 @@ export function AppSidebar() {
   const visibleGroups = navGroups
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) => item.roles?.includes(userRole)),
+      items: group.items
+        .filter((item) => item.roles?.includes(userRole))
+        .map((item) => ({
+          ...item,
+          subItems: item.subItems?.filter((s) => s.roles?.includes(userRole)),
+        }))
+        .filter((item) => !item.subItems || item.subItems.length > 0),
     }))
     .filter((group) => group.items.length > 0);
 

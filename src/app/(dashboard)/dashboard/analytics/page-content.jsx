@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BarChart, DollarSign, CalendarDays } from "lucide-react";
+import { BarChart, DollarSign, CalendarDays, AlertCircle } from "lucide-react";
 import { StatusBadge } from "@/components/dashboard/table/table-cells";
 import { getClient } from "@/lib/http-client";
 import ProtectedRoute from "@/components/auth/protected-routes";
@@ -44,16 +44,38 @@ function StatCard({ title, value, icon: Icon, loading, prefix }) {
 }
 
 function AnalyticsContent() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["admin-analytics"],
     queryFn: async () => {
       const res = await fetcher("/admin/analytics");
       return res?.data || {};
     },
+    staleTime: 30000,
+    gcTime: 1800000,
+    refetchInterval: 120000,
+    placeholderData: (prev) => prev,
   });
 
   const services = data?.services;
   const sales = data?.sales;
+
+  if (isError) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Analytics</h1>
+          <p className="text-sm text-muted-foreground">Sales and service performance</p>
+        </div>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
+            <AlertCircle className="h-8 w-8 text-destructive" />
+            <p className="text-sm font-medium">Failed to load analytics</p>
+            <p className="text-xs text-muted-foreground">{error?.message || "An unexpected error occurred"}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
