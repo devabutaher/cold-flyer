@@ -8,7 +8,13 @@ const UsersTable = dynamic(() => import("@/components/dashboard/users/users-tabl
 export default function UsersPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <UsersTable />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Users</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage system users and their roles.</p>
+        </div>
+        <UsersTable />
+      </div>
     </ProtectedRoute>
   );
 }

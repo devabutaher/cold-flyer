@@ -8,7 +8,13 @@ const CustomersPageComponent = dynamic(() => import("@/components/dashboard/cust
 export default function CustomersPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <CustomersPageComponent />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Customers</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">View and manage customer information.</p>
+        </div>
+        <CustomersPageComponent />
+      </div>
     </ProtectedRoute>
   );
 }

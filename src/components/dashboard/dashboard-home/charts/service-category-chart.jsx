@@ -27,6 +27,7 @@ function buildConfig(dist) {
 
 export const ServiceCategoryChart = memo(function ServiceCategoryChart({ data, loading }) {
   const config = useMemo(() => buildConfig(data), [data]);
+  const chartData = useMemo(() => (data || []).filter((d) => d._id), [data]);
 
   if (loading) {
     return (
@@ -45,8 +46,6 @@ export const ServiceCategoryChart = memo(function ServiceCategoryChart({ data, l
       </Card>
     );
   }
-
-  const chartData = useMemo(() => data.filter((d) => d._id), [data]);
 
   return (
     <Card>

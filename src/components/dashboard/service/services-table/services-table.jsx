@@ -3,10 +3,12 @@
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
+import { Button } from "@/components/ui/button";
 import { useDeleteService, useServicesQuery } from "@/hooks/queries/services";
-import { Package } from "lucide-react";
+import { Package, Plus } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 import { buildServiceColumns } from "./service-columns";
 
 const mapServiceRow = (s) => ({
@@ -94,13 +96,21 @@ export default function ServicesTable({ isAdmin = false }) {
             },
           ]}
           actions={
-            <ExportMenu
+            <>
+              <Button asChild size="sm" className="gap-1.5">
+                <Link href="/dashboard/services/add">
+                  <Plus size={14} />
+                  Add Service
+                </Link>
+              </Button>
+              <ExportMenu
               table={table}
               filename="services"
               mapRow={mapServiceRow}
               pdfTitle="ColdFlyer — Services Report"
               pdfColumns={SERVICE_PDF_COLUMNS}
             />
+            </>
           }
         />
       )}

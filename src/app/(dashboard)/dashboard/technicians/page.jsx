@@ -8,7 +8,13 @@ const TechniciansPageComponent = dynamic(() => import("@/components/dashboard/te
 export default function TechniciansPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <TechniciansPageComponent />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Workers</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage technician and worker profiles.</p>
+        </div>
+        <TechniciansPageComponent />
+      </div>
     </ProtectedRoute>
   );
 }

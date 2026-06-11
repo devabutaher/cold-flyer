@@ -8,7 +8,13 @@ const ExpensesPageComponent = dynamic(() => import("@/components/dashboard/expen
 export default function ExpensesPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <ExpensesPageComponent />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Expenses</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Track and manage business expenses.</p>
+        </div>
+        <ExpensesPageComponent />
+      </div>
     </ProtectedRoute>
   );
 }

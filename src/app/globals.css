@@ -104,6 +104,8 @@
     --shadow-lg: 0px 1px 2px 0px oklch(0.6460 0.2220 41.1160 / 0.2), 0px 4px 6px -1px oklch(0.6460 0.2220 41.1160 / 0.2);
     --shadow-xl: 0px 1px 2px 0px oklch(0.6460 0.2220 41.1160 / 0.2), 0px 8px 10px -1px oklch(0.6460 0.2220 41.1160 / 0.2);
     --shadow-2xl: 0px 1px 2px 0px oklch(0.6460 0.2220 41.1160 / 0.3);
+    --inverted: oklch(0.9600 0 0);
+    --inverted-foreground: oklch(0 0 0);
 }
 
 @theme inline {

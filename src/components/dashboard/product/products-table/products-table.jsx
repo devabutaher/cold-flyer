@@ -4,9 +4,11 @@ import { useMemo, useCallback } from "react";
 import { DataTable } from "@/components/dashboard/table/data-table";
 import { ExportMenu } from "@/components/dashboard/table/export-menu";
 import { TableToolbar } from "@/components/dashboard/table/table-toolbar";
+import { Button } from "@/components/ui/button";
 import { buildProductColumns } from "./product-columns";
 import { useProductsQuery, useDeleteProduct } from "@/hooks/queries/products";
-import { Package } from "lucide-react";
+import { Package, Plus } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 
 const mapProductRow = (p) => ({
@@ -94,13 +96,21 @@ export default function ProductsTable({ isAdmin = false }) {
             },
           ]}
           actions={
-            <ExportMenu
+            <>
+              <Button asChild size="sm" className="gap-1.5">
+                <Link href="/dashboard/items/add">
+                  <Plus size={14} />
+                  Add Product
+                </Link>
+              </Button>
+              <ExportMenu
               table={table}
               filename="products"
               mapRow={mapProductRow}
               pdfTitle="ColdFlyer — Products Report"
               pdfColumns={PRODUCT_PDF_COLUMNS}
             />
+            </>
           }
         />
       )}

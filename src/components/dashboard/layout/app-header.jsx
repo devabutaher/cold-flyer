@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { MaximizeIcon, MinimizeIcon, RotateCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { AppBreadcrumbs } from "./app-breadcrumbs";
 import { navLinks } from "./app-shared";
 import { CustomSidebarTrigger } from "./custom-sidebar-trigger";
@@ -44,14 +44,14 @@ function FullscreenToggle() {
 }
 
 function RefreshButton() {
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const [spinning, setSpinning] = useState(false);
 
   const handleRefresh = useCallback(() => {
     setSpinning(true);
-    router.refresh();
+    queryClient.invalidateQueries();
     setTimeout(() => setSpinning(false), 600);
-  }, [router]);
+  }, [queryClient]);
 
   return (
     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

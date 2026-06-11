@@ -21,7 +21,7 @@ export function AppShell({ children }) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="mx-auto w-full max-w-7xl"
+              className="mx-auto w-full max-w-[1400px]"
             >
               {children}
             </motion.div>

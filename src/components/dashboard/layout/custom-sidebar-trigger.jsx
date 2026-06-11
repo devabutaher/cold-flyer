@@ -4,7 +4,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 export function CustomSidebarTrigger() {
   return (
-    <Tooltip delayDuration={1000}>
+    <Tooltip delayDuration={100}>
       <TooltipTrigger asChild>
         <SidebarTrigger />
       </TooltipTrigger>

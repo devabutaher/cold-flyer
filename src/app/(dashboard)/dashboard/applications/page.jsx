@@ -8,7 +8,13 @@ const ApplicationsPageComponent = dynamic(() => import("@/components/dashboard/a
 export default function ApplicationsPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <ApplicationsPageComponent />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Applications</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Review job applications and approve or reject them.</p>
+        </div>
+        <ApplicationsPageComponent />
+      </div>
     </ProtectedRoute>
   );
 }

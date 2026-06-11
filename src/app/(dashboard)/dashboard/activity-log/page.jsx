@@ -8,7 +8,13 @@ const ActivityLogTable = dynamic(() => import("@/components/dashboard/activity-l
 export default function ActivityLogPage() {
   return (
     <ProtectedRoute requiredRole="admin">
-      <ActivityLogTable />
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Activity Log</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Track all system activities and user actions.</p>
+        </div>
+        <ActivityLogTable />
+      </div>
     </ProtectedRoute>
   );
 }

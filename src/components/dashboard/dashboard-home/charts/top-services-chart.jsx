@@ -11,6 +11,15 @@ const config = {
 };
 
 export const TopServicesChart = memo(function TopServicesChart({ data, loading }) {
+  const chartData = useMemo(
+    () => (data || []).slice(0, 8).map((s) => ({
+      name: s._id && s._id.length > 20 ? s._id.slice(0, 20) + "..." : s._id || "Unknown",
+      count: s.count || 0,
+      fullName: s._id || "Unknown",
+    })).reverse(),
+    [data]
+  );
+
   if (loading) {
     return (
       <Card>
@@ -28,15 +37,6 @@ export const TopServicesChart = memo(function TopServicesChart({ data, loading }
       </Card>
     );
   }
-
-  const chartData = useMemo(
-    () => data.slice(0, 8).map((s) => ({
-      name: s._id && s._id.length > 20 ? s._id.slice(0, 20) + "..." : s._id || "Unknown",
-      count: s.count || 0,
-      fullName: s._id || "Unknown",
-    })).reverse(),
-    [data]
-  );
 
   return (
     <Card>
