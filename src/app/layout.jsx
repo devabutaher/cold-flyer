@@ -1,7 +1,8 @@
 import { NextIntlProvider, Providers } from "@/components/providers";
-import Script from "next/script";
 import "./globals.css";
 
+import { GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 import { getLocale, getMessages } from "next-intl/server";
 import { DM_Sans, Geist_Mono, Noto_Sans_Bengali, Outfit } from "next/font/google";
 
@@ -133,22 +134,10 @@ export default async function RootLayout({ children }) {
         <NextIntlProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlProvider>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-              `}
-            </Script>
-          </>
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         )}
+        <Analytics />
       </body>
     </html>
   );
