@@ -37,7 +37,7 @@ const PDF_COLUMNS = [
 ];
 
 export default function ActivityLogTable() {
-  const { data: logs = [], isLoading } = useQuery({
+  const { data: logs = [], isLoading, error } = useQuery({
     queryKey: ["admin-activity"],
     queryFn: async () => {
       const res = await getClient().get("/activity");
@@ -123,8 +123,9 @@ export default function ActivityLogTable() {
     <DataTable
       columns={columns}
       data={logs}
-      loading={isLoading}
-      rowCount="logs"
+        loading={isLoading}
+        error={error}
+        rowCount="logs"
       defaultSort={[{ id: "date", desc: true }]}
       emptyMessage="No activity logs found."
       searchFields={["user.name", "userUID", "action", "type", "date", "time"]}

@@ -83,12 +83,12 @@ export function buildBookingColumns({ onCancel, isAdmin, userRole } = {}) {
       : []),
 
     {
-      header: "Technician",
-      accessorKey: "technician",
+      header: "Worker",
+      accessorKey: "worker",
       cell: ({ row }) => {
         const b = row.original;
-        const techName = b.technician?.user?.name || b.technician?.employeeId;
-        return <span className="text-sm min-w-32 block">{techName || "—"}</span>;
+        const workerName = b.worker?.user?.name || b.worker?.employeeId;
+        return <span className="text-sm min-w-32 block">{workerName || "—"}</span>;
       },
     },
 

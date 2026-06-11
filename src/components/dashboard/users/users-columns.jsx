@@ -69,9 +69,9 @@ export function buildUserColumns({ onRoleChange, onView, onDelete } = {}) {
       accessorKey: "role",
       cell: ({ row }) => {
         const u = row.original;
-        const isTechnician = u.role === "worker";
+        const isWorker = u.role === "worker";
 
-        if (isTechnician) {
+        if (isWorker) {
           return (
             <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
               Worker

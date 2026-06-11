@@ -72,12 +72,12 @@ export function ConfirmBookingDialog({ booking, onSuccess, triggerClassName, tri
 export function ScheduleBookingDialog({
   booking,
   onSuccess,
-  technicians = [],
+  workers = [],
   triggerClassName,
   triggerVariant = "outline",
 }) {
   const [open, setOpen] = useState(false);
-  const [technician, setTechnician] = useState(booking.technician?._id || "");
+  const [worker, setWorker] = useState(booking.worker?._id || "");
   const scheduleBooking = useScheduleBooking();
 
   const {
@@ -103,7 +103,7 @@ export function ScheduleBookingDialog({
         data: {
           scheduledDate: values.scheduledDate,
           scheduledTime: values.scheduledTime,
-          ...(technician && { technician }),
+          ...(worker && { worker }),
         },
       });
       setOpen(false);
@@ -122,7 +122,7 @@ export function ScheduleBookingDialog({
       <AlertDialogContent className="data-[size=default]:sm:max-w-[700px]">
         <AlertDialogHeader>
           <AlertDialogTitle>Schedule Booking</AlertDialogTitle>
-          <AlertDialogDescription>Set date, time, and technician for {booking.bookingNumber}</AlertDialogDescription>
+          <AlertDialogDescription>Set date, time, and worker for {booking.bookingNumber}</AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-4">
           <ScheduleSection control={control} />
@@ -133,17 +133,17 @@ export function ScheduleBookingDialog({
           {errors.scheduledTime?.end && (
             <p className="text-xs text-destructive mt-1">{errors.scheduledTime.end.message}</p>
           )}
-          {technicians.length > 0 && (
+          {workers.length > 0 && (
             <div className="mt-4 space-y-1.5">
-              <Label>Technician</Label>
-              <Select value={technician} onValueChange={setTechnician}>
+              <Label>Worker</Label>
+              <Select value={worker} onValueChange={setWorker}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select technician (optional)" />
+                  <SelectValue placeholder="Select worker (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  {technicians.map((t) => (
-                    <SelectItem key={t._id} value={t._id}>
-                      {t.user?.name || t.employeeId || t._id}
+                  {workers.map((w) => (
+                    <SelectItem key={w._id} value={w._id}>
+                      {w.user?.name || w.employeeId || w._id}
                     </SelectItem>
                   ))}
                 </SelectContent>

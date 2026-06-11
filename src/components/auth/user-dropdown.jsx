@@ -114,7 +114,7 @@ export function UserDropdown() {
                   {tn("users")}
                 </DropdownMenuItem>
               </Link>
-              <Link href="/dashboard/technicians" passHref>
+              <Link href="/dashboard/workers" passHref>
                 <DropdownMenuItem className="cursor-pointer">
                   <UserCog className="mr-2 size-4" />
                   {tn("workers")}

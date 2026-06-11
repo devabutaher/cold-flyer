@@ -34,7 +34,7 @@ export default function ExpensesTable() {
   const [formOpen, setFormOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
 
-  const { data: expenses = [], isLoading } = useQuery({
+  const { data: expenses = [], isLoading, error } = useQuery({
     queryKey: ["admin-expenses"],
     queryFn: async () => {
       const res = await getClient().get("/expenses");
@@ -118,6 +118,7 @@ export default function ExpensesTable() {
         columns={columns}
         data={expenses}
         loading={isLoading}
+        error={error}
         rowCount="expenses"
         defaultSort={[{ id: "date", desc: true }]}
         emptyMessage="No expenses found."

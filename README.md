@@ -30,7 +30,7 @@ Modern AC service booking and AC parts marketplace built with **Next.js 16** (Ap
 | **Product Catalog** | Browse AC units, parts & accessories with search, filters, categories, and sorting |
 | **Shopping Cart & Checkout** | Full cart flow with Stripe + SSLCOMMERZ payment gateways, coupon codes |
 | **AC Service Booking** | Browse services, book appointments with date/time picker, manage bookings |
-| **Admin Dashboard** | Analytics (charts), orders, products, services, bookings, users, technicians, customers, coupons, blogs, expenses, attendance, messages, reporting |
+| **Admin Dashboard** | Analytics (charts), orders, products, services, bookings, users, workers, customers, coupons, blogs, expenses, attendance, messages, reporting |
 | **Authentication** | JWT single access token — email/password + Google OAuth |
 | **Demo Login** | One-click demo login — instantly try as a customer with pre-seeded data |
 | **Internationalization** | English + Bengali (bn) locale via next-intl |
@@ -146,12 +146,12 @@ The dashboard provides a full administrative interface at `/dashboard`:
 - **Services** — CRUD for service offerings
 - **Bookings** — Manage service appointments, confirm/schedule/complete
 - **Users** — Manage all user accounts and roles
-- **Technicians** — Manage technician profiles and assignments
+- **Workers** — Manage worker profiles and assignments
 - **Customers** — View customer history and booking patterns
 - **Coupons** — Create and manage discount codes
 - **Blogs** — Write and manage blog posts
 - **Expenses** — Track business expenses
-- **Attendance** — Technician attendance tracking
+- **Attendance** — Worker attendance tracking
 - **Messages** — In-app messaging system
 
 ---

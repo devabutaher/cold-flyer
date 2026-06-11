@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { buildBlogColumns } from "./blog-columns";
 
 export default function BlogsTable({ isAdmin = false }) {
-  const { data: blogs = [], isLoading: loading } = useBlogsQuery({ limit: 100 });
+  const { data: blogs = [], isLoading: loading, error } = useBlogsQuery({ limit: 100 });
   const deleteBlog = useDeleteBlog();
 
   const checkAdminAccess = useCallback(() => {
@@ -43,8 +43,9 @@ export default function BlogsTable({ isAdmin = false }) {
     <DataTable
       columns={columns}
       data={blogs}
-      loading={loading}
-      rowCount="blogs"
+        loading={loading}
+        error={error}
+        rowCount="blogs"
       defaultSort={[{ id: "createdAt", desc: true }]}
       emptyMessage="No blog posts found. Create your first blog post to get started."
       emptyIcon={<Newspaper size={40} />}

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
   const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${SITE_URL}${imageUrl}`;
   const description =
     service.description?.slice(0, 160) ||
-    `Professional ${service.name} by Cold Flyer. ${service.category || ""} services in Bangladesh. Expert technicians, best service.`.slice(
+    `Professional ${service.name} by Cold Flyer. ${service.category || ""} services in Bangladesh. Expert workers, best service.`.slice(
       0,
       160,
     );

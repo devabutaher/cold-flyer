@@ -15,8 +15,10 @@ import {
   LayoutGrid,
   Mail,
   Moon,
+  Package,
   Settings,
   ShieldCheck,
+  ShoppingBag,
   Sun,
   Truck,
   Users,
@@ -31,8 +33,10 @@ export const NAV_ICONS = {
   Layers,
   LayoutGrid,
   Mail,
+  Package,
   Settings,
   ShieldCheck,
+  ShoppingBag,
   Truck,
   Users,
 };
@@ -43,7 +47,7 @@ import { usePathname } from "next/navigation";
 export function LinkItem({ label, description, icon, className, href, onClick, ...props }) {
   const pathname = usePathname();
   const locale = useLocale();
-  const Icon = NAV_ICONS[icon];
+  const Icon = typeof icon === "string" ? NAV_ICONS[icon] : null;
   const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "") || "/";
   const isActive =
     pathWithoutLocale === href ||
@@ -67,7 +71,7 @@ export function LinkItem({ label, description, icon, className, href, onClick, .
           "[&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='size-'])]:text-foreground",
         )}
       >
-        {Icon ? <Icon size={16} /> : null}
+        {typeof icon === "string" ? (Icon ? <Icon size={16} /> : null) : icon}
       </div>
       <div className="flex flex-col items-start justify-center">
         <span className="text-sm font-medium">{label}</span>

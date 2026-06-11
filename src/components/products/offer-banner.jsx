@@ -87,7 +87,7 @@ export default function OfferBanner() {
 
   if (loading) {
     return (
-      <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
+      <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-neutral-900 -mt-8">
         <div className="px-5 py-6 sm:px-7 sm:py-6 md:px-10 md:py-7">
           <Skeleton className="h-6 w-24 bg-white/20 mb-2" />
           <Skeleton className="h-8 w-64 bg-white/20 mb-1" />
@@ -99,7 +99,7 @@ export default function OfferBanner() {
 
   if (coupons.length === 0) {
     return (
-      <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
+      <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-neutral-900 -mt-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <svg
             className="absolute inset-0 h-full w-full"
@@ -117,7 +117,7 @@ export default function OfferBanner() {
           <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col items-center gap-1.5 md:flex-row md:items-start md:gap-3 text-center md:text-left">
               <div>
-                <Badge className="shrink-0 bg-background/20 text-primary-foreground uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
+                <Badge className="shrink-0 bg-white/20 text-white uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
                   {t("limitedTime")}
                 </Badge>
                 <div>
@@ -156,7 +156,7 @@ export default function OfferBanner() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-inverted -mt-8">
+    <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-primary to-neutral-900 -mt-8">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <svg
           className="absolute inset-0 h-full w-full"
@@ -174,7 +174,7 @@ export default function OfferBanner() {
       <div className="relative z-10 px-5 py-4 sm:px-7 sm:py-5 md:px-10 md:py-6">
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <Badge className="bg-background/20 text-primary-foreground uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
+            <Badge className="bg-white/20 text-white uppercase text-xxs font-bold tracking-widest px-2.5 py-0.5">
               {t("limitedTime")}
             </Badge>
             <h2 className="mt-1 text-lg font-extrabold text-primary-foreground md:text-xl">{t("activeOffers")}</h2>

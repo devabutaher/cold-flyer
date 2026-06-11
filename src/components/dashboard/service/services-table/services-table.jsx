@@ -36,7 +36,7 @@ const SERVICE_PDF_COLUMNS = [
 ];
 
 export default function ServicesTable({ isAdmin = false }) {
-  const { data: services = [], isLoading: loading } = useServicesQuery({ limit: 100 });
+  const { data: services = [], isLoading: loading, error } = useServicesQuery({ limit: 100 });
   const deleteService = useDeleteService();
 
   const checkAdminAccess = useCallback(() => {
@@ -70,8 +70,9 @@ export default function ServicesTable({ isAdmin = false }) {
     <DataTable
       columns={columns}
       data={services}
-      loading={loading}
-      rowCount="services"
+        loading={loading}
+        error={error}
+        rowCount="services"
       defaultSort={[]}
       emptyMessage="No services found. Add your first service to get started."
       emptyIcon={<Package size={40} />}

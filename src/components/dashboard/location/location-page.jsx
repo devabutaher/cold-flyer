@@ -125,7 +125,7 @@ function buildLocationLogColumns() {
 
 /* ── Main Page ──────────────────────────────────────────── */
 export default function LocationPage() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["admin-location"],
     queryFn: async () => {
       const res = await getClient().get("/location");
@@ -181,6 +181,7 @@ export default function LocationPage() {
           columns={columns}
           data={todayLog}
           loading={isLoading}
+          error={error}
           rowCount="entries"
           defaultSort={[]}
           emptyMessage="No location updates today."

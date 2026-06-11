@@ -81,11 +81,11 @@ export function BookingDetails({ bookingId }) {
   const canManage = ["admin", "moderator"].includes(userRole);
   const canOperate = ["admin", "moderator", "worker"].includes(userRole);
 
-  const { data: technicians = [] } = useQuery({
-    queryKey: ["admin-technicians"],
+  const { data: workers = [] } = useQuery({
+    queryKey: ["admin-workers"],
     queryFn: async () => {
-      const res = await getClient().get("/admin/technicians?limit=100");
-      return res.data?.data?.technicians || [];
+      const res = await getClient().get("/admin/workers?limit=100");
+      return res.data?.data?.workers || [];
     },
     enabled: canManage,
   });
@@ -143,11 +143,11 @@ export function BookingDetails({ bookingId }) {
                 </span>
               </div>
             )}
-            {booking.technician && (
+            {booking.worker && (
               <div className="flex items-center gap-2">
                 <User size={14} className="text-muted-foreground shrink-0" />
                 <span>
-                  Technician: {booking.technician?.employeeId || booking.technician?._id?.slice(-6).toUpperCase()}
+                  Worker: {booking.worker?.employeeId || booking.worker?._id?.slice(-6).toUpperCase()}
                 </span>
               </div>
             )}
@@ -486,7 +486,7 @@ export function BookingDetails({ bookingId }) {
                   <ScheduleBookingDialog
                     booking={booking}
                     onSuccess={refetch}
-                    technicians={technicians}
+                    workers={workers}
                     triggerClassName="w-full"
                     triggerVariant="default"
                   />

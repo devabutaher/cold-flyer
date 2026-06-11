@@ -61,7 +61,7 @@ function FaqImage() {
     >
       <Image
         src="https://images.unsplash.com/photo-1603335730747-ca17baa3aac2?q=80&w=1590&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="AC Technician"
+        alt="AC Worker"
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"
         className="object-cover transition-transform duration-700 hover:scale-105"

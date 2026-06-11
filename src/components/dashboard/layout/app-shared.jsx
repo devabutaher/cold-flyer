@@ -115,7 +115,7 @@ export const navGroups = [
           },
           {
             title: "Workers",
-            path: "/dashboard/technicians",
+            path: "/dashboard/workers",
             icon: <Wrench />,
             roles: ["admin", "moderator"],
           },

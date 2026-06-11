@@ -14,7 +14,7 @@ const roleRouteAccess = {
     "/dashboard/orders",
     "/dashboard/bookings",
     "/dashboard/users",
-    "/dashboard/technicians",
+    "/dashboard/workers",
     "/dashboard/customers",
     "/dashboard/coupons",
     "/dashboard/messages",

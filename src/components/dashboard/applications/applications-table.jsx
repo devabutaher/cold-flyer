@@ -18,7 +18,7 @@ export default function ApplicationsTable() {
   const [approveApp, setApproveApp] = useState(null);
   const [rejectApp, setRejectApp] = useState(null);
 
-  const { data: applications = [], isLoading } = useQuery({
+  const { data: applications = [], isLoading, error } = useQuery({
     queryKey: ["admin-applications"],
     queryFn: async () => {
       const res = await getClient().get("/admin/applications");
@@ -30,7 +30,7 @@ export default function ApplicationsTable() {
     mutationFn: (id) => getClient().patch(`/admin/applications/${id}/approve`, {}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-applications"] });
-      queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-workers"] });
       toast.success("Application approved. Worker profile created.");
       setApproveApp(null);
     },
@@ -84,6 +84,7 @@ export default function ApplicationsTable() {
         columns={columns}
         data={applications}
         loading={isLoading}
+        error={error}
         rowCount="applications"
         defaultSort={[]}
         emptyMessage="No applications found."

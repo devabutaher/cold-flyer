@@ -121,7 +121,7 @@ export default function AttendancePage() {
     },
   });
 
-  const { data: historyData = [], isLoading: historyLoading } = useQuery({
+  const { data: historyData = [], isLoading: historyLoading, error: historyError } = useQuery({
     queryKey: ["attendance-history"],
     queryFn: async () => {
       const res = await getClient().get("/attendance/history");
@@ -199,6 +199,7 @@ export default function AttendancePage() {
             columns={historyColumns}
             data={historyData.map(mapHistoryRow)}
             loading={historyLoading}
+            error={historyError}
             rowCount="records"
             defaultSort={[{ id: "date", desc: true }]}
             emptyMessage="No attendance history found."

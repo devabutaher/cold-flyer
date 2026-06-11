@@ -31,7 +31,7 @@ export default async function About() {
           <div className="relative rounded-xl overflow-hidden h-72 md:h-105 order-2 md:order-1 group">
             <Image
               src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=900&q=80"
-              alt="Technician"
+              alt="Worker"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-all duration-700 group-hover:scale-105"

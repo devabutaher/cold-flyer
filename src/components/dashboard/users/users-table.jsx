@@ -43,7 +43,7 @@ export default function UsersTable() {
   const [addSheetOpen, setAddSheetOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: users = [], isLoading } = useQuery({
+  const { data: users = [], isLoading, error } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
       const res = await getClient().get("/admin/users");
@@ -94,6 +94,7 @@ export default function UsersTable() {
         columns={columns}
         data={users}
         loading={isLoading}
+        error={error}
         rowCount="users"
         defaultSort={[]}
         emptyMessage="No users found."

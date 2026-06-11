@@ -16,9 +16,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { getPageContent } from "@/lib/content";
 import { MenuIcon, Package, XIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { getPageContent } from "@/lib/content";
 import { Suspense, useState } from "react";
 import { NavSearch } from "./nav-search";
 

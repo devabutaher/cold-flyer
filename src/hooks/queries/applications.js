@@ -29,7 +29,7 @@ export function useApproveApplication(componentOptions = {}) {
     mutationFn: (id) => client().patch(`/admin/applications/${id}/approve`, {}),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
-      queryClient.invalidateQueries({ queryKey: ["admin-technicians"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-workers"] });
       toast.success("Application approved. Worker profile created.");
       userOnSuccess?.(data, variables, context);
     },

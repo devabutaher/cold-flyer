@@ -53,7 +53,7 @@ export default function CustomersTable() {
   const [formOpen, setFormOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
 
-  const { data: customers = [], isLoading } = useQuery({
+  const { data: customers = [], isLoading, error } = useQuery({
     queryKey: ["admin-customers"],
     queryFn: async () => {
       const res = await getClient().get("/customers");
@@ -140,6 +140,7 @@ export default function CustomersTable() {
         columns={columns}
         data={customers}
         loading={isLoading}
+        error={error}
         rowCount="customers"
         defaultSort={[]}
         emptyMessage="No customers found."

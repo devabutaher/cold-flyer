@@ -10,7 +10,7 @@ import { buildRecentWorkColumns } from "./recent-work-columns";
 import { RecentWorkRowActions } from "./recent-work-row-actions";
 
 export default function RecentWorksTable({ isAdmin = false }) {
-  const { data: recentWorks = [], isLoading: loading } = useRecentWorksQuery({ limit: 100 });
+  const { data: recentWorks = [], isLoading: loading, error } = useRecentWorksQuery({ limit: 100 });
   const deleteRecentWork = useDeleteRecentWork();
 
   const checkAdminAccess = useCallback(() => {
@@ -53,8 +53,9 @@ export default function RecentWorksTable({ isAdmin = false }) {
     <DataTable
       columns={columns}
       data={recentWorks}
-      loading={loading}
-      rowCount="works"
+        loading={loading}
+        error={error}
+        rowCount="works"
       defaultSort={[{ id: "createdAt", desc: true }]}
       emptyMessage="No recent works found. Add your first project to get started."
       emptyIcon={<Briefcase size={40} />}

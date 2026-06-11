@@ -4,7 +4,7 @@ export const servicesData = [
   {
     icon: Wrench,
     title: "Precision Installation",
-    sub: "Tailored ductwork and unit placement for maximum airflow efficiency — installed by certified technicians across Bangladesh.",
+    sub: "Tailored ductwork and unit placement for maximum airflow efficiency — installed by certified workers across Bangladesh.",
   },
   {
     icon: Shield,

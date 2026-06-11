@@ -12,7 +12,7 @@ const mapBookingRow = (b) => ({
   bookingNumber: b.bookingNumber,
   service: b.service?.name,
   customer: b.user?.name,
-  technician: b.technician?.user?.name || b.technician?.employeeId || "—",
+  worker: b.worker?.user?.name || b.worker?.employeeId || "—",
   scheduledDate: b.scheduledDate,
   total: b.total,
   status: b.status,
@@ -23,7 +23,7 @@ const BOOKING_PDF_COLUMNS = [
   { header: "Booking #", accessorKey: "bookingNumber", width: 1.5 },
   { header: "Service", accessorKey: "service", width: 2 },
   { header: "Customer", accessorKey: "customer", width: 1.5 },
-  { header: "Technician", accessorKey: "technician", width: 1.5 },
+  { header: "Worker", accessorKey: "worker", width: 1.5 },
   { header: "Date", accessorKey: "scheduledDate", width: 1.2 },
   { header: "Total (৳)", accessorKey: "total", width: 0.8 },
   { header: "Status", accessorKey: "status", width: 1 },
@@ -31,7 +31,7 @@ const BOOKING_PDF_COLUMNS = [
 ];
 
 export default function BookingsTable({ isAdmin = false, userRole }) {
-  const { data: bookings = [], isLoading: loading } = useBookingsQuery();
+  const { data: bookings = [], isLoading: loading, error } = useBookingsQuery();
   const cancelBooking = useCancelBooking();
 
   const handleCancel = useCallback(
@@ -57,8 +57,9 @@ export default function BookingsTable({ isAdmin = false, userRole }) {
     <DataTable
       columns={columns}
       data={bookings}
-      loading={loading}
-      rowCount="bookings"
+        loading={loading}
+        error={error}
+        rowCount="bookings"
       defaultSort={[]}
       emptyMessage="No bookings found. Browse services to book one."
       emptyIcon={<ClipboardList size={40} />}
@@ -68,8 +69,8 @@ export default function BookingsTable({ isAdmin = false, userRole }) {
         "user.name",
         "user.email",
         "user.phone",
-        "technician.user.name",
-        "technician.employeeId",
+        "worker.user.name",
+        "worker.employeeId",
         "status",
         "paymentStatus",
       ]}

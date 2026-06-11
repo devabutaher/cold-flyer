@@ -22,7 +22,9 @@ function CartIcon() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    // avoid synchronous setState inside effect to prevent cascading renders
+    const raf = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
@@ -51,7 +53,7 @@ function CartIcon() {
               exit={{ scale: 0 }}
               transition={{ type: "spring", stiffness: 500, damping: 20 }}
             >
-              <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-xxs leading-none">
+              <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-xxs leading-none text-white">
                 {itemCount > 99 ? "99+" : itemCount}
               </Badge>
             </motion.div>

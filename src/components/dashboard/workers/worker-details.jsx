@@ -1,6 +1,6 @@
 "use client";
 
-import { useTechnicianQuery } from "@/hooks/queries/technicians";
+import { useWorkerQuery } from "@/hooks/queries/workers";
 import {
   ArrowLeft,
   Award,
@@ -28,7 +28,7 @@ const STATUS_MAP = {
   on_leave: { label: "On Leave", className: "bg-destructive/10 text-destructive" },
 };
 
-export function TechnicianDetailsSkeleton() {
+export function WorkerDetailsSkeleton() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -53,53 +53,53 @@ export function TechnicianDetailsSkeleton() {
   );
 }
 
-export function TechnicianDetails({ technicianId }) {
-  const { data: technician, isLoading, isError, error } = useTechnicianQuery(technicianId);
+export function WorkerDetails({ workerId }) {
+  const { data: worker, isLoading, isError, error } = useWorkerQuery(workerId);
 
-  if (isLoading) return <TechnicianDetailsSkeleton />;
+  if (isLoading) return <WorkerDetailsSkeleton />;
 
   if (isError) {
     return (
       <div className="py-16 text-center">
         <Wrench size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-        <p className="text-sm text-destructive mb-2">Failed to load technician details.</p>
+        <p className="text-sm text-destructive mb-2">Failed to load worker details.</p>
         <p className="text-xs text-muted-foreground mb-4">{error?.message || "An unexpected error occurred."}</p>
         <Button asChild size="sm">
-          <Link href="/dashboard/technicians">Back to Technicians</Link>
+          <Link href="/dashboard/workers">Back to Workers</Link>
         </Button>
       </div>
     );
   }
 
-  if (!technician) {
+  if (!worker) {
     return (
       <div className="py-16 text-center">
         <User size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-        <p className="text-sm text-muted-foreground mb-4">Technician not found.</p>
+        <p className="text-sm text-muted-foreground mb-4">Worker not found.</p>
         <Button asChild size="sm">
-          <Link href="/dashboard/technicians">Back to Technicians</Link>
+          <Link href="/dashboard/workers">Back to Workers</Link>
         </Button>
       </div>
     );
   }
 
-  const user = technician.user || {};
-  const statusLabel = STATUS_MAP[technician.status]?.label || technician.status;
-  const statusClass = STATUS_MAP[technician.status]?.className || "";
+  const user = worker.user || {};
+  const statusLabel = STATUS_MAP[worker.status]?.label || worker.status;
+  const statusClass = STATUS_MAP[worker.status]?.className || "";
 
   return (
     <div className="max-w-5xl">
       <div className="mb-7 flex items-center gap-3">
         <Button variant="outline" size="icon" className="h-9 w-9 shrink-0 rounded-lg" asChild>
-          <Link href="/dashboard/technicians">
+          <Link href="/dashboard/workers">
             <ArrowLeft size={16} />
             <span className="sr-only">Back</span>
           </Link>
         </Button>
         <div className="min-w-0">
-          <h1 className="text-lg font-semibold tracking-tight truncate">{user.name || "Technician"}</h1>
+          <h1 className="text-lg font-semibold tracking-tight truncate">{user.name || "Worker"}</h1>
           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span>{technician.employeeId}</span>
+            <span>{worker.employeeId}</span>
             <span>·</span>
             <span
               className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusClass}`}
@@ -130,18 +130,18 @@ export function TechnicianDetails({ technicianId }) {
               </div>
               <div className="flex items-center gap-2">
                 <CalendarDays size={14} className="text-muted-foreground shrink-0" />
-                <span>Hired {technician.hireDate ? new Date(technician.hireDate).toLocaleDateString() : "—"}</span>
+                <span>Hired {worker.hireDate ? new Date(worker.hireDate).toLocaleDateString() : "—"}</span>
               </div>
-              {technician.salary != null && (
+              {worker.salary != null && (
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground shrink-0 w-3.5 flex justify-center">৳</span>
-                  <span>Salary: ৳{technician.salary.toLocaleString()}</span>
+                  <span>Salary: ৳{worker.salary.toLocaleString()}</span>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {(technician.specializations?.length > 0 || technician.skills?.length > 0) && (
+          {(worker.specializations?.length > 0 || worker.skills?.length > 0) && (
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
@@ -150,9 +150,9 @@ export function TechnicianDetails({ technicianId }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 text-sm space-y-3">
-                {technician.specializations?.length > 0 && (
+                {worker.specializations?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
-                    {technician.specializations.map((s, i) => (
+                    {worker.specializations.map((s, i) => (
                       <span
                         key={i}
                         className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
@@ -162,9 +162,9 @@ export function TechnicianDetails({ technicianId }) {
                     ))}
                   </div>
                 )}
-                {technician.skills?.length > 0 && (
+                {worker.skills?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
-                    {technician.skills.map((s, i) => (
+                    {worker.skills.map((s, i) => (
                       <span key={i} className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
                         {s.skill}
                         {s.level ? ` (${s.level})` : ""}
@@ -176,7 +176,7 @@ export function TechnicianDetails({ technicianId }) {
             </Card>
           )}
 
-          {technician.serviceAreas?.length > 0 && (
+          {worker.serviceAreas?.length > 0 && (
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
@@ -186,7 +186,7 @@ export function TechnicianDetails({ technicianId }) {
               </CardHeader>
               <CardContent className="pt-0 text-sm">
                 <div className="divide-y divide-border">
-                  {technician.serviceAreas.map((area, i) => (
+                  {worker.serviceAreas.map((area, i) => (
                     <div key={i} className="flex items-center justify-between py-1.5 first:pt-0 last:pb-0">
                       <span>{area.zone}</span>
                       {area.additionalFee > 0 && (
@@ -199,7 +199,7 @@ export function TechnicianDetails({ technicianId }) {
             </Card>
           )}
 
-          {technician.certifications?.length > 0 && (
+          {worker.certifications?.length > 0 && (
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
@@ -209,7 +209,7 @@ export function TechnicianDetails({ technicianId }) {
               </CardHeader>
               <CardContent className="pt-0 text-sm">
                 <div className="divide-y divide-border">
-                  {technician.certifications.map((cert, i) => (
+                  {worker.certifications.map((cert, i) => (
                     <div key={i} className="py-2 first:pt-0 last:pb-0">
                       <p className="font-medium">{cert.name}</p>
                       {cert.issuedBy && <p className="text-xs text-muted-foreground">{cert.issuedBy}</p>}
@@ -240,25 +240,25 @@ export function TechnicianDetails({ technicianId }) {
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Rating</span>
                 <span className="font-medium tabular-nums">
-                  {technician.rating?.toFixed(1) || "—"} <span className="text-muted-foreground">/ 5</span>
+                  {worker.rating?.toFixed(1) || "—"} <span className="text-muted-foreground">/ 5</span>
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Reviews</span>
-                <span className="font-medium tabular-nums">{technician.reviewCount || 0}</span>
+                <span className="font-medium tabular-nums">{worker.reviewCount || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Total Jobs</span>
-                <span className="font-medium tabular-nums">{technician.totalJobs || 0}</span>
+                <span className="font-medium tabular-nums">{worker.totalJobs || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Completed</span>
-                <span className="font-medium tabular-nums">{technician.completedJobs || 0}</span>
+                <span className="font-medium tabular-nums">{worker.completedJobs || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Avg Response</span>
                 <span className="font-medium tabular-nums">
-                  {technician.averageResponseTime || 0} <span className="text-muted-foreground">min</span>
+                  {worker.averageResponseTime || 0} <span className="text-muted-foreground">min</span>
                 </span>
               </div>
             </CardContent>
@@ -272,10 +272,10 @@ export function TechnicianDetails({ technicianId }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0 text-sm">
-              {technician.availability ? (
+              {worker.availability ? (
                 <div className="divide-y divide-border">
                   {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => {
-                    const slot = technician.availability[day];
+                    const slot = worker.availability[day];
                     return (
                       <div key={day} className="flex items-center justify-between py-1 first:pt-0 last:pb-0">
                         <span className="capitalize text-muted-foreground">{day.slice(0, 3)}</span>
@@ -292,7 +292,7 @@ export function TechnicianDetails({ technicianId }) {
             </CardContent>
           </Card>
 
-          {technician.vehicle?.make && (
+          {worker.vehicle?.make && (
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
@@ -301,20 +301,20 @@ export function TechnicianDetails({ technicianId }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 text-sm space-y-1">
-                {technician.vehicle.type && <p className="text-muted-foreground">{technician.vehicle.type}</p>}
+                {worker.vehicle.type && <p className="text-muted-foreground">{worker.vehicle.type}</p>}
                 <p className="font-medium">
-                  {[technician.vehicle.make, technician.vehicle.model, technician.vehicle.year]
+                  {[worker.vehicle.make, worker.vehicle.model, worker.vehicle.year]
                     .filter(Boolean)
                     .join(" ")}
                 </p>
-                {technician.vehicle.licensePlate && (
-                  <p className="font-mono text-xs text-muted-foreground">{technician.vehicle.licensePlate}</p>
+                {worker.vehicle.licensePlate && (
+                  <p className="font-mono text-xs text-muted-foreground">{worker.vehicle.licensePlate}</p>
                 )}
               </CardContent>
             </Card>
           )}
 
-          {technician.tools?.length > 0 && (
+          {worker.tools?.length > 0 && (
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
@@ -324,7 +324,7 @@ export function TechnicianDetails({ technicianId }) {
               </CardHeader>
               <CardContent className="pt-0 text-sm">
                 <div className="flex flex-wrap gap-1.5">
-                  {technician.tools.map((tool, i) => (
+                  {worker.tools.map((tool, i) => (
                     <span key={i} className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
                       {tool}
                     </span>

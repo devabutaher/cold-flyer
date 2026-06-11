@@ -54,7 +54,7 @@ export default function CareersPage() {
       name: data.name,
       email: data.email,
       phone: data.phone,
-      position: "HVAC Technician",
+      position: "HVAC Worker",
       experience: data.experience,
       skills,
       coverLetter: data.coverLetter,

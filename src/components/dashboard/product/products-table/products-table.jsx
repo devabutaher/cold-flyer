@@ -36,7 +36,7 @@ const PRODUCT_PDF_COLUMNS = [
 ];
 
 export default function ProductsTable({ isAdmin = false }) {
-  const { data: products = [], isLoading: loading } = useProductsQuery({ limit: 100 });
+  const { data: products = [], isLoading: loading, error } = useProductsQuery({ limit: 100 });
   const deleteProduct = useDeleteProduct();
 
   const checkAdminAccess = useCallback(() => {
@@ -70,8 +70,9 @@ export default function ProductsTable({ isAdmin = false }) {
     <DataTable
       columns={columns}
       data={products}
-      loading={loading}
-      rowCount="products"
+        loading={loading}
+        error={error}
+        rowCount="products"
       defaultSort={[]}
       emptyMessage="No products found. Add your first product to get started."
       emptyIcon={<Package size={40} />}

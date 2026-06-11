@@ -49,7 +49,7 @@ function buildLogColumns() {
   ];
 }
 
-export function MessageLog({ messages, isLoading }) {
+export function MessageLog({ messages, isLoading, error }) {
   const columns = useMemo(() => buildLogColumns(), []);
 
   return (
@@ -59,6 +59,7 @@ export function MessageLog({ messages, isLoading }) {
         columns={columns}
         data={messages.map(mapLogRow)}
         loading={isLoading}
+        error={error}
         rowCount="messages"
         defaultSort={[]}
         emptyMessage="No messages sent yet."

@@ -85,7 +85,7 @@ export function ServiceDetailsSection({ control }) {
                 {...field}
                 value={field.value ?? ""}
                 onChange={(e) => field.onChange(e.target.value)}
-                placeholder="Certified technician&#10;3+ years experience"
+                placeholder="Certified worker&#10;3+ years experience"
                 rows={5}
               />
             </Field>

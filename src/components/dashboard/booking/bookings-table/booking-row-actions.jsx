@@ -40,11 +40,11 @@ export function BookingRowActions({ row, onCancel, isAdmin = false, userRole }) 
   const canManage = userRole ? ["admin", "moderator"].includes(userRole) : isAdmin;
   const canOperate = userRole ? ["admin", "moderator", "worker"].includes(userRole) : isAdmin;
 
-  const { data: technicians = [] } = useQuery({
-    queryKey: ["admin-technicians"],
+  const { data: workers = [] } = useQuery({
+    queryKey: ["admin-workers"],
     queryFn: async () => {
-      const res = await getClient().get("/admin/technicians?limit=100");
-      return res.data?.data?.technicians || [];
+      const res = await getClient().get("/admin/workers?limit=100");
+      return res.data?.data?.workers || [];
     },
     enabled: canManage,
   });
@@ -73,7 +73,7 @@ export function BookingRowActions({ row, onCancel, isAdmin = false, userRole }) 
         <ScheduleBookingDialog
           booking={booking}
           onSuccess={() => {}}
-          technicians={technicians}
+          workers={workers}
           triggerClassName="h-7 px-2.5 text-xs gap-1"
           triggerVariant="default"
         />

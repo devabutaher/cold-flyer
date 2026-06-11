@@ -229,7 +229,7 @@ This project uses **shadcn/ui** style components:
 - Checkout Components: `src/components/checkout/` — `address-picker.jsx`, `order-items-list.jsx`, `payment-method-selector.jsx`, `order-summary.jsx`, `checkout-page.jsx`
 - Auth Components: `src/components/auth/`
 - Services Components: `src/components/services/`
-- Dashboard Components: `src/components/dashboard/` (sub-directories: activity-log, applications, attendance, blog, booking, checkout, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, technicians, users)
+- Dashboard Components: `src/components/dashboard/` (sub-directories: activity-log, applications, attendance, blog, booking, checkout, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, workers, users)
 - Reviews Components: `src/components/reviews/`
 - Notifications Components: `src/components/notifications/`
 - Common Components: `src/components/common/`
@@ -318,7 +318,7 @@ cold-flyer/
 │   │   ├── services/           # Service related components
 │   │   ├── carts/              # Cart components
 │   │   ├── checkout/           # Checkout components (address-picker, order-items, payment-method, order-summary, checkout-page)
-│   │   ├── dashboard/          # Dashboard components (activity-log, attendance, blog, booking, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, technicians, users)
+│   │   ├── dashboard/          # Dashboard components (activity-log, attendance, blog, booking, coupons, customers, expenses, layout, location, messages, orders, product, profile, recent-works, reporting, service, stats, table, workers, users)
 │   │   ├── reviews/            # Review components
 │   │   ├── notifications/      # Notification components
 │   │   ├── common/             # Shared components
@@ -403,8 +403,8 @@ cold-flyer/
 | `/dashboard/services` | Service management |
 | `/dashboard/services/add` | Add new service |
 | `/dashboard/services/edit/[id]` | Edit service |
-| `/dashboard/technicians` | Technician management |
-| `/dashboard/technicians/[id]` | Technician details |
+| `/dashboard/workers` | Worker management |
+| `/dashboard/workers/[id]` | Worker details |
 | `/dashboard/users` | User management |
 | `/dashboard/users/[id]` | User details |
 
@@ -532,10 +532,10 @@ All dashboard tables use TanStack React Table v8 via the shared `DataTable` comp
 | Table | Columns | File |
 |-------|---------|------|
 | **Orders** | Product, Customer (added), Date, Status, Payment, Amount, Actions | `orders-table/order-columns.jsx` |
-| **Bookings** | Customer, Service, Technician (added), Date, Status, Payment Status (added), Actions | `booking/bookings-table/booking-columns.jsx` |
+| **Bookings** | Customer, Service, Worker (added), Date, Status, Payment Status (added), Actions | `booking/bookings-table/booking-columns.jsx` |
 | **Blogs** | Title, Author (added), Category, Featured (added), Views, Created, Actions | `blog/blog-columns.jsx` |
-| **Technicians** | Name, Email, Specialization, Status, Rating, Salary, Jobs Done, Actions (NID/Blood Group/Emergency Contact removed) | `technicians/technicians-columns.jsx` |
-| **Users** | User ID (added, `MonoCell`), User, Phone, Role (technician badge, admin/user select), Status (added, `isActive` badge), Last Login (added), Joined, Actions | `users/users-columns.jsx` |
+| **Workers** | Name, Email, Specialization, Status, Rating, Salary, Jobs Done, Actions (NID/Blood Group/Emergency Contact removed) | `workers/workers-columns.jsx` |
+| **Users** | User ID (added, `MonoCell`), User, Phone, Role (worker badge, admin/user select), Status (added, `isActive` badge), Last Login (added), Joined, Actions | `users/users-columns.jsx` |
 | **Customers** | Name, Customer ID (in PDF), Phone, Brand, Model, Unit, Ton (added), Gas Type (added), Service, Install Date, Amount, Bookings (added), Status, Actions | `customers/customers-table.jsx` |
 
 ### Custom UID Display
@@ -578,7 +578,7 @@ Located at `src/components/dashboard/messages/`:
 |------|---------|
 | `messages-page.jsx` | Orchestrator — 3-step wizard flow (Recipients → Message → Send) with state management |
 | `step-indicator.jsx` | Visual 3-step progress bar with step labels, clickable navigation |
-| `recipients-picker.jsx` | Customer/technician import from API, manual name+phone entry, pill-list with remove |
+| `recipients-picker.jsx` | Customer/worker import from API, manual name+phone entry, pill-list with remove |
 | `message-editor.jsx` | Template dropdown (`TEMPLATES` in constants) + textarea with `{name}` variable substitution |
 | `send-actions.jsx` | WhatsApp / SMS send buttons with per-recipient progress status |
 | `message-log.jsx` | Sent message history table fetched from API |
@@ -586,7 +586,7 @@ Located at `src/components/dashboard/messages/`:
 
 **WhatsApp delivery note:** MVP uses `wa.me` browser links (one tab per recipient, 1.5s delay) + server-side `POST /api/messages` audit logging. No true WhatsApp Business API — no delivery tracking, no message templates, no opt-in management. To upgrade: integrate Twilio/Meta Cloud API with a dedicated service layer. SMS uses `sms:` protocol links (opens default SMS app).
 
-**Message templates:** 8 Bengali-language templates in `message-constants.js`: appointment reminder, order confirmation, payment reminder, service follow-up, promotional offer, festival greeting, general notice, technician dispatch. Templates use `{name}` placeholder replaced with each recipient's name at send time.
+**Message templates:** 8 Bengali-language templates in `message-constants.js`: appointment reminder, order confirmation, payment reminder, service follow-up, promotional offer, festival greeting, general notice, worker dispatch. Templates use `{name}` placeholder replaced with each recipient's name at send time.
 
 Admin action dialogs accept `triggerClassName` and `triggerVariant` props for full-width styling:
 

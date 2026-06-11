@@ -276,7 +276,7 @@ export function UserDetails({ userId }) {
                   {user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : "—"}
                 </span>
               </div>
-              {user.technicianProfile && (
+              {user.workerProfile && (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-2.5 text-xs text-blue-700">
                   Has a worker profile linked
                 </div>

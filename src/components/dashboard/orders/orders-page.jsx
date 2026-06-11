@@ -25,7 +25,7 @@ const mapOrderRow = (o) => ({
 export default function OrdersPage() {
   const router = useRouter();
   const [payingOrderId, setPayingOrderId] = useState(null);
-  const { data: ordersData = [], isLoading: loading, refetch } = useAdminOrdersQuery();
+  const { data: ordersData = [], isLoading: loading, error, refetch } = useAdminOrdersQuery();
   const cancelOrder = useCancelOrder();
   const orders = ordersData ?? [];
 
@@ -84,6 +84,7 @@ export default function OrdersPage() {
         columns={columns}
         data={orders}
         loading={loading}
+        error={error}
         rowCount="orders"
         defaultSort={[{ id: "createdAt", desc: true }]}
         emptyMessage="You haven't placed any orders yet."

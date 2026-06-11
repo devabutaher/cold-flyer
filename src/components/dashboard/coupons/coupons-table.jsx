@@ -36,7 +36,7 @@ export default function CouponsTable() {
   const queryClient = useQueryClient();
   const [editingCoupon, setEditingCoupon] = useState(null);
 
-  const { data: coupons = [], isLoading } = useQuery({
+  const { data: coupons = [], isLoading, error } = useQuery({
     queryKey: ["admin-coupons"],
     queryFn: async () => {
       const res = await getClient().get("/admin/coupons");
@@ -101,6 +101,7 @@ export default function CouponsTable() {
         columns={columns}
         data={coupons}
         loading={isLoading}
+        error={error}
         rowCount="coupons"
         defaultSort={[]}
         emptyMessage="No coupons yet. Create your first coupon."

@@ -18,6 +18,7 @@ import {
 } from "@tanstack/react-table";
 import { getNestedValue } from "@/lib/get-nested-value";
 import {
+  AlertCircle,
   ChevronDownIcon,
   ChevronFirstIcon,
   ChevronLastIcon,
@@ -63,6 +64,7 @@ export function DataTable({
   columns,
   data = [],
   loading = false,
+  error,
   emptyMessage = "No results found.",
   emptyIcon,
   emptyAction,
@@ -76,6 +78,20 @@ export function DataTable({
   className,
   searchFields,
 }) {
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+        <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10">
+          <AlertCircle className="size-6 text-destructive" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-foreground">Failed to load data</p>
+          <p className="text-xs text-muted-foreground max-w-sm">{error?.message || "An unexpected error occurred."}</p>
+        </div>
+      </div>
+    );
+  }
   const id = useId();
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState([]);

@@ -24,7 +24,7 @@ export default function MessagesPage() {
   const [message, setMessage] = useState("");
   const [sendingStatus, setSendingStatus] = useState("");
 
-  const { data: messages = [], isLoading } = useQuery({
+  const { data: messages = [], isLoading, error } = useQuery({
     queryKey: ["admin-messages"],
     queryFn: async () => {
       const res = await getClient().get("/messages");
@@ -50,9 +50,9 @@ export default function MessagesPage() {
 
   const importWorkers = useCallback(async () => {
     try {
-      const res = await getClient().get("/admin/technicians");
-      const technicians = res.data?.data?.technicians || [];
-      const newRecipients = technicians
+      const res = await getClient().get("/admin/workers");
+      const workers = res.data?.data?.workers || [];
+      const newRecipients = workers
         .filter((t) => t.user?.phone)
         .map((t) => ({ name: t.user?.name || t.employeeId, phone: t.user.phone }));
       setRecipients((prev) => {
@@ -202,7 +202,7 @@ export default function MessagesPage() {
       </div>
 
       <Separator />
-      <MessageLog messages={messages} isLoading={isLoading} />
+      <MessageLog messages={messages} isLoading={isLoading} error={error} />
     </div>
   );
 }
