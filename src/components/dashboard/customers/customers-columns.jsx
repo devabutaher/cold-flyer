@@ -129,22 +129,22 @@ export function buildCustomerColumns({ onEdit, onDelete, onToggleStatus, onInvoi
                   <span className="sr-only">Actions</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-44">
                 <DropdownMenuItem onClick={() => onEdit?.(c)}>
-                  <Edit size={14} className="mr-2" />
+                  <Edit size={14} className="mr-3" />
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onToggleStatus?.(c._id)}>
-                  <ToggleLeft size={14} className="mr-2" />
+                  <ToggleLeft size={14} className="mr-3" />
                   {c.status === "active" ? "Block" : "Activate"}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onInvoice?.(c)}>
-                  <Eye size={14} className="mr-2" />
+                  <Eye size={14} className="mr-3" />
                   Invoice
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => onDelete?.(c._id)}>
-                  <Trash2 size={14} className="mr-2 text-destructive" />
+                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => onDelete?.(c._id)}>
+                  <Trash2 size={14} className="mr-3" />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>

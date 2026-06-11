@@ -40,9 +40,9 @@ export function ServiceRowActions({ row, onDelete, onEdit }) {
             <span className="sr-only">Row actions</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-36">
+        <DropdownMenuContent align="end" className="w-44">
           <DropdownMenuItem onClick={() => onEdit?.(service)}>
-            <PencilIcon size={13} className="mr-2" />
+            <PencilIcon size={14} className="mr-3" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -53,7 +53,7 @@ export function ServiceRowActions({ row, onDelete, onEdit }) {
               setShowDelete(true);
             }}
           >
-            <TrashIcon size={13} className="mr-2" />
+            <TrashIcon size={14} className="mr-3" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

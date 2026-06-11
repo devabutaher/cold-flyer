@@ -35,9 +35,18 @@ export default function WishlistPage() {
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-primary">Wishlist</span>
           <h1 className="mt-1 text-2xl font-extrabold text-foreground">My Wishlist</h1>
-          <p className="text-sm text-muted-foreground">{items.length} item{items.length !== 1 ? "s" : ""}</p>
+          <p className="text-sm text-muted-foreground">
+            {items.length} item{items.length !== 1 ? "s" : ""}
+          </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => { clearWishlist(); toast.success("Wishlist cleared"); }}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            clearWishlist();
+            toast.success("Wishlist cleared");
+          }}
+        >
           <Trash2 size={14} className="mr-2" />
           Clear All
         </Button>
@@ -53,10 +62,16 @@ export default function WishlistPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className="group relative overflow-hidden transition-shadow hover:shadow-lg">
+              <Card className="group relative overflow-hidden transition-shadow hover:shadow-lg !py-0">
                 <Link href={href} className="relative block h-40 overflow-hidden bg-muted">
                   {item.imageUrl ? (
-                    <Image src={item.imageUrl} alt={item.name} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 25vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
                   ) : (
                     <div className="flex h-full items-center justify-center">
                       {item.type === "service" ? (
@@ -88,9 +103,7 @@ export default function WishlistPage() {
                   </Link>
                   <div className="mt-2 flex items-center justify-between">
                     <span className="text-sm text-muted-foreground capitalize">{item.type}</span>
-                    {item.price > 0 && (
-                      <span className="font-bold text-primary">৳{item.price.toLocaleString()}</span>
-                    )}
+                    {item.price > 0 && <span className="font-bold text-primary">৳{item.price.toLocaleString()}</span>}
                   </div>
                   <Button size="sm" className="mt-3 w-full" asChild>
                     <Link href={href}>{item.type === "service" ? "View Service" : "View Product"}</Link>

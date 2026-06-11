@@ -270,7 +270,7 @@ export function DataTable({
                       style={{
                         width: header.getSize() !== 150 ? `${header.getSize()}px` : undefined,
                       }}
-                      className="h-11 text-xs font-semibold uppercase tracking-wide text-muted-foreground px-4"
+                      className="h-12 text-xs font-semibold uppercase tracking-wide text-muted-foreground px-5"
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <button
@@ -311,7 +311,7 @@ export function DataTable({
                     )}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-3">
+                      <TableCell key={cell.id} className="px-5 py-3.5">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}

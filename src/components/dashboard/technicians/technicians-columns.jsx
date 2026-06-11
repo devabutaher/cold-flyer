@@ -4,6 +4,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AvatarCell, StatusBadge, RatingCell } from "@/components/dashboard/table/table-cells";
@@ -106,15 +107,16 @@ export function buildTechnicianColumns({ onDelete } = {}) {
                   <span className="sr-only">Actions</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-44">
                 <DropdownMenuItem asChild>
                   <Link href={`/dashboard/technicians/${t._id}`} className="flex items-center w-full">
-                    <Eye size={14} className="mr-2" />
+                    <Eye size={14} className="mr-3" />
                     View Details
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onDelete?.(t._id)}>
-                  <Trash2 size={14} className="mr-2 text-destructive" />
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => onDelete?.(t._id)}>
+                  <Trash2 size={14} className="mr-3" />
                   Remove
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -72,7 +72,7 @@ function FaqImage() {
       data-in-view={inView || undefined}
     >
       <Image
-        src="https://plus.unsplash.com/premium_photo-1664298059861-1560b39fb890?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src="https://images.unsplash.com/photo-1603335730747-ca17baa3aac2?q=80&w=1590&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="AC Technician"
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"

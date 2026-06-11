@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/providers";
-import { demoLogin, forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
+import { adminDemoLogin, demoLogin, forgotPassword, googleAuth, loginUser, registerUser } from "@/lib/actions/auth";
 import { createAccountSchema, signInSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -98,6 +98,7 @@ export function useAuthForm() {
       shape: "rectangular",
       theme: "outline",
       size: "large",
+      width: googleBtnRef.current.offsetWidth || 280,
       locale: "en",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +121,21 @@ export function useAuthForm() {
       router.push(
         searchParams.get("redirect") || (["admin", "moderator", "worker"].includes(user?.role) ? "/dashboard" : "/"),
       );
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAdminDemoLogin = async () => {
+    setLoading(true);
+    setAuthError("");
+    try {
+      await adminDemoLogin();
+      const user = await refreshUser();
+      toast.success(t("welcomeAdmin"));
+      router.push("/dashboard");
     } catch (err) {
       setAuthError(err.message);
     } finally {
@@ -172,6 +188,7 @@ export function useAuthForm() {
     setShowAdminHint,
     handleTabSwitch,
     handleDemoLogin,
+    handleAdminDemoLogin,
     onSubmit,
   };
 }

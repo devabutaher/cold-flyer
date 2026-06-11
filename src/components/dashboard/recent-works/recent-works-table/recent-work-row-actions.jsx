@@ -65,20 +65,20 @@ export function RecentWorkRowActions({ work, isAdmin = false }) {
               target="_blank"
               className="flex items-center w-full cursor-pointer"
             >
-              <Eye className="mr-2 h-4 w-4" />
+              <Eye size={14} className="mr-3" />
               View Details
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={`/dashboard/recent-works/edit/${work._id}`} className="flex items-center w-full cursor-pointer">
-              <Edit className="mr-2 h-4 w-4" />
+              <Edit size={14} className="mr-3" />
               Edit
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-destructive focus:text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 size={14} className="mr-3" />
               Delete
             </DropdownMenuItem>
           </AlertDialogTrigger>

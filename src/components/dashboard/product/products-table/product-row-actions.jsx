@@ -42,13 +42,13 @@ export function ProductRowActions({ row, onDelete }) {
             <span className="sr-only">Row actions</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-36">
+        <DropdownMenuContent align="end" className="w-44">
           <DropdownMenuItem onClick={() => router.push(`/items/${slug || id}`)}>
-            <EyeIcon size={13} className="mr-2" />
+            <EyeIcon size={14} className="mr-3" />
             View
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push(`/dashboard/items/edit/${slug || id}`)}>
-            <PencilIcon size={13} className="mr-2" />
+            <PencilIcon size={14} className="mr-3" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -59,7 +59,7 @@ export function ProductRowActions({ row, onDelete }) {
               setShowDelete(true);
             }}
           >
-            <TrashIcon size={13} className="mr-2" />
+            <TrashIcon size={14} className="mr-3" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

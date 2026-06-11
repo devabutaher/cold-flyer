@@ -36,7 +36,7 @@ function CarouselSkeleton() {
         </div>
       </div>
       <div className="flex gap-4 overflow-hidden">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3].map((i) => (
           <div key={i} className="basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">
             <ProductCardSkeleton />
           </div>
@@ -79,7 +79,7 @@ export function DataCarousel({
               </div>
             </div>
             <div className="flex gap-4 overflow-hidden">
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3].map((i) => (
                 <div key={i} className="basis-[85%] px-2 sm:basis-1/2 lg:basis-1/3">
                   {renderSkeleton(i)}
                 </div>

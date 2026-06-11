@@ -11,7 +11,7 @@ import { useCart } from "@/store/cart";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { NavSearch } from "./nav-search";
@@ -19,34 +19,45 @@ import { NavButtons } from "./shared";
 
 function CartIcon() {
   const { itemCount } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Link href="/cart" className="relative">
       <Button size="icon" variant="outline" className="relative overflow-hidden">
-        <motion.div
-          key={itemCount}
-          initial={itemCount > 0 ? { scale: 1.3, rotate: -10 } : false}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 500, damping: 15 }}
-        >
-          <ShoppingCart size={20} />
-        </motion.div>
-      </Button>
-      <AnimatePresence>
-        {itemCount > 0 && (
+        {mounted ? (
           <motion.div
-            className="absolute -right-1.5 -top-2.5"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            key={itemCount}
+            initial={itemCount > 0 ? { scale: 1.3, rotate: -10 } : false}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 15 }}
           >
-            <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-xxs leading-none">
-              {itemCount > 99 ? "99+" : itemCount}
-            </Badge>
+            <ShoppingCart size={20} />
           </motion.div>
+        ) : (
+          <ShoppingCart size={20} />
         )}
-      </AnimatePresence>
+      </Button>
+      {mounted && (
+        <AnimatePresence>
+          {itemCount > 0 && (
+            <motion.div
+              className="absolute -right-1.5 -top-2.5"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            >
+              <Badge variant="default" className="h-4 min-w-4 px-1 justify-center p-0 text-xxs leading-none">
+                {itemCount > 99 ? "99+" : itemCount}
+              </Badge>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </Link>
   );
 }

@@ -47,14 +47,14 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
                 <ChevronDown size={12} />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-auto min-w-40">
+            <DropdownMenuContent align="end" className="w-auto min-w-44">
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
                   onApprove?.(application);
                 }}
               >
-                <CheckCircle2 size={14} className="mr-2 text-green-600" />
+                <CheckCircle2 size={14} className="mr-3 text-green-600" />
                 Approve
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -63,7 +63,7 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
                   onReject?.(application);
                 }}
               >
-                <XCircle size={14} className="mr-2 text-destructive" />
+                <XCircle size={14} className="mr-3 text-destructive" />
                 Reject with Feedback
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -82,14 +82,14 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
               <span className="sr-only">Application actions</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem
               onClick={(e) => {
                 e.stopPropagation();
                 onView?.(application);
               }}
             >
-              <Eye size={13} className="mr-2" />
+              <Eye size={14} className="mr-3" />
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -100,7 +100,7 @@ export function ApplicationRowActions({ application, onView, onApprove, onReject
                 setShowDelete(true);
               }}
             >
-              <Trash2 size={13} className="mr-2" />
+              <Trash2 size={14} className="mr-3" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

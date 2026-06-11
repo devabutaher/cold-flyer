@@ -5,17 +5,17 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import { useTypewriter } from "@/hooks/use-typewriter";
 
 export function NavSearch() {
-  const t = useTranslations("common");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const inputRef = useRef(null);
+  const placeholder = useTypewriter();
 
   const searchBase = useMemo(() => {
     if (pathname.startsWith("/services")) return pathname;
@@ -46,7 +46,7 @@ export function NavSearch() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               id="input-button-group"
-              placeholder={t("placeholderSearch")}
+              placeholder={placeholder}
               className="pr-7 w-full rounded-md rounded-r-none"
             />
             {query && (

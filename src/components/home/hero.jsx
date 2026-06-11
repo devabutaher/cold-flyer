@@ -3,10 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useEmblaSlider } from "@/hooks/use-embla-slider";
+import { getPageContent } from "@/lib/content";
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { getPageContent } from "@/lib/content";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -50,7 +50,7 @@ function SlideContent({ slide, t }) {
   return (
     <div className="container relative z-10 flex h-full flex-col items-start justify-center">
       <div className="hero-animate">
-        <Badge className="mb-3 sm:mb-4 md:mb-5 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm text-xxs sm:text-xs">
+        <Badge className="mb-3 sm:mb-4 md:mb-5 border-0 bg-primary/20 uppercase text-primary backdrop-blur-sm text-xs sm:text-xs">
           {slide.badge}
         </Badge>
       </div>
@@ -69,15 +69,16 @@ function SlideContent({ slide, t }) {
         <Link href="/items">
           <Button size="lg" className="group relative overflow-hidden sm:size-xl">
             <span className="relative z-10 inline-flex items-center gap-2">
-              {t("common.shopCollection")}{" "}
+              {t("common.ourServices")}
+
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </span>
           </Button>
         </Link>
 
         <Link href="/services">
-          <Button size="lg" variant="secondary" className="sm:size-xl">
-            {t("common.ourServices")}
+          <Button size="lg" variant="secondary" className="sm:size-xl px-4">
+            {t("common.shopCollection")}{" "}
           </Button>
         </Link>
       </div>

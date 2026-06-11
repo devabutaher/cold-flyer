@@ -82,7 +82,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
                   onPay(order._id, "stripe");
                 }}
               >
-                <CreditCard size={13} className="mr-2 shrink-0" />
+                <CreditCard size={14} className="mr-3" />
                 Pay with Card (Stripe)
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -92,7 +92,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
                   onPay(order._id, "sslcommerz");
                 }}
               >
-                <Smartphone size={13} className="mr-2 shrink-0" />
+                <Smartphone size={14} className="mr-3" />
                 Pay with SSLCOMMERZ
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -111,14 +111,14 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
               <span className="sr-only">Order actions</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem asChild>
               <Link
                 href={`/dashboard/orders/${order._id}`}
                 className="flex items-center w-full"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Eye size={13} className="mr-2" />
+                <Eye size={14} className="mr-3" />
                 View Details
               </Link>
             </DropdownMenuItem>
@@ -132,7 +132,7 @@ export function OrderRowActions({ order, onPay, onCancel, payingOrderId }) {
                     setShowCancel(true);
                   }}
                 >
-                  <X size={13} className="mr-2" />
+                  <X size={14} className="mr-2" />
                   Cancel Order
                 </DropdownMenuItem>
               </>

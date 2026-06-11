@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
@@ -102,10 +103,10 @@ export function BookingRowActions({ row, onCancel, isAdmin = false, userRole }) 
               <span className="sr-only">Actions</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem asChild>
               <Link href={`/dashboard/bookings/${booking._id}`} className="flex items-center w-full">
-                <Eye size={14} className="mr-2" />
+                <Eye size={14} className="mr-3" />
                 View Details
               </Link>
             </DropdownMenuItem>
@@ -113,16 +114,20 @@ export function BookingRowActions({ row, onCancel, isAdmin = false, userRole }) 
             {canManage && (
               <DropdownMenuItem asChild>
                 <Link href={`/dashboard/bookings/edit/${booking._id}`} className="flex items-center w-full">
-                  <PencilLine size={14} className="mr-2" />
+                  <PencilLine size={14} className="mr-3" />
                   Edit Booking
                 </Link>
               </DropdownMenuItem>
             )}
 
+            {canCancel && <DropdownMenuSeparator />}
             {canCancel && (
               <AlertDialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  <XCircle size={14} className="mr-2 text-destructive" />
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <XCircle size={14} className="mr-2" />
                   Cancel Booking
                 </DropdownMenuItem>
               </AlertDialogTrigger>

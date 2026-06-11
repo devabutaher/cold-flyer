@@ -97,14 +97,14 @@ export function buildExpenseColumns({ onEdit, onDelete } = {}) {
                   <span className="sr-only">Actions</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-44">
                 <DropdownMenuItem onClick={() => onEdit?.(e)}>
-                  <Edit size={14} className="mr-2" />
+                  <Edit size={14} className="mr-3" />
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => onDelete?.(e._id)}>
-                  <Trash2 size={14} className="mr-2 text-destructive" />
+                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => onDelete?.(e._id)}>
+                  <Trash2 size={14} className="mr-3" />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>

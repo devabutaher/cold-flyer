@@ -38,6 +38,10 @@ export async function demoLogin() {
   return loginUser("fatima@example.com", "User@1234");
 }
 
+export async function adminDemoLogin() {
+  return loginUser("admin@coldflyer.com", "Admin@1234");
+}
+
 export async function forgotPassword(email) {
   const res = await fetch("/api/auth/forgot-password", {
     method: "POST",

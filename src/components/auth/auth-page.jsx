@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { Crown, Eye, EyeOff, KeyRound, LockKeyhole, LogIn, Mail, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function AuthPage() {
@@ -28,6 +29,7 @@ export default function AuthPage() {
     setShowPassword,
     handleTabSwitch,
     handleDemoLogin,
+    handleAdminDemoLogin,
     onSubmit,
     forgotPasswordMode,
     forgotSent,
@@ -226,6 +228,25 @@ export default function AuthPage() {
               </div>
             )}
 
+            {isSignIn && (
+              <div className="flex gap-2">
+                <Button type="button" variant="outline" onClick={handleDemoLogin} disabled={loading} className="flex-1">
+                  <LogIn className="size-4 mr-2" />
+                  {t("demoLogin")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleAdminDemoLogin}
+                  disabled={loading}
+                  className="flex-1"
+                >
+                  <Shield className="size-4 mr-2" />
+                  {t("demoAdminLogin")}
+                </Button>
+              </div>
+            )}
+
             <div>
               <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block">
                 {t("emailLabel")}
@@ -297,22 +318,17 @@ export default function AuthPage() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          <div ref={googleBtnRef} className="w-full min-h-11" />
-
-          <Button type="button" variant="outline" onClick={handleDemoLogin} disabled={loading} className="w-full mt-3">
-            <LogIn className="size-4 mr-2" />
-            {t("demoLogin")}
-          </Button>
+          <div ref={googleBtnRef} className="w-full min-h-[40px] [&>div>iframe]:w-full" />
 
           <p className="text-muted-foreground text-xs text-center mt-6">
             {t("protectedBy")}{" "}
-            <a href="#" className="text-primary underline underline-offset-2">
+            <Link href="/privacy" className="text-primary underline underline-offset-2">
               Privacy Policy
-            </a>{" "}
+            </Link>{" "}
             &{" "}
-            <a href="#" className="text-primary underline underline-offset-2">
+            <Link href="/terms" className="text-primary underline underline-offset-2">
               Terms of Service
-            </a>
+            </Link>
             .
           </p>
         </motion.div>

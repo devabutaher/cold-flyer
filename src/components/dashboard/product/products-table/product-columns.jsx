@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { AvatarCell, MonoCell, PriceCell, RatingCell, StatusBadge, StockCell } from "../../table/table-cells";
-import { ProductRowActions } from "./product-row -actions";
+import { ProductRowActions } from "./product-row-actions";
 
 // Tag badge config
 const TAG_MAP = {

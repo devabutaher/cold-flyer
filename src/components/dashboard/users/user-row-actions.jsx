@@ -49,14 +49,14 @@ export function UserRowActions({ user, onView, onDelete }) {
               <span className="sr-only">User actions</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem
               onClick={(e) => {
                 e.stopPropagation();
                 onView?.(user);
               }}
             >
-              <Eye size={13} className="mr-2" />
+              <Eye size={14} className="mr-3" />
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -67,7 +67,7 @@ export function UserRowActions({ user, onView, onDelete }) {
                 setShowDelete(true);
               }}
             >
-              <Trash2 size={13} className="mr-2" />
+              <Trash2 size={14} className="mr-3" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
