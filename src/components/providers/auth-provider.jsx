@@ -44,7 +44,11 @@ export function AuthProvider({ children }) {
     fetch("/api/auth/status", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
-        if (data?.data?.authenticated) setBackendUser(data.data.user);
+        if (data?.data?.authenticated) {
+          setBackendUser(data.data.user);
+        } else if (getAccessToken()) {
+          return fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
+        }
       })
       .catch((err) => console.error("[AuthProvider] Status fetch failed:", err))
       .finally(() => setLoading(false));

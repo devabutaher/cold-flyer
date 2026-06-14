@@ -51,6 +51,9 @@ self.addEventListener("fetch", (event) => {
 
   if (request.method !== "GET") return;
 
+  // Only cache/intercept same-origin requests — skip third-party (GTM, analytics, etc.)
+  if (url.origin !== self.location.origin) return;
+
   if (isApiRequest(url)) {
     event.respondWith(networkFirstWithCache(request, API_CACHE, MAX_API_CACHE));
     return;

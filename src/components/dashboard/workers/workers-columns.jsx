@@ -160,7 +160,7 @@ export function buildWorkerColumns({ onDelete } = {}) {
         const areas = w.serviceAreas || [];
         return (
           <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
-            {areas.length > 0 ? areas.map((a, i) => <span key={i}>{a}{i < areas.length - 1 ? ", " : ""}</span>) : "—"}
+            {areas.length > 0 ? areas.map((a, i) => <span key={i}>{typeof a === "string" ? a : a.zone}{i < areas.length - 1 ? ", " : ""}</span>) : "—"}
           </div>
         );
       },

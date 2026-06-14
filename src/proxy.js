@@ -60,7 +60,7 @@ export async function proxy(request) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuth && isAuthenticated) {
+  if (isAuth && isAuthenticated && !request.nextUrl.searchParams.has("redirect")) {
     const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
     return NextResponse.redirect(new URL(redirectTo, request.url));
   }

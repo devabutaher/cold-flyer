@@ -48,6 +48,8 @@ Run `npm run seed` in the backend to seed these accounts:
 | Admin | `admin@coldflyer.com` | `Admin@1234` |
 | Moderator | `mod@coldflyer.com` | `Mod@1234` |
 | Worker | `tech@coldflyer.com` | `Tech@1234` |
+| Worker | `shamim@coldflyer.com` | `Tech@1234` |
+| Worker | `shahana@coldflyer.com` | `Tech@1234` |
 | Customer | `fatima@example.com` | `User@1234` |
 
 Click **Demo Login (Customer)** on the auth page to instantly log in as a customer.
@@ -153,6 +155,7 @@ The dashboard provides a full administrative interface at `/dashboard`:
 - **Expenses** — Track business expenses
 - **Attendance** — Worker attendance tracking
 - **Messages** — In-app messaging system
+- **Location** — Live worker GPS tracking
 
 ---
 

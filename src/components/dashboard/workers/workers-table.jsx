@@ -11,7 +11,6 @@ import { UserPlus } from "lucide-react";
 
 export default function WorkersTable() {
   const queryClient = useQueryClient();
-  const [globalFilter, setGlobalFilter] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const { data: workers = [], isLoading, error } = useQuery({
@@ -43,38 +42,32 @@ export default function WorkersTable() {
     return buildWorkerColumns({ onDelete: handleDelete });
   }, [handleDelete]);
 
-  const filterOptions = useMemo(() => {
-    const all = workers.flatMap((w) => w.specializations || []);
-    return [...new Set(all)].map((s) => ({ label: s, value: s }));
-  }, [workers]);
-
   return (
     <div className="space-y-4">
-      <TableToolbar
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-        filterOptions={filterOptions}
-        filterColumn="specializations"
-        filterPlaceholder="Filter by specialization"
-        searchPlaceholder="Search workers..."
-      >
-        <AddWorkerSheet
-          trigger={
-            <Button size="sm">
-              <UserPlus size={14} className="mr-1.5" />
-              Add Worker
-            </Button>
-          }
-        />
-      </TableToolbar>
-
       <DataTable
         columns={columns}
         data={workers}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
+        defaultSort={[]}
+        emptyMessage="No workers found."
+        rowCount="workers"
+        toolbar={(table) => (
+          <TableToolbar
+            table={table}
+            searchPlaceholder="Search workers..."
+            actions={
+              <AddWorkerSheet
+                trigger={
+                  <Button size="sm">
+                    <UserPlus size={14} className="mr-1.5" />
+                    Add Worker
+                  </Button>
+                }
+              />
+            }
+          />
+        )}
       />
 
       {deleteWorker.isPending && (

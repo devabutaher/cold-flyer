@@ -8,12 +8,17 @@ import { animations } from "@/lib/animation";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Crown, Eye, EyeOff, KeyRound, LockKeyhole, LogIn, Mail, Shield } from "lucide-react";
+import { useAuth } from "@/components/providers";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AuthPage() {
+  const { backendUser } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const t = useTranslations("auth");
   const {
     tab,
@@ -38,6 +43,13 @@ export default function AuthPage() {
   } = useAuthForm();
 
   const [forgotEmail, setForgotEmail] = useState("");
+
+  useEffect(() => {
+    if (backendUser) {
+      const redirectTo = searchParams.get("redirect") || "/dashboard";
+      router.replace(redirectTo);
+    }
+  }, [backendUser, searchParams, router]);
 
   // ── Forgot password mode ──────────────────────────────
   if (forgotPasswordMode) {
